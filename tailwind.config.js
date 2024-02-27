@@ -7,6 +7,18 @@ module.exports = {
   ],
   theme: {
     extend: {
+      colors: {
+        "primary-blue": "#469BEC",
+        "text-blue": "#1261AC",
+        "button-blue": "#1261AC",
+        "light-blue": "#EEF8FF",
+      },
+      fontFamily: {
+        manrope: ["Manrope", "sans-serif"],
+      },
+      screens: {
+        xxl: "1440px",
+      },
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
         "gradient-conic":
