@@ -16,9 +16,10 @@ async function jwtMiddleware(req) {
 function isPublicPath(req) {
     // public routes that don't require authentication
     const publicPaths = [
-        'POST:/api/account/login',
-        'POST:/api/account/logout',
-        'POST:/api/account/register'
+        'POST:/api/v1/auth/login',
+        'POST:/api/v1/auth/logout',
+        'POST:/api/v1/auth/register',
+        'POST:/api/v1/auth/google'
     ];
     return publicPaths.includes(`${req.method}:${req.nextUrl.pathname}`);
 }

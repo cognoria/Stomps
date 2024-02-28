@@ -4,6 +4,7 @@ import { headers } from 'next/headers';
 import { db } from './db';
 
 const User = db.User;
+const Token = db.Token;
 
 export const usersRepo = {
     authenticate,
@@ -54,7 +55,7 @@ async function getCurrent() {
 
 async function create(params) {
     // validate
-    if (await User.findOne({ username: params.username })) {
+    if (await User.findOne({ email: params.email })) {
         throw 'Username "' + params.username + '" is already taken';
     }
 
@@ -67,6 +68,8 @@ async function create(params) {
 
     // save user
     await user.save();
+
+    //send email verification
 }
 
 async function update(id, params) {
@@ -74,9 +77,9 @@ async function update(id, params) {
 
     // validate
     if (!user) throw 'User not found';
-    if (user.username !== params.username && await User.findOne({ username: params.username })) {
-        throw 'Username "' + params.username + '" is already taken';
-    }
+    // if (user.username !== params.username && await User.findOne({ username: params.username })) {
+    //     throw 'Username "' + params.username + '" is already taken';
+    // }
 
     // hash password if it was entered
     if (params.password) {
@@ -87,6 +90,20 @@ async function update(id, params) {
     Object.assign(user, params);
 
     await user.save();
+}
+
+async function logActivity(action, details = {}){
+    try{
+        const currentUserId = headers().get('userId');
+
+    }catch (e){
+
+    }
+
+}
+
+async function createToken(){
+
 }
 
 async function _delete(id) {

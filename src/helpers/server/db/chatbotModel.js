@@ -2,16 +2,7 @@ import mongoose from 'mongoose';
 
 const Schema = mongoose.Schema;
 
-mongoose.connect(process.env.MONGODB_URI);
-mongoose.Promise = global.Promise;
-
-export const db = {
-    User: userModel()
-};
-
-// mongoose models with schema definitions
-
-function userModel() {
+export default function userModel() {
     const schema = new Schema({
         email: { type: String, unique: true, required: true },
         hash: { type: String, required: true },
@@ -28,6 +19,6 @@ function userModel() {
             delete ret.hash;
         }
     });
-
+    schema.index({ googleId: 1 }, { unique: true, sparse: true })
     return mongoose.models.User || mongoose.model('User', schema);
 }
