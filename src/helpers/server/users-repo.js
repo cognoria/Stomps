@@ -24,6 +24,7 @@ async function authenticate({ username, password }) {
     }
 
     // create a jwt token that is valid for 7 days
+    //TODO: JWT_Secret will be created randomly and saved for the user
     const token = jwt.sign({ sub: user.id }, process.env.JWT_SECRET, { expiresIn: '7d' });
 
     return {
@@ -90,16 +91,6 @@ async function update(id, params) {
     Object.assign(user, params);
 
     await user.save();
-}
-
-async function logActivity(action, details = {}){
-    try{
-        const currentUserId = headers().get('userId');
-
-    }catch (e){
-
-    }
-
 }
 
 async function createToken(){

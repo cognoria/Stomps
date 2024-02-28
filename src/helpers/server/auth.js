@@ -17,6 +17,7 @@ function isAuthenticated() {
 
 function verifyToken() {
     const token = cookies().get('authorization')?.value ?? '';
+    //TODO: JWT_Secret will be created randomly and saved for the user
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     const id = decoded.sub;
     return id;
