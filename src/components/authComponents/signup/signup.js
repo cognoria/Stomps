@@ -1,40 +1,88 @@
+"use client";
+import { usePasswordValidationStore } from "@/src/store/store";
+import { auth_schema } from "@/src/utils/resolver/yup_schema";
+import { yupResolver } from "@hookform/resolvers/yup";
+import Link from "next/link";
+import React from "react";
+import { useForm } from "react-hook-form";
+
 function Signup_form() {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    watch,
+  } = useForm({
+    resolver: yupResolver(auth_schema),
+  });
+  const onSubmit = (data) => {
+    console.log(data);
+    // Handle form submission
+  };
+
+  const updateValidation = usePasswordValidationStore(
+    (state) => state.updateValidation
+  );
+  const { hasUppercase, hasNumber, isLongEnough } =
+    usePasswordValidationStore();
+
+  // Watch the password input value
+  const passwordValue = watch("password");
+
+  // Update validation state whenever the password changes
+  React.useEffect(() => {
+    updateValidation(passwordValue);
+  }, [passwordValue]);
+
   return (
     <div className="flex pb-[20px] flex-col mt-[30px] md:mt-[40px] gap-4 items-center justify-center w-screen h-auto">
-      <form className="flex w-full flex-col items-center  justify-between gap-6">
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="flex w-full flex-col items-center  justify-between gap-6"
+      >
         <div className="flex gap-4 md:w-[479px] w-[90%] flex-col items-start justify-start">
           <p className="text-xs font-bold font-manrope leading-none tracking-tight text-[#8A8A8A]">
             Email Address
           </p>
           <input
-            value=""
-            // onChange={() => {}}
+            name="email"
+            {...register("email")}
             type="email"
             className="h-10 w-full p-2 pl-4 font-manrope text-[#8A8A8A] bg-transparent border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             placeholder="Janeearnest@gmail.com"
           />
+          {errors.email && (
+            <div aria-live="polite" className="text-red-500 text-xs md:text-sm">
+              <span>{errors.email.message}</span>
+            </div>
+          )}
         </div>
         <div className="flex w-[90%] gap-4 md:w-[479px] flex-col items-start justify-start">
           <p className="text-xs font-bold font-manrope leading-none tracking-tight text-[#8A8A8A]">
             Password
           </p>
           <input
-            value=""
-            // onChange={() => {}}
+            name="password"
+            {...register("password")}
             type="password"
             className="h-10 w-full p-2 pl-4 font-manrope text-[#8A8A8A] bg-transparent border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             placeholder="****************"
           />
+          {errors.password && (
+            <div aria-live="polite" className="text-red-500 text-xs md:text-sm">
+              <span>{errors.password.message}</span>
+            </div>
+          )}
         </div>
         <div className="flex w-[90%] md:w-[479px] flex-col">
           <div className="flex flex-row gap-3 items-start justify-start">
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              fill="none"
+              fill={hasUppercase ? "green" : "none"}
               viewBox="0 0 24 24"
               stroke-width="1.5"
-              stroke="currentColor"
-              class="w-6 h-6"
+              stroke={hasUppercase ? "white" : "currentColor"}
+              className="w-6 h-6 "
             >
               <path
                 stroke-linecap="round"
@@ -49,10 +97,10 @@ function Signup_form() {
           <div className="flex flex-row gap-3 items-start justify-start">
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              fill="none"
+              fill={isLongEnough ? "green" : "none"}
               viewBox="0 0 24 24"
               stroke-width="1.5"
-              stroke="currentColor"
+              stroke={isLongEnough ? "white" : "currentColor"}
               class="w-6 h-6"
             >
               <path
@@ -62,16 +110,16 @@ function Signup_form() {
               />
             </svg>
             <div className="text-neutral-700 mt-1 text-[10px] font-normal font-manrope leading-[14px] tracking-tight">
-              At least one uppercase letter
+              Minimum of 6 characters
             </div>
           </div>
           <div className="flex flex-row gap-3  items-start justify-start">
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              fill="none"
+              fill={hasNumber ? "green" : "none"}
               viewBox="0 0 24 24"
               stroke-width="1.5"
-              stroke="currentColor"
+              stroke={hasNumber ? "white" : "currentColor"}
               class="w-6 h-6"
             >
               <path
@@ -81,7 +129,7 @@ function Signup_form() {
               />
             </svg>
             <div className="text-neutral-700 mt-1  text-[10px] font-normal font-manrope leading-[14px] tracking-tight">
-              At least one uppercase letter
+              At least one number
             </div>
           </div>
         </div>
@@ -99,7 +147,7 @@ function Signup_form() {
           Already have an account?
         </span>
         <span className="text-blue-500 my-[20px] text-sm font-bold font-manrope leading-tight tracking-tight">
-          Sign in
+          <Link href="/auth/signin"> Sign in</Link>
         </span>
       </div>
       <div className="mt-[20px] w-full md:w-[481px] h-5 justify-center items-center gap-4 inline-flex">

@@ -4,7 +4,7 @@ import Nav_bar from "@/src/components/navigation/nav_bar";
 
 function page() {
   return (
-    <div className="w-screen overflow-x-hidden">
+    <div className=" overflow-x-hidden">
       <Nav_bar />
       <Auth_header
         desc={"Reset your password"}
