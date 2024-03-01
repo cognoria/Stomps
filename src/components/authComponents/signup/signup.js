@@ -1,12 +1,23 @@
 "use client";
-import { usePasswordValidationStore } from "@/src/store/store";
-import { auth_schema } from "@/src/utils/resolver/yup_schema";
 import { yupResolver } from "@hookform/resolvers/yup";
+// import { usePasswordValidationStore } from "@/src/store/store";
+// import { auth_schema } from "@/src/utils/resolver/yup_schema";
+
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import React from "react";
 import { useForm } from "react-hook-form";
-
+import useRegisterAuthStore from "../../../store/auth/register";
+import { usePasswordValidationStore } from "../../../store/validation/validations";
+import { auth_schema } from "../../../utils/resolver/yup_schema";
 function Signup_form() {
+  const router = useRouter();
+  const { registerUser, loading, error } = useRegisterAuthStore((state) => ({
+    registerUser: state.registerUser,
+    loading: state.loading,
+    error: state.error,
+  }));
+
   const {
     register,
     handleSubmit,
@@ -15,25 +26,21 @@ function Signup_form() {
   } = useForm({
     resolver: yupResolver(auth_schema),
   });
-  const onSubmit = (data) => {
-    console.log(data);
-    // Handle form submission
+  const onSubmit = async (data, e) => {
+    e.preventDefault();
+    registerUser(data, () => {
+      router.push("/dashboard");
+    });
   };
-
   const updateValidation = usePasswordValidationStore(
     (state) => state.updateValidation
   );
   const { hasUppercase, hasNumber, isLongEnough } =
     usePasswordValidationStore();
-
-  // Watch the password input value
   const passwordValue = watch("password");
-
-  // Update validation state whenever the password changes
   React.useEffect(() => {
     updateValidation(passwordValue);
   }, [passwordValue]);
-
   return (
     <div className="flex pb-[20px] flex-col mt-[30px] md:mt-[40px] gap-4 items-center justify-center w-screen h-auto">
       <form
@@ -133,12 +140,17 @@ function Signup_form() {
             </div>
           </div>
         </div>
-        <div className="md:w-[481px] w-[90%] mt-[20px] h-11 px-5 py-3 bg-sky-700 rounded-lg shadow border border-sky-700 justify-center items-center gap-2 inline-flex">
+        <div
+          className={`md:w-[481px] w-[90%] mt-[20px] h-11 px-5 py-3 ${
+            loading ? "bg-sky-700/30" : "bg-sky-700 "
+          } rounded-lg shadow border border-sky-700 justify-center items-center gap-2 inline-flex`}
+        >
           <button
+            disabled={loading}
             type="submit"
-            className="text-white text-sm font-bold font-manrope leading-snug"
+            className={`text-white text-sm font-bold font-manrope leading-snug`}
           >
-            Create Account
+            {loading ? "Registering..." : "Create Account"}
           </button>
         </div>
       </form>
