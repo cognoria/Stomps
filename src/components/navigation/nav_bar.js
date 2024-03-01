@@ -59,32 +59,40 @@ function Nav_bar() {
           </div>
         </div>
         <div className="md:flex hidden flex-row gap-4">
-          <RoundedSubmitButton
-            button_content={"login"}
-            color={"bg-transparent"}
-            radius={"rounded-[8px]"}
-            width={"w-[107px]"}
-            text_color={"text-[#1261AC]"}
-            text_size={"text-[14px]"}
-            border_color={"border-[#1261AC]"}
-            border={"border-[1px]"}
-          />
-
-          <RoundedSubmitButton
-            button_content={"Create Account"}
-            color={"bg-[#EEF8FF]"}
-            radius={"rounded-[8px]"}
-            width={"w-[147px]"}
-            text_color={"text-[#74B4F1]"}
-            text_size={"text-[14px]"}
-          />
+          <Link href="/auth/signin">
+            <RoundedSubmitButton
+              button_content={"login"}
+              color={"bg-transparent"}
+              radius={"rounded-[8px]"}
+              width={"w-[107px]"}
+              text_color={"text-[#1261AC]"}
+              text_size={"text-[14px]"}
+              border_color={"border-[#1261AC]"}
+              border={"border-[1px]"}
+            />
+          </Link>
+          <Link href="auth/signup">
+            <RoundedSubmitButton
+              button_content={"Create Account"}
+              color={"bg-[#EEF8FF]"}
+              radius={"rounded-[8px]"}
+              width={"w-[147px]"}
+              text_color={"text-[#74B4F1]"}
+              text_size={"text-[14px]"}
+            />
+          </Link>
         </div>
       </div>
       <div className="flex flex-col w-full px-[4%] py-[2.5%] lg:hidden bg-white z-50 items-center justify-between">
         <div className="flex flex-row w-full justify-between">
-          <div className="text-[#1261AC]   text-2xl font-extrabold font-manrope leading-[28.80px]">
-            Stomps.io
-          </div>
+          {expanded ? (
+            <div className="text-[#1261AC]   text-2xl font-extrabold font-manrope leading-[28.80px]">
+              Stomps.io
+            </div>
+          ) : (
+            <img src="/images/landing/logo1.svg" alt="logo" />
+          )}
+
           <div className="flex ">
             <button
               type="button"
@@ -152,22 +160,22 @@ function Nav_bar() {
                   Pricing
                 </a>
 
-                <a
-                  href="#"
+                <Link
+                  href="/auth/signin"
                   title=""
                   className="inline-flex mt-[100px]  items-center justify-center  px-6 py-3 text-base font-bold leading-7 text-[#1261AC] transition-all rounded-[8px] duration-200 bg-[#fff] border-[1px] border-[#1261AC]  hover:bg-gray-600 font-pj focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900"
                 >
-                  Customer Login
-                </a>
+                  Login
+                </Link>
 
-                <a
-                  href="#"
+                <Link
+                  href="/auth/signup"
                   title=""
                   className="inline-flex items-center justify-center px-6 py-3 text-base font-bold leading-7 text-white transition-all rounded-[8px] duration-200  bg-[#1261AC] border border-transparent  hover:bg-gray-600 font-pj focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900"
                   role="button"
                 >
-                  Sign up
-                </a>
+                  Create Account
+                </Link>
               </div>
             </div>
           </nav>

@@ -1,10 +1,18 @@
 "use client";
-import { auth_schema } from "@/src/utils/resolver/yup_schema";
+// import { auth_schema } from "@/src/utils/resolver/yup_schema";
 import { yupResolver } from "@hookform/resolvers/yup";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
-
+import useLoginAuthStore from "../../../store/auth/login";
+import { auth_schema } from "../../../utils/resolver/yup_schema";
 function Signin_form() {
+  const router = useRouter();
+  const { loginUser, loading, error } = useLoginAuthStore((state) => ({
+    loginUser: state.loginUser,
+    loading: state.loading,
+    error: state.error,
+  }));
   const {
     register,
     handleSubmit,
@@ -13,9 +21,11 @@ function Signin_form() {
   } = useForm({
     resolver: yupResolver(auth_schema),
   });
-  const onSubmit = (data) => {
-    console.log(data);
-    // Handle form submission
+  const onSubmit = (data, e) => {
+    e.preventDefault();
+    loginUser(data, () => {
+      router.push("/dashboard");
+    });
   };
 
   return (
@@ -68,12 +78,17 @@ function Signin_form() {
             </span>
           </div>
         </div>
-        <div className="md:w-[481px] w-[90%] mt-[20px] h-11 px-5 py-3 bg-sky-700 rounded-lg shadow border border-sky-700 justify-center items-center gap-2 inline-flex">
+        <div
+          className={`md:w-[481px] w-[90%] mt-[20px] h-11 px-5 py-3 ${
+            loading ? "bg-sky-700/30" : "bg-sky-700 "
+          } rounded-lg shadow border border-sky-700 justify-center items-center gap-2 inline-flex`}
+        >
           <button
+            disabled={loading}
             type="submit"
-            className="text-white text-sm font-bold font-manrope leading-snug"
+            className={`text-white text-sm font-bold font-manrope leading-snug`}
           >
-            Log in
+            {loading ? "Logging in..." : "Login"}
           </button>
         </div>
       </form>
