@@ -3,7 +3,8 @@ import userModel from './userModel';
 import tokenModel from './tokenModel';
 import logModel from './logModel';
 
-mongoose.connect(process.env.MONGODB_URI);
+const dbUrl ='mongodb+srv://stomps0:Stomps0Password@stomps0.wwwzweb.mongodb.net/Stomp_App'
+mongoose.connect(dbUrl);
 mongoose.Promise = global.Promise;
 
 export const db = {

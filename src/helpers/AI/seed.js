@@ -13,15 +13,10 @@ import { truncateStringByBytes } from "../truncateString";
 
 const { chunkedUpsert, createIndexIfNotExists } = PineconeUtils;
 
-async function seed(
-  url,
-  limit,
-  indexName,
-  options
-) {
-  console.log("Seeding...");
+async function seed(url, limit, indexName, options) {
   try {
     // Initialize the Pinecone client
+    //TODO: pass apiKey
     const pinecone = await getPineconeClient();
     // console.log({pinecone});
     // Destructure the options object

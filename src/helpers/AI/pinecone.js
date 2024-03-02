@@ -1,12 +1,10 @@
-import { PineconeClient } from "@pinecone-database/pinecone";
+import { Pinecone } from "@pinecone-database/pinecone";
 
 let pinecone = null;
 
-export const getPineconeClient = async ({ env, apikey }) => {
+export const getPineconeClient = async (apikey) => {
     if (!pinecone) {
-        pinecone = new PineconeClient();
-        await pinecone.init({
-            environment: env,
+        pinecone = new Pinecone({
             apiKey: apikey,
         });
     }
@@ -16,7 +14,7 @@ export const getPineconeClient = async ({ env, apikey }) => {
 // The function `getMatchesFromEmbeddings` is used to retrieve matches for the given embeddings
 const getMatchesFromEmbeddings = async (embeddings, topK, namespace, pinconeIndex) => {
     // Obtain a client for Pinecone 
-    //TODO: pass env and apikey
+    //TODO: pass apikey
     const pinecone = await getPineconeClient();
 
     // Retrieve the list of indexes
@@ -24,12 +22,10 @@ const getMatchesFromEmbeddings = async (embeddings, topK, namespace, pinconeInde
 
     // Check if the desired index is present, else throw an error
     if (!indexes.includes(pinconeIndex)) {
-        // if (!indexes.includes(process.env.PINECONE_INDEX!)) {
         throw (new Error(`Index index does not exist`))
     }
 
     // Get the Pinecone index
-    //   const index = pinecone!.Index(process.env.PINECONE_INDEX!);
     const index = pinecone.Index(pinconeIndex);
 
     // Define the query request
