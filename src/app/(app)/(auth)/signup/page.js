@@ -1,6 +1,4 @@
-// import Auth_header from "@/src/components/authComponents/header";
-// import Signup_form from "@/src/components/authComponents/signup/signup";
-// import Nav_bar from "@/src/components/navigation/nav_bar";
+
 import Auth_header from "../../../../components/authComponents/header";
 import Signup_form from "../../../../components/authComponents/signup/signup";
 import Nav_bar from "../../../../components/navigation/nav_bar";

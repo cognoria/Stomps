@@ -24,7 +24,7 @@ function Forgot_password() {
           </button>
         </div>
       </form>
-      <Link className="w-full md:w-[481px]" href="/auth/signin">
+      <Link className="w-full md:w-[481px]" href="/signin">
         <div className="md:w-[481px] w-[90%] mt-[10px] h-11 px-5 py-3  justify-center items-center gap-2 inline-flex">
           <img src="/images/auth/arrow_left.svg" alt="" className="w-6 h-6 " />
           <div className="text-sky-700 text-sm font-normal font-manrope leading-snug">
