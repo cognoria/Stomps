@@ -1,10 +1,6 @@
-// import Auth_header from "@/src/components/authComponents/header";
-// import Reset_password from "@/src/components/authComponents/reset_password/reset_password";
-// import Nav_bar from "@/src/components/navigation/nav_bar";
-
-import Auth_header from "../../../components/authComponents/header";
-import Reset_password from "../../../components/authComponents/reset_password/reset_password";
-import Nav_bar from "../../../components/navigation/nav_bar";
+import Auth_header from "../../../../components/authComponents/header";
+import Reset_password from "../../../../components/authComponents/reset_password/reset_password";
+import Nav_bar from "../../../../components/navigation/nav_bar";
 
 function page() {
   return (
