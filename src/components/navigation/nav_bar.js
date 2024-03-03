@@ -59,7 +59,7 @@ function Nav_bar() {
           </div>
         </div>
         <div className="md:flex hidden flex-row gap-4">
-          <Link href="/auth/signin">
+          <Link href="/signin">
             <RoundedSubmitButton
               button_content={"login"}
               color={"bg-transparent"}
@@ -71,7 +71,7 @@ function Nav_bar() {
               border={"border-[1px]"}
             />
           </Link>
-          <Link href="/auth/signup">
+          <Link href="/signup">
             <RoundedSubmitButton
               button_content={"Create Account"}
               color={"bg-[#EEF8FF]"}
@@ -161,7 +161,7 @@ function Nav_bar() {
                 </a>
 
                 <Link
-                  href="/auth/signin"
+                  href="/signin"
                   title=""
                   className="inline-flex mt-[100px]  items-center justify-center  px-6 py-3 text-base font-bold leading-7 text-[#1261AC] transition-all rounded-[8px] duration-200 bg-[#fff] border-[1px] border-[#1261AC]  hover:bg-gray-600 font-pj focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900"
                 >
@@ -169,7 +169,7 @@ function Nav_bar() {
                 </Link>
 
                 <Link
-                  href="/auth/signup"
+                  href="/signup"
                   title=""
                   className="inline-flex items-center justify-center px-6 py-3 text-base font-bold leading-7 text-white transition-all rounded-[8px] duration-200  bg-[#1261AC] border border-transparent  hover:bg-gray-600 font-pj focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900"
                   role="button"

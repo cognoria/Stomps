@@ -25,14 +25,16 @@ const useRegisterAuthStore = create(
         set({ user: data, loading: false });
         toast.success("Registration successful!", {
           position: "top-right",
-          autoClose: 5000,
+          autoClose: 1000,
           hideProgressBar: true,
           closeOnClick: true,
           pauseOnHover: true,
           draggable: true,
-          progress: undefined,
+          progress: false,
         });
-        if (onSuccess) onSuccess();
+        setTimeout(() => {
+          if (onSuccess) onSuccess();
+        }, 1000);
       } catch (error) {
         set({ error: error.message, loading: false });
         toast.error(error.message || "Registration failed!");

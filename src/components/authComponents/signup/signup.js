@@ -7,6 +7,8 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React from "react";
 import { useForm } from "react-hook-form";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import useRegisterAuthStore from "../../../store/auth/register";
 import { usePasswordValidationStore } from "../../../store/validation/validations";
 import { auth_schema } from "../../../utils/resolver/yup_schema";
@@ -29,7 +31,7 @@ function Signup_form() {
   const onSubmit = async (data, e) => {
     e.preventDefault();
     registerUser(data, () => {
-      router.push("/dashboard");
+      router.push("/");
     });
   };
   const updateValidation = usePasswordValidationStore(
@@ -41,8 +43,11 @@ function Signup_form() {
   React.useEffect(() => {
     updateValidation(passwordValue);
   }, [passwordValue]);
+
+  const [eye_open, setEye_open] = React.useState(true);
   return (
     <div className="flex pb-[20px] flex-col mt-[30px] md:mt-[40px] gap-4 items-center justify-center w-screen h-auto">
+      <ToastContainer />
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="flex w-full flex-col items-center  justify-between gap-6"
@@ -68,13 +73,32 @@ function Signup_form() {
           <p className="text-xs font-bold font-manrope leading-none tracking-tight text-[#8A8A8A]">
             Password
           </p>
-          <input
-            name="password"
-            {...register("password")}
-            type="password"
-            className="h-10 w-full p-2 pl-4 font-manrope text-[#8A8A8A] bg-transparent border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            placeholder="****************"
-          />
+          <div className="w-full relative">
+            <button
+              type="click"
+              className="absolute top-[30%] right-2"
+              onClick={(e) => {
+                e.preventDefault();
+                setEye_open(!eye_open);
+              }}
+            >
+              <img
+                alt=""
+                src={
+                  eye_open
+                    ? "/images/auth/eye_open.svg"
+                    : "/images/auth/eye_slash.svg"
+                }
+              />
+            </button>
+            <input
+              {...register("password")}
+              name="password"
+              type={eye_open ? "text" : "password"}
+              className="h-10 w-full p-2 pl-4 font-manrope text-[#8A8A8A] bg-transparent border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              placeholder="****************"
+            />
+          </div>
           {errors.password && (
             <div aria-live="polite" className="text-red-500 text-xs md:text-sm">
               <span>{errors.password.message}</span>
@@ -159,7 +183,7 @@ function Signup_form() {
           Already have an account?
         </span>
         <span className="text-blue-500 my-[20px] text-sm font-bold font-manrope leading-tight tracking-tight">
-          <Link href="/auth/signin"> Sign in</Link>
+          <Link href="/signin"> Sign in</Link>
         </span>
       </div>
       <div className="mt-[20px] w-full md:w-[481px] h-5 justify-center items-center gap-4 inline-flex">
