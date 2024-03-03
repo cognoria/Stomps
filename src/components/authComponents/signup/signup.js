@@ -88,7 +88,7 @@ function Signup_form() {
               fill={hasUppercase ? "green" : "none"}
               viewBox="0 0 24 24"
               stroke-width="1.5"
-              stroke={hasUppercase ? "white" : "currentColor"}
+              stroke={hasUppercase ? "white" : "#B7B7B7"}
               className="w-6 h-6 "
             >
               <path
@@ -97,7 +97,7 @@ function Signup_form() {
                 d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
               />
             </svg>
-            <div className="text-neutral-700 text-[10px] mt-1 font-normal font-manrope leading-[14px] tracking-tight">
+            <div className="text-[#B7B7B7] text-[10px] mt-1 font-normal font-manrope leading-[14px] tracking-tight">
               At least one uppercase letter
             </div>
           </div>
@@ -107,7 +107,7 @@ function Signup_form() {
               fill={isLongEnough ? "green" : "none"}
               viewBox="0 0 24 24"
               stroke-width="1.5"
-              stroke={isLongEnough ? "white" : "currentColor"}
+              stroke={isLongEnough ? "white" : "#B7B7B7"}
               class="w-6 h-6"
             >
               <path
@@ -116,7 +116,7 @@ function Signup_form() {
                 d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
               />
             </svg>
-            <div className="text-neutral-700 mt-1 text-[10px] font-normal font-manrope leading-[14px] tracking-tight">
+            <div className="text-[#B7B7B7] mt-1 text-[10px] font-normal font-manrope leading-[14px] tracking-tight">
               Minimum of 6 characters
             </div>
           </div>
@@ -126,7 +126,7 @@ function Signup_form() {
               fill={hasNumber ? "green" : "none"}
               viewBox="0 0 24 24"
               stroke-width="1.5"
-              stroke={hasNumber ? "white" : "currentColor"}
+              stroke={hasNumber ? "white" : "#B7B7B7"}
               class="w-6 h-6"
             >
               <path
@@ -135,7 +135,7 @@ function Signup_form() {
                 d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
               />
             </svg>
-            <div className="text-neutral-700 mt-1  text-[10px] font-normal font-manrope leading-[14px] tracking-tight">
+            <div className="text-[#B7B7B7] mt-1  text-[10px] font-normal font-manrope leading-[14px] tracking-tight">
               At least one number
             </div>
           </div>
