@@ -71,7 +71,7 @@ function Nav_bar() {
               border={"border-[1px]"}
             />
           </Link>
-          <Link href="auth/signup">
+          <Link href="/auth/signup">
             <RoundedSubmitButton
               button_content={"Create Account"}
               color={"bg-[#EEF8FF]"}
