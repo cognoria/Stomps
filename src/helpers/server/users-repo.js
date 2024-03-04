@@ -86,7 +86,7 @@ async function create(params, req) {
     // Hash token
     const verifyTokenHash = hashToken(verifyToken)
     await Token.create({ user: user._id, token: verifyTokenHash })
-
+    const verifyBaseUrl = 'https://stomp-ai-app-zkwp.vercel.app/verify'
     // ///TODO: send verifyToken to user email email
     const text = getEmailText('verify');
     const link = `${verifyBaseUrl}/${verifyToken}?email=${email}`
@@ -158,7 +158,8 @@ async function resendVerificationEmail(email){
     // Hash token
     const verifyTokenHash = hashToken(verifyToken)
     await Token.create({ user: user._id, token: verifyTokenHash })
-
+    
+    const verifyBaseUrl = 'https://stomp-ai-app-zkwp.vercel.app/verify'
     const text = getEmailText('verify');
     const link = `${verifyBaseUrl}/${verifyToken}/${email}`
     const title = "Stomps Email Verification"
@@ -207,7 +208,8 @@ async function forgetPassword(email){
     // Hash token
     const resetTokenHash = hashToken(resetToken)
     await Token.create({ user: user._id, token: resetTokenHash })
-
+    
+    const resetBaseUrl = 'https://stomp-ai-app-zkwp.vercel.app/reset/'
     const text = getEmailText('reset');
     const link = `${resetBaseUrl}/${resetToken}`
     const title = "[Action Required]: Reset Password."
