@@ -11,6 +11,6 @@ async function google(req) {
  return await usersRepo.googleAuth(token);
 }
 
-register.schema = joi.object({
+google.schema = joi.object({
   token: joi.string().min(6).required(),
 });
