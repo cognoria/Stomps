@@ -27,10 +27,10 @@ export const usersRepo = {
     resendVerificationEmail,
 };
 
-async function authenticate({ username, password }) {
-    const user = await User.findOne({ username });
+async function authenticate({ email, password }) {
+    const user = await User.findOne({ email });
 
-    if (!(user && bcrypt.compareSync(password, user.hash))) {
+    if (!(user && await bcrypt.compareSync(password, user.hash))) {
         throw 'Username or password is incorrect';
     }
 
@@ -98,7 +98,7 @@ async function create(params, req) {
     await elasticMailSender({ email: params.email, title, text, html })
 
     //log user register
-    // await logUserActivity(user.id, 'User Register', { ip: req.ip })
+    await logUserActivity(user.id, 'User Register', { ip: req.ip })
     return user;
 }
 
