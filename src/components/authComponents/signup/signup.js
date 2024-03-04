@@ -7,8 +7,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React from "react";
 import { useForm } from "react-hook-form";
-import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+
 import useRegisterAuthStore from "../../../store/auth/register";
 import { usePasswordValidationStore } from "../../../store/validation/validations";
 import { auth_schema } from "../../../utils/resolver/yup_schema";
@@ -44,10 +43,9 @@ function Signup_form() {
     updateValidation(passwordValue);
   }, [passwordValue]);
 
-  const [eye_open, setEye_open] = React.useState(true);
+  const [eye_open, setEye_open] = React.useState(false);
   return (
     <div className="flex pb-[20px] flex-col mt-[30px] md:mt-[40px] gap-4 items-center justify-center w-screen h-auto">
-      <ToastContainer />
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="flex w-full flex-col items-center  justify-between gap-6"

@@ -29,7 +29,7 @@ function Signin_form() {
       router.push("/");
     });
   };
-  const [eye_open, setEye_open] = useState(true);
+  const [eye_open, setEye_open] = useState(false);
   return (
     <div className="flex pb-[20px] flex-col mt-[30px] md:mt-[40px] gap-4 items-center justify-center w-screen h-auto">
       <form
