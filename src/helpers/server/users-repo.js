@@ -7,6 +7,7 @@ import { hashToken } from '../cryptography';
 import { emailTemplate, getEmailText } from './email/emailTemplate';
 import { logUserActivity } from './log-repo';
 import { GoogleVerifier } from './oauth.Google';
+import elasticMailSender from './email/elasticSender';
 
 const User = db.User;
 const Token = db.Token;
@@ -97,7 +98,7 @@ async function create(params, req) {
     await elasticMailSender({ email: params.email, title, text, html })
 
     //log user register
-    await logUserActivity(user._id, 'User Register', { ip: req.ip })
+    // await logUserActivity(user._id, 'User Register', { ip: req.ip })
     return user;
 }
 
