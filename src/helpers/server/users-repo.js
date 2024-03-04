@@ -67,7 +67,7 @@ async function getCurrent() {
 async function create(params, req) {
     // validate
     if (await User.findOne({ email: params.email })) {
-        throw 'Username "' + params.username + '" is already taken';
+        throw 'User "' + params.email + '"  already exist';
     }
 
     const user = new User(params);
