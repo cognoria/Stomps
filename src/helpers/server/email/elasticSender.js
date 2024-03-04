@@ -1,5 +1,4 @@
-import ElasticEmail from '@elasticemail/elasticemail-client';
-import config from 'config';
+import * as ElasticEmail from '@elasticemail/elasticemail-client';
 
 const ELASTICMAIL_API_KEY ='5FA71C8AC56851322FC72AFAF7C0384EB778D6C1DE808FAEAFEC6A88A64CCB98C8686A734CB6255DB0DA81CC822E9D74' //config.get('services.elasticMail.api_key');
 const SENDER_EMAIL = 'ikem@ikem.dev' //config.get('services.elasticMail.sender_email');
