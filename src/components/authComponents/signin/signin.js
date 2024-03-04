@@ -8,6 +8,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import useLoginAuthStore from "../../../store/auth/login";
 import { auth_schema } from "../../../utils/resolver/yup_schema";
+import { ToastContainer } from "react-toastify";
 function Signin_form() {
   const router = useRouter();
   const { loginUser, loading, error } = useLoginAuthStore((state) => ({
@@ -32,6 +33,7 @@ function Signin_form() {
   const [eye_open, setEye_open] = useState(true);
   return (
     <div className="flex pb-[20px] flex-col mt-[30px] md:mt-[40px] gap-4 items-center justify-center w-screen h-auto">
+      <ToastContainer />
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="flex w-full flex-col items-center  justify-between gap-6"
