@@ -1,7 +1,12 @@
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
+import crypto from "crypto"
 import { headers } from 'next/headers';
 import { db } from './db';
+import { hashToken } from '../cryptography';
+import { emailTemplate, getEmailText } from './email/emailTemplate';
+import { logUserActivity } from './log-repo';
+import { GoogleVerifier } from './oauth.Google';
 
 const User = db.User;
 const Token = db.Token;
@@ -13,7 +18,12 @@ export const usersRepo = {
     getCurrent,
     create,
     update,
-    delete: _delete
+    veryfyUser, //
+    delete: _delete,
+    googleAuth,
+    forgetPassword,
+    resetPassword,
+    resendVerificationEmail,
 };
 
 async function authenticate({ username, password }) {
@@ -54,7 +64,7 @@ async function getCurrent() {
     }
 }
 
-async function create(params) {
+async function create(params, req) {
     // validate
     if (await User.findOne({ email: params.email })) {
         throw 'Username "' + params.username + '" is already taken';
@@ -71,6 +81,24 @@ async function create(params) {
     await user.save();
 
     //send email verification
+    const verifyToken = crypto.randomBytes(20).toString("hex");
+
+    // Hash token
+    const verifyTokenHash = hashToken(verifyToken)
+    await Token.create({ user: user._id, token: verifyTokenHash })
+
+    // ///TODO: send verifyToken to user email email
+    const text = getEmailText('verify');
+    const link = `${verifyBaseUrl}/${verifyToken}?email=${email}`
+    const title = "Stomps Email Verification"
+    const html = emailTemplate({ message: text, buttonLink: link, buttonText: "Verify Email Address" })
+
+    // await sendGridSender({email, title, text, html})
+    await elasticMailSender({ email, title, text, html })
+
+    //log user register
+    await logUserActivity(user._id, 'User Register', { ip: req.ip })
+    return user;
 }
 
 async function update(id, params) {
@@ -93,10 +121,133 @@ async function update(id, params) {
     await user.save();
 }
 
-async function createToken(){
+async function veryfyUser(token){
+    const verify_token = hashToken(token)
+
+    //verify token
+    const verifyToken = await Token.findOne({ token: verify_token })
+    if (!verifyToken) throw `Error: Invalid or expired token.`;
+
+    //find user attributed to token
+    const user = await User.findById(verifyToken.user)
+
+    //update new verification status
+    user.isVerified = true;
+    await user.save()
+
+    // Delete the used reset token
+    await verifyToken.remove();
+
+    //log user verify email
+    await logUserActivity(user._id, 'User Verify Account', { ip: req.ip, email: user.email })
+
+    return { success: true, message: "Success: Email verification successful." };
+
+}
+
+async function resendVerificationEmail(email){
+    // Check user
+    const user = await User.findOne({ email });
+
+    if (!user)  throw `Error: User not found`;
+
+    if (!user.isVerified) return `Error: User is verified`;
+
+    const verifyToken = crypto.randomBytes(20).toString("hex");
+
+    // Hash token
+    const verifyTokenHash = hashToken(verifyToken)
+    await Token.create({ user: user._id, token: verifyTokenHash })
+
+    const text = getEmailText('verify');
+    const link = `${verifyBaseUrl}/${verifyToken}/${email}`
+    const title = "Stomps Email Verification"
+    const html = emailTemplate({ message: text, buttonLink: link, buttonText: "Verify Email Address" })
+
+    // await sendGridSender({email, title, text, html})
+    await elasticMailSender({ email, title, text, html })
+    return {
+        success: true,
+        message: "Success: verification email sent.",
+    };
+}
+
+async function googleAuth(token){
+    const googleUser = await GoogleVerifier(token);
+
+    let user = await User.findOne({ $or: [{ googleId: googleUser.sub }, { email: googleUser.email }] });
+
+    if (!user) {
+        user = await User.create({ googleId: googleUser.sub, email: googleUser.email, isVerified: true });
+
+        //log user register
+        await logUserActivity(user._id, 'User Register', { ip: req.ip })
+
+        return 'Register Success';
+    }
+
+    if (!user.googleId || !user.isVerified) {
+        user.googleId = googleUser.sub;
+        user.isVerified = true;
+        await user.save();
+    }
+
+    //log user login
+    await logUserActivity(user._id, 'User Login', { ip: req.ip, type: "Google OAuth" })
+    return 'Login Success'
+}
+
+async function forgetPassword(email){
+    const user = await User.findOne({ email });
+
+    if (!user) `Error: User not found`
+
+    const resetToken = crypto.randomBytes(20).toString("hex");
+
+    // Hash token
+    const resetTokenHash = hashToken(resetToken)
+    await Token.create({ user: user._id, token: resetTokenHash })
+
+    const text = getEmailText('reset');
+    const link = `${resetBaseUrl}/${resetToken}`
+    const title = "[Action Required]: Reset Password."
+    const html = emailTemplate({ message: text, buttonLink: link, buttonText: "Reset Password" })
+
+    // await sendGridSender({email, title, text, html})
+    await elasticMailSender({ email, title, text, html })
+
+    return {
+        success: true,
+        message: "Success: reset email sent.",
+    };
+}
+
+async function resetPassword(token, password, confirmPassword){
+    if (password != confirmPassword) throw `Error: Password and ComfrimPassword does not match.`
+
+    const reset_token = hashToken(token)
+
+    const resetToken = await Token.findOne({ token: reset_token })
+    if (!resetToken) throw `Error: invalid or expired token.`;
+    //find user attributed to token
+    const user = await User.findById(resetToken.user)
+
+    //update new users password
+    user.password = bcrypt.hashSync(password, 10);;
+    await user.save()
+
+    // Delete the used reset token
+    await resetToken.remove();
+    
+    //log user reset pass
+    await logUserActivity(user._id, 'User Reset Password', { ip: req.ip })
+
+
+    return { success: true, message: "Success: Password updated, Please Login." };
 
 }
 
 async function _delete(id) {
     await User.findByIdAndRemove(id);
 }
+

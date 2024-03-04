@@ -6,15 +6,15 @@ const SECRET_KEY = process.env.SECRET_KEY;
 export function encrypt(text) {
     console.log(text)
     if (typeof text !== 'string') {
-        throw new Error("Invalid input: text must be a string.");
+        throw "Invalid input: text must be a string.";
     }
     
     if (!SECRET_KEY) {
-        throw new Error("SECRET_KEY must be set.");
+        throw "SECRET_KEY must be set.";
     }
 
     if (Buffer.from(process.env.SECRET_KEY, 'hex').length !== 32) {
-        throw new Error("SECRET_KEY must be 32 bytes long.");
+        throw "SECRET_KEY must be 32 bytes long.";
     }
 
     const IV = crypto.randomBytes(16);
@@ -25,12 +25,10 @@ export function encrypt(text) {
 }
 
 export function decrypt(text) {
-    if (!SECRET_KEY) {
-        throw new Error("SECRET_KEY must be set.");
-    }
+    if (!SECRET_KEY) throw "SECRET_KEY must be set.";
 
     if (Buffer.from(process.env.SECRET_KEY, 'hex').length !== 32) {
-        throw new Error("SECRET_KEY must be 32 bytes long.");
+        throw "SECRET_KEY must be 32 bytes long.";
     }
     let iv = Buffer.from(text.iv, 'hex');
     let encryptedText = Buffer.from(text.encryptedData, 'hex');
@@ -39,3 +37,11 @@ export function decrypt(text) {
     decrypted = Buffer.concat([decrypted, decipher.final()]);
     return decrypted.toString();
 }
+
+
+export function hashToken(token) {
+    return crypto
+      .createHash("sha256")
+      .update(token)
+      .digest("hex");
+  }
