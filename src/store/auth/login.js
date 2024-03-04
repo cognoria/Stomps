@@ -25,16 +25,15 @@ const useLoginAuthStore = create(
         set({ user: data, loading: false });
         toast.success("Login successful!", {
           position: "top-right",
-          autoClose: 1000,
+          autoClose: 5000,
           hideProgressBar: true,
           closeOnClick: true,
           pauseOnHover: true,
           draggable: true,
           progress: false,
         });
-        setTimeout(() => {
-          if (onSuccess) onSuccess();
-        }, 1000);
+
+        if (onSuccess) onSuccess();
       } catch (error) {
         set({ error: error.message, loading: false });
         toast.error(error.message || "Login failed!");
