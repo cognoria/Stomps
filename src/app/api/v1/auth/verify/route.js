@@ -1,5 +1,5 @@
-import { usersRepo } from "../../../../../../helpers/server";
-import { apiHandler } from "../../../../../../helpers/server/api";
+import { usersRepo } from "../../../../../helpers/server";
+import { apiHandler } from "../../../../../helpers/server/api";
 
 module.exports = apiHandler({
     routePattern: "/api/v1/auth/verify/:token", // Add this line
@@ -7,7 +7,7 @@ module.exports = apiHandler({
 });
 
 async function verify(req) {
-    const { token } = req.params;
+    const { token } = req.searchParams;
     return await usersRepo.veryfyUser(token);
 }
 

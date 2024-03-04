@@ -5,8 +5,7 @@ import { auth } from '../';
 export { jwtMiddleware };
 
 async function jwtMiddleware(req) {
-    if (isPublicPath(req))
-        return;
+    if (isPublicPath(req)) return;
 
     // verify token in request cookie
     const id = auth.verifyToken();

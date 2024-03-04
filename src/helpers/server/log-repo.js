@@ -1,11 +1,12 @@
 import { db } from "./db";
+import { headers } from 'next/headers';
 
 const Log = db.Log
 
-export async function logUserActivity(userId, action, details = {}) {
+export async function logUserActivity(user, action, details = {}) {
     try {
         const logEntry = await Log.create({
-            userId,
+            user,
             action,
             details,
         });
@@ -21,7 +22,7 @@ export async function getUserActivity() {
 
         const currentUserId = headers().get('userId');
         // Retrieve user's activities from the logs collection
-        const activities = await Log.find({ userId: currentUserId }).sort({ timestamp: -1 });
+        const activities = await Log.find({ user: currentUserId }).sort({ timestamp: -1 });
 
         // Check if activities exist
         if (!activities.length) throw "No activities found for this user";

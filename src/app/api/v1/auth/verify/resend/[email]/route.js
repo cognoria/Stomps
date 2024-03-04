@@ -6,7 +6,7 @@ module.exports = apiHandler({
 });
 
 async function verify(req) {
-    const { email } = req.params;
+    const { email } = req.param;
     return await usersRepo.resendVerificationEmail(email);
 }
 

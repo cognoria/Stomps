@@ -38,6 +38,7 @@ async function authenticate({ email, password }) {
     //TODO: JWT_Secret will be created randomly and saved for the user
     const token = jwt.sign({ sub: user.id }, '1234567890abcefjhijkl', { expiresIn: '7d' });
 
+    await logUserActivity(user.id, 'User Login', { ip: headers().get('X-Forwarded-For') })
     return {
         user: user.toJSON(),
         token
@@ -65,7 +66,7 @@ async function getCurrent() {
     }
 }
 
-async function create(params, req) {
+async function create(params) {
     // validate
     if (await User.findOne({ email: params.email })) {
         throw 'User "' + params.email + '"  already exist';
@@ -98,7 +99,7 @@ async function create(params, req) {
     await elasticMailSender({ email: params.email, title, text, html })
 
     //log user register
-    // await logUserActivity(user.id, 'User Register', { ip: req.ip })
+    await logUserActivity(user.id, 'User Register', { ip: headers().get('X-Forwarded-For') })
     return user;
 }
 

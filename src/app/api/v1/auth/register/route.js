@@ -8,7 +8,7 @@ module.exports = apiHandler({
 
 async function register(req) {
   const body = await req.json();
-  return await usersRepo.create(body, req);
+  return await usersRepo.create(body);
 }
 
 register.schema = joi.object({
