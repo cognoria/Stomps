@@ -86,7 +86,7 @@ async function create(params, req) {
 
     // Hash token
     const verifyTokenHash = hashToken(verifyToken)
-    await Token.create({ user: user._id, token: verifyTokenHash })
+    await Token.create({ user: user.id, token: verifyTokenHash })
     const verifyBaseUrl = 'https://stomp-ai-app-zkwp.vercel.app/verify'
     // ///TODO: send verifyToken to user email email
     const text = getEmailText('verify');
@@ -98,7 +98,7 @@ async function create(params, req) {
     await elasticMailSender({ email: params.email, title, text, html })
 
     //log user register
-    // await logUserActivity(user._id, 'User Register', { ip: req.ip })
+    // await logUserActivity(user.id, 'User Register', { ip: req.ip })
     return user;
 }
 
