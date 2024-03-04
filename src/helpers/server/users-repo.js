@@ -89,12 +89,12 @@ async function create(params, req) {
     const verifyBaseUrl = 'https://stomp-ai-app-zkwp.vercel.app/verify'
     // ///TODO: send verifyToken to user email email
     const text = getEmailText('verify');
-    const link = `${verifyBaseUrl}/${verifyToken}?email=${email}`
+    const link = `${verifyBaseUrl}/${verifyToken}?email=${params.email}`
     const title = "Stomps Email Verification"
     const html = emailTemplate({ message: text, buttonLink: link, buttonText: "Verify Email Address" })
 
     // await sendGridSender({email, title, text, html})
-    await elasticMailSender({ email, title, text, html })
+    await elasticMailSender({ email: params.email, title, text, html })
 
     //log user register
     await logUserActivity(user._id, 'User Register', { ip: req.ip })
@@ -235,7 +235,7 @@ async function resetPassword(token, password, confirmPassword){
     const user = await User.findById(resetToken.user)
 
     //update new users password
-    user.password = bcrypt.hashSync(password, 10);;
+    user.hash = bcrypt.hashSync(password, 10);;
     await user.save()
 
     // Delete the used reset token
