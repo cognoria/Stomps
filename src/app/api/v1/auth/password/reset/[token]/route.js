@@ -1,3 +1,4 @@
+import joi from "joi";
 import { usersRepo } from "../../../../../../../helpers/server";
 import { apiHandler } from "../../../../../../../helpers/server/api";
 
@@ -11,3 +12,7 @@ async function resetPass(req) {
     return await usersRepo.resetPassword(token, password, confirmPassword);
 }
 
+resetPass.schema = joi.object({
+    password: joi.string().min(6).required(),
+    confirmPassword: joi.string().min(6).required(),
+});
