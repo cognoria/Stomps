@@ -1,0 +1,13 @@
+import { usersRepo } from "../../../../../../../helpers/server";
+import { apiHandler } from "../../../../../../../helpers/server/api";
+
+module.exports = apiHandler({
+    POST: resetPass,
+});
+
+async function resetPass(req) {
+    const { token } = req.params;
+    const { password, confirmPassword } = req.json()
+    return await usersRepo.resetPassword(token, password, confirmPassword);
+}
+
