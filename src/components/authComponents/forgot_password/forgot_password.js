@@ -14,7 +14,6 @@ function Forgot_password() {
             placeholder="Janeearnest@gmail.com"
           />
         </div>
-
         <div className="md:w-[481px] w-[90%] mt-[20px] h-11 px-5 py-3 bg-sky-700 rounded-lg shadow border border-sky-700 justify-center items-center gap-2 inline-flex">
           <button
             type="submit"
