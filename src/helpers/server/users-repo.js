@@ -98,7 +98,7 @@ async function create(params, req) {
     await elasticMailSender({ email: params.email, title, text, html })
 
     //log user register
-    await logUserActivity(user.id, 'User Register', { ip: req.ip })
+    // await logUserActivity(user.id, 'User Register', { ip: req.ip })
     return user;
 }
 
