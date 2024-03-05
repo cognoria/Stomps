@@ -83,7 +83,6 @@ function Signin_form() {
               placeholder="****************"
             />
           </div>
-
           {errors.password && (
             <div aria-live="polite" className="text-red-500 text-xs md:text-sm">
               <span>{errors.password.message}</span>
@@ -127,7 +126,6 @@ function Signin_form() {
         Or
         <hr className="text-center w-[40%] h-[3px] mt-[2px] text-zinc-500 text-sm font-medium font-manrope leading-tight tracking-tight" />
       </div>
-
       <div className="md:w-[430px] w-[90%] my-[20px] h-11 md:px-[126px] px-[25%] py-2.5 rounded-[36px] border border-indigo-400 justify-center items-center gap-4 flex-row flex">
         <img src="/images/auth/google_logo.svg" alt="" className="w-6 h-6 " />
         <div className="text-center w-full text-zinc-800 text-xs md:text-sm font-medium font-manrope leading-none md:leading-tight tracking-tight">

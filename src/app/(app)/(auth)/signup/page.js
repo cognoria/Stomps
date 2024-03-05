@@ -6,7 +6,6 @@ import Nav_bar from "../../../../components/navigation/nav_bar";
 function page() {
   return (
     <div className=" overflow-x-hidden">
-      <Nav_bar />
       <Auth_header desc={"Create your account"} />
       <Signup_form />
     </div>
