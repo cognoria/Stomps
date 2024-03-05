@@ -6,6 +6,7 @@ export default function userModel() {
     const schema = new Schema({
         email: { type: String, unique: true, required: true },
         hash: { type: String, required: true },
+        isVerified: { type: Boolean, default: false },
         googleId: { type: String, }
     }, {
         timestamps: true

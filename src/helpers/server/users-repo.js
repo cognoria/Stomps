@@ -34,6 +34,8 @@ async function authenticate({ email, password }) {
         throw 'Username or password is incorrect';
     }
 
+    if (!user.isVerified) throw 'Please Verify your email address first';
+
     // create a jwt token that is valid for 7 days
     //TODO: JWT_Secret will be created randomly and saved for the user
     const token = jwt.sign({ sub: user.id }, '1234567890abcefjhijkl', { expiresIn: '7d' });
@@ -72,7 +74,7 @@ async function create(params) {
         throw 'User "' + params.email + '"  already exist';
     }
 
-    const user = new User(params);
+    const user = new User({...params, isVerified: false});
 
     // hash password
     if (params.password) {
@@ -123,7 +125,8 @@ async function update(id, params) {
     await user.save();
 }
 
-async function veryfyUser(token){
+
+async function veryfyUser(token) {
     const verify_token = hashToken(token)
 
     //verify token
@@ -137,30 +140,34 @@ async function veryfyUser(token){
     user.isVerified = true;
     await user.save()
 
+
     // Delete the used reset token
-    await verifyToken.remove();
+    await Token.deleteOne({ _id: verifyToken._id });
+
+    console.log('Updated user verification status:', user.isVerified);
 
     //log user verify email
-    await logUserActivity(user._id, 'User Verify Account', { ip: req.ip, email: user.email })
+    await logUserActivity(user._id, 'User Verify Account', { ip: headers().get('X-Forwarded-For'), email: user.email })
 
     return { success: true, message: "Success: Email verification successful." };
 
 }
 
-async function resendVerificationEmail(email){
+async function resendVerificationEmail(email) {
     // Check user
     const user = await User.findOne({ email });
 
-    if (!user)  throw `Error: User not found`;
+    if (!user) throw `Error: User not found`;
 
-    if (!user.isVerified) return `Error: User is verified`;
+    console.log('Updated user verification status:', user.isVerified);
+    if (user.isVerified) throw `Error: User is verified`;
 
     const verifyToken = crypto.randomBytes(20).toString("hex");
 
     // Hash token
     const verifyTokenHash = hashToken(verifyToken)
     await Token.create({ user: user._id, token: verifyTokenHash })
-    
+
     const verifyBaseUrl = 'https://stomp-ai-app-zkwp.vercel.app/verify'
     const text = getEmailText('verify');
     const link = `${verifyBaseUrl}/${verifyToken}/${email}`
@@ -175,7 +182,7 @@ async function resendVerificationEmail(email){
     };
 }
 
-async function googleAuth(token){
+async function googleAuth(token) {
     const googleUser = await GoogleVerifier(token);
 
     let user = await User.findOne({ $or: [{ googleId: googleUser.sub }, { email: googleUser.email }] });
@@ -184,7 +191,7 @@ async function googleAuth(token){
         user = await User.create({ googleId: googleUser.sub, email: googleUser.email, isVerified: true });
 
         //log user register
-        await logUserActivity(user._id, 'User Register', { ip: req.ip })
+        await logUserActivity(user._id, 'User Register', { ip: headers().get('X-Forwarded-For') })
 
         return 'Register Success';
     }
@@ -196,21 +203,21 @@ async function googleAuth(token){
     }
 
     //log user login
-    await logUserActivity(user._id, 'User Login', { ip: req.ip, type: "Google OAuth" })
+    await logUserActivity(user._id, 'User Login', { ip: headers().get('X-Forwarded-For'), type: "Google OAuth" })
     return 'Login Success'
 }
 
-async function forgetPassword(email){
+async function forgetPassword(email) {
     const user = await User.findOne({ email });
 
-    if (!user) `Error: User not found`
+    if (!user)`Error: User not found`
 
     const resetToken = crypto.randomBytes(20).toString("hex");
 
     // Hash token
     const resetTokenHash = hashToken(resetToken)
     await Token.create({ user: user._id, token: resetTokenHash })
-    
+
     const resetBaseUrl = 'https://stomp-ai-app-zkwp.vercel.app/reset/'
     const text = getEmailText('reset');
     const link = `${resetBaseUrl}/${resetToken}`
@@ -226,7 +233,7 @@ async function forgetPassword(email){
     };
 }
 
-async function resetPassword(token, password, confirmPassword){
+async function resetPassword(token, password, confirmPassword) {
     if (password != confirmPassword) throw `Error: Password and ComfrimPassword does not match.`
 
     const reset_token = hashToken(token)
@@ -241,10 +248,10 @@ async function resetPassword(token, password, confirmPassword){
     await user.save()
 
     // Delete the used reset token
-    await resetToken.remove();
-    
+    await Token.deleteOne({ _id: resetToken._id });
+
     //log user reset pass
-    await logUserActivity(user._id, 'User Reset Password', { ip: req.ip })
+    await logUserActivity(user._id, 'User Reset Password', { ip: headers().get('X-Forwarded-For') })
 
 
     return { success: true, message: "Success: Password updated, Please Login." };
