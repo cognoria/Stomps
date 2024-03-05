@@ -5,7 +5,6 @@ import { errorHandler, jwtMiddleware, validateMiddleware } from './';
 export { apiHandler };
 
 function apiHandler(handler) {
-    // console.log(handler)
     const wrappedHandler = {};
     const httpMethods = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'];
 
@@ -15,21 +14,19 @@ function apiHandler(handler) {
             return;
 
         wrappedHandler[method] = async (req, ...args) => {
-                        
+
             if (args.length > 0 && args[0].hasOwnProperty('params')) {
                 req.params = args[0].params; // Assign the params object to req.params
             }
-            
+
             // Extract searchParams from the request URL
-            req.searchParams = Object.fromEntries(req.nextUrl.searchParams);
+            req.query = Object.fromEntries(req.nextUrl.searchParams);
 
             try {
                 // monkey patch req.json() because it can only be called once
                 const json = await req.json();
                 req.json = () => json;
-                const query = req.query;
-                req.query = query
-             } catch { }
+            } catch { }
 
             try {
                 // global middleware
