@@ -107,7 +107,7 @@ function Signin_form() {
           <button
             disabled={loading}
             type="submit"
-            className={`text-white text-sm font-bold font-manrope leading-snug`}
+            className={`w-full text-white text-sm font-bold font-manrope leading-snug`}
           >
             {loading ? "Logging in..." : "Login"}
           </button>

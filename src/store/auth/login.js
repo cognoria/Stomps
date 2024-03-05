@@ -2,6 +2,7 @@
 import { toast } from "react-toastify";
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
+import { useUserStore } from "./userState";
 const useLoginAuthStore = create(
   devtools((set) => ({
     user: null,
@@ -22,7 +23,12 @@ const useLoginAuthStore = create(
           throw new Error(data.message || "An error occurred");
         }
 
-        set({ user: data, loading: false });
+        set({
+          user: data,
+          loading: false,
+          isLoggedIn: true,
+        });
+        useUserStore.getState().setUser(data);
         toast.success("Login successful!", {
           position: "top-right",
           autoClose: 5000,
