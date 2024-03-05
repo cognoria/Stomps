@@ -14,12 +14,26 @@ async function jwtMiddleware(req) {
 }
 
 function isPublicPath(req) {
+    const normalizedPath = normalizePath(req);
     // public routes that don't require authentication
     const publicPaths = [
         'POST:/api/v1/auth/login',
         'POST:/api/v1/auth/logout',
         'POST:/api/v1/auth/register',
+        'GET:/api/v1/auth/verify/:token',
+        'GET:/api/v1/auth/verify/resend/:email',
         'POST:/api/v1/auth/google'
     ];
-    return publicPaths.includes(`${req.method}:${req.nextUrl.pathname}`);
+    
+    const isPublic = publicPaths.some(path => matchPath(normalizedPath, path));
+    return isPublic;
+}
+
+function normalizePath(req) {
+    return `${req.method.toUpperCase()}:${req.nextUrl.pathname}`;
+}
+
+function matchPath(requestPath, definedPath) {
+    const regex = definedPath.replace(/:[^\s/]+/g, '([\\w-.@]+)');
+    return new RegExp(`^${regex}$`).test(requestPath);
 }
