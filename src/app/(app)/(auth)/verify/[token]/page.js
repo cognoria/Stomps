@@ -10,15 +10,10 @@ import VerifyEmail from "../../../../../components/authComponents/verify/verify"
 function Page({ params: { token } }) {
     const searchParams= useSearchParams();
     const email = searchParams.get('email');
-
-    console.log({ token, email })
     return (
-        <div className=" overflow-x-hidden">
+        <div className="overflow-x-hidden">
             <Auth_header
                 desc={"Verify Email Address"}
-            // desc2={
-            //   "No Worries! Input the email associated with your password to reset your password"
-            // }
             />
             <VerifyEmail token={token} email={email} />
         </div>
