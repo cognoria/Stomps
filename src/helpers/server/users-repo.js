@@ -90,6 +90,8 @@ async function create(params) {
     // Hash token
     const verifyTokenHash = hashToken(verifyToken)
     await Token.create({ user: user.id, token: verifyTokenHash })
+    
+    //TODO: change this to use app's root url
     const verifyBaseUrl = 'https://stomp-ai-app-zkwp.vercel.app/verify'
     // ///TODO: send verifyToken to user email email
     const text = getEmailText('verify');
@@ -168,6 +170,7 @@ async function resendVerificationEmail(email) {
     const verifyTokenHash = hashToken(verifyToken)
     await Token.create({ user: user._id, token: verifyTokenHash })
 
+    //TODO: change this to use app's root url
     const verifyBaseUrl = 'https://stomp-ai-app-zkwp.vercel.app/verify'
     const text = getEmailText('verify');
     const link = `${verifyBaseUrl}/${verifyToken}/${email}`
@@ -210,7 +213,7 @@ async function googleAuth(token) {
 async function forgetPassword(email) {
     const user = await User.findOne({ email });
 
-    if (!user)`Error: User not found`
+    if (!user) throw `Error: User not found`
 
     const resetToken = crypto.randomBytes(20).toString("hex");
 
@@ -218,7 +221,8 @@ async function forgetPassword(email) {
     const resetTokenHash = hashToken(resetToken)
     await Token.create({ user: user._id, token: resetTokenHash })
 
-    const resetBaseUrl = 'https://stomp-ai-app-zkwp.vercel.app/reset/'
+    //TODO: change this to use app's root url
+    const resetBaseUrl = 'https://stomp-ai-app-zkwp.vercel.app/reset'
     const text = getEmailText('reset');
     const link = `${resetBaseUrl}/${resetToken}`
     const title = "[Action Required]: Reset Password."
