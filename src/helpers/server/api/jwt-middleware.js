@@ -23,7 +23,7 @@ function isPublicPath(req) {
         'POST:/api/v1/auth/register',
         'GET:/api/v1/auth/verify/:token',
         'GET:/api/v1/auth/verify/resend/:email',
-        'GET:/api/v1/auth/password/reset/:token',
+        'POST:/api/v1/auth/password/reset/:token',
         'GET:/api/v1/auth/password/forget/:email',
     ];
     

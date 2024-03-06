@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-import { errorHandler, jwtMiddleware, validateMiddleware } from './';
+import { errorHandler, jwtMiddleware, validateMiddleware, uploadMiddleware } from './';
 
 export { apiHandler };
 
@@ -33,6 +33,10 @@ function apiHandler(handler) {
                 await jwtMiddleware(req);
                 await validateMiddleware(req, handler[method].schema);
 
+                // Handle file uploads for POST, PUT, PATCH methods
+                if (['POST', 'PUT', 'PATCH'].includes(req.method.toUpperCase()) && req.headers.get('content-type')?.startsWith('multipart/form-data')) {
+                    await uploadMiddleware(req);
+                }
                 // route handler
                 const responseBody = await handler[method](req, ...args);
                 return NextResponse.json(responseBody || {});
