@@ -103,7 +103,7 @@ async function create(params) {
     await elasticMailSender({ email: params.email, title, text, html })
 
     //log user register
-    await logUserActivity(user.id, 'User Register', { ip: headers().get('X-Forwarded-For') })
+    await logUserActivity(user.id, 'User Register', { ip: headers().get('X-Forwarded-For'), email: params.email })
     return user;
 }
 

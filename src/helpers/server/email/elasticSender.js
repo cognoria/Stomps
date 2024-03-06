@@ -40,7 +40,8 @@ export default async function elasticMailSender({ email, title, text, html }) {
         } else {
             console.log('Email Sent: ', {data});
             await EmailModel.create({...data, details: {email, title}})
+            return data
         }
     };
-    api.emailsPost(mail, callback);
+   return await api.emailsPost(mail, callback);
 }

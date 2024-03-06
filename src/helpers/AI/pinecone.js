@@ -12,7 +12,7 @@ export const getPineconeClient = async (apikey) => {
 }
 
 // The function `getMatchesFromEmbeddings` is used to retrieve matches for the given embeddings
-const getMatchesFromEmbeddings = async (embeddings, topK, namespace, pinconeIndex) => {
+export async function getMatchesFromEmbeddings(embeddings, topK, namespace, pinconeIndex) {
     // Obtain a client for Pinecone 
     //TODO: pass apikey
     const pinecone = await getPineconeClient();
@@ -47,4 +47,56 @@ const getMatchesFromEmbeddings = async (embeddings, topK, namespace, pinconeInde
     }
 }
 
-export { getMatchesFromEmbeddings }
+export async function createPinconeIndex(name, type= 'serverless') {
+
+    //TODO: pass apikey
+    const pinecone = await getPineconeClient();
+
+    let index;
+
+    switch (type.toLowerCase()) {
+        case 'serverless':
+            index = await pinecone.createIndex({
+                name: 'severless-index',
+                dimension: 1536,
+                metric: 'cosine',
+                spec: {
+                    serverless: {
+                        cloud: 'aws',
+                        region: 'us-west-2'
+                    }
+                }
+            });
+            break;
+        case 'pod':
+            index = await pinecone.createIndex({
+                name: 'pod-index',
+                dimension: 1536,
+                metric: 'cosine',
+                spec: {
+                    pod: {
+                        environment: 'us-west-1-gcp',
+                        podType: 'p1.x1',
+                        pods: 1
+                    }
+                }
+            });
+            break
+
+        default:
+            index = await pinecone.createIndex({
+                name: 'severless-index',
+                dimension: 1536,
+                metric: 'cosine',
+                spec: {
+                    serverless: {
+                        cloud: 'aws',
+                        region: 'us-west-2'
+                    }
+                }
+            });
+            break;
+    }
+
+    return index;
+}

@@ -29,7 +29,7 @@ function apiHandler(handler) {
 
                     // monkey patch req.json() because it can only be called once
                     const json = await req.json();
-                    req.json = () => json;
+                    req.json = () => Promise.resolve(json);
                 }
             } catch { /* Ignore JSON parsing errors */  }
 
