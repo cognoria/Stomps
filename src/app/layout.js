@@ -2,6 +2,8 @@ import { Inter } from "next/font/google";
 import Head from "next/head";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+
+import { Modal } from "../components/customComponents/modals/modal";
 import "./globals.css";
 const inter = Inter({ subsets: ["latin"] });
 
@@ -30,6 +32,7 @@ export default function RootLayout({ children }) {
       <body className={inter.className}>
         {children}
         <ToastContainer />
+        <Modal />
       </body>
     </html>
   );
