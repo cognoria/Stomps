@@ -23,15 +23,18 @@ const useRegisterAuthStore = create(
         }
 
         set({ user: data, loading: false });
-        toast.success("Registration successful!", {
-          position: "top-right",
-          autoClose: 5000,
-          hideProgressBar: true,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: false,
-        });
+        toast.success(
+          "Registration successful! Verify your email and proceed to login",
+          {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: true,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: false,
+          }
+        );
 
         if (onSuccess) onSuccess();
       } catch (error) {

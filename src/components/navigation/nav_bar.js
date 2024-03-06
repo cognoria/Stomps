@@ -4,6 +4,7 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { useUserStore } from "../../store/auth/userState";
 import { RoundedSubmitButton } from "../customComponents/custom_buttons/button1";
 
 function Nav_bar() {
@@ -15,6 +16,7 @@ function Nav_bar() {
   };
   const [isVisible, setIsVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
+  const user = useUserStore((state) => state.user);
 
   // Safe to use window here
 
@@ -58,22 +60,39 @@ function Nav_bar() {
             <Link href="/">Pricing</Link>
           </div>
         </div>
-        <div className="md:flex hidden flex-row gap-4">
+        {!user ? (
+          <div className="md:flex hidden flex-row gap-4">
+            <Link href="/signin">
+              <RoundedSubmitButton
+                button_content={"login"}
+                color={"bg-transparent"}
+                radius={"rounded-[8px]"}
+                width={"w-[107px]"}
+                text_color={"text-[#1261AC]"}
+                text_size={"text-[14px]"}
+                border_color={"border-[#1261AC]"}
+                border={"border-[1px]"}
+              />
+            </Link>
+            <Link href="/signup">
+              <RoundedSubmitButton
+                button_content={"Create Account"}
+                color={"bg-[#EEF8FF]"}
+                radius={"rounded-[8px]"}
+                width={"w-[147px]"}
+                text_color={"text-[#74B4F1]"}
+                text_size={"text-[14px]"}
+              />
+            </Link>
+          </div>
+        ) : (
           <Link href="/signin">
             <RoundedSubmitButton
-              button_content={"login"}
-              color={"bg-transparent"}
-              radius={"rounded-[8px]"}
-              width={"w-[107px]"}
-              text_color={"text-[#1261AC]"}
-              text_size={"text-[14px]"}
-              border_color={"border-[#1261AC]"}
-              border={"border-[1px]"}
-            />
-          </Link>
-          <Link href="/signup">
-            <RoundedSubmitButton
-              button_content={"Create Account"}
+              onClick={async () => {
+                useUserStore.getState().removeUser();
+                await fetch("/api/v1/auth/logout");
+              }}
+              button_content={"Logout"}
               color={"bg-[#EEF8FF]"}
               radius={"rounded-[8px]"}
               width={"w-[147px]"}
@@ -81,7 +100,7 @@ function Nav_bar() {
               text_size={"text-[14px]"}
             />
           </Link>
-        </div>
+        )}
       </div>
       <div className="flex flex-col w-full px-[4%] py-[2.5%] lg:hidden bg-white z-50 items-center justify-between">
         <div className="flex flex-row w-full justify-between">
@@ -159,23 +178,42 @@ function Nav_bar() {
                 >
                   Pricing
                 </a>
-
-                <Link
-                  href="/signin"
-                  title=""
-                  className="inline-flex mt-[100px]  items-center justify-center  px-6 py-3 text-base font-bold leading-7 text-[#1261AC] transition-all rounded-[8px] duration-200 bg-[#fff] border-[1px] border-[#1261AC]  hover:bg-gray-600 font-pj focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900"
-                >
-                  Login
-                </Link>
-
-                <Link
-                  href="/signup"
-                  title=""
-                  className="inline-flex items-center justify-center px-6 py-3 text-base font-bold leading-7 text-white transition-all rounded-[8px] duration-200  bg-[#1261AC] border border-transparent  hover:bg-gray-600 font-pj focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900"
-                  role="button"
-                >
-                  Create Account
-                </Link>
+                {!user ? (
+                  <div>
+                    {" "}
+                    <Link
+                      href="/signin"
+                      title=""
+                      className="inline-flex mt-[100px]  items-center justify-center  px-6 py-3 text-base font-bold leading-7 text-[#1261AC] transition-all rounded-[8px] duration-200 bg-[#fff] border-[1px] border-[#1261AC]  hover:bg-gray-600 font-pj focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900"
+                    >
+                      Login
+                    </Link>
+                    <Link
+                      href="/signup"
+                      title=""
+                      className="inline-flex items-center justify-center px-6 py-3 text-base font-bold leading-7 text-white transition-all rounded-[8px] duration-200  bg-[#1261AC] border border-transparent  hover:bg-gray-600 font-pj focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900"
+                      role="button"
+                    >
+                      Create Account
+                    </Link>
+                  </div>
+                ) : (
+                  <button
+                    onClick={async () => {
+                      useUserStore.getState().removeUser();
+                      await fetch("/api/v1/auth/logout");
+                    }}
+                  >
+                    <Link
+                      href="/signin"
+                      title=""
+                      className="inline-flex items-center justify-center px-6 py-3 text-base font-bold leading-7 text-white transition-all rounded-[8px] duration-200  bg-[#1261AC] border border-transparent  hover:bg-gray-600 font-pj focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900"
+                      role="button"
+                    >
+                      Logout
+                    </Link>
+                  </button>
+                )}
               </div>
             </div>
           </nav>

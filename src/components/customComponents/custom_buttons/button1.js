@@ -8,6 +8,7 @@ export function RoundedSubmitButton({
   border,
   border_color,
   loading,
+  onClick,
 }) {
   // console.log("Loading state in button:", loading);
   return (
@@ -22,6 +23,7 @@ export function RoundedSubmitButton({
     >
       <button
         disabled={loading}
+        onClick={onClick}
         type="submit"
         className={`${text_size ? text_size : ""}`}
       >

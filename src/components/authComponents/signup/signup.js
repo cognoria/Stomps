@@ -30,7 +30,7 @@ function Signup_form() {
   const onSubmit = async (data, e) => {
     e.preventDefault();
     registerUser(data, () => {
-      router.push("/");
+      router.push("/signin");
     });
   };
   const updateValidation = usePasswordValidationStore(
@@ -103,65 +103,68 @@ function Signup_form() {
             </div>
           )}
         </div>
-        <div className="flex w-[90%] md:w-[479px] flex-col">
-          <div className="flex flex-row gap-3 items-start justify-start">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill={hasUppercase ? "green" : "none"}
-              viewBox="0 0 24 24"
-              stroke-width="1.5"
-              stroke={hasUppercase ? "white" : "#B7B7B7"}
-              className="w-6 h-6 "
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
-              />
-            </svg>
-            <div className="text-[#B7B7B7] text-[10px] mt-1 font-normal font-manrope leading-[14px] tracking-tight">
-              At least one uppercase letter
+        {passwordValue && (
+          <div className="flex w-[90%] md:w-[479px] flex-col">
+            <div className="flex flex-row gap-3 items-start justify-start">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill={hasUppercase ? "green" : "none"}
+                viewBox="0 0 24 24"
+                stroke-width="1.5"
+                stroke={hasUppercase ? "white" : "#B7B7B7"}
+                className="w-6 h-6 "
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+                />
+              </svg>
+              <div className="text-[#B7B7B7] text-[10px] mt-1 font-normal font-manrope leading-[14px] tracking-tight">
+                At least one uppercase letter
+              </div>
+            </div>
+            <div className="flex flex-row gap-3 items-start justify-start">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill={isLongEnough ? "green" : "none"}
+                viewBox="0 0 24 24"
+                stroke-width="1.5"
+                stroke={isLongEnough ? "white" : "#B7B7B7"}
+                class="w-6 h-6"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+                />
+              </svg>
+              <div className="text-[#B7B7B7] mt-1 text-[10px] font-normal font-manrope leading-[14px] tracking-tight">
+                Minimum of 6 characters
+              </div>
+            </div>
+            <div className="flex flex-row gap-3  items-start justify-start">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill={hasNumber ? "green" : "none"}
+                viewBox="0 0 24 24"
+                stroke-width="1.5"
+                stroke={hasNumber ? "white" : "#B7B7B7"}
+                class="w-6 h-6"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+                />
+              </svg>
+              <div className="text-[#B7B7B7] mt-1  text-[10px] font-normal font-manrope leading-[14px] tracking-tight">
+                At least one number
+              </div>
             </div>
           </div>
-          <div className="flex flex-row gap-3 items-start justify-start">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill={isLongEnough ? "green" : "none"}
-              viewBox="0 0 24 24"
-              stroke-width="1.5"
-              stroke={isLongEnough ? "white" : "#B7B7B7"}
-              class="w-6 h-6"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
-              />
-            </svg>
-            <div className="text-[#B7B7B7] mt-1 text-[10px] font-normal font-manrope leading-[14px] tracking-tight">
-              Minimum of 6 characters
-            </div>
-          </div>
-          <div className="flex flex-row gap-3  items-start justify-start">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill={hasNumber ? "green" : "none"}
-              viewBox="0 0 24 24"
-              stroke-width="1.5"
-              stroke={hasNumber ? "white" : "#B7B7B7"}
-              class="w-6 h-6"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
-              />
-            </svg>
-            <div className="text-[#B7B7B7] mt-1  text-[10px] font-normal font-manrope leading-[14px] tracking-tight">
-              At least one number
-            </div>
-          </div>
-        </div>
+        )}
+
         <div
           className={`md:w-[481px] w-[90%] mt-[20px] h-11 px-5 py-3 ${
             loading ? "bg-sky-700/30" : "bg-sky-700 "
@@ -170,7 +173,7 @@ function Signup_form() {
           <button
             disabled={loading}
             type="submit"
-            className={`text-white text-sm font-bold font-manrope leading-snug`}
+            className={`w-full text-white text-sm font-bold font-manrope leading-snug`}
           >
             {loading ? "Registering..." : "Create Account"}
           </button>
