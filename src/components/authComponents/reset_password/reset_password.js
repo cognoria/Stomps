@@ -5,8 +5,10 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import useResetPasswordAuthStore from "../../../store/auth/resetPassword";
+import useModalStore from "../../../store/modal/modal_state";
 import { usePasswordValidationStore } from "../../../store/validation/validations";
 import { password_schema } from "../../../utils/resolver/yup_schema";
+import { Reset_password_modal } from "../../customComponents/modals/auth_modal/auth_modal";
 function Reset_password({ token }) {
   const { resetPassword, loading, error } = useResetPasswordAuthStore(
     (state) => ({
@@ -27,7 +29,7 @@ function Reset_password({ token }) {
   const onSubmit = async (data, e) => {
     e.preventDefault();
     resetPassword({ ...data, token }, () => {
-      router.push("/signin");
+      useModalStore.getState().showModal(<Reset_password_modal />);
     });
   };
 
@@ -174,9 +176,9 @@ function Reset_password({ token }) {
               placeholder="****************"
             />
           </div>
-          {errors.password && (
+          {errors.confirmPassword && (
             <div aria-live="polite" className="text-red-500 text-xs md:text-sm">
-              <span>{errors.password.message}</span>
+              <span>{errors.confirmPassword.message}</span>
             </div>
           )}
         </div>

@@ -17,9 +17,7 @@ export function Modal() {
   return (
     <div>
       <Transition appear show={isModalShown} as={Fragment}>
-        <Dialog as="div" className="relative z-10" onClose={hideModal}>
-          {" "}
-          {/* Use hideModal for the onClose event */}
+        <Dialog as="div" className="relative z-10" onClose={() => {}}>
           <Transition.Child
             as={Fragment}
             enter="ease-out duration-300"
@@ -42,15 +40,7 @@ export function Modal() {
                 leaveFrom="opacity-100 scale-100"
                 leaveTo="opacity-0 scale-95"
               >
-                <Dialog.Panel className="w-fit  transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
-                  <div className="text-right w-full">
-                    <button
-                      onClick={hideModal}
-                      className="text-sm font-medium text-gray-500 hover:text-gray-800"
-                    >
-                      <img src="/images/auth/close_button.svg" />
-                    </button>
-                  </div>
+                <Dialog.Panel className="w-fit  transform overflow-hidden rounded-2xl bg-white p-2 text-left align-middle shadow-xl transition-all">
                   <div>{modalContent}</div>
                 </Dialog.Panel>
               </Transition.Child>

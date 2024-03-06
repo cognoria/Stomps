@@ -7,7 +7,6 @@ const useForgetPasswordAuthStore = create(
     error: null,
     loading: false,
     forgetPassword: async ({ email, password }, onSuccess) => {
-      console.log(`store hitted ${email}`);
       set({ loading: true, error: null });
       try {
         const response = await fetch(`api/v1/auth/password/forget/${email}`, {
