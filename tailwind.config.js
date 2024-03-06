@@ -25,10 +25,10 @@ module.exports = {
           "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
       },
       animation: {
-        spin: 'spin 1s linear infinite',
-        'fade-in': 'fadeIn 0.5s ease-out',
+        spin: "spin 1s linear infinite",
+        "fade-in": "fadeIn 0.5s ease-out",
       },
     },
   },
-  plugins: [],
+  plugins: [require("tw-elements-react/dist/plugin.cjs")],
 };
