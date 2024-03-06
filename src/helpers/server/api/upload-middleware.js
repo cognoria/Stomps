@@ -4,12 +4,17 @@ import path from 'path';
 
 export async function uploadMiddleware(req) {
     // Use formidable to parse form data
-    const form = new formidable.IncomingForm();
-    form.uploadDir = "./public/uploads"; // Ensure this directory exists
-    form.keepExtensions = true;
+    const form = new formidable({
+        uploadDir: "./public/uploads", // Ensure this directory exists
+        keepExtensions: true,
+        allowEmptyFiles: false, // Don't allow empty files
+        maxFileSize: 1024 * 1024 * 10, // Max file size of 10MB
+        filter: part => ['application/pdf', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'].includes(part.mimetype),
+    });
+
 
     const { fields, files } = await new Promise((resolve, reject) => {
-        form.parse(req.body, (err, fields, files) => {
+        form.parse(req, (err, fields, files) => {
             if (err) reject(err);
             resolve({ fields, files });
         });
@@ -24,5 +29,5 @@ export async function uploadMiddleware(req) {
     });
 
     // Attach the fields to req.body for subsequent middleware
-    req.body = fields;
+    req.fields = fields;
 }

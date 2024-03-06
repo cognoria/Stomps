@@ -15,6 +15,7 @@ function apiHandler(handler) {
 
         wrappedHandler[method] = async (req, ...args) => {
 
+            //Extract url params
             if (args.length > 0 && args[0].hasOwnProperty('params')) {
                 req.params = args[0].params; // Assign the params object to req.params
             }
@@ -23,20 +24,30 @@ function apiHandler(handler) {
             req.query = Object.fromEntries(req.nextUrl.searchParams);
 
             try {
-                // monkey patch req.json() because it can only be called once
-                const json = await req.json();
-                req.json = () => json;
-            } catch { }
+                //check if file upload
+                if (!req.headers.get('content-type')?.startsWith('multipart/form-data')) {
+
+                    // monkey patch req.json() because it can only be called once
+                    const json = await req.json();
+                    req.json = () => json;
+                }
+            } catch { /* Ignore JSON parsing errors */  }
 
             try {
                 // global middleware
                 await jwtMiddleware(req);
-                await validateMiddleware(req, handler[method].schema);
 
                 // Handle file uploads for POST, PUT, PATCH methods
                 if (['POST', 'PUT', 'PATCH'].includes(req.method.toUpperCase()) && req.headers.get('content-type')?.startsWith('multipart/form-data')) {
                     await uploadMiddleware(req);
+
+                    // Update req.json() to return the unified req.body
+                    req.json = () => Promise.resolve(req.fields);
                 }
+
+                //validate form inputs
+                await validateMiddleware(req, handler[method].schema);
+
                 // route handler
                 const responseBody = await handler[method](req, ...args);
                 return NextResponse.json(responseBody || {});
