@@ -180,21 +180,27 @@ function Nav_bar() {
               <div className="grid gap-y-7">
                 {!user && (
                   <div>
-                    <a
+                    <div
                       href="#"
                       title=""
                       className="flex items-center p-3 -m-3 border-b-[1px] border-[#DBDDE0] text-base font-medium text-gray-900 transition-all duration-200  hover:bg-gray-50 focus:outline-none font-pj focus:ring-1 focus:ring-gray-900 focus:ring-offset-2"
                     >
-                      Home
-                    </a>
+                      <Link
+                        className="w-full"
+                        href="https://stomp-ai.vercel.app/"
+                      >
+                        Home
+                      </Link>
+                    </div>
 
-                    <a
-                      href="#"
-                      title=""
-                      className="flex items-center p-3 -m-3 border-b-[1px] border-[#DBDDE0] text-base font-medium text-gray-900 transition-all duration-200  hover:bg-gray-50 focus:outline-none font-pj focus:ring-1 focus:ring-gray-900 focus:ring-offset-2"
-                    >
-                      Pricing
-                    </a>
+                    <div className="flex items-center p-3 -m-3 border-b-[1px] border-[#DBDDE0] text-base font-medium text-gray-900 transition-all duration-200  hover:bg-gray-50 focus:outline-none font-pj focus:ring-1 focus:ring-gray-900 focus:ring-offset-2">
+                      <Link
+                        className="w-full"
+                        href="https://stomp-ai.vercel.app/#price"
+                      >
+                        Pricing
+                      </Link>
+                    </div>
                   </div>
                 )}
 
