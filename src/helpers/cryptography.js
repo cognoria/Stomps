@@ -1,7 +1,7 @@
 import crypto from 'crypto';
 
 //TODO: secret will be auto generated and stored in Global naked
-const SECRET_KEY = process.env.SECRET_KEY;
+const SECRET_KEY = 'd4b474b8bd35114dfe8ab345485a7553e7deba2250f44ffc45a30ea0fd6676e0';
 
 export function encrypt(text) {
     console.log(text)
