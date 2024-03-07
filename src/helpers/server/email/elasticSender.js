@@ -36,7 +36,6 @@ export default async function elasticMailSender({ email, title, text, html }) {
     return await new Promise((resolve, reject) => {
         api.emailsPost(mail, async function (error, data, response) {
             if (error) reject(error);
-            console.log('Email Sent: ', { data });
             await EmailModel.create({ ...data, details: { email, title } })
             resolve(data)
         })
