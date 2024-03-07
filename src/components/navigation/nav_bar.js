@@ -58,7 +58,7 @@ function Nav_bar() {
               <Link href="https://stomp-ai.vercel.app/">Home</Link>
             </div>
             <div className="text-black text-sm font-400 font-manrope leading-snug">
-              <Link href="https://stomp-ai.vercel.app/">Pricing</Link>
+              <Link href="https://stomp-ai.vercel.app/#price">Pricing</Link>
             </div>
           </div>
         )}
@@ -80,10 +80,10 @@ function Nav_bar() {
             <Link href="/signup">
               <RoundedSubmitButton
                 button_content={"Create Account"}
-                color={"bg-[#EEF8FF]"}
+                color={"bg-[#1261AC] "}
                 radius={"rounded-[8px]"}
                 width={"w-[147px]"}
-                text_color={"text-[#74B4F1]"}
+                text_color={"text-[#fff]"}
                 text_size={"text-[14px]"}
               />
             </Link>
@@ -108,7 +108,7 @@ function Nav_bar() {
             <Link href="/">
               <div>ChatBot</div>
             </Link>
-            <Link href="/">
+            <Link href="/support">
               <div>Help</div>
             </Link>
             <Link href="/">
@@ -227,7 +227,7 @@ function Nav_bar() {
                       Chatbot
                     </Link>
                     <Link
-                      href="/"
+                      href="/support"
                       title=""
                       className="flex items-center p-3 -m-3 border-b-[1px] border-[#DBDDE0] text-base font-medium text-gray-900 transition-all duration-200  hover:bg-gray-50 focus:outline-none font-pj focus:ring-1 focus:ring-gray-900 focus:ring-offset-2"
                       role="button"
