@@ -52,15 +52,18 @@ function Nav_bar() {
     <div style={navbarStyles} className={`flex flex-col   z-50 mb-[20px]`}>
       <div className="w-screen hidden    fixed  lg:flex  bg-white px-[8%] pt-[5%] md:pt-0 lg:py-[2.2%] h-[2%]  flex-row justify-between items-center">
         <img src="/images/landing/logo.svg" alt="logo" />
-        <div className="flex-row gap-4 md:flex hidden items-center justify-center">
-          <div className="text-[#1261AC] text-sm font-bold font-manrope leading-snug">
-            <Link href="/">Home</Link>
+        {!user && (
+          <div className="flex-row gap-4 md:flex hidden items-center justify-center">
+            <div className="text-[#1261AC] text-sm font-bold font-manrope leading-snug">
+              <Link href="https://stomp-ai.vercel.app/">Home</Link>
+            </div>
+            <div className="text-black text-sm font-400 font-manrope leading-snug">
+              <Link href="https://stomp-ai.vercel.app/">Pricing</Link>
+            </div>
           </div>
-          <div className="text-black text-sm font-400 font-manrope leading-snug">
-            <Link href="/">Pricing</Link>
-          </div>
-        </div>
-        {!user ? (
+        )}
+
+        {user ? (
           <div className="md:flex hidden flex-row gap-4">
             <Link href="/signin">
               <RoundedSubmitButton
@@ -86,20 +89,32 @@ function Nav_bar() {
             </Link>
           </div>
         ) : (
-          <Link href="/signin">
-            <RoundedSubmitButton
-              onClick={async () => {
-                useUserStore.getState().removeUser();
-                await fetch("/api/v1/auth/logout");
-              }}
-              button_content={"Logout"}
-              color={"bg-[#EEF8FF]"}
-              radius={"rounded-[8px]"}
-              width={"w-[147px]"}
-              text_color={"text-[#74B4F1]"}
-              text_size={"text-[14px]"}
-            />
-          </Link>
+          // <Link href="/signin">
+          //   <RoundedSubmitButton
+          //     onClick={async () => {
+          //       useUserStore.getState().removeUser();
+          //       await fetch("/api/v1/auth/logout");
+          //     }}
+          //     button_content={"Logout"}
+          //     color={"bg-[#EEF8FF]"}
+          //     radius={"rounded-[8px]"}
+          //     width={"w-[147px]"}
+          //     text_color={"text-[#74B4F1]"}
+          //     text_size={"text-[14px]"}
+          //   />
+          // </Link>
+
+          <div className="flex text-[14px] text-black gap-x-3 flex-row items-center justify-end">
+            <Link href="/">
+              <div>ChatBot</div>
+            </Link>
+            <Link href="/">
+              <div>Help</div>
+            </Link>
+            <Link href="/">
+              <div>Account</div>
+            </Link>
+          </div>
         )}
       </div>
       <div className="flex flex-col w-full px-[4%] py-[2.5%] lg:hidden bg-white z-50 items-center justify-between">
