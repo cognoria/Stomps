@@ -63,7 +63,7 @@ function Nav_bar() {
           </div>
         )}
 
-        {user ? (
+        {!user ? (
           <div className="md:flex hidden flex-row gap-4">
             <Link href="/signin">
               <RoundedSubmitButton
@@ -178,24 +178,28 @@ function Nav_bar() {
           <nav className="px-[4%] w-full">
             <div className="px-1 py-8">
               <div className="grid gap-y-7">
-                <a
-                  href="#"
-                  title=""
-                  className="flex items-center p-3 -m-3 border-b-[1px] border-[#DBDDE0] text-base font-medium text-gray-900 transition-all duration-200  hover:bg-gray-50 focus:outline-none font-pj focus:ring-1 focus:ring-gray-900 focus:ring-offset-2"
-                >
-                  Home
-                </a>
-
-                <a
-                  href="#"
-                  title=""
-                  className="flex items-center p-3 -m-3 border-b-[1px] border-[#DBDDE0] text-base font-medium text-gray-900 transition-all duration-200  hover:bg-gray-50 focus:outline-none font-pj focus:ring-1 focus:ring-gray-900 focus:ring-offset-2"
-                >
-                  Pricing
-                </a>
-                {!user ? (
+                {!user && (
                   <div>
-                    {" "}
+                    <a
+                      href="#"
+                      title=""
+                      className="flex items-center p-3 -m-3 border-b-[1px] border-[#DBDDE0] text-base font-medium text-gray-900 transition-all duration-200  hover:bg-gray-50 focus:outline-none font-pj focus:ring-1 focus:ring-gray-900 focus:ring-offset-2"
+                    >
+                      Home
+                    </a>
+
+                    <a
+                      href="#"
+                      title=""
+                      className="flex items-center p-3 -m-3 border-b-[1px] border-[#DBDDE0] text-base font-medium text-gray-900 transition-all duration-200  hover:bg-gray-50 focus:outline-none font-pj focus:ring-1 focus:ring-gray-900 focus:ring-offset-2"
+                    >
+                      Pricing
+                    </a>
+                  </div>
+                )}
+
+                {!user ? (
+                  <div className="flex flex-col w-full gap-y-5">
                     <Link
                       href="/signin"
                       title=""
@@ -213,21 +217,32 @@ function Nav_bar() {
                     </Link>
                   </div>
                 ) : (
-                  <button
-                    onClick={async () => {
-                      useUserStore.getState().removeUser();
-                      await fetch("/api/v1/auth/logout");
-                    }}
-                  >
+                  <div className="flex flex-col w-full gap-y-3">
                     <Link
-                      href="/signin"
+                      href="/"
                       title=""
-                      className="inline-flex items-center justify-center px-6 py-3 text-base font-bold leading-7 text-white transition-all rounded-[8px] duration-200  bg-[#1261AC] border border-transparent  hover:bg-gray-600 font-pj focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900"
+                      className="flex items-center p-3 -m-3 border-b-[1px] border-[#DBDDE0] text-base font-medium text-gray-900 transition-all duration-200  hover:bg-gray-50 focus:outline-none font-pj focus:ring-1 focus:ring-gray-900 focus:ring-offset-2"
                       role="button"
                     >
-                      Logout
+                      Chatbot
                     </Link>
-                  </button>
+                    <Link
+                      href="/"
+                      title=""
+                      className="flex items-center p-3 -m-3 border-b-[1px] border-[#DBDDE0] text-base font-medium text-gray-900 transition-all duration-200  hover:bg-gray-50 focus:outline-none font-pj focus:ring-1 focus:ring-gray-900 focus:ring-offset-2"
+                      role="button"
+                    >
+                      Help
+                    </Link>
+                    <Link
+                      href="/"
+                      title=""
+                      className="flex items-center p-3 -m-3 border-b-[1px] border-[#DBDDE0] text-base font-medium text-gray-900 transition-all duration-200  hover:bg-gray-50 focus:outline-none font-pj focus:ring-1 focus:ring-gray-900 focus:ring-offset-2"
+                      role="button"
+                    >
+                      Account
+                    </Link>
+                  </div>
                 )}
               </div>
             </div>
