@@ -74,23 +74,16 @@ async function create(params) {
         throw 'User "' + params.email + '"  already exist';
     }
 
-    const user = new User({...params, isVerified: false});
-
-    // hash password
-    if (params.password) {
-        user.hash = bcrypt.hashSync(params.password, 10);
-    }
-
-    // save user
-    await user.save();
+    const hash = bcrypt.hashSync(params.password, 10);
+    const user = await User.create({ ...params, hash, isVerified: false });
 
     //send email verification
     const verifyToken = crypto.randomBytes(20).toString("hex");
 
-    // Hash token
+    // Hash and save token
     const verifyTokenHash = hashToken(verifyToken)
     await Token.create({ user: user.id, token: verifyTokenHash })
-    
+
     //TODO: change this to use app's root url
     const verifyBaseUrl = 'https://stomp-ai-app-zkwp.vercel.app/verify'
     // ///TODO: send verifyToken to user email email
@@ -100,8 +93,8 @@ async function create(params) {
     const html = emailTemplate({ message: text, buttonLink: link, buttonText: "Verify Email Address" })
 
     // await sendGridSender({email, title, text, html})
-    await elasticMailSender({ email: params.email, title, text, html })
-
+    await elasticMailSender({ email: params.email, title, text, html });
+    
     //log user register
     await logUserActivity(user.id, 'User Register', { ip: headers().get('X-Forwarded-For'), email: params.email })
     return user;
