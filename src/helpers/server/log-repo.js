@@ -5,7 +5,7 @@ const Log = db.Log
 
 export async function logUserActivity(user, action, details = {}) {
     try {
-        console.log
+        // console.log
         const logEntry = await Log.create({
             user,
             action,

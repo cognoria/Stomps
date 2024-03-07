@@ -16,5 +16,5 @@
     }
 
     // update req.json() to return sanitized req body
-    req.json = () => value;    
+    req.json = () => Promise.resolve(value);    
 }
