@@ -5,9 +5,10 @@ import { headers } from 'next/headers';
 import { db } from '../db';
 import { hashToken } from '../../cryptography';
 import { emailTemplate, getEmailText } from '../email/emailTemplate';
-import { logUserActivity } from './log-repo';
+import { logUserActivity } from './logs-repo';
 import { GoogleVerifier } from '../oauth.Google';
 import elasticMailSender from '../email/elasticSender';
+import { tokens } from './';
 
 const User = db.User;
 const Token = db.Token;
@@ -87,7 +88,7 @@ async function create(params) {
 
     // Hash and save token
     const verifyTokenHash = hashToken(verifyToken)
-    await Token.create({ user: user.id, token: verifyTokenHash })
+    await tokens.create(user.id, verifyTokenHash)
 
     //TODO: change this to use app's root url
     const verifyBaseUrl = 'https://stomp-ai-app-zkwp.vercel.app/verify'
@@ -99,7 +100,7 @@ async function create(params) {
 
     // await sendGridSender({email, title, text, html})
     await elasticMailSender({ email: params.email, title, text, html });
-    
+
     //log user register
     await logUserActivity(user.id, 'User Register', { ip: headers().get('X-Forwarded-For'), email: params.email })
     return user;
@@ -130,7 +131,7 @@ async function veryfyUser(token) {
     const verify_token = hashToken(token)
 
     //verify token
-    const verifyToken = await Token.findOne({ token: verify_token })
+    const verifyToken = await tokens.find(verify_token)
     if (!verifyToken) throw `Error: Invalid or expired token.`;
 
     //find user attributed to token
@@ -142,7 +143,7 @@ async function veryfyUser(token) {
 
 
     // Delete the used reset token
-    await Token.deleteOne({ _id: verifyToken._id });
+    await tokens.delete(verifyToken._id);
 
     console.log('Updated user verification status:', user.isVerified);
 
@@ -166,7 +167,7 @@ async function resendVerificationEmail(email) {
 
     // Hash token
     const verifyTokenHash = hashToken(verifyToken)
-    await Token.create({ user: user._id, token: verifyTokenHash })
+    await tokens.create(user._id, verifyTokenHash)
 
     //TODO: change this to use app's root url
     const verifyBaseUrl = 'https://stomp-ai-app-zkwp.vercel.app/verify'
@@ -217,7 +218,7 @@ async function forgetPassword(email) {
 
     // Hash token
     const resetTokenHash = hashToken(resetToken)
-    await Token.create({ user: user._id, token: resetTokenHash })
+    await tokens.create(user._id, resetTokenHash)
 
     //TODO: change this to use app's root url
     const resetBaseUrl = 'https://stomp-ai-app-zkwp.vercel.app/reset'
@@ -240,7 +241,7 @@ async function resetPassword(token, password, confirmPassword) {
 
     const reset_token = hashToken(token)
 
-    const resetToken = await Token.findOne({ token: reset_token })
+    const resetToken = await tokens.find(reset_token)
     if (!resetToken) throw `Error: invalid or expired token.`;
     //find user attributed to token
     const user = await User.findById(resetToken.user)
@@ -250,7 +251,7 @@ async function resetPassword(token, password, confirmPassword) {
     await user.save()
 
     // Delete the used reset token
-    await Token.deleteOne({ _id: resetToken._id });
+    await tokens.delete(resetToken._id);
 
     //log user reset pass
     await logUserActivity(user._id, 'User Reset Password', { ip: headers().get('X-Forwarded-For') })
