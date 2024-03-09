@@ -2,12 +2,12 @@ import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 import crypto from "crypto"
 import { headers } from 'next/headers';
-import { db } from './db';
-import { hashToken } from '../cryptography';
-import { emailTemplate, getEmailText } from './email/emailTemplate';
+import { db } from '../db';
+import { hashToken } from '../../cryptography';
+import { emailTemplate, getEmailText } from '../email/emailTemplate';
 import { logUserActivity } from './log-repo';
-import { GoogleVerifier } from './oauth.Google';
-import elasticMailSender from './email/elasticSender';
+import { GoogleVerifier } from '../oauth.Google';
+import elasticMailSender from '../email/elasticSender';
 
 const User = db.User;
 const Token = db.Token;
@@ -68,6 +68,11 @@ async function getCurrent() {
     }
 }
 
+/**
+ * create a new user
+ * @param {User<Object>} params 
+ * @returns 
+ */
 async function create(params) {
     // validate
     if (await User.findOne({ email: params.email })) {
@@ -241,7 +246,7 @@ async function resetPassword(token, password, confirmPassword) {
     const user = await User.findById(resetToken.user)
 
     //update new users password
-    user.hash = bcrypt.hashSync(password, 10);;
+    user.hash = bcrypt.hashSync(password, 10);
     await user.save()
 
     // Delete the used reset token

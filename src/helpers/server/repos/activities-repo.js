@@ -1,5 +1,5 @@
 import { headers } from 'next/headers';
-import { db } from './db';
+import { db } from '../db';
 
 const Log = db.Log
 

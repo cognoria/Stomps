@@ -7,7 +7,10 @@ import { useForm } from "react-hook-form";
 import useResetPasswordAuthStore from "../../../store/auth/resetPassword";
 import { usePasswordValidationStore } from "../../../store/validation/validations";
 import { password_schema } from "../../../utils/resolver/yup_schema";
+import { useRouter } from "next/navigation";
+
 function Reset_password({ token }) {
+  const router = useRouter()
   const { resetPassword, loading, error } = useResetPasswordAuthStore(
     (state) => ({
       resetPassword: state.resetPassword,

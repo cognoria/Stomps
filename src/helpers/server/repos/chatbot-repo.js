@@ -1,4 +1,4 @@
-import { db } from "./db";
+import { db } from "../db";
 import { Pinecone } from '@pinecone-database/pinecone'
 
 const User = db.User;
