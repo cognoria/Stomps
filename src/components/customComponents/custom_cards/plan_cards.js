@@ -1,15 +1,12 @@
 /* eslint-disable @next/next/no-img-element */
-import { plan_data } from "@/data/data";
+
+import { plan_data } from "../../../data/data";
 import { RoundedSubmitButton } from "../custom_buttons/button1";
 
 /* eslint-disable react/no-unescaped-entities */
 export function Plan_cards() {
   return (
-    <div className="w-[95%] md:w-[570px] rounded-[16px]  border-[1px] p-[22px] md:p-[44px] border-[#1261AC]">
-      <div className="w-[467px] mb-5 text-sky-700 text-xl font-medium font-manrope leading-7 tracking-tight">
-        Here's what you gain access to:
-      </div>
-
+    <div className="w-[95%] md:w-[570px] rounded-[16px]  border-[1px] p-[22px] md:p-[44px] border-gray-200">
       {plan_data?.map((items, i) => (
         <div className="mb-2 flex flex-row items-start gap-3" key={i}>
           {items.availability && <img src="./images/landing/Check_icon.svg" />}

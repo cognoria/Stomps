@@ -9,23 +9,23 @@ import { RoundedSubmitButton } from "../customComponents/custom_buttons/button1"
 
 function Nav_bar() {
   const [expanded, setExpanded] = useState(false);
-
-  // Event handler for button click
   const toggleExpansion = () => {
     setExpanded(!expanded);
   };
   const [isVisible, setIsVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
-  const user = useUserStore((state) => state.user);
 
-  // Safe to use window here
+  // const { user } = useLoginAuthStore((state) => ({
+  //   user: state.user,
+  // }));
+
+  const user = useUserStore((state) => state.user);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
       const handleScroll = () => {
         const currentScrollY = window.scrollY;
 
-        // Check if scrolling up
         if (lastScrollY > currentScrollY) {
           setIsVisible(true);
         } else if (lastScrollY < currentScrollY) {
@@ -89,21 +89,6 @@ function Nav_bar() {
             </Link>
           </div>
         ) : (
-          // <Link href="/signin">
-          //   <RoundedSubmitButton
-          //     onClick={async () => {
-          //       useUserStore.getState().removeUser();
-          //       await fetch("/api/v1/auth/logout");
-          //     }}
-          //     button_content={"Logout"}
-          //     color={"bg-[#EEF8FF]"}
-          //     radius={"rounded-[8px]"}
-          //     width={"w-[147px]"}
-          //     text_color={"text-[#74B4F1]"}
-          //     text_size={"text-[14px]"}
-          //   />
-          // </Link>
-
           <div className="flex text-[14px] text-black gap-x-3 flex-row items-center justify-end">
             <Link href="/">
               <div>ChatBot</div>
@@ -111,7 +96,7 @@ function Nav_bar() {
             <Link href="/support">
               <div>Help</div>
             </Link>
-            <Link href="/">
+            <Link href="/account">
               <div>Account</div>
             </Link>
           </div>
@@ -241,7 +226,7 @@ function Nav_bar() {
                       Help
                     </Link>
                     <Link
-                      href="/"
+                      href="/account"
                       title=""
                       className="flex items-center p-3 -m-3 border-b-[1px] border-[#DBDDE0] text-base font-medium text-gray-900 transition-all duration-200  hover:bg-gray-50 focus:outline-none font-pj focus:ring-1 focus:ring-gray-900 focus:ring-offset-2"
                       role="button"

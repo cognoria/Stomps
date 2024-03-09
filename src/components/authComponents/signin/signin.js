@@ -15,7 +15,7 @@ function Signin_form() {
     loading: state.loading,
     error: state.error,
   }));
-  const { 
+  const {
     register,
     handleSubmit,
     formState: { errors },
@@ -26,7 +26,7 @@ function Signin_form() {
   const onSubmit = (data, e) => {
     e.preventDefault();
     loginUser(data, () => {
-      router.push("/");
+      router.push("/account");
     });
   };
   const [eye_open, setEye_open] = useState(false);

@@ -3,7 +3,10 @@ import Head from "next/head";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
+import { useRouter } from "next/navigation";
+import React from "react";
 import { Modal } from "../components/customComponents/modals/modal";
+
 import "./globals.css";
 const inter = Inter({ subsets: ["latin"] });
 
@@ -13,6 +16,7 @@ export const metadata = {
 };
 
 export default function RootLayout({ children }) {
+
   return (
     <html lang="en">
       <Head>
