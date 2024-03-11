@@ -1,9 +1,9 @@
 import { Crawler } from "../../AI/newCrwler";
 import seed from "../../AI/seed";
-import { AppServiceProviders, KnowledgebaseStatus } from "../../enums";
+import { KnowledgebaseStatus } from "../../enums";
 import { db } from "../db";
-import { Pinecone } from '@pinecone-database/pinecone'
 import { createPinconeIndex } from "../../AI/pinecone";
+import { headers } from "next/headers";
 
 const User = db.User;
 const Chatbot = db.Chatbot;

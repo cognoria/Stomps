@@ -1,6 +1,6 @@
 import cheerio from "cheerio";
 import { NodeHtmlMarkdown } from "node-html-markdown";
-import { db } from '../server';
+import { db } from '../server/db';
 import { KnowledgebaseStatus } from "../enums";
 
 const Chatbot = db.Chatbot;

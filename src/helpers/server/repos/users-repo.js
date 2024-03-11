@@ -8,7 +8,7 @@ import { emailTemplate, getEmailText } from '../email/emailTemplate';
 import { logUserActivity } from './logs-repo';
 import { GoogleVerifier } from '../oauth.Google';
 import elasticMailSender from '../email/elasticSender';
-import { tokenRepo } from './';
+import { tokenRepo, globalRepo } from './';
 
 const User = db.User;
 const Token = db.Token;
@@ -39,7 +39,7 @@ async function authenticate({ email, password }) {
 
     // create a jwt token that is valid for 7 days
     //TODO: JWT_Secret will be created randomly and saved for the user
-    const token = jwt.sign({ sub: user.id }, '1234567890abcefjhijkl', { expiresIn: '7d' });
+    const token = jwt.sign({ sub: user.id }, await globalRepo.getJwtSecret(), { expiresIn: '7d' });
 
     await logUserActivity(user.id, 'User Login', { ip: headers().get('X-Forwarded-For') })
     return {

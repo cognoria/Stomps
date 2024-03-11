@@ -8,7 +8,7 @@ import md5 from "md5";
 import { getPineconeClient } from "./pinecone";
 import { truncateStringByBytes } from "../truncateString";
 import { chunkedUpsert } from "./chunkedUpsert";
-import { db } from "../server";
+import { db } from "../server/db";
 import { AppServiceProviders, KnowledgebaseStatus } from "../enums";
 import PQueue from "p-queue"
 import { globalRepo } from "../server/repos/global-repo";

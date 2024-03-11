@@ -13,7 +13,7 @@ export function encrypt(text) {
         throw "SECRET_KEY must be set.";
     }
 
-    if (Buffer.from(process.env.SECRET_KEY, 'hex').length !== 32) {
+    if (Buffer.from(SECRET_KEY, 'hex').length !== 32) {
         throw "SECRET_KEY must be 32 bytes long.";
     }
 
@@ -27,7 +27,7 @@ export function encrypt(text) {
 export function decrypt(text) {
     if (!SECRET_KEY) throw "SECRET_KEY must be set.";
 
-    if (Buffer.from(process.env.SECRET_KEY, 'hex').length !== 32) {
+    if (Buffer.from(SECRET_KEY, 'hex').length !== 32) {
         throw "SECRET_KEY must be 32 bytes long.";
     }
     let iv = Buffer.from(text.iv, 'hex');

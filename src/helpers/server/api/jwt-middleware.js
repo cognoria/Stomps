@@ -8,7 +8,7 @@ async function jwtMiddleware(req) {
     if (isPublicPath(req)) return;
 
     // verify token in request cookie
-    const id = auth.verifyToken();
+    const id = await auth.verifyToken();
     req.headers.set('userId', id);
 }
 
