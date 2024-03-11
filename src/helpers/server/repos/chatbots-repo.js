@@ -4,7 +4,7 @@ import { AppServiceProviders, KnowledgebaseStatus } from "../../enums";
 import { db } from "../db";
 import { Pinecone } from '@pinecone-database/pinecone'
 import { global } from "./global-repo";
-// import { Pinecone } from '@pinecone-database/pinecone'
+import { createPinconeIndex } from "../../AI/pinecone";
 
 const User = db.User;
 const Chatbot = db.Chatbot;
@@ -28,21 +28,12 @@ async function create(params) {
         throw 'Chatbot with name "' + params.name + '"  already exist';
     }
     const indexName = `${params.name.toLowerCase()}-${generateRandomString(6)}-index`
-    //TODO: get pinecone
-    await pinecone.createIndex({
-        name: indexName,
-        dimension: 1536,
-        metric: 'cosine',
-        spec: {
-            pod: {
-                environment: 'us-west-1-gcp',
-                podType: 'p1.x1',
-                pods: 1
-            }
-        }
-    });
+    
+    await createPinconeIndex(indexName)
+
     params.pIndex = indexName;
     params.owner = ownerId;
+
     const newchatbot = await Chatbot.create(params)
     return newchatbot;
 }

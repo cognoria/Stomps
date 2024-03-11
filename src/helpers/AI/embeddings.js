@@ -1,5 +1,7 @@
 
 import { OpenAIApi, Configuration } from "openai-edge";
+import { global } from "../server/repos/global-repo";
+import { AppServiceProviders } from "../enums";
 
 
 let openAi = null;
@@ -15,7 +17,10 @@ export const getOpenaiClient = async (apikey) => {
 }
 
 
-export async function getEmbeddings(input, embedModel, apiKey) {
+export async function getEmbeddings(input) {
+    
+    const apiKey = await global.getServiceKey(AppServiceProviders.OPENAI)
+    const embedModel = await global.getEmbedModel();
     try {
         const openai = getOpenaiClient(apiKey)
         const response = await openai.createEmbedding({

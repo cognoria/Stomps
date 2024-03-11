@@ -1,4 +1,6 @@
 import { Pinecone } from "@pinecone-database/pinecone";
+import { global } from "../server/repos/global-repo";
+import { AppServiceProviders } from "../enums";
 
 let pinecone = null;
 
@@ -14,8 +16,9 @@ export const getPineconeClient = async (apikey) => {
 // The function `getMatchesFromEmbeddings` is used to retrieve matches for the given embeddings
 export async function getMatchesFromEmbeddings(embeddings, topK, namespace, pinconeIndex) {
     // Obtain a client for Pinecone 
-    //TODO: pass apikey
-    const pinecone = await getPineconeClient();
+    // ///TODO: pass apikey
+    const apiKey = await global.getServiceKey(AppServiceProviders.PINECONE)
+    const pinecone = await getPineconeClient(apiKey);
 
     // Retrieve the list of indexes
     const indexes = await pinecone.listIndexes()
@@ -50,7 +53,8 @@ export async function getMatchesFromEmbeddings(embeddings, topK, namespace, pinc
 export async function createPinconeIndex(name, type= 'serverless') {
 
     //TODO: pass apikey
-    const pinecone = await getPineconeClient();
+    const apiKey = await global.getServiceKey(AppServiceProviders.PINECONE)
+    const pinecone = await getPineconeClient(apiKey);
 
     let index;
 
