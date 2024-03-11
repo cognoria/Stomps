@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 import { AppServiceProviders } from '../../enums';
 const Schema = mongoose.Schema;
 
-export default function gloablModel() {
+export default function globalModel() {
 
     const hashed = new Schema({
         iv: { type: String, required: true },
@@ -23,5 +23,6 @@ export default function gloablModel() {
         timestamps: true
     });
 
+    
     return mongoose.models.Global || mongoose.model('Global', schema);
 }

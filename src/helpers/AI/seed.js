@@ -20,10 +20,7 @@ async function seed(chatbotId, pineconeKey) {
     // ///TODO: pass apiKey
     const pinecone = await getPineconeClient(pineconeKey);
 
-    const chatbot = await Chatbot.findById(chatbotId);
-
-    chatbot.status = KnowledgebaseStatus.GENERATING_EMBEDDINGS;
-    await chatbot.save()
+    const chatbot = await Chatbot.findByIdAndUpdate(chatbotId, { status: KnowledgebaseStatus.GENERATING_EMBEDDINGS });
 
     //TODO: make these dynamic either store in Global or inside each chatbot make editable
     let splittingMethod = "markdown";

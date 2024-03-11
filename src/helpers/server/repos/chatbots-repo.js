@@ -7,6 +7,7 @@ import { Pinecone } from '@pinecone-database/pinecone'
 
 const User = db.User;
 const Chatbot = db.Chatbot;
+const Global = db.Global
 
 export const chatbots = {
     create,
@@ -14,6 +15,7 @@ export const chatbots = {
     getById,
     getByName,
     getAllNewBot,
+    trainChatbot,
     getAllUserBot,
     delete: _delete,
 }
