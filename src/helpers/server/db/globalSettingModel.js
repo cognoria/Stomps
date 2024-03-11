@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import { AppServiceProviders } from '../../enums';
 const Schema = mongoose.Schema;
 
 export default function gloablModel() {
@@ -10,7 +11,7 @@ export default function gloablModel() {
 
     //schema to store pinecone, openAi and other services details
     const service = new Schema({
-        name: { type: String, required: true },
+        name: { type: String, required: true, enum: AppServiceProviders },
         apiKey: hashed,
         meta: mongoose.Schema.Types.Mixed
     }, { _id: false })

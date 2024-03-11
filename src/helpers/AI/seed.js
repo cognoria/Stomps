@@ -4,21 +4,20 @@ import {
   MarkdownTextSplitter,
   RecursiveCharacterTextSplitter,
 } from "@pinecone-database/doc-splitter";
-import { utils as PineconeUtils } from "@pinecone-database/pinecone";
+import { ServerlessSpecCloudEnum, GcpRegions } from "@pinecone-database/pinecone";
 import md5 from "md5";
 import { getPineconeClient } from "./pinecone";
 import { Crawler, Page } from "./crawler";
 import { truncateStringByBytes } from "../truncateString";
 // import PQueue from "p-queue";
-
-const { chunkedUpsert, createIndexIfNotExists } = PineconeUtils;
+import { chunkedUpsert } from "./chunkedUpsert";
 
 async function seed(url, limit, indexName, options) {
   try {
     // Initialize the Pinecone client
     //TODO: pass apiKey
     const pinecone = await getPineconeClient();
-    // console.log({pinecone});
+    
     // Destructure the options object
     const { splittingMethod, chunkSize, chunkOverlap } = options;
 
@@ -40,15 +39,32 @@ async function seed(url, limit, indexName, options) {
     );
 
     // Create Pinecone index if it does not exist
-    await createIndexIfNotExists(pinecone, indexName, 1536);
+    // await createIndexIfNotExists(pinecone, indexName, 1536);
+
+    const indexList = (await pinecone.listIndexes())?.indexes?.map(index => index.name) || [];
+    const indexExists = indexList.includes(indexName);
+    if (!indexExists) {
+      await pinecone.createIndex({
+        name: indexName,
+        dimension: 1536,
+        waitUntilReady: true,
+        spec: { 
+          serverless: { 
+              cloud: cloudName, // TODO: setValid name
+              region: regionName //TODO: set valid region
+          }
+        } 
+      });
+    }
+
     const index = pinecone && pinecone.Index(indexName);
 
     // const queue = new PQueue({concurrency: 1});
-    // // Get the vector embeddings for the documents
+    // Get the vector embeddings for the documents
     // const vectors = await Promise.all(
     //   documents.flat().map(doc => queue.add(() => embedDocument(doc)))
     // );
-    // // const vectors = await Promise.all(documents.flat().map(embedDocument));
+    const vectors = await Promise.all(documents.flat().map(embedDocument));
 
     const batchSize = 10;
     // let vectors: Vector[] = [];

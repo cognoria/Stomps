@@ -1,5 +1,7 @@
+import { KnowledgebaseStatus } from "../../enums";
 import { db } from "../db";
 import { Pinecone } from '@pinecone-database/pinecone'
+// import { Pinecone } from '@pinecone-database/pinecone'
 
 const User = db.User;
 const Chatbot = db.Chatbot;
@@ -9,6 +11,7 @@ export const chatbots = {
     update,
     getById,
     getByName,
+    getAllNewBot,
     getAllUserBot,
     delete: _delete,
 }
@@ -20,8 +23,33 @@ async function create(params) {
     if (await Chatbot.findOne({ name: params.name })) {
         throw 'Chatbot with name "' + params.name + '"  already exist';
     }
+    const indexName = `${params.name.toLowerCase()}-${generateRandomString(6)}-index`
+    //TODO: get pinecone
+    await pinecone.createIndex({
+        name: indexName,
+        dimension: 1536,
+        metric: 'cosine',
+        spec: {
+            pod: {
+                environment: 'us-west-1-gcp',
+                podType: 'p1.x1',
+                pods: 1
+            }
+        }
+    });
+    params.pIndex = indexName;
+    params.owner = ownerId;
+    const newchatbot = await Chatbot.create(params)
+    return newchatbot;
+}
 
-    // const chatbot = new Chatbot({})
+async function trainChatbot(chatbotId) {
+    const chatbot = Chatbot.findById(chatbotId);
+
+    if(!chatbot) throw 'Chatbot not found';
+
+    
+
 }
 
 async function update(id, params) {
@@ -55,6 +83,21 @@ async function getAllUserBot() {
     return await Chatbot.find({ owner: ownerId }).sort({ timestamp: -1 })
 }
 
+
+async function getAllNewBot() {
+    return await Chatbot.find({ status: KnowledgebaseStatus.CRAWLED }).sort({ timestamp: -1 })
+}
+
 async function _delete(id) {
     return await Chatbot.findByIdAndRemove(id);
+}
+
+function generateRandomString(length) {
+    const characters = 'abcdefghijklmnopqrstuvwxyz0123456789';
+    let result = '';
+    const charactersLength = characters.length;
+    for (let i = 0; i < length; i++) {
+        result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+    return result;
 }

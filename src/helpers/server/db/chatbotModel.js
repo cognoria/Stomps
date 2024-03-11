@@ -1,16 +1,7 @@
 import mongoose from 'mongoose';
+import { KnowledgebaseStatus } from '../../enums';
 
 const Schema = mongoose.Schema;
-
-const KnowledgebaseStatus = {
-    CREATED: 'CREATED',
-    CRAWLING: 'CRAWLING',
-    CRAWLED: 'CRAWLED',
-    CRAWL_ERROR: 'CRAWL_ERROR',
-    GENERATING_EMBEDDINGS: 'GENERATING_EMBEDDINGS',
-    EMBEDDING_ERROR: 'EMBEDDING_ERROR',
-    READY: 'READY',
-};
 
 const knowledgebase = new Schema({
     websiteUrl: { type: String },
@@ -20,10 +11,15 @@ const knowledgebase = new Schema({
     filePaths: [{ type: String }]
 }, { _id: false })
 
+const pageSchema = new mongoose.Schema({
+    url: String,
+    content: String,
+}, { _id: false });
+
 const crawlData = new Schema({
-    crawledPages: { type: Number },
-    failedPages: { type: Number },
-    runTime: { type: Number },
+    pagesContents: [pageSchema],
+    crawledUrls: [{ type: String }],
+    queue: [{ type: String }],
 }, { _id: false })
 
 const questionExample = new Schema({

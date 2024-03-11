@@ -1,0 +1,100 @@
+import mongoose from 'mongoose';
+import cheerio from "cheerio";
+import { NodeHtmlMarkdown } from "node-html-markdown";
+import { db } from '../server';
+
+const Chatbot = db.Chatbot;
+
+export class Crawler {
+    constructor(chatbotId) {
+        this.chatbotId = chatbotId;
+        this.chatbot = null;
+        this._seen = new Set();
+        this._queue = [];
+        this._maxDepth = 5;
+        this._maxPages = 100; 
+        this.chatbot;
+        this._includePatterns;
+        this._excludePatterns;
+    }
+
+    async _loadChatbotData() {
+        this.chatbot = await Chatbot.findById(this.chatbotId);
+        
+        if (!this.chatbot || !this.chatbot.knowledgebase) {
+            throw new Error('Chatbot or knowledgebase not found');
+        }
+        
+        // Setup crawler options based on knowledgebase settings
+        this._maxPages = this.chatbot.knowledgebase.maxPages || 100;
+        this._includePatterns = this.chatbot.knowledgebase.include.map(pattern => new RegExp(pattern, 'i'));
+        this._excludePatterns = this.chatbot.knowledgebase.exclude.map(pattern => new RegExp(pattern, 'i'));
+        
+        // Initialize queue with starting URLs
+        this.chatbot.knowledgebase.urls.forEach(url => this._addToQueue(url));
+    }
+
+    async crawl() {
+        await this._loadChatbotData(); // Load chatbot data
+
+        while (this._queue.length > 0 && this.chatbot.crawlData.pagesContents.length < this._maxPages) {
+            const { url, depth } = this._queue.shift();
+
+            if (depth > this._maxDepth || this._seen.has(url)) continue;
+
+            this._seen.add(url);
+            const html = await this._fetchPage(url);
+
+            // Parse and store the page content
+            const content = this._parseHtml(html);
+            await this._storeCrawlData(url, content);
+
+            // Extract and queue new URLs
+            this._extractUrls(html, url).forEach(newUrl => {
+                if (this._shouldIncludeUrl(newUrl)) {
+                    this._addToQueue(newUrl, depth + 1);
+                }
+            });
+        }
+    }
+
+    _addToQueue(url, depth = 0) {
+        if (!this._seen.has(url)) {
+            this._queue.push({ url, depth });
+        }
+    }
+
+    _shouldIncludeUrl(url) {
+        const isExcluded = this._excludePatterns.some(pattern => pattern.test(url));
+        const isIncluded = this._includePatterns.some(pattern => pattern.test(url));
+        return isIncluded && !isExcluded;
+    }
+
+    async _fetchPage(url) {
+        console.log(`Fetching: ${url}`);
+        try {
+            const response = await fetch(url); // Ensure 'fetch' is available or use a node-fetch package
+            return await response.text();
+        } catch (error) {
+            console.error(`Failed to fetch ${url}: ${error}`);
+            return '';
+        }
+    }
+
+    _parseHtml(html) {
+        const $ = cheerio.load(html);
+        $("a").removeAttr("href");
+        return NodeHtmlMarkdown.translate($.html());
+    }
+
+    async _storeCrawlData(url, content) {
+        // Avoid duplicate URLs in crawledUrls
+        if (!this.chatbot.crawlData.crawledUrls.includes(url)) {
+            this.chatbot.crawlData.crawledUrls.push(url);
+        }
+        
+        // Push new page content
+        this.chatbot.crawlData.pagesContents.push({ url, content });
+        await this.chatbot.save();
+    }
+}
