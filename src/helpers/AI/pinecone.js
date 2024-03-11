@@ -61,7 +61,7 @@ export async function createPinconeIndex(name, type= 'serverless') {
     switch (type.toLowerCase()) {
         case 'serverless':
             index = await pinecone.createIndex({
-                name: 'severless-index',
+                name,
                 dimension: 1536,
                 metric: 'cosine',
                 spec: {
@@ -74,7 +74,7 @@ export async function createPinconeIndex(name, type= 'serverless') {
             break;
         case 'pod':
             index = await pinecone.createIndex({
-                name: 'pod-index',
+                name,
                 dimension: 1536,
                 metric: 'cosine',
                 spec: {
@@ -89,7 +89,7 @@ export async function createPinconeIndex(name, type= 'serverless') {
 
         default:
             index = await pinecone.createIndex({
-                name: 'severless-index',
+                name,
                 dimension: 1536,
                 metric: 'cosine',
                 spec: {
