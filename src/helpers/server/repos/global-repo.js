@@ -3,7 +3,7 @@ import { db } from "../db";
 
 const Global = db.Global;
 
-export const global = {
+export const globalRepo = {
     getJwtSecret,
     getServiceKey,
     getEmbedModel,

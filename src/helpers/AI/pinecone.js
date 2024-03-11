@@ -1,5 +1,5 @@
 import { Pinecone } from "@pinecone-database/pinecone";
-import { global } from "../server/repos/global-repo";
+import { globalRepo } from "../server/repos/global-repo";
 import { AppServiceProviders } from "../enums";
 
 let pinecone = null;
@@ -17,7 +17,7 @@ export const getPineconeClient = async (apikey) => {
 export async function getMatchesFromEmbeddings(embeddings, topK, namespace, pinconeIndex) {
     // Obtain a client for Pinecone 
     // ///TODO: pass apikey
-    const apiKey = await global.getServiceKey(AppServiceProviders.PINECONE)
+    const apiKey = await globalRepo.getServiceKey(AppServiceProviders.PINECONE)
     const pinecone = await getPineconeClient(apiKey);
 
     // Retrieve the list of indexes

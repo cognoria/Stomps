@@ -11,7 +11,7 @@ import { chunkedUpsert } from "./chunkedUpsert";
 import { db } from "../server";
 import { AppServiceProviders, KnowledgebaseStatus } from "../enums";
 import PQueue from "p-queue"
-import { global } from "../server/repos/global-repo";
+import { globalRepo } from "../server/repos/global-repo";
 const Chatbot = db.Chatbot;
 
 
@@ -20,7 +20,7 @@ async function seed(chatbotId) {
     // Initialize the Pinecone client
     // ///TODO: pass apiKey
     
-    const apiKey = await global.getServiceKey(AppServiceProviders.PINECONE)
+    const apiKey = await globalRepo.getServiceKey(AppServiceProviders.PINECONE)
     const pinecone = await getPineconeClient(apiKey);
 
     const chatbot = await Chatbot.findByIdAndUpdate(chatbotId, { status: KnowledgebaseStatus.GENERATING_EMBEDDINGS });

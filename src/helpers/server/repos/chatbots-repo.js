@@ -3,13 +3,12 @@ import seed from "../../AI/seed";
 import { AppServiceProviders, KnowledgebaseStatus } from "../../enums";
 import { db } from "../db";
 import { Pinecone } from '@pinecone-database/pinecone'
-import { global } from "./global-repo";
 import { createPinconeIndex } from "../../AI/pinecone";
 
 const User = db.User;
 const Chatbot = db.Chatbot;
 
-export const chatbots = {
+export const chatbotRepo = {
     create,
     update,
     getById,
@@ -59,9 +58,7 @@ async function trainChatbot(chatbotId) {
     
     await crawlPages;
 
-    const pineconeKey = await global.getServiceKey(AppServiceProviders.PINECONE);
-
-    const seedAndEmbbed = seed(chatbot.id, pineconeKey)
+    const seedAndEmbbed = seed(chatbot.id)
 
 }
 
