@@ -1,13 +1,13 @@
 import { Crawler } from "../../AI/newCrwler";
 import seed from "../../AI/seed";
-import { KnowledgebaseStatus } from "../../enums";
+import { AppServiceProviders, KnowledgebaseStatus } from "../../enums";
 import { db } from "../db";
 import { Pinecone } from '@pinecone-database/pinecone'
+import { global } from "./global-repo";
 // import { Pinecone } from '@pinecone-database/pinecone'
 
 const User = db.User;
 const Chatbot = db.Chatbot;
-const Global = db.Global
 
 export const chatbots = {
     create,
@@ -52,10 +52,9 @@ async function trainChatbot(chatbotId) {
 
     if (!chatbot) throw 'Chatbot not found';
 
-    const crawler = new Crawler(chatbotId)
+    const crawler = new Crawler(chatbot.id)
 
     const crawlPages = new Promise(async (resolve, reject) => {
-
         try {
             await crawler.crawl();
             resolve('Crawl completed successfully');
@@ -66,10 +65,12 @@ async function trainChatbot(chatbotId) {
             reject(`Crawl failed: ${error.message}`);
         }
     });
-
+    
     await crawlPages;
 
-    const seedAndEmbbed = seed(chatbotId)
+    const pineconeKey = await global.getServiceKey(AppServiceProviders.PINECONE);
+
+    const seedAndEmbbed = seed(chatbot.id, pineconeKey)
 
 }
 

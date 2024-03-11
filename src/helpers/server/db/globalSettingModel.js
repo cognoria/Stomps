@@ -18,6 +18,7 @@ export default function globalModel() {
 
     const schema = new Schema({
         jwt_secret: hashed,
+        embedModel: {type: String, enum: ["text-embedding-ada-002"], default: "text-embedding-ada-002"},
         services: [service],
     }, {
         timestamps: true

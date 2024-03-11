@@ -1,23 +1,26 @@
 
 import { OpenAIApi, Configuration } from "openai-edge";
 
-const config = new Configuration({
-    //TODO: get key from user profile
-    apiKey: process.env.OPENAI_API_KEY
-})
-const openai = new OpenAIApi(config)
 
-export function getOpenAiConfig(apiKey) {
-    return new Configuration({
-        apiKey: apiKey
-    })
+let openAi = null;
+
+export const getOpenaiClient = async (apikey) => {
+    if (!openAi) {
+        openAi =  new OpenAIApi( new Configuration({
+            //TODO: get key from user profile
+            apiKey: apikey
+        }))
+    }
+    return openAi
 }
 
-export async function getEmbeddings(input) {
+
+export async function getEmbeddings(input, embedModel, apiKey) {
     try {
+        const openai = getOpenaiClient(apiKey)
         const response = await openai.createEmbedding({
-            //TODO: get model from bot's model
-            model: "text-embedding-ada-002",
+            // ///TODO: get model from bot's model
+            model: embedModel, //"text-embedding-ada-002",
             input: input.replace(/\n/g, ' ')
         })
 
