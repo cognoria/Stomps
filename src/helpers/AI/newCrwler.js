@@ -1,7 +1,7 @@
-import mongoose from 'mongoose';
 import cheerio from "cheerio";
 import { NodeHtmlMarkdown } from "node-html-markdown";
 import { db } from '../server';
+import { KnowledgebaseStatus } from "../enums";
 
 const Chatbot = db.Chatbot;
 
@@ -12,7 +12,7 @@ export class Crawler {
         this._seen = new Set();
         this._queue = [];
         this._maxDepth = 5;
-        this._maxPages = 100; 
+        this._maxPages = 100;
         this.chatbot;
         this._includePatterns;
         this._excludePatterns;
@@ -20,22 +20,25 @@ export class Crawler {
 
     async _loadChatbotData() {
         this.chatbot = await Chatbot.findById(this.chatbotId);
-        
+
         if (!this.chatbot || !this.chatbot.knowledgebase) {
             throw new Error('Chatbot or knowledgebase not found');
         }
-        
+
         // Setup crawler options based on knowledgebase settings
         this._maxPages = this.chatbot.knowledgebase.maxPages || 100;
         this._includePatterns = this.chatbot.knowledgebase.include.map(pattern => new RegExp(pattern, 'i'));
         this._excludePatterns = this.chatbot.knowledgebase.exclude.map(pattern => new RegExp(pattern, 'i'));
-        
+
         // Initialize queue with starting URLs
         this.chatbot.knowledgebase.urls.forEach(url => this._addToQueue(url));
     }
 
     async crawl() {
         await this._loadChatbotData(); // Load chatbot data
+
+        this.chatbot.status = KnowledgebaseStatus.CRAWLING;
+        await this.chatbot.save()
 
         while (this._queue.length > 0 && this.chatbot.crawlData.pagesContents.length < this._maxPages) {
             const { url, depth } = this._queue.shift();
@@ -56,6 +59,9 @@ export class Crawler {
                 }
             });
         }
+        
+        this.chatbot.status = KnowledgebaseStatus.CRAWLED;
+        return await this.chatbot.save()
     }
 
     _addToQueue(url, depth = 0) {
@@ -92,7 +98,7 @@ export class Crawler {
         if (!this.chatbot.crawlData.crawledUrls.includes(url)) {
             this.chatbot.crawlData.crawledUrls.push(url);
         }
-        
+
         // Push new page content
         this.chatbot.crawlData.pagesContents.push({ url, content });
         await this.chatbot.save();

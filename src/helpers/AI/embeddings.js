@@ -2,6 +2,7 @@
 import { OpenAIApi, Configuration } from "openai-edge";
 
 const config = new Configuration({
+    //TODO: get key from user profile
     apiKey: process.env.OPENAI_API_KEY
 })
 const openai = new OpenAIApi(config)

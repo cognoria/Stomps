@@ -1,3 +1,5 @@
+import { Crawler } from "../../AI/newCrwler";
+import seed from "../../AI/seed";
 import { KnowledgebaseStatus } from "../../enums";
 import { db } from "../db";
 import { Pinecone } from '@pinecone-database/pinecone'
@@ -46,9 +48,26 @@ async function create(params) {
 async function trainChatbot(chatbotId) {
     const chatbot = Chatbot.findById(chatbotId);
 
-    if(!chatbot) throw 'Chatbot not found';
+    if (!chatbot) throw 'Chatbot not found';
 
-    
+    const crawler = new Crawler(chatbotId)
+
+    const crawlPages = new Promise(async (resolve, reject) => {
+
+        try {
+            await crawler.crawl();
+            resolve('Crawl completed successfully');
+        } catch (error) {
+            chatbot.status = KnowledgebaseStatus.CRAWL_ERROR;
+            await chatbot.save()
+
+            reject(`Crawl failed: ${error.message}`);
+        }
+    });
+
+    await crawlPages;
+
+    const seedAndEmbbed = seed(chatbotId)
 
 }
 

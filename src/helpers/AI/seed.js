@@ -4,34 +4,44 @@ import {
   MarkdownTextSplitter,
   RecursiveCharacterTextSplitter,
 } from "@pinecone-database/doc-splitter";
-import { ServerlessSpecCloudEnum, GcpRegions } from "@pinecone-database/pinecone";
 import md5 from "md5";
 import { getPineconeClient } from "./pinecone";
-import { Crawler, Page } from "./crawler";
 import { truncateStringByBytes } from "../truncateString";
-// import PQueue from "p-queue";
 import { chunkedUpsert } from "./chunkedUpsert";
+import { db } from "../server";
+import { KnowledgebaseStatus } from "../enums";
+import PQueue from "p-queue"
+const Chatbot = db.Chatbot;
 
-async function seed(url, limit, indexName, options) {
+
+async function seed(chatbotId, pineconeKey) {
   try {
     // Initialize the Pinecone client
-    //TODO: pass apiKey
-    const pinecone = await getPineconeClient();
-    
-    // Destructure the options object
-    const { splittingMethod, chunkSize, chunkOverlap } = options;
+    // ///TODO: pass apiKey
+    const pinecone = await getPineconeClient(pineconeKey);
 
-    // Create a new Crawler with depth 1 and maximum pages as limit
-    const crawler = new Crawler(10, limit || 100);
+    const chatbot = await Chatbot.findById(chatbotId);
 
-    // Crawl the given URL and get the pages
-    const pages = (await crawler.crawl(url));
+    chatbot.status = KnowledgebaseStatus.GENERATING_EMBEDDINGS;
+    await chatbot.save()
+
+    //TODO: make these dynamic either store in Global or inside each chatbot make editable
+    let splittingMethod = "markdown";
+    let chunkSize = 2048;
+    let chunkOverlap = 20;
+
+    let dimension = 1536;
+    let cloudName = "aws";
+    let regionName = "us-west-2"
+
+    const indexName = chatbot.pIndex;
+    const pages = chatbot.crawlData.pagesContents;
 
     // Choose the appropriate document splitter based on the splitting method
-    const splitter=
+    const splitter =
       splittingMethod === "recursive"
         ? new RecursiveCharacterTextSplitter({ chunkSize, chunkOverlap })
-        : new MarkdownTextSplitter({});
+        : new MarkdownTextSplitter({ chunkSize, chunkOverlap });
 
     // Prepare documents by splitting the pages
     const documents = await Promise.all(
@@ -39,64 +49,70 @@ async function seed(url, limit, indexName, options) {
     );
 
     // Create Pinecone index if it does not exist
-    // await createIndexIfNotExists(pinecone, indexName, 1536);
-
     const indexList = (await pinecone.listIndexes())?.indexes?.map(index => index.name) || [];
     const indexExists = indexList.includes(indexName);
     if (!indexExists) {
       await pinecone.createIndex({
         name: indexName,
-        dimension: 1536,
+        dimension,
         waitUntilReady: true,
-        spec: { 
-          serverless: { 
-              cloud: cloudName, // TODO: setValid name
-              region: regionName //TODO: set valid region
+        spec: {
+          serverless: {
+            cloud: cloudName,
+            region: regionName
           }
-        } 
+        }
       });
     }
 
     const index = pinecone && pinecone.Index(indexName);
 
-    // const queue = new PQueue({concurrency: 1});
+    const queue = new PQueue({ concurrency: 5 });
     // Get the vector embeddings for the documents
-    // const vectors = await Promise.all(
-    //   documents.flat().map(doc => queue.add(() => embedDocument(doc)))
-    // );
-    const vectors = await Promise.all(documents.flat().map(embedDocument));
+    const vectors = await Promise.all(
+      documents.flat().map(doc => queue.add(() => embedDocument(doc)))
+    );
+    // const vectors = await Promise.all(documents.flat().map(embedDocument));
 
-    const batchSize = 10;
+    // Upsert vectors into the Pinecone index
+    await chunkedUpsert(index, vectors, "", 10);
+
+    // const batchSize = 10;
+
     // let vectors: Vector[] = [];
 
-    for (let i = 0; i < documents.length; i += batchSize) {
-      const batch = documents.slice(i, i + batchSize);
-      const vectors_ = await Promise.all(
-        batch.flat().map((doc) => embedDocument(doc))
-      );
+    // for (let i = 0; i < documents.length; i += batchSize) {
+    //   const batch = documents.slice(i, i + batchSize);
+    //   const vectors_ = await Promise.all(
+    //     batch.flat().map((doc) => embedDocument(doc))
+    //   );
 
-      // vectors.push(...vectors_);
+    //   // vectors.push(...vectors_);
 
-      // Upsert vectors into the Pinecone index
-      await chunkedUpsert(index, vectors_, "", 10);
-      
-      console.log(
-        "uploaded document " +
-          Number(i + batchSize) +
-          " out of " +
-          documents.length
-      );
-    }
+    //   // Upsert vectors into the Pinecone index
+    //   await chunkedUpsert(index, vectors_, "", 10);
+
+    //   console.log(
+    //     "uploaded document " +
+    //     Number(i + batchSize) +
+    //     " out of " +
+    //     documents.length
+    //   );
+    // }
+
 
     // Return the first document
     return documents[0];
   } catch (error) {
     console.error("Error seeding:", error);
+
+    //update chatbot status;
+    await Chatbot.findByIdAndUpdate(chatbotId, { status: KnowledgebaseStatus.EMBEDDING_ERROR })
     throw error;
   }
 }
 
-async function embedDocument(doc){
+async function embedDocument(doc) {
   try {
     // Generate OpenAI embeddings for the document content
     const embedding = await getEmbeddings(doc.pageContent);
@@ -122,10 +138,7 @@ async function embedDocument(doc){
   }
 }
 
-async function prepareDocument(
-  page,
-  splitter
-){
+async function prepareDocument(page, splitter) {
   // Get the content of the page
   const pageContent = page.content;
 
