@@ -29,7 +29,7 @@ async function create(params) {
 
     //generate random index name
     const indexName = `${params.name.toLowerCase()}-${generateRandomString(6)}-index`
-    
+
     //create pinecone index
     await createPinconeIndex(indexName)
 
@@ -45,12 +45,16 @@ async function create(params) {
             filePaths: params.filePaths
         }
     }
-    
+
     return await Chatbot.create(newChatbotDetails);
 }
 
 async function trainChatbot(chatbotId) {
+    const chatbot = await Chatbot.findById(chatbotId)
 
+    // validate
+    if (!chatbot) throw 'chatbot not found';
+    
     const crawler = new Crawler(chatbotId)
 
     const crawlPages = new Promise(async (resolve, reject) => {
@@ -63,11 +67,13 @@ async function trainChatbot(chatbotId) {
             reject(`Crawl failed: ${error.message}`);
         }
     });
-    
+    //crawl the webpages
     await crawlPages;
 
-   const sm = await seed(chatbotId)
-    return sm
+    //seed websontents into pinecone vector db
+    await seed(chatbotId)
+
+    return chatbot
 }
 
 async function update(id, params) {

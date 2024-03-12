@@ -14,15 +14,13 @@ export async function getEmbeddings(input) {
     try {
         const apiKey = await globalRepo.getServiceKey(AppServiceProviders.OPENAI)
         const embedModel = await globalRepo.getEmbedModel();
-        const openai = getOpenaiClient(apiKey)
+        const openai = await getOpenaiClient(apiKey)
 
         const embedding = await openai.embeddings.create({
             model: embedModel,
             input: input.replace(/\n/g, ' '),
             encoding_format: "float",
         });
-
-        console.log(embedding);
 
         return embedding.data[0].embedding;
     } catch (e) {

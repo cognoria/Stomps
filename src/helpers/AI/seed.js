@@ -18,9 +18,6 @@ const Chatbot = db.Chatbot;
 async function seed(chatbotId) {
   try {
     console.log("Seeding ", chatbotId)
-    // Initialize the Pinecone client
-    // ///TODO: pass apiKey
-
     const apiKey = await globalRepo.getServiceKey(AppServiceProviders.PINECONE)
     const pinecone = await getPineconeClient(apiKey);
 
@@ -30,10 +27,6 @@ async function seed(chatbotId) {
     let splittingMethod = "markdown";
     let chunkSize = 2048;
     let chunkOverlap = 20;
-
-    let dimension = 1536;
-    let cloudName = "aws";
-    let regionName = "us-west-2"
 
     const indexName = chatbot.pIndex;
     const pages = chatbot.crawlData.pagesContent;
@@ -49,59 +42,19 @@ async function seed(chatbotId) {
       pages.map((page) => prepareDocument(page, splitter))
     );
 
-    console.log("create index if not exist")
-    // Create Pinecone index if it does not exist
-    // const indexList = (await pinecone.listIndexes())?.indexes?.map(index => index.name) || [];
-    // const indexExists = indexList.includes(indexName);
-    // if (!indexExists) {
-    //   await pinecone.createIndex({
-    //     name: indexName,
-    //     dimension,
-    //     waitUntilReady: true,
-    //     spec: {
-    //       serverless: {
-    //         cloud: cloudName,
-    //         region: regionName
-    //       }
-    //     }
-    //   });
-    // }
-
     const index = pinecone && pinecone.Index(indexName);
 
-    const queue = new PQueue({ concurrency: 2 });
+
     // Get the vector embeddings for the documents
+    console.log("Generating embeddings for: " + chatbotId)
+    const queue = new PQueue({ concurrency: 1 });
     const vectors = await Promise.all(
       documents.flat().map(doc => queue.add(() => embedDocument(doc)))
     );
-    // const vectors = await Promise.all(documents.flat().map(embedDocument));
 
-    console.log("chunking and upserting")
     // Upsert vectors into the Pinecone index
+    console.log("chunking and upserting")
     await chunkedUpsert(index, vectors, "", 10);
-
-    // const batchSize = 10;
-
-    // let vectors: Vector[] = [];
-
-    // for (let i = 0; i < documents.length; i += batchSize) {
-    //   const batch = documents.slice(i, i + batchSize);
-    //   const vectors_ = await Promise.all(
-    //     batch.flat().map((doc) => embedDocument(doc))
-    //   );
-
-    //   // vectors.push(...vectors_);
-
-    //   // Upsert vectors into the Pinecone index
-    //   await chunkedUpsert(index, vectors_, "", 10);
-
-    //   console.log(
-    //     "uploaded document " +
-    //     Number(i + batchSize) +
-    //     " out of " +
-    //     documents.length
-    //   );
-    // }
 
     await Chatbot.findByIdAndUpdate(chatbotId, { status: KnowledgebaseStatus.READY });
 
