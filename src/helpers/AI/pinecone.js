@@ -5,11 +5,7 @@ import { AppServiceProviders } from "../enums";
 let pinecone = null;
 
 export const getPineconeClient = async (apikey) => {
-    if (!pinecone) {
-        pinecone = new Pinecone({
-            apiKey: apikey,
-        });
-    }
+    if (!pinecone) pinecone = new Pinecone({ apiKey: apikey });
     return pinecone
 }
 

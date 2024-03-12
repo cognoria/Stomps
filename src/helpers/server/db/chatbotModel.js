@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import { KnowledgebaseStatus } from '../../enums';
+import { KnowledgebaseStatus, chatBotCustomizeDataDefault } from '../../enums';
 
 const Schema = mongoose.Schema;
 
@@ -40,11 +40,11 @@ const chatBotCustomizeData = new Schema({
     showAsPopup: { type: Boolean, required: true, default: false },
     popupDelay: { type: Number, required: true, default: 3000 },
     offlineMessage: { type: Boolean, required: true, default: false },
-    adminEmail: { type: String, required: true, default: '' },
+    adminEmail: { type: String, default: '' },
     collectEmail: { type: Boolean, required: true, default: false },
     collectEmailText: { type: String, required: true, default: 'What is your email address?' },
     welcomeMessage: { type: String, default: 'Hello! How can I assist you today?' },
-    customCSS: { type: String, required: true, default: '' },
+    customCSS: { type: String, default: '' },
     questionExamples: { type: [questionExample], default: () => ([{ question: 'How can I contact you?', label: 'Contact' }]) },
     welcomeMessages: [{ type: String, default: ['Hello! How can I assist you today?'] }],
     launcherIcon: { type: String, required: true, default: 'icon1' },
@@ -73,14 +73,14 @@ const chatBotCustomizeData = new Schema({
 
 export default function chatbotModel() {
     const schema = new Schema({
+        knowledgebase: knowledgebase,
+        pIndex: { type: String, required: true },
         name: { type: String, required: true, unique: true },
         owner: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
-        pIndex: { type: String, required: true },
-        status: { type: String, enum: Object.values(KnowledgebaseStatus), default: KnowledgebaseStatus.CREATED },
         visibility: { type: String, enum: ['PRIVATE', 'PUBLIC'], default: 'PRIVATE' },
-        knowledgebase: knowledgebase,
+        status: { type: String, enum: Object.values(KnowledgebaseStatus), default: KnowledgebaseStatus.CREATED },
         crawlData: { type: crawlData, default: () => ({ pagesContent: [], crawledUrls: [], queue: [] }), select: false },
-        chatBotCustomizeData: { type: chatBotCustomizeData,  default: () => ({}), select: false }
+        chatBotCustomizeData: { type: chatBotCustomizeData, default: () => ({ ...chatBotCustomizeDataDefault }), select: false }
     }, { timestamps: true });
 
     return mongoose.models.Chatbot || mongoose.model('Chatbot', schema);

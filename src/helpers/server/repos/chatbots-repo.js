@@ -1,6 +1,6 @@
 import { Crawler } from "../../AI/newCrwler";
 import seed from "../../AI/seed";
-import { KnowledgebaseStatus } from "../../enums";
+import { KnowledgebaseStatus, chatBotCustomizeDataDefault } from "../../enums";
 import { db } from "../db";
 import { createPinconeIndex } from "../../AI/pinecone";
 import { headers } from "next/headers";
@@ -21,6 +21,9 @@ export const chatbotRepo = {
 
 async function create(params) {
     const ownerId = headers().get('userId');
+    
+    const user = await User.findById(ownerId)
+    if(!user) throw `User not found.`;
 
     // validate
     if (await Chatbot.findOne({ name: params.name })) {
@@ -43,7 +46,8 @@ async function create(params) {
             include: params.include,
             website: params.website,
             filePaths: params.filePaths
-        }
+        },
+        chatBotCustomizeData: chatBotCustomizeDataDefault
     }
 
     return await Chatbot.create(newChatbotDetails);

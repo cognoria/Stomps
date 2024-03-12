@@ -102,6 +102,6 @@ async function seedGlobalKeys(){
             desc: "pinecone demo api key"
         }
     })
-    console.log("seeding done")
+    // console.log("seeding done")
     return await global.save()
 }

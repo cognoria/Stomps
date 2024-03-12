@@ -14,7 +14,6 @@ import PQueue from "p-queue"
 import { globalRepo } from "../server/repos/global-repo";
 const Chatbot = db.Chatbot;
 
-
 async function seed(chatbotId) {
   try {
     console.log("Seeding ", chatbotId)

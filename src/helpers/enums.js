@@ -37,6 +37,50 @@ export const DataStoreStatus = {
     TRAINED: 'TRAINED',
 }
 
+export const chatBotCustomizeDataDefault = {
+    backgroundColor: "#000",
+    borderRadius: "12px",
+    description: "Ask me anything. I'll try to answer based on the data from this website.",
+    fontColor: "#FFF",
+    heading: "I am your AI assistant",
+    prompt: "You are a very enthusiastic chatbot who loves to help people! Your name is {{chatbotName}} and you are designed to respond only based on the given context, outputted in Markdown format.",
+    defaultAnswer: "I don't know how to answer that",
+    placement: 'right',
+    showReadMore: true,
+    showAsPopup: false,
+    popupDelay: 3000,
+    offlineMessage: false,
+    adminEmail: '',
+    collectEmail: false,
+    collectEmailText: 'What is your email address?',
+    welcomeMessage: 'Hello! How can I assist you today?',
+    customCSS: '',
+    questionExamples: [{ question: 'How can I contact you?', label: 'Contact' }],
+    welcomeMessages: ['Hello! How can I assist you today?'],
+    launcherIcon: 'icon1',
+    chatInputPlaceholderText: 'Type your message',
+    assistantTabHeader: 'AI assistant',
+    offlineMsgTabHeader: 'Offline message',
+    readMoreText: 'Read more:',
+    offlineMsgHeading: "Offline message",
+    offlineMsgDescription: "Please fill out the form below and we will get back to you as soon as possible.",
+    nameFieldLabel: "Name",
+    nameFieldPlaceholder: "Enter your name",
+    emailFieldLabel: "Email",
+    emailFieldPlaceholder: "Enter your email",
+    msgFieldLabel: "Message",
+    msgFieldPlaceholder: "Enter your message",
+    requiredFieldMsg: "This field is required",
+    invalidEmailMsg: "Please enter a valid email",
+    formSubmitBtnLabel: "Submit",
+    formSubmitBtnSubmittingText: "Submitting...",
+    formSubmitSuccessMsg: "Your message sent successfully!",
+    formSubmitErrorMsg: "Oops! Something went wrong",
+    formSendAgainBtnLabel: "Send again",
+    formTryAgainBtnLabel: "Try again",
+    model: 'gpt-3.5-turbo'
+};
+
 // /**
 //  * Regions available with the AWS cloud provider
 //  * @export
