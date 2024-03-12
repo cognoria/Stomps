@@ -81,7 +81,7 @@ export default function chatbotModel() {
         knowledgebase: knowledgebase,
         crawlData: crawlData,
         chatBotCustomizeData: chatBotCustomizeData
-    }, 3);
+    }, {timestamps: true});
 
     return mongoose.models.Chatbot || mongoose.model('Chatbot', schema);
 }

@@ -50,9 +50,9 @@ export async function getMatchesFromEmbeddings(embeddings, topK, namespace, pinc
     }
 }
 
-export async function createPinconeIndex(name, type= 'serverless') {
+export async function createPinconeIndex(name, type = 'starter') {
 
-    //TODO: pass apikey
+    // ///TODO: pass apikey
     const apiKey = await globalRepo.getServiceKey(AppServiceProviders.PINECONE)
     const pinecone = await getPineconeClient(apiKey);
 
@@ -60,7 +60,7 @@ export async function createPinconeIndex(name, type= 'serverless') {
 
     switch (type.toLowerCase()) {
         case 'serverless':
-            index = await pinecone.createIndex({
+            return index = await pinecone.createIndex({
                 name,
                 dimension: 1536,
                 metric: 'cosine',
@@ -71,9 +71,9 @@ export async function createPinconeIndex(name, type= 'serverless') {
                     }
                 }
             });
-            break;
+
         case 'pod':
-            index = await pinecone.createIndex({
+            return index = await pinecone.createIndex({
                 name,
                 dimension: 1536,
                 metric: 'cosine',
@@ -85,7 +85,21 @@ export async function createPinconeIndex(name, type= 'serverless') {
                     }
                 }
             });
-            break
+
+        case 'starter':
+            return index = await pinecone.createIndex({
+                name,
+                dimension: 1536,
+                metric: 'cosine',
+                spec: {
+                    pod: {
+                        environment: 'gcp-starter',
+                        podType: 'p1.x1',
+                        pods: 1
+                    }
+                }
+            });
+
 
         default:
             index = await pinecone.createIndex({
