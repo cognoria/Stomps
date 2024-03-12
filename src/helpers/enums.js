@@ -13,6 +13,12 @@ export const KnowledgebaseStatus = {
     READY: 'READY',
 }
 
+export const EmbeddingModels = {
+   TEXT_ADA: "text-embedding-ada-002", 
+   TEXT_3_SMALL: "text-embedding-3-small", 
+   TEXT_3_LARGE: "text-embedding-3-large"
+}
+
 export const AppServiceProviders = {
     OPENAI: "OPENAI",
     PINECONE: "PINECONE",

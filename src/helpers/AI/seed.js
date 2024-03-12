@@ -69,7 +69,7 @@ async function seed(chatbotId) {
 
     const index = pinecone && pinecone.Index(indexName);
 
-    const queue = new PQueue({ concurrency: 5 });
+    const queue = new PQueue({ concurrency: 2 });
     // Get the vector embeddings for the documents
     const vectors = await Promise.all(
       documents.flat().map(doc => queue.add(() => embedDocument(doc)))

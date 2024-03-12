@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import { AppServiceProviders } from '../../enums';
+import { AppServiceProviders, EmbeddingModels } from '../../enums';
 const Schema = mongoose.Schema;
 
 export default function globalModel() {
@@ -18,7 +18,7 @@ export default function globalModel() {
 
     const schema = new Schema({
         jwt_secret: hashed,
-        embedModel: {type: String, enum: ["text-embedding-ada-002"], default: "text-embedding-ada-002"},
+        embedModel: {type: String, enum: Object.values(EmbeddingModels), default: EmbeddingModels.TEXT_3_SMALL},
         services: [service],
     }, {
         timestamps: true
