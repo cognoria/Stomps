@@ -70,12 +70,16 @@ async function trainChatbot(chatbotId) {
 }
 
 async function getById(id) {
-    return await Chatbot.findById(id);
+    const chatbot = await Chatbot.findById(id);
+    if (!chatbot) throw 'Chatbot with id "' + id + '"  not found';
+    return chatbot;
 }
 
 async function getByName(name) {
     const ownerId = headers().get('userId');
-    return await Chatbot.findOne({ owner: ownerId, name })
+    const chatbot = await Chatbot.findOne({ owner: ownerId, name })
+    if (!chatbot) throw 'Chatbot with name "' + name + '"  not found';
+    return chatbot
 }
 
 async function getAllUserBot() {

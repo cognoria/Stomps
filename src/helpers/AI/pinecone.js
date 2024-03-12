@@ -51,70 +51,76 @@ export async function getMatchesFromEmbeddings(embeddings, topK, namespace, pinc
 }
 
 export async function createPinconeIndex(name, type = 'starter') {
+    try {
+        // ///TODO: pass apikey
+        const apiKey = await globalRepo.getServiceKey(AppServiceProviders.PINECONE)
+        const pinecone = await getPineconeClient(apiKey);
 
-    // ///TODO: pass apikey
-    const apiKey = await globalRepo.getServiceKey(AppServiceProviders.PINECONE)
-    const pinecone = await getPineconeClient(apiKey);
+        let index;
 
-    let index;
-
-    switch (type.toLowerCase()) {
-        case 'serverless':
-            return index = await pinecone.createIndex({
-                name,
-                dimension: 1536,
-                metric: 'cosine',
-                spec: {
-                    serverless: {
-                        cloud: 'aws',
-                        region: 'us-west-2'
+        switch (type.toLowerCase()) {
+            case 'serverless':
+                return index = await pinecone.createIndex({
+                    name,
+                    dimension: 1536,
+                    metric: 'cosine',
+                    spec: {
+                        serverless: {
+                            cloud: 'aws',
+                            region: 'us-west-2'
+                        }
                     }
-                }
-            });
+                });
 
-        case 'pod':
-            return index = await pinecone.createIndex({
-                name,
-                dimension: 1536,
-                metric: 'cosine',
-                spec: {
-                    pod: {
-                        environment: 'us-west-1-gcp',
-                        podType: 'p1.x1',
-                        pods: 1
+            case 'pod':
+                return index = await pinecone.createIndex({
+                    name,
+                    dimension: 1536,
+                    metric: 'cosine',
+                    spec: {
+                        pod: {
+                            environment: 'us-west-1-gcp',
+                            podType: 'p1.x1',
+                            pods: 1
+                        }
                     }
-                }
-            });
+                });
 
-        case 'starter':
-            return index = await pinecone.createIndex({
-                name,
-                dimension: 1536,
-                metric: 'cosine',
-                spec: {
-                    pod: {
-                        environment: 'gcp-starter',
-                        podType: 'p1.x1',
-                        pods: 1
+            case 'starter':
+                return index = await pinecone.createIndex({
+                    name,
+                    dimension: 1536,
+                    metric: 'cosine',
+                    spec: {
+                        pod: {
+                            environment: 'gcp-starter',
+                            podType: 'p1.x1',
+                            pods: 1
+                        }
                     }
-                }
-            });
+                });
 
-
-        default:
-            index = await pinecone.createIndex({
-                name,
-                dimension: 1536,
-                metric: 'cosine',
-                spec: {
-                    serverless: {
-                        cloud: 'aws',
-                        region: 'us-west-2'
+            default:
+                index = await pinecone.createIndex({
+                    name,
+                    dimension: 1536,
+                    metric: 'cosine',
+                    spec: {
+                        serverless: {
+                            cloud: 'aws',
+                            region: 'us-west-2'
+                        }
                     }
-                }
-            });
-            break;
+                });
+                break;
+        }
+        return index;
+    } catch (e) {
+        console.log("Error creating pinecone index: ", e)
+        if (e.message.includes("FORBIDDEN")) {
+            throw "Cannot Create a Pinecone Index. limit reached.";
+        } else {
+            throw "An unexpected error occurred while creating a pinecone index. Please try again later.";
+        }
     }
-
-    return index;
 }

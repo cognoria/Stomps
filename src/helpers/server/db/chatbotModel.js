@@ -22,6 +22,11 @@ const crawlData = new Schema({
     queue: [{ type: String }],
 }, { _id: false })
 
+const questionExample = new Schema({
+    question: { type: String, required: true },
+    label: { type: String, required: true }
+}, { _id: false });
+
 const chatBotCustomizeData = new Schema({
     backgroundColor: { type: String, required: true, default: "#000" },
     borderRadius: { type: String, required: true, default: "12px" },
@@ -40,7 +45,7 @@ const chatBotCustomizeData = new Schema({
     collectEmailText: { type: String, required: true, default: 'What is your email address?' },
     welcomeMessage: { type: String, default: 'Hello! How can I assist you today?' },
     customCSS: { type: String, required: true, default: '' },
-    questionExamples: [{ question: String, label: String, _id: false, default: [{ question: 'How can I contact you?', label: 'Contact' }] }],
+    questionExamples: { type: [questionExample], default: () => ([{ question: 'How can I contact you?', label: 'Contact' }]) },
     welcomeMessages: [{ type: String, default: ['Hello! How can I assist you today?'] }],
     launcherIcon: { type: String, required: true, default: 'icon1' },
     chatInputPlaceholderText: { type: String, required: true, default: 'Type your message' },

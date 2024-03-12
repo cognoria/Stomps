@@ -6,7 +6,7 @@ module.exports = apiHandler({
 });
 
 async function chatbot(req) {
-    const { botId } = req.params;
- return await chatbotRepo.getById(botId);
+  const { botId } = req.params;
+  return await chatbotRepo.getById(botId);
 }
 
