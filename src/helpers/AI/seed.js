@@ -56,10 +56,7 @@ async function seed(chatbotId) {
     console.log("chunking and upserting")
     await chunkedUpsert(index, vectors, "", 10);
 
-    await Chatbot.findByIdAndUpdate(chatbotId, { status: KnowledgebaseStatus.READY });
-
-    // Return the first document
-    return documents[0];
+    return await Chatbot.findByIdAndUpdate(chatbotId, { status: KnowledgebaseStatus.READY });
   } catch (error) {
     console.error("Error seeding:", error);
 

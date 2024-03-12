@@ -22,7 +22,7 @@ export class Crawler {
         this.chatbot = await Chatbot.findById(this.chatbotId).select("+crawlData");
 
         if (!this.chatbot || !this.chatbot.knowledgebase) {
-            throw new Error('Chatbot or knowledgebase not found');
+            throw 'Chatbot or knowledgebase not found';
         }
 
         // Ensure crawlData is initialized
@@ -103,7 +103,6 @@ export class Crawler {
     }
 
     async _storeCrawlData(url, content) {
-        console.log({ url, content })
         // Avoid duplicate URLs in crawledUrls
         if (!this.chatbot.crawlData.crawledUrls.includes(url)) {
             this.chatbot.crawlData.crawledUrls.push(url);

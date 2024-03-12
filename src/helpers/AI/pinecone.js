@@ -25,7 +25,7 @@ export async function getMatchesFromEmbeddings(embeddings, topK, namespace, pinc
 
     // Check if the desired index is present, else throw an error
     if (!indexes.includes(pinconeIndex)) {
-        throw (new Error(`Index index does not exist`))
+        throw `Index index does not exist`
     }
 
     // Get the Pinecone index
