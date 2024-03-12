@@ -1,19 +1,17 @@
 
-import { OpenAIApi, Configuration } from "openai-edge";
-import { globalRepo } from "../server/repos/global-repo";
+import { globalRepo } from "../server";
 import { AppServiceProviders } from "../enums";
+import OpenAI from 'openai'
 
-
-let openAi = null;
+let openai = null;
 
 export const getOpenaiClient = async (apikey) => {
-    if (!openAi) {
-        openAi =  new OpenAIApi( new Configuration({
-            //TODO: get key from user profile
+    if (!openai) {
+        openai =  new OpenAI({
             apiKey: apikey
-        }))
+        })
     }
-    return openAi
+    return openai
 }
 
 

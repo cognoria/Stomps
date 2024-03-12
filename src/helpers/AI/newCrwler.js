@@ -19,7 +19,7 @@ export class Crawler {
     }
 
     async _loadChatbotData() {
-        this.chatbot = await Chatbot.findById(this.chatbotId);
+        this.chatbot = await Chatbot.findById(this.chatbotId).select("+crawlData");
 
         if (!this.chatbot || !this.chatbot.knowledgebase) {
             throw new Error('Chatbot or knowledgebase not found');
@@ -47,8 +47,7 @@ export class Crawler {
     async crawl() {
         await this._loadChatbotData(); // Load chatbot data
 
-        this.chatbot.status = KnowledgebaseStatus.CRAWLING;
-        await this.chatbot.save()
+        await Chatbot.findByIdAndUpdate(this.chatbotId, { status: KnowledgebaseStatus.CRAWLING });
 
         while (this._queue.length > 0 && this.chatbot.crawlData.pagesContent.length < this._maxPages) {
             const { url, depth } = this._queue.shift();
@@ -70,8 +69,8 @@ export class Crawler {
             });
         }
 
-        this.chatbot.status = KnowledgebaseStatus.CRAWLED;
-        return await this.chatbot.save()
+        console.log("Crawling completed")
+        return await Chatbot.findByIdAndUpdate(this.chatbotId, { status: KnowledgebaseStatus.CRAWLED });
     }
 
     _addToQueue(url, depth = 0) {
@@ -113,5 +112,14 @@ export class Crawler {
         // Push new page content
         this.chatbot.crawlData.pagesContent.push({ url, content });
         await this.chatbot.save();
+    }
+
+
+    _extractUrls(html, baseUrl) {
+        const $ = cheerio.load(html);
+        const relativeUrls = $("a")
+            .map((_, link) => $(link).attr("href"))
+            .get();
+        return relativeUrls.map((relativeUrl) => new URL(relativeUrl, baseUrl).href);
     }
 }

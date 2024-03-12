@@ -26,8 +26,11 @@ async function create(params) {
     if (await Chatbot.findOne({ name: params.name })) {
         throw 'Chatbot with name "' + params.name + '"  already exist';
     }
+
+    //generate random index name
     const indexName = `${params.name.toLowerCase()}-${generateRandomString(6)}-index`
     
+    //create pinecone index
     await createPinconeIndex(indexName)
 
     const newChatbotDetails = {
@@ -43,7 +46,7 @@ async function create(params) {
         }
     }
     
-    return  await Chatbot.create(newChatbotDetails);
+    return await Chatbot.create(newChatbotDetails);
 }
 
 async function trainChatbot(chatbotId) {
@@ -63,7 +66,8 @@ async function trainChatbot(chatbotId) {
     
     await crawlPages;
 
-    await seed(chatbotId)
+   const sm = await seed(chatbotId)
+    return sm
 }
 
 async function update(id, params) {

@@ -17,13 +17,14 @@ const Chatbot = db.Chatbot;
 
 async function seed(chatbotId) {
   try {
+    console.log("Seeding ", chatbotId)
     // Initialize the Pinecone client
     // ///TODO: pass apiKey
-    
+
     const apiKey = await globalRepo.getServiceKey(AppServiceProviders.PINECONE)
     const pinecone = await getPineconeClient(apiKey);
 
-    const chatbot = await Chatbot.findByIdAndUpdate(chatbotId, { status: KnowledgebaseStatus.GENERATING_EMBEDDINGS });
+    const chatbot = await Chatbot.findByIdAndUpdate(chatbotId, { status: KnowledgebaseStatus.GENERATING_EMBEDDINGS }).select("+crawlData");
 
     //TODO: make these dynamic either store in Global or inside each chatbot make editable
     let splittingMethod = "markdown";
@@ -35,7 +36,7 @@ async function seed(chatbotId) {
     let regionName = "us-west-2"
 
     const indexName = chatbot.pIndex;
-    const pages = chatbot.crawlData.pagesContents;
+    const pages = chatbot.crawlData.pagesContent;
 
     // Choose the appropriate document splitter based on the splitting method
     const splitter =
@@ -48,22 +49,23 @@ async function seed(chatbotId) {
       pages.map((page) => prepareDocument(page, splitter))
     );
 
+    console.log("create index if not exist")
     // Create Pinecone index if it does not exist
-    const indexList = (await pinecone.listIndexes())?.indexes?.map(index => index.name) || [];
-    const indexExists = indexList.includes(indexName);
-    if (!indexExists) {
-      await pinecone.createIndex({
-        name: indexName,
-        dimension,
-        waitUntilReady: true,
-        spec: {
-          serverless: {
-            cloud: cloudName,
-            region: regionName
-          }
-        }
-      });
-    }
+    // const indexList = (await pinecone.listIndexes())?.indexes?.map(index => index.name) || [];
+    // const indexExists = indexList.includes(indexName);
+    // if (!indexExists) {
+    //   await pinecone.createIndex({
+    //     name: indexName,
+    //     dimension,
+    //     waitUntilReady: true,
+    //     spec: {
+    //       serverless: {
+    //         cloud: cloudName,
+    //         region: regionName
+    //       }
+    //     }
+    //   });
+    // }
 
     const index = pinecone && pinecone.Index(indexName);
 
@@ -74,6 +76,7 @@ async function seed(chatbotId) {
     );
     // const vectors = await Promise.all(documents.flat().map(embedDocument));
 
+    console.log("chunking and upserting")
     // Upsert vectors into the Pinecone index
     await chunkedUpsert(index, vectors, "", 10);
 
@@ -100,6 +103,7 @@ async function seed(chatbotId) {
     //   );
     // }
 
+    await Chatbot.findByIdAndUpdate(chatbotId, { status: KnowledgebaseStatus.READY });
 
     // Return the first document
     return documents[0];
