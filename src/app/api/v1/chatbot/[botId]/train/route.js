@@ -7,7 +7,7 @@ module.exports = apiHandler({
 });
 
 async function trainChatbot(req) {
-    const { botId } = req.params;
+  const { botId } = req.params;
   return await chatbotRepo.trainChatbot(botId);
 }
 

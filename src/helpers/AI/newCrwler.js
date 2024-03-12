@@ -25,6 +25,16 @@ export class Crawler {
             throw new Error('Chatbot or knowledgebase not found');
         }
 
+        // Ensure crawlData is initialized
+        if (!this.chatbot.crawlData) {
+            this.chatbot.crawlData = { pagesContent: [], crawledUrls: [], queue: [] };
+        } else {
+            // Ensure sub-properties are initialized
+            this.chatbot.crawlData.pagesContent ??= [];
+            this.chatbot.crawlData.crawledUrls ??= [];
+            this.chatbot.crawlData.queue ??= [];
+        }
+
         // Setup crawler options based on knowledgebase settings
         this._maxPages = this.chatbot.knowledgebase.maxPages || 100;
         this._includePatterns = this.chatbot.knowledgebase.include.map(pattern => new RegExp(pattern, 'i'));
@@ -40,7 +50,7 @@ export class Crawler {
         this.chatbot.status = KnowledgebaseStatus.CRAWLING;
         await this.chatbot.save()
 
-        while (this._queue.length > 0 && this.chatbot.crawlData.pagesContents.length < this._maxPages) {
+        while (this._queue.length > 0 && this.chatbot.crawlData.pagesContent.length < this._maxPages) {
             const { url, depth } = this._queue.shift();
 
             if (depth > this._maxDepth || this._seen.has(url)) continue;
@@ -59,7 +69,7 @@ export class Crawler {
                 }
             });
         }
-        
+
         this.chatbot.status = KnowledgebaseStatus.CRAWLED;
         return await this.chatbot.save()
     }
@@ -94,13 +104,14 @@ export class Crawler {
     }
 
     async _storeCrawlData(url, content) {
+        console.log({ url, content })
         // Avoid duplicate URLs in crawledUrls
         if (!this.chatbot.crawlData.crawledUrls.includes(url)) {
             this.chatbot.crawlData.crawledUrls.push(url);
         }
 
         // Push new page content
-        this.chatbot.crawlData.pagesContents.push({ url, content });
+        this.chatbot.crawlData.pagesContent.push({ url, content });
         await this.chatbot.save();
     }
 }

@@ -9,6 +9,7 @@ module.exports = apiHandler({
 
 async function createChatbot(req) {
   const body = await req.json();
+  body.filePaths = req.files;
   return await chatbotRepo.create(body);
 }
 

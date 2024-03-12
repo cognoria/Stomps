@@ -30,36 +30,40 @@ async function create(params) {
     
     await createPinconeIndex(indexName)
 
-    params.pIndex = indexName;
-    params.owner = ownerId;
-
-    const newchatbot = await Chatbot.create(params)
-    return newchatbot;
+    const newChatbotDetails = {
+        name: params.name,
+        owner: ownerId,
+        pIndex: indexName,
+        knowledgebase: {
+            urls: params.urls,
+            exclude: params.exclude,
+            include: params.include,
+            website: params.website,
+            filePaths: params.filePaths
+        }
+    }
+    
+    return  await Chatbot.create(newChatbotDetails);
 }
 
 async function trainChatbot(chatbotId) {
-    const chatbot = Chatbot.findById(chatbotId);
 
-    if (!chatbot) throw 'Chatbot not found';
-
-    const crawler = new Crawler(chatbot.id)
+    const crawler = new Crawler(chatbotId)
 
     const crawlPages = new Promise(async (resolve, reject) => {
         try {
             await crawler.crawl();
             resolve('Crawl completed successfully');
         } catch (error) {
-            chatbot.status = KnowledgebaseStatus.CRAWL_ERROR;
-            await chatbot.save()
-
+            await Chatbot.findByIdAndUpdate(chatbotId, { status: KnowledgebaseStatus.CRAWL_ERROR });
+            console.log(error)
             reject(`Crawl failed: ${error.message}`);
         }
     });
     
     await crawlPages;
 
-    const seedAndEmbbed = seed(chatbot.id)
-
+    await seed(chatbotId)
 }
 
 async function update(id, params) {
@@ -95,7 +99,7 @@ async function getAllUserBot() {
 
 
 async function getAllNewBot() {
-    return await Chatbot.find({ status: KnowledgebaseStatus.CRAWLED }).sort({ timestamp: -1 })
+    return await Chatbot.find({ status: KnowledgebaseStatus.CREATED }).sort({ timestamp: -1 })
 }
 
 async function _delete(id) {

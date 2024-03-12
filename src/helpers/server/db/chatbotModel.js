@@ -4,7 +4,7 @@ import { KnowledgebaseStatus } from '../../enums';
 const Schema = mongoose.Schema;
 
 const knowledgebase = new Schema({
-    websiteUrl: { type: String },
+    website: { type: String },
     urls: [{ type: String }],
     include: [{ type: String }],
     exclude: [{ type: String }],
@@ -17,7 +17,7 @@ const pageSchema = new mongoose.Schema({
 }, { _id: false });
 
 const crawlData = new Schema({
-    pagesContents: [pageSchema],
+    pagesContent: [pageSchema],
     crawledUrls: [{ type: String }],
     queue: [{ type: String }],
 }, { _id: false })
@@ -79,8 +79,8 @@ export default function chatbotModel() {
         status: { type: String, enum: Object.values(KnowledgebaseStatus), default: KnowledgebaseStatus.CREATED },
         visibility: { type: String, enum: ['PRIVATE', 'PUBLIC'], default: 'PRIVATE' },
         knowledgebase: knowledgebase,
-        crawlData: crawlData,
-        chatBotCustomizeData: chatBotCustomizeData
+        crawlData: {type: crawlData, default: () => ({ pagesContent: [], crawledUrls: [], queue: [] }), select: false},
+        chatBotCustomizeData: {type: chatBotCustomizeData}
     }, {timestamps: true});
 
     return mongoose.models.Chatbot || mongoose.model('Chatbot', schema);
