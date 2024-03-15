@@ -26,7 +26,7 @@ function Signin_form() {
   const onSubmit = (data, e) => {
     e.preventDefault();
     loginUser(data, () => {
-      router.push("/create_bot");
+      router.push("/");
     });
   };
   const [eye_open, setEye_open] = useState(false);
