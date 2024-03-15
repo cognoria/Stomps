@@ -26,7 +26,7 @@ function Signin_form() {
   const onSubmit = (data, e) => {
     e.preventDefault();
     loginUser(data, () => {
-      router.push("/dashboard/chatbot/create_bot");
+      router.push("/create_bot");
     });
   };
   const [eye_open, setEye_open] = useState(false);
