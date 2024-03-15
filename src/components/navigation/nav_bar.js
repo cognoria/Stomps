@@ -90,7 +90,7 @@ function Nav_bar() {
           </div>
         ) : (
           <div className="flex text-[14px] text-black gap-x-3 flex-row items-center justify-end">
-            <Link href="/">
+            <Link href="/create_bot">
               <div>ChatBot</div>
             </Link>
             <Link href="/support">

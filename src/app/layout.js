@@ -3,8 +3,6 @@ import Head from "next/head";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-import { useRouter } from "next/navigation";
-import React from "react";
 import { Modal } from "../components/customComponents/modals/modal";
 
 import "./globals.css";
@@ -16,7 +14,6 @@ export const metadata = {
 };
 
 export default function RootLayout({ children }) {
-
   return (
     <html lang="en">
       <Head>
