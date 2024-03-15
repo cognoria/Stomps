@@ -73,13 +73,13 @@ function Chat_bot_nav() {
       {/* desktop nav for chat bot */}
 
       {/* mobile nav for chatbot */}
-      <div className="w-screen  items-center  px-5">
+      <div className="w-screen  flex flex-col items-center lg:hidden  px-5">
         <div className="flex flex-row w-full justify-between ">
           <div className="text-sky-700 text-2xl font-bold font-manrope leading-[28.80px]">
             Data Sources
           </div>
 
-          <div className="flex lg:hidden ">
+          <div className="flex  ">
             <button
               type="button"
               className="text-gray-900  "
