@@ -1,30 +1,30 @@
 
-import { OpenAIApi, Configuration } from "openai-edge";
+import { globalRepo } from "../server";
+import { AppServiceProviders } from "../enums";
+import OpenAI from 'openai'
 
-const config = new Configuration({
-    apiKey: process.env.OPENAI_API_KEY
-})
-const openai = new OpenAIApi(config)
+let openai;
 
-export function getOpenAiConfig(apiKey) {
-    return new Configuration({
-        apiKey: apiKey
-    })
+export const getOpenaiClient = async (apikey) => {
+    if (!openai) openai = new OpenAI({ apiKey: apikey })
+    return openai
 }
 
 export async function getEmbeddings(input) {
     try {
-        const response = await openai.createEmbedding({
-            //TODO: get model from bot's model
-            model: "text-embedding-ada-002",
-            input: input.replace(/\n/g, ' ')
-        })
+        const apiKey = await globalRepo.getServiceKey(AppServiceProviders.OPENAI)
+        const embedModel = await globalRepo.getEmbedModel();
+        const openai = await getOpenaiClient(apiKey)
 
-        const result = await response.json();
-        return result.data[0].embedding
+        const embedding = await openai.embeddings.create({
+            model: embedModel,
+            input: input.replace(/\n/g, ' '),
+            encoding_format: "float",
+        });
 
+        return embedding.data[0].embedding;
     } catch (e) {
         console.log("Error calling OpenAI embedding API: ", e);
-        throw new Error(`Error calling OpenAI embedding API: ${e}`);
+        throw new Error(`Error embedding: ${e}`);
     }
 }

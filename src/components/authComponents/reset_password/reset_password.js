@@ -9,7 +9,10 @@ import useModalStore from "../../../store/modal/modal_state";
 import { usePasswordValidationStore } from "../../../store/validation/validations";
 import { password_schema } from "../../../utils/resolver/yup_schema";
 import { Reset_password_modal } from "../../customComponents/modals/auth_modal/auth_modal";
+import { useRouter } from "next/navigation";
+
 function Reset_password({ token }) {
+  const router = useRouter()
   const { resetPassword, loading, error } = useResetPasswordAuthStore(
     (state) => ({
       resetPassword: state.resetPassword,

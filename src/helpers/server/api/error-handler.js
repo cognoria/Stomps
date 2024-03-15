@@ -19,5 +19,5 @@ function errorHandler(err) {
 
     // default to 500 server error
     console.error(err);
-    return NextResponse.json({ message: err.message }, { status: 500 });
+    return NextResponse.json({ message: "Something went wrong" }, { status: 500 });
 }

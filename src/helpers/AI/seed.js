@@ -4,83 +4,68 @@ import {
   MarkdownTextSplitter,
   RecursiveCharacterTextSplitter,
 } from "@pinecone-database/doc-splitter";
-import { utils as PineconeUtils } from "@pinecone-database/pinecone";
 import md5 from "md5";
 import { getPineconeClient } from "./pinecone";
-import { Crawler, Page } from "./crawler";
 import { truncateStringByBytes } from "../truncateString";
-// import PQueue from "p-queue";
+import { chunkedUpsert } from "./chunkedUpsert";
+import { db } from "../server/db";
+import { AppServiceProviders, KnowledgebaseStatus } from "../enums";
+import PQueue from "p-queue"
+import { globalRepo } from "../server/repos/global-repo";
+const Chatbot = db.Chatbot;
 
-const { chunkedUpsert, createIndexIfNotExists } = PineconeUtils;
-
-async function seed(url, limit, indexName, options) {
+async function seed(chatbotId) {
   try {
-    // Initialize the Pinecone client
-    //TODO: pass apiKey
-    const pinecone = await getPineconeClient();
-    // console.log({pinecone});
-    // Destructure the options object
-    const { splittingMethod, chunkSize, chunkOverlap } = options;
+    console.log("Seeding ", chatbotId)
+    const apiKey = await globalRepo.getServiceKey(AppServiceProviders.PINECONE)
+    const pinecone = await getPineconeClient(apiKey);
 
-    // Create a new Crawler with depth 1 and maximum pages as limit
-    const crawler = new Crawler(10, limit || 100);
+    const chatbot = await Chatbot.findByIdAndUpdate(chatbotId, { status: KnowledgebaseStatus.GENERATING_EMBEDDINGS }).select("+crawlData");
 
-    // Crawl the given URL and get the pages
-    const pages = (await crawler.crawl(url));
+    //TODO: make these dynamic either store in Global or inside each chatbot make editable
+    let splittingMethod = "markdown";
+    let chunkSize = 2048;
+    let chunkOverlap = 20;
+
+    const indexName = chatbot.pIndex;
+    const pages = chatbot.crawlData.pagesContent;
 
     // Choose the appropriate document splitter based on the splitting method
-    const splitter=
+    const splitter =
       splittingMethod === "recursive"
         ? new RecursiveCharacterTextSplitter({ chunkSize, chunkOverlap })
-        : new MarkdownTextSplitter({});
+        : new MarkdownTextSplitter({ chunkSize, chunkOverlap });
 
     // Prepare documents by splitting the pages
     const documents = await Promise.all(
       pages.map((page) => prepareDocument(page, splitter))
     );
 
-    // Create Pinecone index if it does not exist
-    await createIndexIfNotExists(pinecone, indexName, 1536);
     const index = pinecone && pinecone.Index(indexName);
 
-    // const queue = new PQueue({concurrency: 1});
-    // // Get the vector embeddings for the documents
-    // const vectors = await Promise.all(
-    //   documents.flat().map(doc => queue.add(() => embedDocument(doc)))
-    // );
-    // // const vectors = await Promise.all(documents.flat().map(embedDocument));
 
-    const batchSize = 10;
-    // let vectors: Vector[] = [];
+    // Get the vector embeddings for the documents
+    console.log("Generating embeddings for: " + chatbotId)
+    const queue = new PQueue({ concurrency: 1 });
+    const vectors = await Promise.all(
+      documents.flat().map(doc => queue.add(() => embedDocument(doc)))
+    );
 
-    for (let i = 0; i < documents.length; i += batchSize) {
-      const batch = documents.slice(i, i + batchSize);
-      const vectors_ = await Promise.all(
-        batch.flat().map((doc) => embedDocument(doc))
-      );
+    // Upsert vectors into the Pinecone index
+    console.log("chunking and upserting")
+    await chunkedUpsert(index, vectors, "", 10);
 
-      // vectors.push(...vectors_);
-
-      // Upsert vectors into the Pinecone index
-      await chunkedUpsert(index, vectors_, "", 10);
-      
-      console.log(
-        "uploaded document " +
-          Number(i + batchSize) +
-          " out of " +
-          documents.length
-      );
-    }
-
-    // Return the first document
-    return documents[0];
+    return await Chatbot.findByIdAndUpdate(chatbotId, { status: KnowledgebaseStatus.READY });
   } catch (error) {
     console.error("Error seeding:", error);
+
+    //update chatbot status;
+    await Chatbot.findByIdAndUpdate(chatbotId, { status: KnowledgebaseStatus.EMBEDDING_ERROR })
     throw error;
   }
 }
 
-async function embedDocument(doc){
+async function embedDocument(doc) {
   try {
     // Generate OpenAI embeddings for the document content
     const embedding = await getEmbeddings(doc.pageContent);
@@ -106,10 +91,7 @@ async function embedDocument(doc){
   }
 }
 
-async function prepareDocument(
-  page,
-  splitter
-){
+async function prepareDocument(page, splitter) {
   // Get the content of the page
   const pageContent = page.content;
 

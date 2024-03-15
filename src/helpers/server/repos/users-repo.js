@@ -2,12 +2,13 @@ import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 import crypto from "crypto"
 import { headers } from 'next/headers';
-import { db } from './db';
-import { hashToken } from '../cryptography';
-import { emailTemplate, getEmailText } from './email/emailTemplate';
-import { logUserActivity } from './log-repo';
-import { GoogleVerifier } from './oauth.Google';
-import elasticMailSender from './email/elasticSender';
+import { db } from '../db';
+import { hashToken } from '../../cryptography';
+import { emailTemplate, getEmailText } from '../email/emailTemplate';
+import { logUserActivity } from './logs-repo';
+import { GoogleVerifier } from '../oauth.Google';
+import elasticMailSender from '../email/elasticSender';
+import { tokenRepo, globalRepo } from './';
 
 const User = db.User;
 const Token = db.Token;
@@ -38,7 +39,7 @@ async function authenticate({ email, password }) {
 
     // create a jwt token that is valid for 7 days
     //TODO: JWT_Secret will be created randomly and saved for the user
-    const token = jwt.sign({ sub: user.id }, '1234567890abcefjhijkl', { expiresIn: '7d' });
+    const token = jwt.sign({ sub: user.id }, await globalRepo.getJwtSecret(), { expiresIn: '7d' });
 
     await logUserActivity(user.id, 'User Login', { ip: headers().get('X-Forwarded-For') })
     return {
@@ -68,6 +69,11 @@ async function getCurrent() {
     }
 }
 
+/**
+ * create a new user
+ * @param {User<Object>} params 
+ * @returns 
+ */
 async function create(params) {
     // validate
     if (await User.findOne({ email: params.email })) {
@@ -82,7 +88,7 @@ async function create(params) {
 
     // Hash and save token
     const verifyTokenHash = hashToken(verifyToken)
-    await Token.create({ user: user.id, token: verifyTokenHash })
+    await tokenRepo.create(user.id, verifyTokenHash)
 
     //TODO: change this to use app's root url
     const verifyBaseUrl = 'https://stomp-ai-app-zkwp.vercel.app/verify'
@@ -94,7 +100,7 @@ async function create(params) {
 
     // await sendGridSender({email, title, text, html})
     await elasticMailSender({ email: params.email, title, text, html });
-    
+
     //log user register
     await logUserActivity(user.id, 'User Register', { ip: headers().get('X-Forwarded-For'), email: params.email })
     return user;
@@ -125,7 +131,7 @@ async function veryfyUser(token) {
     const verify_token = hashToken(token)
 
     //verify token
-    const verifyToken = await Token.findOne({ token: verify_token })
+    const verifyToken = await tokenRepo.find(verify_token)
     if (!verifyToken) throw `Error: Invalid or expired token.`;
 
     //find user attributed to token
@@ -137,7 +143,7 @@ async function veryfyUser(token) {
 
 
     // Delete the used reset token
-    await Token.deleteOne({ _id: verifyToken._id });
+    await tokenRepo.delete(verifyToken._id);
 
     console.log('Updated user verification status:', user.isVerified);
 
@@ -161,7 +167,7 @@ async function resendVerificationEmail(email) {
 
     // Hash token
     const verifyTokenHash = hashToken(verifyToken)
-    await Token.create({ user: user._id, token: verifyTokenHash })
+    await tokenRepo.create(user._id, verifyTokenHash)
 
     //TODO: change this to use app's root url
     const verifyBaseUrl = 'https://stomp-ai-app-zkwp.vercel.app/verify'
@@ -212,7 +218,7 @@ async function forgetPassword(email) {
 
     // Hash token
     const resetTokenHash = hashToken(resetToken)
-    await Token.create({ user: user._id, token: resetTokenHash })
+    await tokenRepo.create(user._id, resetTokenHash)
 
     //TODO: change this to use app's root url
     const resetBaseUrl = 'https://stomp-ai-app-zkwp.vercel.app/reset'
@@ -235,17 +241,17 @@ async function resetPassword(token, password, confirmPassword) {
 
     const reset_token = hashToken(token)
 
-    const resetToken = await Token.findOne({ token: reset_token })
+    const resetToken = await tokenRepo.find(reset_token)
     if (!resetToken) throw `Error: invalid or expired token.`;
     //find user attributed to token
     const user = await User.findById(resetToken.user)
 
     //update new users password
-    user.hash = bcrypt.hashSync(password, 10);;
+    user.hash = bcrypt.hashSync(password, 10);
     await user.save()
 
     // Delete the used reset token
-    await Token.deleteOne({ _id: resetToken._id });
+    await tokenRepo.delete(resetToken._id);
 
     //log user reset pass
     await logUserActivity(user._id, 'User Reset Password', { ip: headers().get('X-Forwarded-For') })
