@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 function Empty_bot() {
   return (
     <div className="w-full p-[6%] mt-[80px] flex flex-col itmes-center justify-center ">
@@ -10,9 +12,12 @@ function Empty_bot() {
           <div className="text-zinc-500 mt-5 text-sm font-bold font-manrope leading-tight tracking-tight">
             You haven’t created any chatbots yet.
           </div>
-          <button className="w-64  text-white text-sm font-bold font-manrope leading-snug shrink basis-0 mt-5 h-11 px-5 py-3 bg-sky-700 rounded-lg shadow border border-sky-700 justify-center items-center gap-2 flex">
+          <Link
+            href="/create_bot"
+            className="w-64  text-white text-sm font-bold font-manrope leading-snug shrink basis-0 mt-5 h-11 px-5 py-3 bg-sky-700 rounded-lg shadow border border-sky-700 justify-center items-center gap-2 flex"
+          >
             Create ChatBot
-          </button>
+          </Link>
         </div>
       </div>
     </div>

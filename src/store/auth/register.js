@@ -8,7 +8,7 @@ const useRegisterAuthStore = create(
     error: null,
     loading: false, // Add loading state
     registerUser: async ({ email, password }, onSuccess) => {
-      console.log(`store hitted ${email}, ${password}`);
+      // console.log(`store hitted ${email}, ${password}`);
       set({ loading: true, error: null }); // Start loading and reset any previous errors
       try {
         const response = await fetch("/api/v1/auth/register", {

@@ -1,6 +1,30 @@
 "use client";
 
+import { useState } from "react";
+import useBotCreationStore from "../../../store/chat_bot_state/create_new_bot";
+
 function Text() {
+
+   const [textInput, setTextInput] = useState("");
+   const createBot = useBotCreationStore((state) => state.createBot);
+   const loading = useBotCreationStore((state) => state.loading);
+
+   const handleInputChange = (event) => {
+     setTextInput(event.target.value);
+   };
+
+
+    const handleSubmit = async () => {
+      try {
+
+        await createBot(textInput);
+        console.log("Bot created successfully!");
+
+        setTextInput("");
+      } catch (error) {
+        console.error("Failed to create bot:", error.message);
+      }
+    };
   return (
     <div className="flex flex-col  items-center justify-center w-full">
       <div className="flex mt-[60px] w-full flex-col lg:flex-row items-center lg:items-start gap-3  justify-center">
@@ -11,6 +35,8 @@ function Text() {
           <div className="h-[85%] ">
             <div className="p-3 h-[80%]">
               <textarea
+                value={textInput}
+                onChange={handleInputChange}
                 placeholder="paste text here"
                 className="h-full placeholder:text-gray-700 p-3 placeholder:text-xs placeholder:font-manrope w-full border-[1px] border-gray-200"
               ></textarea>
@@ -27,8 +53,14 @@ function Text() {
             Sources
           </div>
           <div className=" w-full  px-3  py-3 justify-center items-center gap-2 flex">
-            <button className="text-white py-[16px] px-5 w-full text-sm font-bold font-manrope bg-sky-700 rounded-lg shadow border border-sky-700  text-center leading-snug">
-              Create Chatbot
+            <button
+              className={`text-white py-[16px] px-5 w-full text-sm font-bold font-manrope bg-sky-700 rounded-lg shadow border border-sky-700 text-center leading-snug ${
+                loading && "opacity-50 cursor-not-allowed"
+              }`}
+              onClick={handleSubmit}
+              disabled={loading}
+            >
+              {loading ? "Creating..." : "Create Chatbot"}
             </button>
           </div>
         </div>

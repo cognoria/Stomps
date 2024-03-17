@@ -2,8 +2,8 @@
 
 import Link from "next/link";
 import { useUserStore } from "../../../store/auth/userState";
-import { Plan_cards } from "../../customComponents/custom_cards/plan_cards";
 import useModalStore from "../../../store/modal/modal_state";
+import { Plan_cards } from "../../customComponents/custom_cards/plan_cards";
 import { Account_modal } from "../../customComponents/modals/dashboard_modal/account_modal";
 
 function Account() {
@@ -78,7 +78,19 @@ function Account() {
 
       <Plan_cards />
       <div className="lg:w-[570px] w-[95%] rounded-lg flex-row flex gap-4  justify-end items-end ">
-        <button className="w-[146px] p-2 rounded-lg shadow border border-red-500 justify-center items-center gap-2 flex" onClick={()=>useModalStore.getState().showModal(<Account_modal />)}>
+        <button
+          className="w-[146px] p-2 rounded-lg shadow border border-red-500 justify-center items-center gap-2 flex"
+          onClick={() =>
+            useModalStore
+              .getState()
+              .showModal(
+                <Account_modal
+                  text={" Are you sure you want to delete your account?"}
+                  button_name="Delete Account"
+                />
+              )
+          }
+        >
           <img src="/images/main/support/trash.svg" />
           <p className="text-red-500 text-xs font-bold font-manrope leading-snug">
             Delete Account

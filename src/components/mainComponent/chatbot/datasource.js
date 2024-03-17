@@ -1,10 +1,12 @@
 "use client";
 
 import { useState } from "react";
+import useBotCreationStore from "../../../store/chat_bot_state/create_new_bot";
 
 function Datasource() {
   const [selectedFile, setSelectedFile] = useState(null);
-
+ const loading = useBotCreationStore((state) => state.loading);
+ const createBot = useBotCreationStore((state) => state.createBot);
   const handleFileChange = (event) => {
     const file = event.target.files[0];
     if (file) {
@@ -23,6 +25,23 @@ function Datasource() {
     if (file) {
       console.log("Dropped file:", file.name);
       setSelectedFile(file.name);
+    }
+  };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    if (!selectedFile) {
+      setFileError("Please select a file.");
+      return;
+    }
+    try {
+      // Call the createBot function from the Zustand store
+      await createBot(selectedFile);
+      // Handle success (e.g., redirect or display success message)
+      console.log("Bot created successfully!");
+    } catch (error) {
+      // Handle error
+      console.error("Failed to create bot:", error.message);
     }
   };
 
@@ -76,8 +95,14 @@ function Datasource() {
             Sources
           </div>
           <div className=" w-full  px-3  py-3 justify-center items-center gap-2 flex">
-            <button className="text-white py-[16px] px-5 w-full text-sm font-bold font-manrope bg-sky-700 rounded-lg shadow border border-sky-700  text-center leading-snug">
-              Create Chatbot
+            <button
+              className={`text-white py-[16px] px-5 w-full text-sm font-bold font-manrope bg-sky-700 rounded-lg shadow border border-sky-700 text-center leading-snug ${
+                loading && "opacity-50 cursor-not-allowed"
+              }`}
+              onClick={handleSubmit}
+              disabled={loading}
+            >
+              {loading ? "Creating..." : "Create Chatbot"}
             </button>
           </div>
         </div>
