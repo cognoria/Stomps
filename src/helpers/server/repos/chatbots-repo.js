@@ -45,7 +45,7 @@ async function create(params) {
             exclude: params.exclude,
             include: params.include,
             website: params.website,
-            filePaths: params.filePaths
+            contents: params.contents
         },
         chatBotCustomizeData: chatBotCustomizeDataDefault
     }
