@@ -8,7 +8,7 @@ const knowledgebase = new Schema({
     urls: [{ type: String }],
     include: [{ type: String }],
     exclude: [{ type: String }],
-    filePaths: [{ type: String }]
+    contents: {type: String}
 }, { _id: false })
 
 const pageSchema = new mongoose.Schema({

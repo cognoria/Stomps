@@ -18,5 +18,6 @@ createChatbot.schema = joi.object({
   name: joi.string().required(),
   urls: joi.array().items(joi.string().uri({ scheme: ['http', 'https'] })).required(), //array of string
   include: joi.array().items(joi.string().uri({ scheme: ['http', 'https'] })),  //array of string
-  exclude: joi.array().items(joi.string().uri({ scheme: ['http', 'https'] }))  //array of string
+  exclude: joi.array().items(joi.string().uri({ scheme: ['http', 'https'] })),  //array of string
+  contents: joi.string()
 });
