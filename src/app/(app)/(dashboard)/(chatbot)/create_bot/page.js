@@ -2,6 +2,7 @@
 
 import QA from "../../../../../components/mainComponent/chatbot/QA";
 import Datasource from "../../../../../components/mainComponent/chatbot/datasource";
+import Sources from "../../../../../components/mainComponent/chatbot/sources";
 import Text from "../../../../../components/mainComponent/chatbot/text";
 import Website from "../../../../../components/mainComponent/chatbot/website";
 import Chat_bot_nav from "../../../../../components/navigation/chatbot_nav";
@@ -39,6 +40,9 @@ function page() {
           <Chat_bot_nav />
         </div>
         <div className="w-full">{renderContent()}</div>
+        <div className="flex flex-col w-full items-center justify-center">
+          <Sources />
+        </div>
       </div>
     </div>
   );

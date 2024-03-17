@@ -1,10 +1,30 @@
 "use client";
 
+import { useState } from "react";
+import useFormDataStore from "../../../store/chat_bot_state/chat_bot_store";
+import useLinkStore from "../../../store/chat_bot_state/generate_links";
+import useSitemapStore from "../../../store/chat_bot_state/generate_sitemap";
+
 function Website() {
+  const [url, setUrl] = useState("");
+  const [sitemapUrl, setSitemapUrl] = useState("");
+  const loading = useLinkStore((state) => state.loading);
+  const loading2 = useSitemapStore((state) => state.loading);
+  const include = useFormDataStore((state) => state.formData.include);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    await useLinkStore.getState().fetchLinksAndUpdateInclude(url);
+  };
+
+  const sitemapSubmit = async (e) => {
+    e.preventDefault();
+    await useSitemapStore.getState().fetchSitemapAndUpdateInclude(sitemapUrl);
+  };
+
   return (
     <div className="flex flex-col  items-center justify-center w-full">
       <div className="flex mt-[60px] items-center lg:flex-row lg:items-start gap-3 flex-col  justify-center">
-        <div className="w-[95%] lg:w-[570px] h-auto lg:h-[603px] border-[1px]  rounded-lg  border-gray-200">
+        <div className="w-[95%] lg:w-[570px] h-auto lg:h-auto border-[1px]  rounded-lg  border-gray-200">
           <div className="w-full h-auto  border-[1px] text-sky-700 px-3 py-4 border-gray-200 text-base font-bold font-manrope leading-snug">
             Website
           </div>
@@ -16,12 +36,18 @@ function Website() {
                 </div>
                 <div className="flex w-full flex-col lg:flex-row items-center justify-between gap-2">
                   <input
+                    onChange={(e) => setUrl(e.target.value)}
                     type="text"
                     className="w-full lg:w-[413px] h-[47px] px-3.5 py-2.5 bg-white rounded shadow border border-zinc-100 justify-start items-center gap-2 inline-flex"
                   />
-                  <button className="h-11 w-full lg:w-fit px-5 py-3 bg-sky-700 rounded-lg shadow border border-sky-700 justify-center items-center gap-2 flex">
+                  <button
+                    onClick={handleSubmit}
+                    className={`h-11 w-full lg:w-fit px-5 py-3    ${
+                      !loading ? "bg-sky-700" : "bg-sky-700/20"
+                    } rounded-lg shadow border border-sky-700 justify-center items-center gap-2 flex`}
+                  >
                     <p className="text-white text-sm font-bold font-manrope leading-snug">
-                      Fetch link
+                      {loading ? "fetching..." : " Fetch link"}
                     </p>
                   </button>
                 </div>
@@ -44,11 +70,17 @@ function Website() {
                 <div className="flex flex-col w-full lg:flex-row items-center justify-between gap-2">
                   <input
                     type="text"
+                    onChange={(e) => setSitemapUrl(e.target.value)}
                     className="w-full lg:w-[383px] h-[47px] px-3.5 py-2.5 bg-white rounded shadow border border-zinc-100 justify-start items-center gap-2 inline-flex"
                   />
-                  <button className="h-11 w-full lg:w-fit px-5 py-3 bg-sky-700 rounded-lg shadow border border-sky-700 justify-center items-center gap-2 flex">
+                  <button
+                    onClick={sitemapSubmit}
+                    className={`h-11 w-full lg:w-fit px-5 py-3 ${
+                      loading2 ? "bg-sky-700/20" : "bg-sky-700"
+                    }  rounded-lg shadow border border-sky-700 justify-center items-center gap-2 flex`}
+                  >
                     <p className="text-white text-sm font-bold font-manrope leading-snug">
-                      Load Sitemap
+                      {loading2 ? "Loading Sitemap..." : "Load Sitemap"}
                     </p>
                   </button>
                 </div>
@@ -58,15 +90,47 @@ function Website() {
                 </div>
               </div>
             </div>
-            <div className="h-auto lg:h-[40%] mt-[20px] lg:mt-0 p-3  w-full  flex flex-col">
-              <div className="flex gap-3 h-[30%] flex-row w-full items-center ">
+            <div className="h-auto  mt-[20px] lg:mt-0 p-3  w-full  flex flex-col">
+              <div className="flex gap-3 mt-[50px] flex-row w-full items-center ">
                 <hr className="bg-gray-200 h-[2px] w-full" />
                 <div className="text-center text-gray-900 text-[10px] font-normal font-manrope leading-[14px] tracking-tight">
                   Included links
                 </div>
                 <hr className="bg-gray-200 h-[2px] w-full" />
               </div>
-              <div className="flex flex-row  p-5 items-end lg:mt-0 mt-[70px]  h-auto lg:h-[70%] justify-end">
+              {include && (
+                <div className="w-full px-2 mt-[40px]">
+                  <ul className="w-full">
+                    {include.map((link, index) => (
+                      <li
+                        key={index}
+                        className="w-full flex flex-row items-center gap-2 justify-between "
+                      >
+                        <div className="w-[94%]  h-[42px] pl-[15px] pr-4 pt-3 pb-[13px] rounded-lg border border-gray-200 justify-between items-start gap-[158px] flex flex-row">
+                          <div className="text-gray-900  lg:max-w-[40%] w-[92%] text-xs font-normal font-['Manrope'] leading-none tracking-tight">
+                            {link}
+                          </div>
+                          <div className="text-right w-[40%] hidden lg:block text-gray-900 text-xs font-normal font-['Manrope'] leading-none tracking-tight">
+                            1024 Characters
+                          </div>
+                        </div>
+                        <button
+                          onClick={() =>
+                            useFormDataStore.getState().deleteInclude(index)
+                          }
+                        >
+                          <img
+                            src="/images/chatbox/trash.svg"
+                            alt=""
+                            classNAme="w-full h-auto"
+                          />
+                        </button>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+              <div className="flex flex-row  p-5 items-end lg:mt-0 mt-[70px] [mt-50px]  h-auto lg:h-[70%] justify-end">
                 <div className="flex flex-row items-center  gap-x-5 ">
                   <button className="bg-transparent items-center gap-2 flex flex-row">
                     <img src="/images/chatbox/trash.svg" />
@@ -80,16 +144,6 @@ function Website() {
                 </div>
               </div>
             </div>
-          </div>
-        </div>
-        <div className="w-[95%] lg:w-[275px] pb-3 h-[204px]  flex items-center justify-between flex-col rounded-lg border border-gray-200">
-          <div className=" w-full  text-center border-[1px] text-sky-700  p-3 border-gray-200 text-base font-bold font-manrope leading-snug">
-            Sources
-          </div>
-          <div className=" w-full  px-3  py-3 justify-center items-center gap-2 flex">
-            <button className="text-white py-[16px] px-5 w-full text-sm font-bold font-manrope bg-sky-700 rounded-lg shadow border border-sky-700  text-center leading-snug">
-              Create Chatbot
-            </button>
           </div>
         </div>
       </div>

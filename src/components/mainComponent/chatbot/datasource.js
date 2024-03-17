@@ -90,22 +90,7 @@ function Datasource() {
             </div>
           </div>
         </div>
-        <div className="w-[95%] lg:w-[275px] pb-3 h-[204px]  flex items-center justify-between flex-col rounded-lg border border-gray-200">
-          <div className=" w-full  text-center border-[1px] text-sky-700  p-3 border-gray-200 text-base font-bold font-manrope leading-snug">
-            Sources
-          </div>
-          <div className=" w-full  px-3  py-3 justify-center items-center gap-2 flex">
-            <button
-              className={`text-white py-[16px] px-5 w-full text-sm font-bold font-manrope bg-sky-700 rounded-lg shadow border border-sky-700 text-center leading-snug ${
-                loading && "opacity-50 cursor-not-allowed"
-              }`}
-              onClick={handleSubmit}
-              disabled={loading}
-            >
-              {loading ? "Creating..." : "Create Chatbot"}
-            </button>
-          </div>
-        </div>
+       
       </div>
     </div>
   );
