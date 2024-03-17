@@ -4,7 +4,7 @@ import { KnowledgebaseStatus, chatBotCustomizeDataDefault } from "../../enums";
 import { db } from "../db";
 import { createPinconeIndex } from "../../AI/pinecone";
 import { headers } from "next/headers";
-import generateRandomString from "../../generaterandomString";
+import generateRandomString, { generateName } from "../../generaterandomString";
 
 const User = db.User;
 const Chatbot = db.Chatbot;
@@ -26,18 +26,32 @@ async function create(params) {
     if(!user) throw `User not found.`;
 
     // validate
-    if (await Chatbot.findOne({ name: params.name })) {
-        throw 'Chatbot with name "' + params.name + '"  already exist';
+    // if (await Chatbot.findOne({ name: params.name })) {
+    //     throw 'Chatbot with name "' + params.name + '"  already exist';
+    // }
+
+    //doing this because name input wasn't specified in the design.
+    let chatbotName;
+    let isNameUnique = false;
+
+    // Loop until a unique chatbot name is found
+    while (!isNameUnique) {
+        chatbotName = generateName();
+        const existingChatbot = await Chatbot.findOne({ name: chatbotName });
+
+        if (!existingChatbot) {
+            isNameUnique = true;
+        }
     }
 
     //generate random index name
-    const indexName = `${params.name.toLowerCase()}-${generateRandomString(6)}-index`
+    const indexName = `${chatbotName}-${generateRandomString(6)}-index`
 
     //create pinecone index
     await createPinconeIndex(indexName)
 
     const newChatbotDetails = {
-        name: params.name,
+        name: chatbotName,
         owner: ownerId,
         pIndex: indexName,
         knowledgebase: {
