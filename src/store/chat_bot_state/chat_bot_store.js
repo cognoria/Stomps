@@ -120,6 +120,26 @@ const useFormDataStore = create((set) => ({
     }));
     triggerUpdate(set);
   },
+  addWebsite: (newWebsite) => {
+    set((state) => ({
+      formData: {
+        ...state.formData,
+        website: newWebsite,
+      },
+    }));
+    triggerUpdate(set);
+  },
+
+  deleteAll: (arrayNames) => {
+    set((state) => {
+      const newState = { ...state.formData };
+      arrayNames.forEach((arrayName) => {
+        newState[arrayName] = [];
+      });
+      return { formData: newState };
+    });
+    triggerUpdate(set);
+  },
 
   getTextLength: () => {
     return useFormDataStore.getState().formData.text.length;

@@ -25,7 +25,10 @@ function Forgot_password() {
   const onSubmit = (data, e) => {
     e.preventDefault();
     forgetPassword(data, () => {
-      useModalStore.getState().showModal(<Forget_password_modal />);
+      
+      useModalStore
+        .getState()
+        .showModal(<Forget_password_modal email={data.email} />);
     });
   };
   return (

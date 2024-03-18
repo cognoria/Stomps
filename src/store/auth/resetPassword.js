@@ -23,7 +23,15 @@ const useResetPasswordAuthStore = create(
         if (onSuccess) onSuccess();
       } catch (error) {
         set({ error: error.message, loading: false });
-        toast.error(error.message || "Failed to Reset!");
+        toast.error(error.message || "Failed to Reset!", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: false,
+        });
       }
     },
   }))

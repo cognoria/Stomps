@@ -11,7 +11,7 @@ function Website() {
   const loading = useLinkStore((state) => state.loading);
   const loading2 = useSitemapStore((state) => state.loading);
   const include = useFormDataStore((state) => state.formData.include);
-  
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     await useLinkStore.getState().fetchLinksAndUpdateInclude(url);
@@ -99,10 +99,28 @@ function Website() {
                 </div>
                 <hr className="bg-gray-200 h-[2px] w-full" />
               </div>
+              <div className="flex flex-row  p-5 items-end lg:mt-0 mt-[70px] [mt-50px]  h-auto lg:h-[70%] justify-end">
+                <div className="flex flex-row items-center  gap-x-5 ">
+                  <button
+                    onClick={() =>
+                      useFormDataStore.getState().deleteAll(["include", "urls"])
+                    }
+                    className="bg-transparent items-center gap-2 flex flex-row"
+                  >
+                    <img src="/images/chatbox/trash.svg" />
+                    <p className="text-red-500 text-xs font-bold font-manrope leading-snug">
+                      Delete all
+                    </p>
+                  </button>
+                  <button className=" px-5 py-3 text-[#1261AC] text-xs font-bold font-manrope leading-snug bg-[#EEF8FF] flex items-center justify-center flex-col  rounded-lg">
+                    Add
+                  </button>
+                </div>
+              </div>
               {include && (
                 <div className="w-full px-2 mt-[40px]">
                   <ul className="w-full">
-                    {include.map((link, index) => (
+                    {include.slice(0, 10).map((link, index) => (
                       <li
                         key={index}
                         className="w-full flex flex-row items-center gap-2 justify-between "
@@ -131,19 +149,6 @@ function Website() {
                   </ul>
                 </div>
               )}
-              <div className="flex flex-row  p-5 items-end lg:mt-0 mt-[70px] [mt-50px]  h-auto lg:h-[70%] justify-end">
-                <div className="flex flex-row items-center  gap-x-5 ">
-                  <button className="bg-transparent items-center gap-2 flex flex-row">
-                    <img src="/images/chatbox/trash.svg" />
-                    <p className="text-red-500 text-xs font-bold font-manrope leading-snug">
-                      Delete all
-                    </p>
-                  </button>
-                  <button className=" px-5 py-3 text-[#1261AC] text-xs font-bold font-manrope leading-snug bg-[#EEF8FF] flex items-center justify-center flex-col  rounded-lg">
-                    Add
-                  </button>
-                </div>
-              </div>
             </div>
           </div>
         </div>

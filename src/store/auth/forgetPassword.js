@@ -5,7 +5,7 @@ const useForgetPasswordAuthStore = create(
   devtools((set) => ({
     error: null,
     loading: false,
-    forgetPassword: async ({ email, password }, onSuccess) => {
+    forgetPassword: async ({ email}, onSuccess) => {
       set({ loading: true, error: null });
       try {
         const response = await fetch(`api/v1/auth/password/forget/${email}`, {
@@ -22,7 +22,15 @@ const useForgetPasswordAuthStore = create(
         set({ loading: false });
       } catch (error) {
         set({ error: error.message, loading: false });
-        toast.error(error.message || "Failed to login!");
+        toast.error(error.message || "Failed to login!", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: false,
+        });
         console.error("reset failed:", error);
       }
     },

@@ -27,23 +27,17 @@ const useLinkStore = create((set) => ({
 
       const anchorElements = doc.querySelectorAll("a");
       const extractedLinks = Array.from(anchorElements).map((a) => a.href);
-
-      set({
+      console.log(extractedLinks);
+      set((state) => ({
+        ...state,
         links: extractedLinks,
         loading: false,
-      });
-
+      }));
       extractedLinks.forEach((link) => {
         useFormDataStore.getState().addDataToInclude(link);
       });
       useFormDataStore.getState().addDataToUrls(url);
-      console.log(extractedLinks);
-      set((state) => ({
-        links: extractedLinks,
-        loading: false,
-        include: state.include,
-      }));
-      console.log("Include:", useFormDataStore.getState().formData.include);
+      useFormDataStore.getState().addWebsite(url);
     } catch (error) {
       set({ error: error.message, loading: false });
       console.error("Error fetching links:", error);

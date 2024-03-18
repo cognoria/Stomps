@@ -18,8 +18,8 @@ function QA() {
   //so that button does goes below the page when more Q&A are been applied
   return (
     <div className="flex flex-col  items-center justify-center w-full">
-      <div className="w-full flex-col flex mt-[60px]  lg:flex-col items-center lg:items-start gap-3  justify-center">
-        <div className="w-[95%] lg:w-full h-auto border-[1px]   rounded-lg  border-gray-200">
+      <div className="flex mt-[60px] w-full flex-col lg:flex-row items-center lg:items-start gap-3  justify-center">
+        <div className="w-[95%] lg:w-[570px] h-[389px] border-[1px]  rounded-lg  border-gray-200">
           <div className="w-full  h-auto px-3 py-4 border-[1px] text-sky-700  border-gray-200 text-base font-bold font-manrope leading-snug">
             Q & A
           </div>
@@ -50,7 +50,12 @@ function QA() {
             </div>
             <div className="h-[20%] p-5 border-gray-200 flex flex-col items-end justify-end">
               <div className="flex flex-row items-center  gap-x-5 ">
-                <button className="bg-transparent items-center gap-2 flex flex-row">
+                <button
+                  onClick={() =>
+                    useFormDataStore.getState().deleteAll(["questions"])
+                  }
+                  className="bg-transparent items-center gap-2 flex flex-row"
+                >
                   <img src="/images/chatbox/trash.svg" />
                   <p className="text-red-500 text-xs font-bold font-manrope leading-snug">
                     Delete all
@@ -116,7 +121,6 @@ function QA() {
                 </ul>
               </div>
             )}
-
           </div>
         </div>
       </div>

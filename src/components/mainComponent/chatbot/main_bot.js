@@ -1,21 +1,25 @@
 "use client";
 
+import Link from "next/link";
 import useModalStore from "../../../store/modal/modal_state";
 import { Account_modal } from "../../customComponents/modals/dashboard_modal/account_modal";
 
-function Main_bot() {
+function Main_bot({ chatbots }) {
   return (
     <div className="w-full py-[3%] px-[3%]  lg:px-[6%]">
       <div className="flex flex-row  items-center justify-between">
         <div className="text-sky-700 text-[32px] font-bold font-['Manrope'] leading-[38.40px]">
           Chatbots
         </div>
-        <button className="flex flex-row items-center bg-[#1261AC] text-white px-4 py-3 rounded-md ">
+        <Link
+          href="/create_bot"
+          className="flex flex-row items-center bg-[#1261AC] text-white px-4 py-3 rounded-md "
+        >
           Create New Chatbot +
-        </button>
+        </Link>
       </div>
       <div className="flex flex-wrap p-4 items-center mt-[50px]  relative bg-sky-50 rounded-2xl overflow-y-hidden pt-4 justify-center gap-7 py-4 h-auto w-full  lg:items-start ">
-        {data.map((items, i) => (
+        {chatbots.map((items, i) => (
           <div
             className="lg:w-[388px] w-full h-[392px] relative bg-white rounded-2xl border border-sky-700"
             key={i}
@@ -58,38 +62,3 @@ function Main_bot() {
 }
 
 export default Main_bot;
-
-const data = [
-  {
-    name: "helo bot 1",
-    image: "",
-  },
-  {
-    name: "helo bot 2",
-    image: "",
-  },
-  {
-    name: "helo bot 3",
-    image: "",
-  },
-  {
-    name: "helo bot 4",
-    image: "",
-  },
-  {
-    name: "helo bot 5",
-    image: "",
-  },
-  {
-    name: "helo bot 6",
-    image: "",
-  },
-  {
-    name: "helo bot 7",
-    image: "",
-  },
-  {
-    name: "helo bot 1",
-    image: "",
-  },
-];

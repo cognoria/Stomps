@@ -7,22 +7,22 @@ function Sources() {
   const textLength = useFormDataStore((state) => state.getTextLength());
   const includeCount = useFormDataStore((state) => state.getIncludeCount());
   const questionCount = useFormDataStore((state) => state.getQuestionCount());
-
+  const questionsJSON = JSON.stringify(formData.questions);
   const dataToSend = {
     website: formData.website,
     urls: formData.urls,
     include: formData.include,
     exclude: formData.exclude,
-    contents: `[${formData.questions}, ${formData.text} ]`,
+    contents: [`${questionsJSON}`, `${formData.text}`],
   };
   const isLoading = useBotCreationStore((state) => state.loading);
   const router = useRouter();
   async function createBot(e) {
     e.preventDefault();
-
+    console.log(dataToSend);
     try {
       await useBotCreationStore.getState().createBot(dataToSend);
-
+      await useFormDataStore.getState().clearFormData();
       router.push("/");
     } catch (error) {
       console.error("Failed to create bot:", error);

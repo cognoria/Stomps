@@ -2,11 +2,10 @@
 
 import { useState } from "react";
 import useBotCreationStore from "../../../store/chat_bot_state/create_new_bot";
-
 function Datasource() {
   const [selectedFile, setSelectedFile] = useState(null);
- const loading = useBotCreationStore((state) => state.loading);
- const createBot = useBotCreationStore((state) => state.createBot);
+  const loading = useBotCreationStore((state) => state.loading);
+  const createBot = useBotCreationStore((state) => state.createBot);
   const handleFileChange = (event) => {
     const file = event.target.files[0];
     if (file) {
@@ -27,6 +26,8 @@ function Datasource() {
       setSelectedFile(file.name);
     }
   };
+
+  const [text, setText] = useState("");
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -90,7 +91,6 @@ function Datasource() {
             </div>
           </div>
         </div>
-       
       </div>
     </div>
   );

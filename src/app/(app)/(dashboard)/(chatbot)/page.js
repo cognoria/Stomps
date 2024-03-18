@@ -9,10 +9,11 @@ import useUserChatbot from "../../../../store/chat_bot_state/user_chatbot";
 function Page() {
   const router = useRouter();
 
-  const { userChatBot, loading, error } = useUserChatbot((state) => ({
+  const { userChatBot, loading, error, chatbots } = useUserChatbot((state) => ({
     userChatBot: state.userChatBot,
     loading: state.loading,
     error: state.error,
+    chatbots: state.chatbots,
   }));
 
   useEffect(() => {
@@ -22,16 +23,24 @@ function Page() {
 
   return (
     <div>
-      {loading && <p>Loading...</p>} {/* Show loading message */}
-      {error && <p>Error: {error}</p>} {/* Show error message */}
-      {!loading && !error && !userChatBot.data && <Empty_bot />}
+      {loading && <p>Loading...</p>}
+      {/* {error && <p>Error: {error}</p>} */}
+      {/* {!loading && !error && !userChatBot.data && <Empty_bot />} */}
       {/* Show Empty_bot if data is not available */}
-      {!loading && !error && userChatBot.data && (
+      {/* {!loading && !error && userChatBot.data && (
         <div className="mt-[80px] w-full">
           <Main_bot />
         </div>
+      )} */}
+      {chatbots === null || chatbots.length === 0 ? (
+        <Empty_bot />
+      ) : userChatBot.data ? (
+        <div className="mt-[80px] w-full">
+          <Main_bot chatbots={chatbots} />
+        </div>
+      ) : (
+        <Empty_bot />
       )}
-      {/* Show Main_bot if data is available */}
     </div>
   );
 }
