@@ -16,8 +16,8 @@ async function createChatbot(req) {
 createChatbot.schema = joi.object({
   website: joi.string().uri({ scheme: ['http', 'https'] }).required(), //http website url
   name: joi.string(),
-  urls: joi.array().items(joi.string().uri({ scheme: ['http', 'https'] })).required(), //array of string
-  include: joi.array().items(joi.string().uri({ scheme: ['http', 'https'] })),  //array of string
-  exclude: joi.array().items(joi.string().uri({ scheme: ['http', 'https'] })),  //array of string
+  urls: joi.array().required(), //array of string
+  include: joi.array(),  //array of string
+  exclude: joi.array(),  //array of string
   contents: joi.array().items(joi.string())
 });
