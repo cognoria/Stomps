@@ -8,7 +8,6 @@ const useResetPasswordAuthStore = create(
     error: null,
     loading: false, // Add loading state
     resetPassword: async ({ password, confirmPassword, token }, onSuccess) => {
-      console.log(`store hitted ${confirmPassword}, ${password}, ${token}`);
       set({ loading: true, error: null }); // Start loading and reset any previous errors
       try {
         const response = await fetch(`/api/v1/auth/password/reset/${token}`, {
@@ -21,15 +20,6 @@ const useResetPasswordAuthStore = create(
         if (!response.ok) {
           throw new Error(data.message || "An error occurred");
         }
-        toast.success("reset successful!", {
-          position: "top-right",
-          autoClose: 5000,
-          hideProgressBar: true,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: false,
-        });
         if (onSuccess) onSuccess();
       } catch (error) {
         set({ error: error.message, loading: false });

@@ -4,6 +4,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 import { Modal } from "../components/customComponents/modals/modal";
+
 import "./globals.css";
 const inter = Inter({ subsets: ["latin"] });
 

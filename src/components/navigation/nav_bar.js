@@ -9,23 +9,23 @@ import { RoundedSubmitButton } from "../customComponents/custom_buttons/button1"
 
 function Nav_bar() {
   const [expanded, setExpanded] = useState(false);
-
-  // Event handler for button click
   const toggleExpansion = () => {
     setExpanded(!expanded);
   };
   const [isVisible, setIsVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
-  const user = useUserStore((state) => state.user);
 
-  // Safe to use window here
+  // const { user } = useLoginAuthStore((state) => ({
+  //   user: state.user,
+  // }));
+
+  const user = useUserStore((state) => state.user);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
       const handleScroll = () => {
         const currentScrollY = window.scrollY;
 
-        // Check if scrolling up
         if (lastScrollY > currentScrollY) {
           setIsVisible(true);
         } else if (lastScrollY < currentScrollY) {
@@ -52,14 +52,17 @@ function Nav_bar() {
     <div style={navbarStyles} className={`flex flex-col   z-50 mb-[20px]`}>
       <div className="w-screen hidden    fixed  lg:flex  bg-white px-[8%] pt-[5%] md:pt-0 lg:py-[2.2%] h-[2%]  flex-row justify-between items-center">
         <img src="/images/landing/logo.svg" alt="logo" />
-        <div className="flex-row gap-4 md:flex hidden items-center justify-center">
-          <div className="text-[#1261AC] text-sm font-bold font-manrope leading-snug">
-            <Link href="/">Home</Link>
+        {!user && (
+          <div className="flex-row gap-4 md:flex hidden items-center justify-center">
+            <div className="text-[#1261AC] text-sm font-bold font-manrope leading-snug">
+              <Link href="https://stomp-ai.vercel.app/">Home</Link>
+            </div>
+            <div className="text-black text-sm font-400 font-manrope leading-snug">
+              <Link href="https://stomp-ai.vercel.app/#price">Pricing</Link>
+            </div>
           </div>
-          <div className="text-black text-sm font-400 font-manrope leading-snug">
-            <Link href="/">Pricing</Link>
-          </div>
-        </div>
+        )}
+
         {!user ? (
           <div className="md:flex hidden flex-row gap-4">
             <Link href="/signin">
@@ -77,29 +80,26 @@ function Nav_bar() {
             <Link href="/signup">
               <RoundedSubmitButton
                 button_content={"Create Account"}
-                color={"bg-[#EEF8FF]"}
+                color={"bg-[#1261AC] "}
                 radius={"rounded-[8px]"}
                 width={"w-[147px]"}
-                text_color={"text-[#74B4F1]"}
+                text_color={"text-[#fff]"}
                 text_size={"text-[14px]"}
               />
             </Link>
           </div>
         ) : (
-          <Link href="/signin">
-            <RoundedSubmitButton
-              onClick={async () => {
-                useUserStore.getState().removeUser();
-                await fetch("/api/v1/auth/logout");
-              }}
-              button_content={"Logout"}
-              color={"bg-[#EEF8FF]"}
-              radius={"rounded-[8px]"}
-              width={"w-[147px]"}
-              text_color={"text-[#74B4F1]"}
-              text_size={"text-[14px]"}
-            />
-          </Link>
+          <div className="flex text-[14px] text-black gap-x-3 flex-row items-center justify-end">
+            <Link href="/">
+              <div>ChatBot</div>
+            </Link>
+            <Link href="/support">
+              <div>Help</div>
+            </Link>
+            <Link href="/account">
+              <div>Account</div>
+            </Link>
+          </div>
         )}
       </div>
       <div className="flex flex-col w-full px-[4%] py-[2.5%] lg:hidden bg-white z-50 items-center justify-between">
@@ -163,24 +163,34 @@ function Nav_bar() {
           <nav className="px-[4%] w-full">
             <div className="px-1 py-8">
               <div className="grid gap-y-7">
-                <a
-                  href="#"
-                  title=""
-                  className="flex items-center p-3 -m-3 border-b-[1px] border-[#DBDDE0] text-base font-medium text-gray-900 transition-all duration-200  hover:bg-gray-50 focus:outline-none font-pj focus:ring-1 focus:ring-gray-900 focus:ring-offset-2"
-                >
-                  Home
-                </a>
-
-                <a
-                  href="#"
-                  title=""
-                  className="flex items-center p-3 -m-3 border-b-[1px] border-[#DBDDE0] text-base font-medium text-gray-900 transition-all duration-200  hover:bg-gray-50 focus:outline-none font-pj focus:ring-1 focus:ring-gray-900 focus:ring-offset-2"
-                >
-                  Pricing
-                </a>
-                {!user ? (
+                {!user && (
                   <div>
-                    {" "}
+                    <div
+                      href="#"
+                      title=""
+                      className="flex items-center p-3 -m-3 border-b-[1px] border-[#DBDDE0] text-base font-medium text-gray-900 transition-all duration-200  hover:bg-gray-50 focus:outline-none font-pj focus:ring-1 focus:ring-gray-900 focus:ring-offset-2"
+                    >
+                      <Link
+                        className="w-full"
+                        href="https://stomp-ai.vercel.app/"
+                      >
+                        Home
+                      </Link>
+                    </div>
+
+                    <div className="flex items-center p-3 -m-3 border-b-[1px] border-[#DBDDE0] text-base font-medium text-gray-900 transition-all duration-200  hover:bg-gray-50 focus:outline-none font-pj focus:ring-1 focus:ring-gray-900 focus:ring-offset-2">
+                      <Link
+                        className="w-full"
+                        href="https://stomp-ai.vercel.app/#price"
+                      >
+                        Pricing
+                      </Link>
+                    </div>
+                  </div>
+                )}
+
+                {!user ? (
+                  <div className="flex flex-col w-full gap-y-5">
                     <Link
                       href="/signin"
                       title=""
@@ -198,21 +208,32 @@ function Nav_bar() {
                     </Link>
                   </div>
                 ) : (
-                  <button
-                    onClick={async () => {
-                      useUserStore.getState().removeUser();
-                      await fetch("/api/v1/auth/logout");
-                    }}
-                  >
+                  <div className="flex flex-col w-full gap-y-3">
                     <Link
-                      href="/signin"
+                      href="/"
                       title=""
-                      className="inline-flex items-center justify-center px-6 py-3 text-base font-bold leading-7 text-white transition-all rounded-[8px] duration-200  bg-[#1261AC] border border-transparent  hover:bg-gray-600 font-pj focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900"
+                      className="flex items-center p-3 -m-3 border-b-[1px] border-[#DBDDE0] text-base font-medium text-gray-900 transition-all duration-200  hover:bg-gray-50 focus:outline-none font-pj focus:ring-1 focus:ring-gray-900 focus:ring-offset-2"
                       role="button"
                     >
-                      Logout
+                      Chatbot
                     </Link>
-                  </button>
+                    <Link
+                      href="/support"
+                      title=""
+                      className="flex items-center p-3 -m-3 border-b-[1px] border-[#DBDDE0] text-base font-medium text-gray-900 transition-all duration-200  hover:bg-gray-50 focus:outline-none font-pj focus:ring-1 focus:ring-gray-900 focus:ring-offset-2"
+                      role="button"
+                    >
+                      Help
+                    </Link>
+                    <Link
+                      href="/account"
+                      title=""
+                      className="flex items-center p-3 -m-3 border-b-[1px] border-[#DBDDE0] text-base font-medium text-gray-900 transition-all duration-200  hover:bg-gray-50 focus:outline-none font-pj focus:ring-1 focus:ring-gray-900 focus:ring-offset-2"
+                      role="button"
+                    >
+                      Account
+                    </Link>
+                  </div>
                 )}
               </div>
             </div>

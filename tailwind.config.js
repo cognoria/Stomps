@@ -30,5 +30,5 @@ module.exports = {
       },
     },
   },
-  plugins: [require("tw-elements-react/dist/plugin.cjs")],
+  plugins: [],
 };

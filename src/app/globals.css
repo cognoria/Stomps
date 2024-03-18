@@ -28,6 +28,10 @@
     rgb(var(--background-start-rgb));
 } */
 
+html {
+  scroll-behavior: smooth;
+}
+
 @layer utilities {
   .text-balance {
     text-wrap: balance;
@@ -50,4 +54,47 @@
   to {
     opacity: 1;
   }
+}
+
+.circular-list {
+  list-style-type: disc;
+}
+.upload-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%; /* Adjust as needed */
+  height: 100%; /* Adjust as needed */
+  border: 1px dashed #bbb; /* Example style for the container */
+  border-radius: 10px;
+}
+
+.upload-label {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.upload-label img {
+  /* Adjust as needed */
+}
+
+.main-text {
+  color: #007bff; /* sky-700 equivalent */
+  font-size: 1.25rem; /* 20px if base is 16px */
+  font-weight: bold;
+  font-family: "Manrope", sans-serif;
+  margin-top: 20px;
+  text-align: center;
+}
+
+.sub-text {
+  color: #666666; /* neutral-400 equivalent */
+  font-size: 0.75rem; /* 12px if base is 16px */
+  font-family: "Manrope", sans-serif;
+  margin-top: 8px;
+  text-align: center;
 }
