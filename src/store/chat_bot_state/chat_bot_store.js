@@ -1,3 +1,4 @@
+import { contents } from "cheerio/lib/api/traversing";
 import { create } from "zustand";
 
 // Define the initial state
@@ -70,8 +71,10 @@ const useFormDataStore = create((set) => ({
       },
     }));
     triggerUpdate(set);
-  },
 
+    const fileIndex = files.length - 1;
+    return { name, index: fileIndex}
+  },
   addDataToContents: (newContent) => {
     set((state) => ({
       formData: {
