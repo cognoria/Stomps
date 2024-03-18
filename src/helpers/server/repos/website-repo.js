@@ -1,4 +1,4 @@
-import { DOMParser } from 'xmldom';
+import cheerio from 'cheerio'
 import xml2js from 'xml2js';
 
 export const websiteRepo = {
@@ -6,13 +6,15 @@ export const websiteRepo = {
 }
 
 async function getUrls(type, url) {
+    if(!type || !url) throw 'url type and url are required';
+
     switch (type) {
         case 'sitemap':
             return await getWebLinksFromSiteMap(url)
         case 'web':
             return await getWebLinksFromUrl(url)
         default:
-            throw 'unsuported type'
+            throw 'unsuported url type'
     }
 }
 
@@ -22,34 +24,23 @@ async function getWebLinksFromUrl(url) {
     }
 
     const response = await fetchWithRetry(url);
-
-    
     const html = await response.text();
-
     const $ = cheerio.load(html);
-    const relativeUrls = [];
+    const baseUrl = new URL(url).origin
+    const Urls = new Set();
 
     // Find all anchor tags
     $('a').each((index, element) => {
       const href = $(element).attr('href');
 
       // Check if the href is a relative URL
-      if (href && !/^(https?:\/\/|\/\/)/.test(href)) {
-        relativeUrls.push(href);
+      if (href && !/^(https?:\/\/|\/\/|#|.*\.(png|jpg|jpeg|gif|svg))$/i.test(href)) {
+        const completeUrl = new URL(href, baseUrl).href;
+        Urls.add(completeUrl);
       }
     });
-
-    // const $ = cheerio.load(html);
-    // const relativeUrls = $("a")
-    //     .map((_, link) => $(link).attr("href"))
-    //     .get();
-    // const parser = new DOMParser();
-    // const doc = parser.parseFromString(html, "text/html");
-
-    // const anchorElements = doc.querySelectorAll("a");
-    // const extractedLinks = Array.from(anchorElements).map((a) => a.href);
-
-    return relativeUrls //extractedLinks.map((relativeUrl) => new URL(relativeUrl, url).href);
+    
+    return Array.from(Urls); 
 }
 
 async function getWebLinksFromSiteMap(url) {
