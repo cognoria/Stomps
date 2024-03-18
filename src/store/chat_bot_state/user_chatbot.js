@@ -6,6 +6,7 @@ const useUserChatbot = create(
   devtools((set) => ({
     error: null,
     loading: false,
+    chatbots: null,
     userChatBot: async (onSuccess) => {
       set({ loading: true, error: null });
       try {
@@ -21,8 +22,8 @@ const useUserChatbot = create(
 
         console.log(data);
         if (onSuccess) onSuccess(data); // Pass data to onSuccess callback if provided
-        set({ loading: false });
-        return data; // Return data after successful fetching
+        set({ loading: false, chatbots: data });
+        // return data; // Return data after successful fetching
       } catch (error) {
         set({ error: error.message, loading: false });
         toast.error(error.message || "Failed to fetch!");

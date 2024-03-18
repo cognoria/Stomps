@@ -13,7 +13,7 @@ function Sources() {
     urls: formData.urls,
     include: formData.include,
     exclude: formData.exclude,
-    contents: `[${questionsJSON}, ${formData.text} ]`,
+    contents: [`${questionsJSON}`, `${formData.text}`],
   };
   const isLoading = useBotCreationStore((state) => state.loading);
   const router = useRouter();
