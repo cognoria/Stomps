@@ -19,7 +19,7 @@ function QA() {
   return (
     <div className="flex flex-col  items-center justify-center w-full">
       <div className="flex mt-[60px] w-full flex-col lg:flex-row items-center lg:items-start gap-3  justify-center">
-        <div className="w-[95%] lg:w-[570px] h-[389px] border-[1px]  rounded-lg  border-gray-200">
+        <div className="w-[95%] lg:w-[570px] h-auto border-[1px]  pb-2 rounded-lg  border-gray-200">
           <div className="w-full  h-auto px-3 py-4 border-[1px] text-sky-700  border-gray-200 text-base font-bold font-manrope leading-snug">
             Q & A
           </div>

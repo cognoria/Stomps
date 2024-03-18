@@ -6,10 +6,12 @@ const initialState = {
   name: "",
   text: "",
   urls: [],
+  doc_count: 0,
   include: [],
   exclude: [],
   contents: [],
   questions: [],
+  files: [],
 };
 
 const useFormDataStore = create((set) => ({
@@ -57,6 +59,19 @@ const useFormDataStore = create((set) => ({
     }));
     triggerUpdate(set);
   },
+  addFileToContents: (newContent) => {
+    const { name, content } = newContent;
+    const stringFile = JSON.stringify(newContent);
+
+    set((state) => ({
+      formData: {
+        ...state.formData,
+        files: [...state.formData.files, stringFile],
+      },
+    }));
+    triggerUpdate(set);
+  },
+
   addDataToContents: (newContent) => {
     set((state) => ({
       formData: {
@@ -116,6 +131,15 @@ const useFormDataStore = create((set) => ({
       formData: {
         ...state.formData,
         contents: state.formData.contents.filter((_, i) => i !== index),
+      },
+    }));
+    triggerUpdate(set);
+  },
+  deleteFileFromContent: (index) => {
+    set((state) => ({
+      formData: {
+        ...state.formData,
+        files: state.formData.files.filter((_, i) => i !== index),
       },
     }));
     triggerUpdate(set);
