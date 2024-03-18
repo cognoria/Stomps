@@ -2,15 +2,25 @@
 
 import { useState } from "react";
 import useBotCreationStore from "../../../store/chat_bot_state/create_new_bot";
+import useFormDataStore from "../../../store/chat_bot_state/chat_bot_store";
+
+import { extractTextFromDoc, extractTextFromPDF, extractTextFromTXT, isDOCFile, isPDFFile, isTXTFile } from "../../../utils/extractDoc/file_extract";
 function Datasource() {
   const [selectedFile, setSelectedFile] = useState(null);
+  const [files, setFiles] = useState([])
   const loading = useBotCreationStore((state) => state.loading);
   const createBot = useBotCreationStore((state) => state.createBot);
+  const {addContent, deleteContent, deleteAllContent} = useFormDataStore((state) => ({
+    addContent: state.addFileToContent,
+    deleteContent: state.deleteFileFromContent,
+    deleteAllContent: state.deleteAllContent
+  }))
+
   const handleFileChange = (event) => {
     const file = event.target.files[0];
     if (file) {
       console.log("Selected file:", file);
-      setSelectedFile(file.name);
+      setSelectedFile(file);
     }
   };
 
@@ -22,32 +32,55 @@ function Datasource() {
     event.preventDefault();
     const file = event.dataTransfer.files[0];
     if (file) {
-      console.log("Dropped file:", file.name);
-      setSelectedFile(file.name);
+      console.log("Dropped file:", file);
+      if(!isTXTFile(file) && !isPDFFile(file) && !isDOCFile(file)){
+        return //toaste file not supported
+      } else {
+      setSelectedFile(file);
+      //add file to content;
+
+      }
     }
   };
 
-  const [text, setText] = useState("");
+  async function deleteFile(index){
+    return await useFormDataStore.getStore().deleteFileFromContent(index)
+  }
 
-  if(selectedFile)
+  async function deleteAllFile(){
+    if(files.length == 0) return;
 
-
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    if (!selectedFile) {
-      setFileError("Please select a file.");
-      return;
+    for(const file of files){
+      deleteFile(file.index)
     }
-    try {
-      // Call the createBot function from the Zustand store
-      await createBot(selectedFile);
-      // Handle success (e.g., redirect or display success message)
-      console.log("Bot created successfully!");
-    } catch (error) {
-      // Handle error
-      console.error("Failed to create bot:", error.message);
+  }
+
+  async function handleAddFile(){
+    if(!selectedFile) return //toast error please add file
+    try{
+      if(isTXTFile(selectedFile)){
+        const file = extractTextFromTXT(selectedFile)
+        const savedFile = await addContent(file)
+        return setFiles(savedFile)
+      }
+      
+      if(isDOCFile(selectedFile)){
+        const file = extractTextFromDoc(selectedFile)
+        const savedFile = await addContent(file)
+        setFiles(savedFile)
+      }
+      
+      if(isPDFFile(selectedFile)){
+        const file = extractTextFromPDF(selectedFile)
+        const savedFile = await addContent(file)
+        setFiles(savedFile)
+      }
+      //send to controller
+    }catch(e){
+      comsole.log(e)
+      //toast
     }
-  };
+  }
 
   return (
     <div className="flex flex-col  items-center justify-center w-full">

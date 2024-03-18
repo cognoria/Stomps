@@ -120,3 +120,9 @@ export async function createPinconeIndex(name, type = 'starter') {
         }
     }
 }
+
+export async function deletePincone(){
+    const apiKey = await globalRepo.getServiceKey(AppServiceProviders.PINECONE)
+    const pinecone = await getPineconeClient(apiKey);
+    pinecone.deleteIndex('ikemdemo-jhhay0-index')
+}

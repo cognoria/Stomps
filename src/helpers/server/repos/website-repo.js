@@ -1,5 +1,6 @@
 import cheerio from 'cheerio'
 import xml2js from 'xml2js';
+import { deletePincone } from '../../AI/pinecone';
 
 export const websiteRepo = {
     getUrls
@@ -7,7 +8,7 @@ export const websiteRepo = {
 
 async function getUrls(type, url) {
     if(!type || !url) throw 'url type and url are required';
-
+    
     switch (type) {
         case 'sitemap':
             return await getWebLinksFromSiteMap(url)
