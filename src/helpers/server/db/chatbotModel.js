@@ -73,7 +73,7 @@ const chatBotCustomizeData = new Schema({
 
 export default function chatbotModel() {
     const schema = new Schema({
-        knowledgebase: knowledgebase,
+        knowledgebase: {type: knowledgebase, select: false},
         pIndex: { type: String, required: true },
         name: { type: String, required: true, unique: true },
         owner: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },

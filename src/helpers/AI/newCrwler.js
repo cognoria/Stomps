@@ -19,7 +19,7 @@ export class Crawler {
     }
 
     async _loadChatbotData() {
-        this.chatbot = await Chatbot.findById(this.chatbotId).select("+crawlData");
+        this.chatbot = await Chatbot.findById(this.chatbotId).select("+crawlData knowledgebase");
 
         if (!this.chatbot || !this.chatbot.knowledgebase) {
             throw 'Chatbot or knowledgebase not found';
