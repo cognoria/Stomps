@@ -101,7 +101,12 @@ function Website() {
               </div>
               <div className="flex flex-row  p-5 items-end lg:mt-0 mt-[70px] [mt-50px]  h-auto lg:h-[70%] justify-end">
                 <div className="flex flex-row items-center  gap-x-5 ">
-                  <button className="bg-transparent items-center gap-2 flex flex-row">
+                  <button
+                    onClick={() =>
+                      useFormDataStore.getState().deleteAll(["include", "urls"])
+                    }
+                    className="bg-transparent items-center gap-2 flex flex-row"
+                  >
                     <img src="/images/chatbox/trash.svg" />
                     <p className="text-red-500 text-xs font-bold font-manrope leading-snug">
                       Delete all

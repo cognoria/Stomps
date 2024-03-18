@@ -22,7 +22,7 @@ function Sources() {
     console.log(dataToSend);
     try {
       await useBotCreationStore.getState().createBot(dataToSend);
-
+      await useFormDataStore.getState().clearFormData();
       router.push("/");
     } catch (error) {
       console.error("Failed to create bot:", error);

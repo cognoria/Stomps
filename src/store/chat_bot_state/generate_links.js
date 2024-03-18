@@ -27,7 +27,7 @@ const useLinkStore = create((set) => ({
 
       const anchorElements = doc.querySelectorAll("a");
       const extractedLinks = Array.from(anchorElements).map((a) => a.href);
-
+      console.log(extractedLinks);
       set((state) => ({
         ...state,
         links: extractedLinks,

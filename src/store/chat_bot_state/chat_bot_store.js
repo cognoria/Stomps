@@ -130,6 +130,17 @@ const useFormDataStore = create((set) => ({
     triggerUpdate(set);
   },
 
+  deleteAll: (arrayNames) => {
+    set((state) => {
+      const newState = { ...state.formData };
+      arrayNames.forEach((arrayName) => {
+        newState[arrayName] = [];
+      });
+      return { formData: newState };
+    });
+    triggerUpdate(set);
+  },
+
   getTextLength: () => {
     return useFormDataStore.getState().formData.text.length;
   },

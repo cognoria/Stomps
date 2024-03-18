@@ -50,7 +50,12 @@ function QA() {
             </div>
             <div className="h-[20%] p-5 border-gray-200 flex flex-col items-end justify-end">
               <div className="flex flex-row items-center  gap-x-5 ">
-                <button className="bg-transparent items-center gap-2 flex flex-row">
+                <button
+                  onClick={() =>
+                    useFormDataStore.getState().deleteAll(["questions"])
+                  }
+                  className="bg-transparent items-center gap-2 flex flex-row"
+                >
                   <img src="/images/chatbox/trash.svg" />
                   <p className="text-red-500 text-xs font-bold font-manrope leading-snug">
                     Delete all
@@ -116,7 +121,6 @@ function QA() {
                 </ul>
               </div>
             )}
-
           </div>
         </div>
       </div>
