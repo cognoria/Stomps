@@ -9,7 +9,7 @@ function Datasource() {
   const handleFileChange = (event) => {
     const file = event.target.files[0];
     if (file) {
-      console.log("Selected file:", file.name);
+      console.log("Selected file:", file);
       setSelectedFile(file.name);
     }
   };
@@ -28,6 +28,9 @@ function Datasource() {
   };
 
   const [text, setText] = useState("");
+
+  if(selectedFile)
+
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -77,7 +80,7 @@ function Datasource() {
                   </div>
                 </label>
                 {selectedFile && (
-                  <div className="file-name">Selected file: {selectedFile}</div>
+                  <div className="file-name">Selected file: {selectedFile.name}</div>
                 )}
               </div>
             </div>
