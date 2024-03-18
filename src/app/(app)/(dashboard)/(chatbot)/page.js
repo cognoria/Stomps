@@ -13,7 +13,7 @@ function Page() {
     userChatBot: state.userChatBot,
     loading: state.loading,
     error: state.error,
-    chatbots: state.chatbots
+    chatbots: state.chatbots,
   }));
 
   useEffect(() => {
@@ -32,10 +32,15 @@ function Page() {
           <Main_bot />
         </div>
       )} */}
-      {
-        chatbots && chatbots != [] ? <div className="mt-[80px] w-full"><Main_bot chatbots={chatbots} /> </div>: <Empty_bot />
-      }
-      {/* Show Main_bot if data is available */}
+      {chatbots === null || chatbots.length === 0 ? (
+        <Empty_bot />
+      ) : userChatBot.data ? (
+        <div className="mt-[80px] w-full">
+          <Main_bot chatbots={chatbots} />
+        </div>
+      ) : (
+        <Empty_bot />
+      )}
     </div>
   );
 }
