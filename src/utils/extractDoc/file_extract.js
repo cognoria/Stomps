@@ -1,6 +1,6 @@
 import { getDocument } from "pdfjs-dist";
 import mammoth from "mammoth";
-import pdf from 'pdf-parse';
+// import pdf from 'pdf-parse';
 
 export async function extractTextFromTXT(file) {
   return new Promise((resolve, reject) => {
@@ -18,8 +18,8 @@ export async function extractTextFromTXT(file) {
 }
 
 export async function extractTextFromPDF(file) {
-  const data = await pdf(file);
-  console.log({data})
+  // const data = await pdf(file);
+  // console.log({data})
   return new Promise((resolve, reject) => {
     const loadingTask = getDocument(file);
     loadingTask.promise
