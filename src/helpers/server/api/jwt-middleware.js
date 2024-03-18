@@ -25,6 +25,7 @@ function isPublicPath(req) {
         'GET:/api/v1/auth/verify/resend/:email',
         'POST:/api/v1/auth/password/reset/:token',
         'GET:/api/v1/auth/password/forget/:email',
+        'GET:/api/v1/data/links'
     ];
     
     const isPublic = publicPaths.some(path => matchPath(normalizedPath, path));

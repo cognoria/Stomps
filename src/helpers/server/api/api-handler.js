@@ -5,6 +5,7 @@ import { errorHandler, jwtMiddleware, validateMiddleware, uploadMiddleware } fro
 export { apiHandler };
 
 function apiHandler(handler) {
+    // console.log
     const wrappedHandler = {};
     const httpMethods = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'];
 

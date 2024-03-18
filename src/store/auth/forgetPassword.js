@@ -3,7 +3,6 @@ import { create } from "zustand";
 import { devtools } from "zustand/middleware";
 const useForgetPasswordAuthStore = create(
   devtools((set) => ({
-    user: null,
     error: null,
     loading: false,
     forgetPassword: async ({ email, password }, onSuccess) => {
