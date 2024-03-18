@@ -1,29 +1,20 @@
 "use client";
 
 import { useState } from "react";
+// import useBotCreationStore from "../../../store/chat_bot_state/create_new_bot";
 import useFormDataStore from "../../../store/chat_bot_state/chat_bot_store";
-import useBotCreationStore from "../../../store/chat_bot_state/create_new_bot";
+import { extractTextFromDoc, extractTextFromPDF, extractTextFromTXT, isDOCFile, isPDFFile, isTXTFile } from "../../../utils/extractDoc/file_extract";
 
-import {
-  extractTextFromDoc,
-  extractTextFromPDF,
-  extractTextFromTXT,
-  isDOCFile,
-  isPDFFile,
-  isTXTFile,
-} from "../../../utils/extractDoc/file_extract";
-function Datasource() {
+export default function Datasource() {
   const [selectedFile, setSelectedFile] = useState(null);
-  const [files, setFiles] = useState([]);
+  const [files, setFiles] = useState([])
   const loading = useBotCreationStore((state) => state.loading);
   const createBot = useBotCreationStore((state) => state.createBot);
-  const { addContent, deleteContent, deleteAllContent } = useFormDataStore(
-    (state) => ({
-      addContent: state.addFileToContent,
-      deleteContent: state.deleteFileFromContent,
-      deleteAllContent: state.deleteAllContent,
-    })
-  );
+  const {addContent, deleteContent, deleteAllContent} = useFormDataStore((state) => ({
+    addContent: state.addFileToContent,
+    deleteContent: state.deleteFileFromContent,
+    deleteAllContent: state.deleteAllContent
+  }))
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
@@ -63,25 +54,25 @@ function Datasource() {
     }
   }
 
-  async function handleAddFile() {
-    if (!selectedFile) return; //toast error please add file
-    try {
-      if (isTXTFile(selectedFile)) {
-        const file = extractTextFromTXT(selectedFile);
-        const savedFile = await addContent(file);
-        return setFiles(savedFile);
+  async function handleAddFile(){
+    if(!selectedFile) return //toast error please add file
+    try{
+      if(isTXTFile(selectedFile)){
+        const file = extractTextFromTXT(selectedFile)
+        const savedFile = await addContent(file)
+        return setFiles(savedFile)
       }
 
-      if (isDOCFile(selectedFile)) {
-        const file = extractTextFromDoc(selectedFile);
-        const savedFile = await addContent(file);
-        setFiles(savedFile);
+      if(isDOCFile(selectedFile)){
+        const file = extractTextFromDoc(selectedFile)
+        const savedFile = await addContent(file)
+        setFiles(savedFile)
       }
 
-      if (isPDFFile(selectedFile)) {
-        const file = extractTextFromPDF(selectedFile);
-        const savedFile = await addContent(file);
-        setFiles(savedFile);
+      if(isPDFFile(selectedFile)){
+        const file = extractTextFromPDF(selectedFile)
+        const savedFile = await addContent(file)
+        setFiles(savedFile)
       }
       //send to controller
     } catch (e) {
@@ -146,24 +137,21 @@ function Datasource() {
               </div>
               <div className="flex flex-row  p-5 items-end lg:mt-0 mt-[70px] [mt-50px]  h-auto lg:h-[70%] justify-end">
                 <div className="flex flex-row items-center  gap-x-5 ">
-                  <button
-                    onClick={deleteAllFile}
-                    className="bg-transparent items-center gap-2 flex flex-row"
-                  >
+                  <button className="bg-transparent items-center gap-2 flex flex-row">
                     <img src="/images/chatbox/trash.svg" />
                     <p className="text-red-500 text-xs font-bold font-manrope leading-snug">
                       Delete all
                     </p>
                   </button>
-                  <button className=" px-5 py-3 text-[#1261AC] text-xs font-bold font-manrope leading-snug bg-[#EEF8FF] flex items-center justify-center flex-col  rounded-lg">
+                  <button onClick={handleAddFile} className=" px-5 py-3 text-[#1261AC] text-xs font-bold font-manrope leading-snug bg-[#EEF8FF] flex items-center justify-center flex-col  rounded-lg">
                     Add
                   </button>
                 </div>
               </div>
-              {files && (
+              {files.length > 0 && (
                 <div className="w-full px-2 mt-[40px]">
                   <ul className="w-full">
-                    {files.slice(0, 10).map((files, index) => (
+                    {files?.slice(0, 10).map((files, index) => (
                       <li
                         key={index}
                         className="w-full flex flex-row items-center gap-2 justify-between "
@@ -193,10 +181,3 @@ function Datasource() {
   );
 }
 
-export default Datasource;
-const files = [
-  { name: "file " },
-  { name: "file " },
-  { name: "file " },
-  { name: "file " },
-];

@@ -18,8 +18,8 @@ export async function extractTextFromTXT(file) {
 }
 
 export async function extractTextFromPDF(file) {
-//   const data = await pdf(file);
-  console.log({data})
+  // const data = await pdf(file);
+  // console.log({data})
   return new Promise((resolve, reject) => {
     const loadingTask = getDocument(file);
     loadingTask.promise
