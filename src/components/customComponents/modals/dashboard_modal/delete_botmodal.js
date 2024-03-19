@@ -8,7 +8,7 @@ export function Delete_Bot_Modal({ text, button_name, id }) {
   const delete_bot = async (id) => {
     try {
       await deleteChatBot(id);
-      hideModal;
+      await hideModal();
       console.log("Chatbot deleted successfully!");
     } catch (error) {
       console.error("Failed to delete chatbot:", error);
