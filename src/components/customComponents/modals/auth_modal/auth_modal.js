@@ -27,7 +27,7 @@ export function Forget_password_modal({ email }) {
   const onSubmit = (e) => {
     e.preventDefault();
     console.log(email);
-    forgetPassword({email}, () => {
+    forgetPassword({ email }, () => {
       setCountdown(59);
     });
   };
@@ -46,8 +46,6 @@ export function Forget_password_modal({ email }) {
       <div className="self-stretch h-[198px] flex-col justify-center items-center gap-5 flex">
         {loading ? (
           <div className="flex gap-4 md:w-[40px] w-[40px] flex-col items-start justify-start">
-            {!loading && error && <Error message={error} />}
-            {!loading && message && <Success message={message} />}
             {loading && (
               <div class="flex items-center justify-center mx-auto w-full">
                 <div class="w-[15px] h-[15px] border-4 border-sky-700 border-dotted rounded-full animate-spin"></div>
