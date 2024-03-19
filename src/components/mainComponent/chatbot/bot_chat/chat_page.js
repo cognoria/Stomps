@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import useBotMessagingStore from "../../../../store/chat_bot_state/chats_messaging";
 import useSingleChatbot from "../../../../store/chat_bot_state/single_chat_bot";
@@ -134,7 +134,7 @@ export default ChatPage;
 
 function Chat({ id }) {
   const [messageInput, setMessageInput] = useState("");
-
+  const chatContainerRef = useRef(null);
   const chatMessages = useBotMessagingStore((state) => state.chatMessages);
   const loading = useBotMessagingStore((state) => state.loading);
   const error = useBotMessagingStore((state) => state.error);
@@ -155,12 +155,19 @@ function Chat({ id }) {
       console.log("Failed to send message:", error);
     }
   }
+  useEffect(() => {
+    chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+  }, [chatMessages]);
   return (
     <div className="border-[1px] w-[55%] h-[588px] border-gray-200  items-start flex-col ">
       <div className="flex border-b-[1px] border-gray-200  p-4 w-full flex-end items-end justify-end">
         <img src="/images/chatbox/refresh.svg" alt="" />
       </div>
-      <div className="w-full overflow-y-scroll h-[75%] flex flex-col gap-3 p-4">
+      <div
+        ref={chatContainerRef}
+        style={{ scrollBehavior: "smooth" }}
+        className="w-full overflow-y-scroll h-[75%] flex flex-col gap-3 p-4"
+      >
         {chatMessages.map((message, index) => (
           <div
             key={index}
@@ -187,7 +194,7 @@ function Chat({ id }) {
           value={messageInput}
           onChange={(e) => setMessageInput(e.target.value)}
           placeholder="message... "
-          className="text-neutral-700 outline-gray-200 w-full h-full border  active:outline-gray-300 pl-[15px] rounded-lg  pr-[9px]   decoration-none placeholder:text-neutral-300 text-sm font-normal font-manrope leading-snug"
+          className="text-neutral-700 outline-gray-200 w-full h-full border  flex flex-col  active:outline-gray-300 pl-[15px] rounded-lg  pr-[50px]   decoration-none placeholder:text-neutral-300 text-sm font-normal font-manrope leading-snug"
         />
         <button
           className="w-[32px] h-[32px] absolute top-7 right-7"
