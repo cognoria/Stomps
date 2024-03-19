@@ -37,7 +37,7 @@ export async function getChatCompletion(messages, model) {
             messages,
             model,
         });
-        return completion.choices[0];
+        return completion.choices[0].message;
     } catch (e) {
         console.log(e)
         throw new Error(e)

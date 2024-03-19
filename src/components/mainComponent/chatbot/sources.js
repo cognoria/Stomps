@@ -10,13 +10,15 @@ export default function Sources() {
   const includeCount = useFormDataStore((state) => state.getIncludeCount());
   const questionCount = useFormDataStore((state) => state.getQuestionCount());
   const questionsJSON = JSON.stringify(formData.questions);
+
   const dataToSend = {
     website: formData.website,
     urls: formData.urls,
     include: formData.include,
     exclude: formData.exclude,
-    contents: [`${questionsJSON}`, `${formData.text}`],
+    contents: [{url: "Q&A", content: `${questionsJSON}`}, {url: "TXT", content: `${formData.text}`}, ...formData.files],
   };
+
   const isLoading = useBotCreationStore((state) => state.loading);
   const router = useRouter();
   async function createBot(e) {

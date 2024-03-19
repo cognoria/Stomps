@@ -3,18 +3,18 @@ import { KnowledgebaseStatus, chatBotCustomizeDataDefault } from '../../enums';
 
 const Schema = mongoose.Schema;
 
+const pageSchema = new mongoose.Schema({
+    url: String,
+    content: String,
+}, { _id: false });
+
 const knowledgebase = new Schema({
     website: { type: String },
     urls: [{ type: String }],
     include: [{ type: String }],
     exclude: [{ type: String }],
-    contents: [{type: String}]
+    contents: [pageSchema]
 }, { _id: false })
-
-const pageSchema = new mongoose.Schema({
-    url: String,
-    content: String,
-}, { _id: false });
 
 const crawlData = new Schema({
     pagesContent: [pageSchema],

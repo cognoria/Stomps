@@ -1,5 +1,66 @@
-// import { RtfParser } from 'read-rtf'
-import mammoth from "mammoth";
+import { PDFDocument } from "pdf-lib"; 
+import Docxtemplater  from "docxtemplater";
+import PizZip from "pizzip";
+// import textract from 'textract';
+
+
+// Function to extract text from PDF files
+export async function extractTextFromPDF(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = async () => {
+      const pdfBytes = new Uint8Array(reader.result);
+      try {
+        const pdfDoc = await PDFDocument.load(pdfBytes);
+        const textContent = [];
+
+        const pages = await pdfDoc.getPages();
+        for (const page of pages) {
+          const { items } = await page.getTextContent();
+          const pageText = items.map((item) => item.str).join(' ');
+          textContent.push(pageText);
+        }
+
+        const content = textContent.join('\n');
+        const name = file.name;
+        // const pdfDoc = await PDFDocument.load(pdfBytes);
+        // const textContent = await pdfDoc.copyText();
+        // const content = textContent.map((line) => line.text).join("\n");
+        // const name = file.name;
+        resolve({ name, content });
+      } catch (error) {
+        reject(error);
+      }
+    };
+    reader.onerror = (error) => {
+      reject(error);
+    };
+    reader.readAsArrayBuffer(file);
+  });
+}
+
+// Function to extract text from DOC files
+export async function extractTextFromDoc(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = async () => {
+      try {
+        const zipData = new Uint8Array(reader.result);
+        const zip = new PizZip(zipData); 
+        const doc = new Docxtemplater(zip);
+        const content = doc.getFullText();
+        const name = file.name;
+        resolve({ name, content });
+      } catch (error) {
+        reject(error);
+      }
+    };
+    reader.onerror = (error) => {
+      reject(error);
+    };
+    reader.readAsArrayBuffer(file);
+  });
+}
 
 //extract txt formats
 export async function extractTextFromTXT(file) {
@@ -17,95 +78,96 @@ export async function extractTextFromTXT(file) {
   });
 }
 
-//extract pdf formats
-export async function extractTextFromPDF(file) {
-  // const content = await pdfToText(file)
-  // return {name: file.name, content}
-  return new Promise((resolve, reject) => {
-    console.log("extractTextFromPDF")
-    // Check if window is defined (i.e., if the code is running in the browser)
-    if (typeof window == 'undefined') reject(new Error('pdfjs-dist can only be used in the browser environment.'));
 
-    console.log("window is availableextractTextFromPDF")
-    // Dynamically import pdfjsLib.getDocument to ensure it's only imported in the browser
-    import('pdfjs-dist/webpack').then((pdfjsLib) => {
-      console.log(pdfjsLib, pdfjsLib.GlobalWorkerOptions)
-      // pdfjsLib.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.js`
+// //extract pdf formats
+// export async function extractTextFromPDF(file) {
+//   // const content = await pdfToText(file)
+//   // return {name: file.name, content}
+//   return new Promise((resolve, reject) => {
+//     console.log("extractTextFromPDF")
+//     // Check if window is defined (i.e., if the code is running in the browser)
+//     if (typeof window == 'undefined') reject(new Error('pdfjs-dist can only be used in the browser environment.'));
 
-      console.log("extractTextFromPDF: helper imported")
-      const reader = new FileReader();
-      reader.onload = async () => {
-        console.log("extractTextFromPDF: Reader loaded")
-        const loadingTask = pdfjsLib.getDocument(reader.result);
-        console.log(loadingTask)
-        try {
-          const pdf = await loadingTask.promise;
-          console.log("extractTextFromPDF: PDF loaded", pdf)
-          const textContent = [];
-          for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
-            const page = await pdf.getPage(pageNum);
-            const textContentItems = await page.getTextContent();
-            const text = textContentItems.items.map((item) => item.str).join(" ");
-            textContent.push(text);
-          }
-          const name = file.name;
-          const content = textContent.join("\n");
-          console.log({ name, content })
-          resolve({ name, content });
-        } catch (error) {
-          reject(error);
-        }
-      };
-      reader.onerror = (error) => {
-        reject(error);
-      };
-      reader.readAsDataURL(file);
-    }).catch((error) => {
-      reject(error);
-    });
-  });
-}
+//     console.log("window is availableextractTextFromPDF")
+//     // Dynamically import pdfjsLib.getDocument to ensure it's only imported in the browser
+//     import('pdfjs-dist/webpack').then((pdfjsLib) => {
+//       console.log(pdfjsLib, pdfjsLib.GlobalWorkerOptions)
+//       // pdfjsLib.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.js`
 
-//extract documents
-export async function extractTextFromDoc(file) {
-  // if (file.type === 'application/rtf' || file.name.endsWith('.rtf')) return await extractTextFromRTF(file)
+//       console.log("extractTextFromPDF: helper imported")
+//       const reader = new FileReader();
+//       reader.onload = async () => {
+//         console.log("extractTextFromPDF: Reader loaded")
+//         const loadingTask = pdfjsLib.getDocument(reader.result);
+//         console.log(loadingTask)
+//         try {
+//           const pdf = await loadingTask.promise;
+//           console.log("extractTextFromPDF: PDF loaded", pdf)
+//           const textContent = [];
+//           for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
+//             const page = await pdf.getPage(pageNum);
+//             const textContentItems = await page.getTextContent();
+//             const text = textContentItems.items.map((item) => item.str).join(" ");
+//             textContent.push(text);
+//           }
+//           const name = file.name;
+//           const content = textContent.join("\n");
+//           console.log({ name, content })
+//           resolve({ name, content });
+//         } catch (error) {
+//           reject(error);
+//         }
+//       };
+//       reader.onerror = (error) => {
+//         reject(error);
+//       };
+//       reader.readAsDataURL(file);
+//     }).catch((error) => {
+//       reject(error);
+//     });
+//   });
+// }
 
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onload = async () => {
-      const result = await mammoth.extractRawText({ buffer: reader.result });
-      const name = file.name;
-      const content = result.value;
-      resolve({ name, content });
-    }
-    reader.onerror = (error) => {
-      reject(error);
-    };
-    reader.readAsArrayBuffer(file);
-  })
-}
+// //extract documents
+// export async function extractTextFromDoc(file) {
+//   // if (file.type === 'application/rtf' || file.name.endsWith('.rtf')) return await extractTextFromRTF(file)
 
-//extract rtf formats
-export async function extractTextFromRTF(file) {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onload = async () => {
-      try {
-        const parser = new RtfParser();
-        const rtf = parser.parse(reader.result)
-        const name = file.name;
-        const content = rtf.rawText;
-        resolve({ name, content });
-      } catch (error) {
-        reject(error);
-      }
-    };
-    reader.onerror = (error) => {
-      reject(error);
-    };
-    reader.readAsArrayBuffer(file);
-  });
-}
+//   return new Promise((resolve, reject) => {
+//     const reader = new FileReader();
+//     reader.onload = async () => {
+//       const result = await mammoth.extractRawText({ buffer: reader.result });
+//       const name = file.name;
+//       const content = result.value;
+//       resolve({ name, content });
+//     }
+//     reader.onerror = (error) => {
+//       reject(error);
+//     };
+//     reader.readAsArrayBuffer(file);
+//   })
+// }
+
+// //extract rtf formats
+// export async function extractTextFromRTF(file) {
+//   return new Promise((resolve, reject) => {
+//     const reader = new FileReader();
+//     reader.onload = async () => {
+//       try {
+//         const parser = new RtfParser();
+//         const rtf = parser.parse(reader.result)
+//         const name = file.name;
+//         const content = rtf.rawText;
+//         resolve({ name, content });
+//       } catch (error) {
+//         reject(error);
+//       }
+//     };
+//     reader.onerror = (error) => {
+//       reject(error);
+//     };
+//     reader.readAsArrayBuffer(file);
+//   });
+// }
 
 export function isTXTFile(file) {
   return file.type === "text/plain";

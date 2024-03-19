@@ -20,7 +20,7 @@ async function seed(chatbotId) {
     const apiKey = await globalRepo.getServiceKey(AppServiceProviders.PINECONE)
     const pinecone = await getPineconeClient(apiKey);
 
-    const chatbot = await Chatbot.findByIdAndUpdate(chatbotId, { status: KnowledgebaseStatus.GENERATING_EMBEDDINGS }).select("+crawlData");
+    const chatbot = await Chatbot.findByIdAndUpdate(chatbotId, { status: KnowledgebaseStatus.GENERATING_EMBEDDINGS }).select("+crawlData knowledgebase");
 
     //TODO: make these dynamic either store in Global or inside each chatbot make editable
     let splittingMethod = "markdown";
@@ -28,7 +28,7 @@ async function seed(chatbotId) {
     let chunkOverlap = 20;
 
     const indexName = chatbot.pIndex;
-    const pages = chatbot.crawlData.pagesContent;
+    const pages = [...chatbot.crawlData.pagesContent, ...chatbot.knowledgebase.contents];
 
     // Choose the appropriate document splitter based on the splitting method
     const splitter =

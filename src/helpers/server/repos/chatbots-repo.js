@@ -5,6 +5,7 @@ import { db } from "../db";
 import { createPinconeIndex, deletePinconeIndex } from "../../AI/pinecone";
 import { headers } from "next/headers";
 import generateRandomString, { generateName } from "../../generaterandomString";
+import trainChatbotQueue from "../../../services/worker";
 
 const User = db.User;
 const Chatbot = db.Chatbot;
@@ -25,7 +26,7 @@ async function create(params) {
     const user = await User.findById(ownerId)
     if (!user) throw `User not found.`;
 
-    // validate
+    // validate name
     // if (await Chatbot.findOne({ name: params.name })) {
     //     throw 'Chatbot with name "' + params.name + '"  already exist';
     // }
@@ -64,7 +65,14 @@ async function create(params) {
         chatBotCustomizeData: chatBotCustomizeDataDefault
     }
 
-    return await Chatbot.create(newChatbotDetails);
+    // return await Chatbot.create(newChatbotDetails);
+
+    const newChatbot = await Chatbot.create(newChatbotDetails);
+
+    // Add the trainChatbot job to the queue
+    await trainChatbotQueue.add({ chatbotId: newChatbot._id });
+
+    return newChatbot;
 }
 
 async function trainChatbot(chatbotId) {
@@ -117,7 +125,7 @@ async function _delete(id) {
         //delete pincone index
         await deletePinconeIndex(chatbot.pIndex)
         await chatbot.remove()
-        
+
         return true
     } catch (error) {
         // Handle any errors that occurred during the deletion process

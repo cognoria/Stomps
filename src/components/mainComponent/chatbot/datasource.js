@@ -1,12 +1,14 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import {toast} from 'react-toastify'
 import useFormDataStore from "../../../store/chat_bot_state/chat_bot_store";
 import { extractTextFromDoc, extractTextFromPDF, extractTextFromTXT, isDOCFile, isPDFFile, isTXTFile } from "../../../utils/extractDoc/file_extract";
 
 export default function Datasource() {
   const [selectedFile, setSelectedFile] = useState(null);
-  const [files, setFiles] = useState([])
+  // const [files, setFiles] = useState([])
+  const files = useFormDataStore(state =>state.formData.files)
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
@@ -47,32 +49,31 @@ export default function Datasource() {
     }
   }
 
-  async function handleAddFile(){
-    if(!selectedFile) return //toast error please add file
-    try{
-      if(isTXTFile(selectedFile)){
-        const file =await extractTextFromTXT(selectedFile)
-        const savedFile = await useFormDataStore.getState().addFileToContents(file) //await addContent(file)
-        return setFiles(savedFile)
+  async function handleAddFile() {
+    if (!selectedFile) return toast.error("Please select a file first"); //toast error please add file
+    try {
+      let file;
+      if (isTXTFile(selectedFile)) {
+        file = await extractTextFromTXT(selectedFile);
+      } else if (isDOCFile(selectedFile)) {
+        file = await extractTextFromDoc(selectedFile);
+      } else if (isPDFFile(selectedFile)) {
+        file = await extractTextFromPDF(selectedFile);
+      } else {
+        return toast.error("unspported file selected"); //toast file not supported
       }
-
-      if(isDOCFile(selectedFile)){
-        const file = await extractTextFromDoc(selectedFile)
-        const savedFile = await useFormDataStore.getState().addFileToContents(file)
-        setFiles(savedFile)
-      }
-
-      if(isPDFFile(selectedFile)){
-        const file = await extractTextFromPDF(selectedFile)
-        const savedFile = await useFormDataStore.getState().addFileToContents(file)
-        setFiles(savedFile)
-      }
-      //send to controller
-    }catch(e){
-      console.error("error adding file: ",e)
+  
+      const savedFile = await useFormDataStore.getState().addFileToContents(file);
+    } catch (e) {
+      console.error("error adding file: ", e);
+      toast.error("Failed to add file")
       //toast
     }
   }
+
+  useEffect(() =>{
+    console.log(files)
+  },[files])
 
   return (
     <div className="flex flex-col  items-center justify-center w-full">
@@ -144,17 +145,17 @@ export default function Datasource() {
               {files.length > 0 && (
                 <div className="w-full px-2 mt-[40px]">
                   <ul className="w-full">
-                    {files?.slice(0, 10).map((files, index) => (
+                    {files?.slice(0, 10).map((file, index) => (
                       <li
                         key={index}
                         className="w-full flex flex-row items-center gap-2 justify-between "
                       >
                         <div className="w-[94%]  h-[42px] pl-[15px] pr-4 pt-3 pb-[13px] rounded-lg border border-gray-200 justify-between items-start gap-[158px] flex flex-row">
                           <div className="text-gray-900  w-full  w-[92%] text-xs font-normal font-['Manrope'] leading-none tracking-tight">
-                            {files.name}
+                            {file.name}
                           </div>
                         </div>
-                        <button>
+                        <button onClick={() => deleteFile(file.index)}>
                           <img
                             src="/images/chatbox/trash.svg"
                             alt=""

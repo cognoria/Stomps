@@ -62,21 +62,34 @@ const useFormDataStore = create((set) => ({
   },
   addFileToContents: (newContent) => {
     const { name, content } = newContent;
-    console.log(newContent)
-    const stringFile = JSON.stringify(newContent);
 
     set((state) => ({
       formData: {
         ...state.formData,
-        files: [...state.formData.files, stringFile],
-        doc_count: state.formData.doc_count + contentLength,
+        files: [...state.formData.files, newContent],
+        doc_count: state.formData.doc_count + content.length,
       },
     }));
 
     triggerUpdate(set);
 
-    const fileIndex = files.length - 1;
+    const fileIndex = useFormDataStore.getState().formData.files.length - 1;
+    
     return { name, index: fileIndex };
+  },
+  deleteFileFromContent: (index) => {
+    set((state) => {
+      const fileToDelete = state.formData.files[index];
+      console.log({fileToDelete, files: state.formData.files})
+      const newFormData = {
+        ...state.formData,
+        files: state.formData.files.filter((_, i) => i !== index),
+        doc_count: state.formData.doc_count - fileToDelete.content.length,
+      };
+      return { formData: newFormData };
+    });
+  
+    triggerUpdate(set);
   },
   addDataToContents: (newContent) => {
     set((state) => ({
@@ -139,19 +152,6 @@ const useFormDataStore = create((set) => ({
         contents: state.formData.contents.filter((_, i) => i !== index),
       },
     }));
-    triggerUpdate(set);
-  },
-  deleteFileFromContent: (index) => {
-    const fileToDelete = state.formData.files[index];
-    const { content } = JSON.parse(fileToDelete);
-    set((state) => ({
-      formData: {
-        ...state.formData,
-        files: state.formData.files.filter((_, i) => i !== index),
-        doc_count: state.formData.doc_count - contentLength,
-      },
-    }));
-
     triggerUpdate(set);
   },
   addWebsite: (newWebsite) => {
