@@ -16,7 +16,11 @@ export default function Sources() {
     urls: formData.urls,
     include: formData.include,
     exclude: formData.exclude,
-    contents: [{url: "Q&A", content: `${questionsJSON}`}, {url: "TXT", content: `${formData.text}`}, ...formData.files],
+    contents: [
+      { url: "Q&A", content: `${questionsJSON}` },
+      { url: "TXT", content: `${formData.text}` },
+      ...formData.files,
+    ],
   };
 
   const isLoading = useBotCreationStore((state) => state.loading);
@@ -41,19 +45,19 @@ export default function Sources() {
 
       <ul className="flex justify-start p-6 flex-col gap-y-2 items-start w-full circular-list">
         {textLength >= 1 && (
-          <li className="text-neutral-400  text-xs font-normal font-['Manrope'] leading-none tracking-tight">
+          <li className="text-neutral-400  text-xs font-normal font-manrope leading-none tracking-tight">
             {textLength} text input characters
           </li>
         )}
 
         {includeCount >= 1 && (
-          <li className="text-neutral-400 text-xs font-normal font-['Manrope'] leading-none tracking-tight">
-            {includeCount} links detected (1024 characters)
+          <li className="text-neutral-400 text-xs font-normal font-manrope leading-none tracking-tight">
+            {includeCount} links detected
           </li>
         )}
 
         {questionCount >= 1 && (
-          <li className="text-neutral-400 text-xs font-normal font-['Manrope'] leading-none tracking-tight">
+          <li className="text-neutral-400 text-xs font-normal font-manrope leading-none tracking-tight">
             {questionCount} Q & A detected
           </li>
         )}
@@ -72,5 +76,3 @@ export default function Sources() {
     </div>
   );
 }
-
-

@@ -7,7 +7,7 @@ const initialState = {
   error: null,
 };
 
-const useLinkStore = create((set) => ({
+const useLinkStore = create((set, get) => ({
   ...initialState,
   fetchLinksAndUpdateInclude: async (url) => {
     try {
@@ -24,15 +24,18 @@ const useLinkStore = create((set) => ({
 
       const html = await response.json();
 
+      const currentLinks = get().links;
+
+      const newLinks = html.filter((link) => !currentLinks.includes(link.data));
+
       set((state) => ({
         ...state,
-        links: html.data,
+        links: [...state.links, ...newLinks],
         loading: false,
       }));
 
-      useFormDataStore.getState().addDataToInclude(html.data);
+      useFormDataStore.getState().addDataToInclude(newLinks.data);
 
-      console.log(links);
       useFormDataStore.getState().addDataToUrls(url);
     } catch (error) {
       set({ error: error.message, loading: false });

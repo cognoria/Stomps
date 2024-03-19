@@ -33,7 +33,7 @@ export default function QA() {
                   <input
                     value={question}
                     onChange={(e) => setQuestion(e.target.value)}
-                    className=" w-full h-[40px] rounded-md border-[1px] border-gray-200"
+                    className=" w-full h-[40px] p-2 rounded-md border-[1px] border-gray-200"
                   />
                 </div>
                 <div className="p-3 h-[70%] flex flex-col items-start">
@@ -43,7 +43,7 @@ export default function QA() {
                   <textarea
                     value={answer}
                     onChange={(e) => setAnswer(e.target.value)}
-                    className="h-[130px] rounded-md w-full border-[1px] border-gray-200"
+                    className="h-[130px] rounded-md w-full border-[1px] p-3 border-gray-200"
                   ></textarea>
                 </div>
               </div>

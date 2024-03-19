@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import useFormDataStore from "../../../store/chat_bot_state/chat_bot_store";
 import useLinkStore from "../../../store/chat_bot_state/generate_links";
 import useSitemapStore from "../../../store/chat_bot_state/generate_sitemap";
@@ -10,9 +11,13 @@ function Website() {
   const include = useFormDataStore((state) => state.formData.include);
   const website = useFormDataStore((state) => state.formData.website);
   const sitemap = useFormDataStore((state) => state.formData.sitemap);
-
+  const [error, setError] = useState(null);
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!website.startsWith("http://") && !website.startsWith("https://")) {
+      return setError("invalid Url , Must contain http:// or https://");
+    }
+
     await useLinkStore.getState().fetchLinksAndUpdateInclude(website);
   };
 
@@ -30,6 +35,8 @@ function Website() {
     const sitemap = e.target.value;
     useFormDataStore.getState().addSitemap(sitemap);
   };
+
+  console.log(include);
   return (
     <div className="flex flex-col  items-center justify-center w-full">
       <div className="flex mt-[60px] items-center lg:flex-row lg:items-start gap-3 flex-col  justify-center">
@@ -61,6 +68,13 @@ function Website() {
                     </p>
                   </button>
                 </div>
+
+                {error && (
+                  <p className="text-red-500 text-[10px] font-normal font-manrope leading-[10px] tracking-tight">
+                    {error}
+                  </p>
+                )}
+
                 <div className="text-gray-900 text-[10px] font-normal font-manrope leading-[14px] tracking-tight">
                   This will crawl all the links starting with the URL [not
                   including files on the website].
@@ -136,11 +150,8 @@ function Website() {
                         className="w-full flex flex-row items-center gap-2 justify-between "
                       >
                         <div className="w-[94%]  h-[42px] pl-[15px] pr-4 pt-3 pb-[13px] rounded-lg border border-gray-200 justify-between items-start gap-[158px] flex flex-row">
-                          <div className="text-gray-900  lg:max-w-[40%] w-[92%] text-xs font-normal font-['Manrope'] leading-none tracking-tight">
-                            {link}
-                          </div>
-                          <div className="text-right w-[40%] hidden lg:block text-gray-900 text-xs font-normal font-['Manrope'] leading-none tracking-tight">
-                            1024 Characters
+                          <div className="text-gray-900  lg:max-w-[85%] w-[92%] text-xs font-normal font-manrope leading-none tracking-tight">
+                            {console.log(link)}
                           </div>
                         </div>
                         <button
