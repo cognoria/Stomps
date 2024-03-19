@@ -118,7 +118,7 @@ async function _delete(id) {
 
         //delete pincone index
         await deletePinconeIndex(chatbot.pIndex)
-        await chatbot.remove()
+        await Chatbot.findByIdAndDelete(id)
 
         return true
     } catch (error) {

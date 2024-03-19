@@ -8,7 +8,7 @@ module.exports = apiHandler({
 
 async function chatCompletion(req) {
   const { botId } = req.params;
-  const { messages } = req.body;
+  const { messages } = await req.json()
   return await chatRepo.getChatResponse(botId, messages);
 }
 

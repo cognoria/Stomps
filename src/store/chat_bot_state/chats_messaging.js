@@ -16,12 +16,14 @@ const useBotMessagingStore = create((set) => ({
 
     try {
       console.log(id);
+      const msg = await useBotMessagingStore.getState().chatMessages
+      console.log(msg)
       const response = await fetch(`/api/v1/chatbot/${id}/chat`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ messages: chatMessages }),
+        body: JSON.stringify({ messages: msg }),
       });
 
       if (!response.ok) {

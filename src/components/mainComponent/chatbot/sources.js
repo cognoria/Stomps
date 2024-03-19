@@ -31,8 +31,8 @@ export default function Sources() {
     console.log(dataToSend);
     try {
       const newBot = await useBotCreationStore.getState().createBot(dataToSend);
-      useFormDataStore.getState().clearFormData(newBot.id);
-      router.push(`/bot/${newBot.id}`);
+       useFormDataStore.getState().clearFormData(newBot._id);
+      router.push(`/bot/${newBot._id}`);
     } catch (error) {
       console.error("Failed to create bot:", error);
     }

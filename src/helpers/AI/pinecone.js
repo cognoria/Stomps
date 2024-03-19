@@ -17,10 +17,11 @@ export async function getMatchesFromEmbeddings(embeddings, topK, pinconeIndex, n
     const pinecone = await getPineconeClient(apiKey);
 
     // Retrieve the list of indexes
-    const indexes = await pinecone.listIndexes()
-
+    const {indexes} = await pinecone.listIndexes()
+    // console.log(indexes)
     // Check if the desired index is present, else throw an error
-    if (!indexes.includes(pinconeIndex)) {
+    const indexFound = indexes.some(index => index.name === pinconeIndex);
+    if (!indexFound) {
         throw `Pinecone Index not found`
     }
 
@@ -32,12 +33,12 @@ export async function getMatchesFromEmbeddings(embeddings, topK, pinconeIndex, n
         vector: embeddings,
         topK,
         includeMetadata: true,
-        namespace
+        // namespace
     }
 
     try {
         // Query the index with the defined request
-        const queryResult = await index.query({ queryRequest })
+        const queryResult = await index.query({ ...queryRequest })
         return queryResult.matches || []
     } catch (e) {
         // Log the error and throw it
