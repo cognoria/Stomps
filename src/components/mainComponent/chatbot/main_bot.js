@@ -18,7 +18,7 @@ function Main_bot({ chatbots }) {
           Create New Chatbot +
         </Link>
       </div>
-      <div className="flex flex-wrap p-4 items-center mt-[50px]  relative bg-sky-50 rounded-2xl overflow-y-hidden pt-4 justify-center gap-7 py-4 h-auto w-full  lg:items-start ">
+      <div className="flex flex-wrap px-6 py-10 items-center mt-[50px]  relative  bg-sky-50 rounded-2xl overflow-y-hidden  lg:justify-start justify-center gap-7 h-auto w-full  lg:items-start ">
         {chatbots?.map((item, i) => {
           return (
             <div
