@@ -1,20 +1,30 @@
 "use client";
 
 import { useState } from "react";
-// import useBotCreationStore from "../../../store/chat_bot_state/create_new_bot";
+import useBotCreationStore from "../../../store/chat_bot_state/create_new_bot";
+
 import useFormDataStore from "../../../store/chat_bot_state/chat_bot_store";
-import { extractTextFromDoc, extractTextFromPDF, extractTextFromTXT, isDOCFile, isPDFFile, isTXTFile } from "../../../utils/extractDoc/file_extract";
+import {
+  extractTextFromDoc,
+  // extractTextFromPDF,
+  extractTextFromTXT,
+  isDOCFile,
+  isPDFFile,
+  isTXTFile,
+} from "../../../utils/extractDoc/file_extract";
 
 export default function Datasource() {
   const [selectedFile, setSelectedFile] = useState(null);
-  const [files, setFiles] = useState([])
+  const [files, setFiles] = useState([]);
   const loading = useBotCreationStore((state) => state.loading);
   const createBot = useBotCreationStore((state) => state.createBot);
-  const {addContent, deleteContent, deleteAllContent} = useFormDataStore((state) => ({
-    addContent: state.addFileToContent,
-    deleteContent: state.deleteFileFromContent,
-    deleteAllContent: state.deleteAllContent
-  }))
+  const { addContent, deleteContent, deleteAllContent } = useFormDataStore(
+    (state) => ({
+      addContent: state.addFileToContent,
+      deleteContent: state.deleteFileFromContent,
+      deleteAllContent: state.deleteAllContent,
+    })
+  );
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
@@ -54,25 +64,25 @@ export default function Datasource() {
     }
   }
 
-  async function handleAddFile(){
-    if(!selectedFile) return //toast error please add file
-    try{
-      if(isTXTFile(selectedFile)){
-        const file = extractTextFromTXT(selectedFile)
-        const savedFile = await addContent(file)
-        return setFiles(savedFile)
+  async function handleAddFile() {
+    if (!selectedFile) return; //toast error please add file
+    try {
+      if (isTXTFile(selectedFile)) {
+        const file = extractTextFromTXT(selectedFile);
+        const savedFile = await addContent(file);
+        return setFiles(savedFile);
       }
 
-      if(isDOCFile(selectedFile)){
-        const file = extractTextFromDoc(selectedFile)
-        const savedFile = await addContent(file)
-        setFiles(savedFile)
+      if (isDOCFile(selectedFile)) {
+        const file = extractTextFromDoc(selectedFile);
+        const savedFile = await addContent(file);
+        setFiles(savedFile);
       }
 
-      if(isPDFFile(selectedFile)){
-        const file = extractTextFromPDF(selectedFile)
-        const savedFile = await addContent(file)
-        setFiles(savedFile)
+      if (isPDFFile(selectedFile)) {
+        const file = extractTextFromPDF(selectedFile);
+        const savedFile = await addContent(file);
+        setFiles(savedFile);
       }
       //send to controller
     } catch (e) {
@@ -143,7 +153,10 @@ export default function Datasource() {
                       Delete all
                     </p>
                   </button>
-                  <button onClick={handleAddFile} className=" px-5 py-3 text-[#1261AC] text-xs font-bold font-manrope leading-snug bg-[#EEF8FF] flex items-center justify-center flex-col  rounded-lg">
+                  <button
+                    // onClick={handleAddFile}
+                    className=" px-5 py-3 text-[#1261AC] text-xs font-bold font-manrope leading-snug bg-[#EEF8FF] flex items-center justify-center flex-col  rounded-lg"
+                  >
                     Add
                   </button>
                 </div>
@@ -180,4 +193,3 @@ export default function Datasource() {
     </div>
   );
 }
-

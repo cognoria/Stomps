@@ -18,13 +18,13 @@ const useSitemapStore = create((set) => ({
       ) {
         sitemapUrl = "https://" + sitemapUrl;
       }
-      const response = await fetch(sitemapUrl);
-      const xmlData = await response.text();
+      const response = await fetch(`/api/v1/data/links?web=${sitemapUrl}`);
+      const xmlData = await response.json();
 
-      const parser = new DOMParser();
-      const xmlDoc = parser.parseFromString(xmlData, "text/xml");
-      const urls = xmlDoc.getElementsByTagName("url");
-      const extractedLinks = Array.from(urls).map(
+      // const parser = new DOMParser();
+      // const xmlDoc = parser.parseFromString(xmlData, "text/xml");
+      // const urls = xmlDoc.getElementsByTagName("url");
+      const extractedLinks = Array.from(xmlData).map(
         (urlNode) => urlNode.querySelector("loc").textContent
       );
 

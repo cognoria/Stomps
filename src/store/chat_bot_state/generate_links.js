@@ -16,21 +16,23 @@ const useLinkStore = create((set) => ({
       if (!url.startsWith("http://") && !url.startsWith("https://")) {
         url = "https://" + url;
       }
-      const response = await fetch(url);
+      const response = await fetch(`/api/v1/data/links?web=${url}`);
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
 
-      const html = await response.text();
-      const parser = new DOMParser();
-      const doc = parser.parseFromString(html, "text/html");
+      const html = await response.json();
+      // const parser = new DOMParser();
+      // const doc = parser.parseFromString(html, "text/html");
 
-      const anchorElements = doc.querySelectorAll("a");
-      const extractedLinks = Array.from(anchorElements).map((a) => a.href);
+      // const anchorElements = doc.querySelectorAll("a");
+      // const extractedLinks = Array.from(anchorElements).map((a) => a.href);
+
+
       console.log(extractedLinks);
       set((state) => ({
         ...state,
-        links: extractedLinks,
+        links: html,
         loading: false,
       }));
       extractedLinks.forEach((link) => {

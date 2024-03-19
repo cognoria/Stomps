@@ -1,4 +1,4 @@
-import { getDocument } from "pdfjs-dist";
+// import * as pdf from "pdfjs-dist";
 import mammoth from "mammoth";
 // import pdf from 'pdf-parse';
 
@@ -17,35 +17,35 @@ export async function extractTextFromTXT(file) {
   });
 }
 
-export async function extractTextFromPDF(file) {
-  // const data = await pdf(file);
-  // console.log({data})
-  return new Promise((resolve, reject) => {
-    const loadingTask = getDocument(file);
-    loadingTask.promise
-      .then((pdf) => {
-        const textContent = [];
-        for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
-          pdf.getPage(pageNum).then((page) => {
-            page.getTextContent().then((textContentItems) => {
-              const text = textContentItems.items
-                .map((item) => item.str)
-                .join(" ");
-              textContent.push(text);
-              if (textContent.length === pdf.numPages) {
-                const name = file.name;
-                const content = textContent.join("\n");
-                resolve({ name, content });
-              }
-            });
-          });
-        }
-      })
-      .catch((error) => {
-        reject(error);
-      });
-  });
-}
+// export async function extractTextFromPDF(file) {
+//   // const data = await pdf(file);
+//   // console.log({data})
+//   return new Promise((resolve, reject) => {
+//     const loadingTask = pdf.getDocument(file);
+//     loadingTask.promise
+//       .then((pdf) => {
+//         const textContent = [];
+//         for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
+//           pdf.getPage(pageNum).then((page) => {
+//             page.getTextContent().then((textContentItems) => {
+//               const text = textContentItems.items
+//                 .map((item) => item.str)
+//                 .join(" ");
+//               textContent.push(text);
+//               if (textContent.length === pdf.numPages) {
+//                 const name = file.name;
+//                 const content = textContent.join("\n");
+//                 resolve({ name, content });
+//               }
+//             });
+//           });
+//         }
+//       })
+//       .catch((error) => {
+//         reject(error);
+//       });
+//   });
+// }
 
 export async function extractTextFromDoc(file) {
   const result = await mammoth.extractRawText({ buffer: file });
@@ -54,11 +54,9 @@ export async function extractTextFromDoc(file) {
   return { name, content };
 }
 
-
 export function isTXTFile(file) {
-  return file.type === 'text/plain';
+  return file.type === "text/plain";
 }
-
 
 export function isPDFFile(file) {
   return file.type === 'application/pdf';
