@@ -1,15 +1,12 @@
 "use client";
 
 import { useState } from "react";
-// import useBotCreationStore from "../../../store/chat_bot_state/create_new_bot";
 import useFormDataStore from "../../../store/chat_bot_state/chat_bot_store";
 import { extractTextFromDoc, extractTextFromPDF, extractTextFromTXT, isDOCFile, isPDFFile, isTXTFile } from "../../../utils/extractDoc/file_extract";
 
 export default function Datasource() {
   const [selectedFile, setSelectedFile] = useState(null);
   const [files, setFiles] = useState([])
-  // const loading = useBotCreationStore((state) => state.loading);
-  // const createBot = useBotCreationStore((state) => state.createBot);
   
   const handleFileChange = (event) => {
     const file = event.target.files[0];
@@ -39,7 +36,7 @@ export default function Datasource() {
   };
 
   async function deleteFile(index){
-    return await useFormDataStore.getStore().deleteFileFromContent(index)
+    return await useFormDataStore.getState().deleteFileFromContent(index)
   }
 
   async function deleteAllFile(){
@@ -54,25 +51,25 @@ export default function Datasource() {
     if(!selectedFile) return //toast error please add file
     try{
       if(isTXTFile(selectedFile)){
-        const file = extractTextFromTXT(selectedFile)
-        const savedFile = await useFormDataStore.getStore().addFileToContent(file) //await addContent(file)
+        const file =await extractTextFromTXT(selectedFile)
+        const savedFile = await useFormDataStore.getState().addFileToContents(file) //await addContent(file)
         return setFiles(savedFile)
       }
       
       if(isDOCFile(selectedFile)){
-        const file = extractTextFromDoc(selectedFile)
-        const savedFile = await useFormDataStore.getStore().addFileToContent(file)
+        const file = await extractTextFromDoc(selectedFile)
+        const savedFile = await useFormDataStore.getState().addFileToContents(file)
         setFiles(savedFile)
       }
       
       if(isPDFFile(selectedFile)){
-        const file = extractTextFromPDF(selectedFile)
-        const savedFile = await useFormDataStore.getStore().addFileToContent(file)
+        const file = await extractTextFromPDF(selectedFile)
+        const savedFile = await useFormDataStore.getState().addFileToContents(file)
         setFiles(savedFile)
       }
       //send to controller
     }catch(e){
-      comsole.log(e)
+      console.error("error adding file: ",e)
       //toast
     }
   }

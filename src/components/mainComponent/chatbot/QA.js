@@ -1,7 +1,7 @@
 import { useState } from "react";
 import useFormDataStore from "../../../store/chat_bot_state/chat_bot_store";
 
-function QA() {
+export default function QA() {
   const [question, setQuestion] = useState("");
   const [answer, setAnswer] = useState("");
   const questionList = useFormDataStore((state) => state.formData.questions);
@@ -128,4 +128,4 @@ function QA() {
   );
 }
 
-export default QA;
+// QA;

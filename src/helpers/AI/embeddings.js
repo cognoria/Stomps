@@ -28,3 +28,18 @@ export async function getEmbeddings(input) {
         throw new Error(`Error embedding: ${e}`);
     }
 }
+
+export async function getChatCompletion(messages, model) {
+    try {
+        const apiKey = await globalRepo.getServiceKey(AppServiceProviders.OPENAI)
+        const openai = await getOpenaiClient(apiKey)
+        const completion = await openai.chat.completions.create({
+            messages,
+            model,
+        });
+        return completion.choices[0];
+    } catch (e) {
+        console.log(e)
+        throw new Error(e)
+    }
+}

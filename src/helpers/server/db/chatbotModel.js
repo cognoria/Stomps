@@ -19,6 +19,7 @@ const pageSchema = new mongoose.Schema({
 const crawlData = new Schema({
     pagesContent: [pageSchema],
     crawledUrls: [{ type: String }],
+    charCount: {type: String},
     queue: [{ type: String }],
 }, { _id: false })
 
@@ -33,7 +34,7 @@ const chatBotCustomizeData = new Schema({
     description: { type: String, required: true, default: "Ask me anything. I'll try to answer based on the data from this website." },
     fontColor: { type: String, required: true, default: "#FFF" },
     heading: { type: String, required: true, default: "I am your AI assistant" },
-    prompt: { type: String, default: "You are a very enthusiastic chatbot who loves to help people! Your name is {{chatbotName}} and you are designed to respond only based on the given context, outputted in Markdown format." },
+    prompt: { type: String, default: "You are a very enthusiastic chatbot who loves to help people! Your name is Stomp and you are designed to respond only based on the given context, outputted in Markdown format." },
     defaultAnswer: { type: String, default: "I don't know how to answer that" },
     placement: { type: String, enum: ['left', 'right'], required: true, default: 'right' },
     showReadMore: { type: Boolean, required: true, default: true },

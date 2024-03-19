@@ -10,7 +10,7 @@ export const getPineconeClient = async (apikey) => {
 }
 
 // The function `getMatchesFromEmbeddings` is used to retrieve matches for the given embeddings
-export async function getMatchesFromEmbeddings(embeddings, topK, namespace, pinconeIndex) {
+export async function getMatchesFromEmbeddings(embeddings, topK, pinconeIndex, namespace) {
     // Obtain a client for Pinecone 
     // ///TODO: pass apikey
     const apiKey = await globalRepo.getServiceKey(AppServiceProviders.PINECONE)
@@ -21,7 +21,7 @@ export async function getMatchesFromEmbeddings(embeddings, topK, namespace, pinc
 
     // Check if the desired index is present, else throw an error
     if (!indexes.includes(pinconeIndex)) {
-        throw `Index index does not exist`
+        throw `Pinecone Index not found`
     }
 
     // Get the Pinecone index
@@ -121,8 +121,8 @@ export async function createPinconeIndex(name, type = 'starter') {
     }
 }
 
-export async function deletePincone(){
+export async function deletePinconeIndex(index) {
     const apiKey = await globalRepo.getServiceKey(AppServiceProviders.PINECONE)
     const pinecone = await getPineconeClient(apiKey);
-    pinecone.deleteIndex('ikemdemo-jhhay0-index')
+    return await pinecone.deleteIndex(index)
 }

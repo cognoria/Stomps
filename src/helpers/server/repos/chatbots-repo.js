@@ -2,7 +2,7 @@ import { Crawler } from "../../AI/newCrwler";
 import seed from "../../AI/seed";
 import { KnowledgebaseStatus, chatBotCustomizeDataDefault } from "../../enums";
 import { db } from "../db";
-import { createPinconeIndex } from "../../AI/pinecone";
+import { createPinconeIndex, deletePinconeIndex } from "../../AI/pinecone";
 import { headers } from "next/headers";
 import generateRandomString, { generateName } from "../../generaterandomString";
 
@@ -21,9 +21,9 @@ export const chatbotRepo = {
 
 async function create(params) {
     const ownerId = headers().get('userId');
-    
+
     const user = await User.findById(ownerId)
-    if(!user) throw `User not found.`;
+    if (!user) throw `User not found.`;
 
     // validate
     // if (await Chatbot.findOne({ name: params.name })) {
@@ -88,7 +88,7 @@ async function trainChatbot(chatbotId) {
 }
 
 async function getById(id) {
-    const chatbot = await Chatbot.findById(id);
+    const chatbot = await Chatbot.findById(id).select(" +chatBotCustomizeData ");
     if (!chatbot) throw 'Chatbot with id "' + id + '"  not found';
     return chatbot;
 }
@@ -110,5 +110,18 @@ async function getAllNewBot() {
 }
 
 async function _delete(id) {
-    return await Chatbot.findByIdAndDelete(id);
+    try {
+        const chatbot = await Chatbot.findById(id);
+        if (!chatbot) throw `chatbot not found`;
+
+        //delete pincone index
+        await deletePinconeIndex(chatbot.pIndex)
+        await chatbot.remove()
+        
+        return true
+    } catch (error) {
+        // Handle any errors that occurred during the deletion process
+        console.error('Error deleting chatbot:', error);
+        throw error;
+    }
 }
