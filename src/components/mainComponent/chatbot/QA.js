@@ -5,6 +5,7 @@ export default function QA() {
   const [question, setQuestion] = useState("");
   const [answer, setAnswer] = useState("");
   const questionList = useFormDataStore((state) => state.formData.questions);
+  
   const addQuestionToEquationStore = async (e) => {
     e.preventDefault();
     const newQuestion = { question, answer };

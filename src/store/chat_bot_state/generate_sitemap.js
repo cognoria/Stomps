@@ -2,6 +2,7 @@ import { create } from "zustand";
 import useFormDataStore from "./chat_bot_store";
 
 const initialState = {
+  links: [],
   loading: false,
   error: null,
 };
@@ -27,19 +28,21 @@ const useSitemapStore = create((set) => ({
 
       const html = await response.json();
 
-      set((state) => ({
-        ...state,
-        links: html,
-        loading: false,
-      }));
-
-      extractedLinks.forEach((link) => {
-        useFormDataStore.getState().addDataToInclude(link);
+      set((state) => {
+        const linksSet = new Set();
+        linksSet.add(...state.links, ...html);
+        console.log(linksSet);
+        return {
+          ...state,
+          links: Array.from(linksSet),
+          loading: false,
+        };
       });
+
+      useFormDataStore.getState().addDataToInclude(html);
       useFormDataStore.getState().addDataToUrls(sitemapUrl);
 
       set({ loading: false });
-      console.log("Include:", useFormDataStore.getState().formData.include);
     } catch (error) {
       set({ error: error.message, loading: false });
       console.error("Error fetching sitemap:", error);

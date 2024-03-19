@@ -19,5 +19,5 @@ createChatbot.schema = joi.object({
   urls: joi.array().required(), //array of string
   include: joi.array(),  //array of string
   exclude: joi.array(),  //array of string
-  contents: joi.array().items(joi.string())
+  contents: joi.array(),
 });

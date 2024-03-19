@@ -24,19 +24,20 @@ const useLinkStore = create((set, get) => ({
 
       const html = await response.json();
 
-      const currentLinks = get().links;
+      set((state) => {
+        const linksSet = new Set();
+        linksSet.add(...state.links, ...html);
+        console.log(linksSet);
+        return {
+          ...state,
+          links: Array.from(linksSet),
+          loading: false,
+        };
+      });
 
-      const newLinks = html.filter((link) => !currentLinks.includes(link.data));
-
-      set((state) => ({
-        ...state,
-        links: [...state.links, ...newLinks],
-        loading: false,
-      }));
-
-      useFormDataStore.getState().addDataToInclude(newLinks.data);
-
+      useFormDataStore.getState().addDataToInclude(html);
       useFormDataStore.getState().addDataToUrls(url);
+      set({ loading: false });
     } catch (error) {
       set({ error: error.message, loading: false });
       console.error("Error fetching links:", error);

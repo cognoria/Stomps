@@ -29,9 +29,9 @@ export default function Sources() {
     e.preventDefault();
     console.log(dataToSend);
     try {
-      await useBotCreationStore.getState().createBot(dataToSend);
-      await useFormDataStore.getState().clearFormData();
-      router.push("/");
+      const newBot = await useBotCreationStore.getState().createBot(dataToSend);
+       useFormDataStore.getState().clearFormData(newBot.id);
+      router.push(`/bot/${newBot.id}`);
     } catch (error) {
       console.error("Failed to create bot:", error);
     }

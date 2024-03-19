@@ -35,12 +35,10 @@ function Website() {
     const sitemap = e.target.value;
     useFormDataStore.getState().addSitemap(sitemap);
   };
-
-  console.log(include);
   return (
     <div className="flex flex-col  items-center justify-center w-full">
       <div className="flex mt-[60px] items-center lg:flex-row lg:items-start gap-3 flex-col  justify-center">
-        <div className="w-[95%] lg:w-[570px] h-auto lg:h-auto border-[1px]  rounded-lg  border-gray-200">
+        <div className="w-[95%] lg:w-[570px] h-auto lg:h-auto border-[1px]  rounded-lg  mb-5 border-gray-200">
           <div className="w-full h-auto  border-[1px] text-sky-700 px-3 py-4 border-gray-200 text-base font-bold font-manrope leading-snug">
             Website
           </div>
@@ -151,7 +149,7 @@ function Website() {
                       >
                         <div className="w-[94%]  h-[42px] pl-[15px] pr-4 pt-3 pb-[13px] rounded-lg border border-gray-200 justify-between items-start gap-[158px] flex flex-row">
                           <div className="text-gray-900  lg:max-w-[85%] w-[92%] text-xs font-normal font-manrope leading-none tracking-tight">
-                            {console.log(link)}
+                            {link}
                           </div>
                         </div>
                         <button

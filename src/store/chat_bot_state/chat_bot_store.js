@@ -23,7 +23,13 @@ const useFormDataStore = create((set) => ({
     }));
     triggerUpdate(set);
   },
-  clearFormData: () => set({ formData: initialState }),
+  clearFormData: async(botId) => {
+    set({ formData: initialState })
+    const response = await fetch(`/api/v1/chatbot/${botId}/train`, {
+      method: "GET",
+    });
+    console.log(await response.json())
+  },
   addText: (newText) => {
     set((state) => ({
       formData: {
@@ -46,7 +52,7 @@ const useFormDataStore = create((set) => ({
     set((state) => ({
       formData: {
         ...state.formData,
-        include: [...state.formData.include, newInclude],
+        include: [...state.formData.include, ...newInclude],
       },
     }));
     triggerUpdate(set);
@@ -80,7 +86,6 @@ const useFormDataStore = create((set) => ({
   deleteFileFromContent: (index) => {
     set((state) => {
       const fileToDelete = state.formData.files[index];
-      console.log({fileToDelete, files: state.formData.files})
       const newFormData = {
         ...state.formData,
         files: state.formData.files.filter((_, i) => i !== index),
