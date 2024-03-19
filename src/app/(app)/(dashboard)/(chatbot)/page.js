@@ -28,15 +28,15 @@ function Page() {
           <Main_bot />
         </div>
       )} */}
-      {/* {chatbots === null || chatbots.length === 0 ? (
+      {chatbots === null || chatbots.length === 0 ? (
         <Empty_bot />
-      ) : userChatBot.data ? ( */}
+      ) : userChatBot.data ? (
         <div className="mt-[80px] w-full">
           <Main_bot chatbots={chatbots} />
         </div>
-      {/* ) : (
+      ) : (
         <Empty_bot />
-      )} */}
+      )}
     </div>
   );
 }

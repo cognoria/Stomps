@@ -2,15 +2,17 @@
 import { toast } from "react-toastify";
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
+
 const useSingleChatbot = create(
   devtools((set) => ({
     error: null,
     loading: false,
     chatbot: null,
-    singlChatBot: async (onSuccess) => {
+    singleChatBot: async (id, onSuccess) => {
+      // Accept id parameter
       set({ loading: true, error: null });
       try {
-        const response = await fetch(`api/v1/chatbot/${id}`, {
+        const response = await fetch(`/api/v1/chatbot/${id}`, {
           method: "GET",
           // headers: { Authorization: `Bearer ${token}` },
         });
@@ -22,7 +24,7 @@ const useSingleChatbot = create(
 
         console.log(data);
         if (onSuccess) onSuccess(data); // Pass data to onSuccess callback if provided
-        set({ loading: false, chatbots: data });
+        set({ loading: false, chatbot: data }); // Update chatbot instead of chatbots
         return data; // Return data after successful fetching
       } catch (error) {
         set({ error: error.message, loading: false });

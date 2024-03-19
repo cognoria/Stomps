@@ -1,10 +1,40 @@
-function ChatPage(bot_id) {
-  console.log(bot_id);
-  
+"use client";
+
+import { useEffect } from "react";
+import useSingleChatbot from "../../../../store/chat_bot_state/single_chat_bot";
+
+function ChatPage({ bot_id }) {
+  const { singleChatBot, loading, error, chatbot } = useSingleChatbot(
+    (state) => ({
+      singleChatBot: state.singleChatBot,
+      loading: state.loading,
+      error: state.error,
+      chatbot: state.chatbot,
+    })
+  );
+
+  useEffect(() => {
+    singleChatBot(bot_id);
+  }, [bot_id, singleChatBot]);
+
+  console.log(chatbot);
+
+  function getStatusColor(status) {
+    switch (status) {
+      case "READY":
+        return "green";
+      case "EMBEDDING_ERROR":
+      case "CRAWL_ERROR":
+        return "red";
+      default:
+        return "yellow";
+    }
+  }
+
   return (
     <div className="flex w-full lg:w-[767px] rounded-md flex-col h-auto items-start  border-gray-200 justify-center border-[1px] ">
       <div className="text-gray-900 text-base font-bold font-manrope p-4 border-b-[1px] border-gray-200 w-full  leading-snug">
-        examplesite.com
+        {chatbot?.name}
       </div>
       <div className="w-full py-6 px-2 items-start flex flex-row  justify-start ">
         <div className="w-[45%] pl-2 h-[588px]  flex flex-col items-start justify-start">
@@ -15,7 +45,7 @@ function ChatPage(bot_id) {
               </div>
               <div className="flex flex-row items-start gap-3">
                 <div className="text-gray-900 text-sm font-bold font-manrope leading-snug">
-                  pRIy5CRVSVHSZPPtueim5
+                  {chatbot?._id}
                 </div>
                 <img src="/images/chatbox/copy.svg" className="w-6 h-6" />
               </div>
@@ -26,9 +56,17 @@ function ChatPage(bot_id) {
                   Status
                 </div>
                 <div className="flex flex-row gap-1 items-center">
-                  <div className="w-3 h-3  bg-emerald-500 rounded-full" />
+                  <div
+                    className={`w-3 h-3 ${
+                      getStatusColor(chatbot?.status) === "green"
+                        ? "bg-emerald-500"
+                        : getStatusColor(chatbot?.status) === "red"
+                        ? "bg-red-500"
+                        : "bg-yellow-500"
+                    } rounded-full`}
+                  />
                   <div className="text-gray-900 text-sm font-bold font-manrope leading-snug">
-                    Trained
+                    {chatbot?.status}
                   </div>
                 </div>
               </div>
@@ -51,7 +89,7 @@ function ChatPage(bot_id) {
                 </div>
                 <div className="flex flex-row gap-3 items-center">
                   <div className="text-gray-900 text-sm font-bold font-manrope leading-snug">
-                    Private
+                    {chatbot?.visibility}
                   </div>
                 </div>
               </div>

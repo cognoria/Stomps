@@ -10,7 +10,7 @@ const useUserChatbot = create(
     userChatBot: async (onSuccess) => {
       set({ loading: true, error: null });
       try {
-        const response = await fetch(`api/v1/chatbot`, {
+        const response = await fetch(`/api/v1/chatbot`, {
           method: "GET",
           // headers: { Authorization: `Bearer ${token}` },
         });
@@ -23,7 +23,7 @@ const useUserChatbot = create(
         console.log(data);
         if (onSuccess) onSuccess(data); // Pass data to onSuccess callback if provided
         set({ loading: false, chatbots: data });
-         return data; // Return data after successful fetching
+        return data; // Return data after successful fetching
       } catch (error) {
         set({ error: error.message, loading: false });
         toast.error(error.message || "Failed to fetch!");

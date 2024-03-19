@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-// import * as pdf from "pdfjs-dist";
-=======
 // import { RtfParser } from 'read-rtf'
->>>>>>> acfb4d5b1aa195d6f63791cc6658a0e141f934fd
 import mammoth from "mammoth";
 
 //extract txt formats
@@ -21,37 +17,6 @@ export async function extractTextFromTXT(file) {
   });
 }
 
-<<<<<<< HEAD
-// export async function extractTextFromPDF(file) {
-//   // const data = await pdf(file);
-//   // console.log({data})
-//   return new Promise((resolve, reject) => {
-//     const loadingTask = pdf.getDocument(file);
-//     loadingTask.promise
-//       .then((pdf) => {
-//         const textContent = [];
-//         for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
-//           pdf.getPage(pageNum).then((page) => {
-//             page.getTextContent().then((textContentItems) => {
-//               const text = textContentItems.items
-//                 .map((item) => item.str)
-//                 .join(" ");
-//               textContent.push(text);
-//               if (textContent.length === pdf.numPages) {
-//                 const name = file.name;
-//                 const content = textContent.join("\n");
-//                 resolve({ name, content });
-//               }
-//             });
-//           });
-//         }
-//       })
-//       .catch((error) => {
-//         reject(error);
-//       });
-//   });
-// }
-=======
 //extract pdf formats
 export async function extractTextFromPDF(file) {
   // const content = await pdfToText(file)
@@ -100,7 +65,6 @@ export async function extractTextFromPDF(file) {
     });
   });
 }
->>>>>>> acfb4d5b1aa195d6f63791cc6658a0e141f934fd
 
 //extract documents
 export async function extractTextFromDoc(file) {

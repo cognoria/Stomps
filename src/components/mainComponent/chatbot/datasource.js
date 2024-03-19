@@ -7,13 +7,7 @@ import { extractTextFromDoc, extractTextFromPDF, extractTextFromTXT, isDOCFile, 
 export default function Datasource() {
   const [selectedFile, setSelectedFile] = useState(null);
   const [files, setFiles] = useState([])
-<<<<<<< HEAD
-  // const loading = useBotCreationStore((state) => state.loading);
-  // const createBot = useBotCreationStore((state) => state.createBot);
 
-=======
-  
->>>>>>> acfb4d5b1aa195d6f63791cc6658a0e141f934fd
   const handleFileChange = (event) => {
     const file = event.target.files[0];
     if (file) {
