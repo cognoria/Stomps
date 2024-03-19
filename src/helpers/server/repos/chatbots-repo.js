@@ -5,7 +5,6 @@ import { db } from "../db";
 import { createPinconeIndex, deletePinconeIndex } from "../../AI/pinecone";
 import { headers } from "next/headers";
 import generateRandomString, { generateName } from "../../generaterandomString";
-import trainChatbotQueue from "../../../services/worker";
 
 const User = db.User;
 const Chatbot = db.Chatbot;
@@ -65,12 +64,7 @@ async function create(params) {
         chatBotCustomizeData: chatBotCustomizeDataDefault
     }
 
-    // return await Chatbot.create(newChatbotDetails);
-
     const newChatbot = await Chatbot.create(newChatbotDetails);
-
-    // Add the trainChatbot job to the queue
-    await trainChatbotQueue.add({ chatbotId: newChatbot._id });
 
     return newChatbot;
 }

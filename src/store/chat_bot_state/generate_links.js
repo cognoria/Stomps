@@ -24,13 +24,18 @@ const useLinkStore = create((set) => ({
 
       const html = await response.json();
 
-      set((state) => ({
-        ...state,
-        links: html.data,
-        loading: false,
-      }));
 
-      useFormDataStore.getState().addDataToInclude(html.data);
+      set((state) =>{       
+        const linksSet = new Set()
+        linksSet.add(...state.links, ...html)
+        console.log(linksSet)
+        return {
+        ...state,
+        links: Array.from(linksSet),
+        loading: false,
+      }});
+
+      useFormDataStore.getState().addDataToInclude(html);
 
       console.log(links);
       useFormDataStore.getState().addDataToUrls(url);
