@@ -25,13 +25,12 @@ const useLinkStore = create((set) => ({
       const html = await response.json();
 
 
-      set((state) =>{       
-        const linksSet = new Set()
-        linksSet.add(...state.links, ...html)
-        console.log(linksSet)
+      set((state) =>{
+        const linksSet = new Set([...state.links, ...html]);
+
         return {
         ...state,
-        links: Array.from(linksSet),
+        links: [...linksSet],
         loading: false,
       }});
 
