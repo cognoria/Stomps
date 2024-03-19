@@ -7,7 +7,7 @@ const useBotCreationStore = create((set) => ({
   createBot: async (botData) => {
     set({ creatingBot: true, loading: true, error: null });
     try {
-      const response = await fetch("api/v1/chatbot/create", {
+      const response = await fetch("/api/v1/chatbot/create", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
