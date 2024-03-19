@@ -29,7 +29,7 @@ async function seed(chatbotId) {
 
     const indexName = chatbot.pIndex;
     const pages = [...chatbot.crawlData.pagesContent, ...chatbot.knowledgebase.contents];
-
+    // console.log(pages)
     // Choose the appropriate document splitter based on the splitting method
     const splitter =
       splittingMethod === "recursive"
@@ -52,7 +52,7 @@ async function seed(chatbotId) {
     );
 
     // Upsert vectors into the Pinecone index
-    console.log("chunking and upserting")
+    console.log("chunking and upserting", vectors)
     await chunkedUpsert(index, vectors, "", 10);
 
     return await Chatbot.findByIdAndUpdate(chatbotId, { status: KnowledgebaseStatus.READY });

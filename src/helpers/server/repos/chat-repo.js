@@ -10,7 +10,7 @@ export const chatRepo = {
 }
 
 async function getChatResponse(chatbotId, messages) {
-    const chatbot = Chatbot.findById(chatbotId).select("+chatBotCustomizeData");
+    const chatbot = await Chatbot.findById(chatbotId).select("+chatBotCustomizeData");
     if (!chatbot) throw 'chatbot not found';
     if(chatbot.status != KnowledgebaseStatus.READY) throw 'chatbot not ready yet'
 
