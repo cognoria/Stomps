@@ -62,6 +62,7 @@ const useFormDataStore = create((set) => ({
   },
   addFileToContents: (newContent) => {
     const { name, content } = newContent;
+    console.log(newContent)
     const stringFile = JSON.stringify(newContent);
 
     set((state) => ({
@@ -198,4 +199,5 @@ const useFormDataStore = create((set) => ({
 const triggerUpdate = (set) => {
   set((state) => state); // Trigger update by setting the same state
 };
+
 export default useFormDataStore;

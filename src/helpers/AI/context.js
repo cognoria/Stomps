@@ -1,16 +1,15 @@
 import { getMatchesFromEmbeddings } from "./pinecone";
 import { getEmbeddings } from './embeddings'
 
-
 // The function `getContext` is used to retrieve the context of a given message
 //TODO: maxToken, minscore, getTextOnly should be dynamic
-export const getContext = async (message, namespace, maxTokens = 3000, minScore = 0.7, getOnlyText = true) => {
+export const getContext = async (message, pineconeIndex, namespace, maxTokens = 3000, minScore = 0.7, getOnlyText = true) => {
 
   // Get the embeddings of the input message
   const embedding = await getEmbeddings(message);
 
   // Retrieve the matches for the embeddings from the specified namespace
-  const matches = await getMatchesFromEmbeddings(embedding, 3, namespace);
+  const matches = await getMatchesFromEmbeddings(embedding, 10, pineconeIndex, namespace);
 
   // Filter out the matches that have a score lower than the minimum score
   const qualifyingDocs = matches.filter(m => m.score && m.score > minScore);

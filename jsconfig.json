@@ -22,7 +22,6 @@
     "paths": {
       "@/src/*": ["./src/*"]
     },
-    // make all imports without a dot '.' prefix relative to the app directory
     "baseUrl": "./app"
   },
   "exclude": ["node_modules"]

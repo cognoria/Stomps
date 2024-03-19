@@ -1,8 +1,10 @@
+"use client";
+
 import { useRouter } from "next/navigation";
 import useFormDataStore from "../../../store/chat_bot_state/chat_bot_store";
 import useBotCreationStore from "../../../store/chat_bot_state/create_new_bot";
 
-function Sources() {
+export default function Sources() {
   const formData = useFormDataStore((state) => state.formData);
   const textLength = useFormDataStore((state) => state.getTextLength());
   const includeCount = useFormDataStore((state) => state.getIncludeCount());
@@ -69,4 +71,4 @@ function Sources() {
   );
 }
 
-export default Sources;
+

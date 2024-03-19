@@ -1,6 +1,6 @@
 import cheerio from 'cheerio'
 import xml2js from 'xml2js';
-import { deletePincone } from '../../AI/pinecone';
+// import { deletePincone } from '../../AI/pinecone';
 
 export const websiteRepo = {
     getUrls
@@ -8,7 +8,7 @@ export const websiteRepo = {
 
 async function getUrls(type, url) {
     if(!type || !url) throw 'url type and url are required';
-    
+    // console.log(await deletePincone())
     switch (type) {
         case 'sitemap':
             return await getWebLinksFromSiteMap(url)
@@ -35,7 +35,7 @@ async function getWebLinksFromUrl(url) {
       const href = $(element).attr('href');
 
       // Check if the href is a relative URL
-      if (href && !/^(https?:\/\/|\/\/|#|.*\.(png|jpg|jpeg|gif|svg))$/i.test(href)) {
+      if (href && !/^(https?:\/\/|\/\/|#|.*\.(png|jpg|jpeg|gif|svg))$/i.test(href) && !href.includes("#")) {
         const completeUrl = new URL(href, baseUrl).href;
         Urls.add(completeUrl);
       }
