@@ -2,6 +2,7 @@
 
 import { useEffect } from "react";
 import useSingleChatbot from "../../../../store/chat_bot_state/single_chat_bot";
+import { formatDate } from "../../../../utils/data_format/date";
 
 function ChatPage({ bot_id }) {
   const { singleChatBot, loading, error, chatbot } = useSingleChatbot(
@@ -76,7 +77,7 @@ function ChatPage({ bot_id }) {
                 </div>
                 <div>
                   <div className="text-gray-900 text-sm font-bold font-manrope leading-snug">
-                    gpt-3.5-turbo
+                    {chatbot?.chatBotCustomizeData?.model}
                   </div>
                 </div>
               </div>
@@ -119,38 +120,45 @@ function ChatPage({ bot_id }) {
               Last Trained:
             </div>
             <div className="text-gray-900 text-sm font-bold font-['Manrope'] leading-snug">
-              February 28, 2024 at 3:15pm
+              {formatDate(chatbot?.updatedAt)}
             </div>
           </div>
         </div>
-        <div className="border-[1px] w-[55%] h-[588px] border-gray-200  items-start flex-col ">
-          <div className="flex border-b-[1px] border-gray-200  p-4 w-full flex-end items-end justify-end">
-            <img src="/images/chatbox/refresh.svg" alt="" />
-          </div>
-          <div className="w-full h-[75%] p-4">
-            <div className="w-[45%] h-[45px] px-[15px] py-[11px] bg-zinc-100 rounded-tl rounded-tr rounded-br border justify-center items-center gap-2.5 flex-col flex">
-              <div className="text-stone-900 text-sm font-normal font-manrope leading-snug">
-                👋 Hi! How can I help
-              </div>
-            </div>
-          </div>
-
-          <div className="w-full h-[15%] relative p-4 items-center flex-col  flex">
-            <input
-              placeholder="message... "
-              className="text-neutral-700 outline-gray-200 w-full h-full border  active:outline-gray-300 pl-[15px] rounded-lg  pr-[9px]   decoration-none placeholder:text-neutral-300 text-sm font-normal font-manrope leading-snug"
-            />
-
-            <img
-              src="/images/chatbox/send.svg"
-              alt=""
-              className="w-[32px] h-[32px] absolute top-7 right-7 "
-            />
-          </div>
-        </div>
+        <Chat id={bot_id} />
       </div>
     </div>
   );
 }
 
 export default ChatPage;
+
+function Chat({ id }) {
+  console.log(id);
+  return (
+    <div className="border-[1px] w-[55%] h-[588px] border-gray-200  items-start flex-col ">
+      <div className="flex border-b-[1px] border-gray-200  p-4 w-full flex-end items-end justify-end">
+        <img src="/images/chatbox/refresh.svg" alt="" />
+      </div>
+      <div className="w-full h-[75%] p-4">
+        <div className="w-[45%] h-[45px] px-[15px] py-[11px] bg-zinc-100 rounded-tl rounded-tr rounded-br border justify-center items-center gap-2.5 flex-col flex">
+          <div className="text-stone-900 text-sm font-normal font-manrope leading-snug">
+            👋 Hi! How can I help
+          </div>
+        </div>
+      </div>
+
+      <div className="w-full h-[15%] relative p-4 items-center flex-col  flex">
+        <input
+          placeholder="message... "
+          className="text-neutral-700 outline-gray-200 w-full h-full border  active:outline-gray-300 pl-[15px] rounded-lg  pr-[9px]   decoration-none placeholder:text-neutral-300 text-sm font-normal font-manrope leading-snug"
+        />
+
+        <img
+          src="/images/chatbox/send.svg"
+          alt=""
+          className="w-[32px] h-[32px] absolute top-7 right-7 "
+        />
+      </div>
+    </div>
+  );
+}
