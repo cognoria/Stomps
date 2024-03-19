@@ -52,7 +52,7 @@ const useFormDataStore = create((set) => ({
     set((state) => ({
       formData: {
         ...state.formData,
-        urls: [...state.formData.files, newFiles],
+        files: [...state.formData.files, newFiles],
       },
     }));
     triggerUpdate(set);

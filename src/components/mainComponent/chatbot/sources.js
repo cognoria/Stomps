@@ -20,7 +20,7 @@ export default function Sources() {
     contents: [
       { url: "Q&A", content: `${questionsJSON}` },
       { url: "TXT", content: `${formData.text}` },
-      ...formData.files,
+      ...formData.files.map(file => ({ url: file.name, content: file.content })),
     ],
   };
 
