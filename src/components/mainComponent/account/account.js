@@ -14,6 +14,8 @@ function Account() {
     await fetch("/api/v1/auth/logout");
   }
 
+  const user = useUserStore((state) => state.user);
+  // console.log(user);
   return (
     <div className="mt-[80px] lg:mt-[120px] w-screen mb-[50px] flex flex-col items-center justify-center gap-y-6">
       <div className="w-full text-center text-sky-700 text-sm lg:text-[28px] font-extrabold font-manrope leading-tight tracking-tight lg:leading-[33.60px]">
@@ -27,7 +29,7 @@ function Account() {
 
         <div className="w-full lg:w-[570px] h-[0px] my-2  border border-gray-200" />
         <div className="p-4 mt-3 text-gray-900 text-xl font-medium font-manrope leading-7 tracking-tight">
-          email@example.com
+          {user.email}
         </div>
       </div>
 

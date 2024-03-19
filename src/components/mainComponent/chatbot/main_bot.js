@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import useModalStore from "../../../store/modal/modal_state";
-import { Account_modal } from "../../customComponents/modals/dashboard_modal/account_modal";
+import { Delete_Bot_Modal } from "../../customComponents/modals/dashboard_modal/delete_botmodal";
 
 function Main_bot({ chatbots }) {
   return (
@@ -45,7 +45,8 @@ function Main_bot({ chatbots }) {
                       useModalStore
                         .getState()
                         .showModal(
-                          <Account_modal
+                          <Delete_Bot_Modal
+                            id={item._id}
                             text={
                               "Are you sure you want to delete this chatbot?"
                             }

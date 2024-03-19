@@ -23,12 +23,12 @@ const useFormDataStore = create((set) => ({
     }));
     triggerUpdate(set);
   },
-  clearFormData: async(botId) => {
-    set({ formData: initialState })
+  clearFormData: async (botId) => {
+    set({ formData: initialState });
     const response = await fetch(`/api/v1/chatbot/${botId}/train`, {
       method: "GET",
     });
-    console.log(await response.json())
+    console.log(await response.json());
   },
   addText: (newText) => {
     set((state) => ({
@@ -48,16 +48,26 @@ const useFormDataStore = create((set) => ({
     }));
     triggerUpdate(set);
   },
+  addDataToFiles: (newFiles) => {
+    set((state) => ({
+      formData: {
+        ...state.formData,
+        urls: [...state.formData.files, newFiles],
+      },
+    }));
+    triggerUpdate(set);
+  },
   addDataToInclude: (newInclude) => {
     set((state) => {
       const linksSet = new Set([...state.formData.include, ...newInclude]);
 
       return {
-      formData: {
-        ...state.formData,
-        include: Array.from(linksSet),
-      },
-    }});
+        formData: {
+          ...state.formData,
+          include: Array.from(linksSet),
+        },
+      };
+    });
     triggerUpdate(set);
   },
   addDataToExclude: (newExclude) => {
@@ -83,7 +93,7 @@ const useFormDataStore = create((set) => ({
     triggerUpdate(set);
 
     const fileIndex = useFormDataStore.getState().formData.files.length - 1;
-    
+
     return { name, index: fileIndex };
   },
   deleteFileFromContent: (index) => {
@@ -96,7 +106,7 @@ const useFormDataStore = create((set) => ({
       };
       return { formData: newFormData };
     });
-  
+
     triggerUpdate(set);
   },
   addDataToContents: (newContent) => {
@@ -201,6 +211,9 @@ const useFormDataStore = create((set) => ({
   },
   getQuestionCount: () => {
     return useFormDataStore.getState().formData.questions.length;
+  },
+  getFilesCount: () => {
+    return useFormDataStore.getState().formData.files.length;
   },
 }));
 

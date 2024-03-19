@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { toast } from 'react-toastify'
+import { toast } from "react-toastify";
 import useFormDataStore from "../../../store/chat_bot_state/chat_bot_store";
 import {
   extractTextFromDoc,
@@ -15,7 +15,7 @@ import {
 export default function Datasource() {
   const [selectedFile, setSelectedFile] = useState(null);
   // const [files, setFiles] = useState([])
-  const files = useFormDataStore(state =>state.formData.files)
+  const files = useFormDataStore((state) => state.formData.files);
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
@@ -34,30 +34,29 @@ export default function Datasource() {
     const file = event.dataTransfer.files[0];
     if (file) {
       console.log("Dropped file:", file);
-      if(!isTXTFile(file) && !isPDFFile(file) && !isDOCFile(file)){
-        return //toaste file not supported
+      if (!isTXTFile(file) && !isPDFFile(file) && !isDOCFile(file)) {
+        return; //toaste file not supported
       } else {
-      setSelectedFile(file);
-      //add file to content;
-
+        setSelectedFile(file);
+        //add file to content;
       }
     }
   };
 
-  async function deleteFile(index){
-    return await useFormDataStore.getState().deleteFileFromContent(index)
+  async function deleteFile(index) {
+    return await useFormDataStore.getState().deleteFileFromContent(index);
   }
 
-  async function deleteAllFile(){
-    if(files.length == 0) return;
+  async function deleteAllFile() {
+    if (files.length == 0) return;
 
-    for(const file of files){
-      deleteFile(file.index)
+    for (const file of files) {
+      deleteFile(file.index);
     }
   }
 
   async function handleAddFile() {
-    if (!selectedFile) return toast.error("Please select a file first"); //toast error please add file
+    if (!selectedFile) return toast.error("Please select a file first");
     try {
       let file;
       if (isTXTFile(selectedFile)) {
@@ -69,8 +68,8 @@ export default function Datasource() {
       } else {
         return toast.error("unspported file selected"); //toast file not supported
       }
-
-      const savedFile = await useFormDataStore.getState().addFileToContents(file);
+      await useFormDataStore.getState().addDataToFiles(file);
+      await useFormDataStore.getState().addFileToContents(file);
     } catch (e) {
       console.error("error adding file: ", e);
       toast.error("Failed to add file");
@@ -78,9 +77,9 @@ export default function Datasource() {
     }
   }
 
-  useEffect(() =>{
-    console.log(files)
-  },[files])
+  useEffect(() => {
+    console.log(files);
+  }, [files]);
 
   return (
     <div className="flex flex-col  items-center justify-center w-full">

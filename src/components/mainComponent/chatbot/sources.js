@@ -9,6 +9,7 @@ export default function Sources() {
   const textLength = useFormDataStore((state) => state.getTextLength());
   const includeCount = useFormDataStore((state) => state.getIncludeCount());
   const questionCount = useFormDataStore((state) => state.getQuestionCount());
+  const filesCount = useFormDataStore((state) => state.getFilesCount());
   const questionsJSON = JSON.stringify(formData.questions);
 
   const dataToSend = {
@@ -30,7 +31,7 @@ export default function Sources() {
     console.log(dataToSend);
     try {
       const newBot = await useBotCreationStore.getState().createBot(dataToSend);
-       useFormDataStore.getState().clearFormData(newBot.id);
+      useFormDataStore.getState().clearFormData(newBot.id);
       router.push(`/bot/${newBot.id}`);
     } catch (error) {
       console.error("Failed to create bot:", error);
@@ -44,6 +45,12 @@ export default function Sources() {
       </div>
 
       <ul className="flex justify-start p-6 flex-col gap-y-2 items-start w-full circular-list">
+        {filesCount >= 1 && (
+          <li className="text-neutral-400  text-xs font-normal font-manrope leading-none tracking-tight">
+            {filesCount} Document detected
+          </li>
+        )}
+
         {textLength >= 1 && (
           <li className="text-neutral-400  text-xs font-normal font-manrope leading-none tracking-tight">
             {textLength} text input characters
