@@ -1,27 +1,35 @@
 "use client";
 
-import { useState } from "react";
 import useFormDataStore from "../../../store/chat_bot_state/chat_bot_store";
 import useLinkStore from "../../../store/chat_bot_state/generate_links";
 import useSitemapStore from "../../../store/chat_bot_state/generate_sitemap";
 
 function Website() {
-  const [url, setUrl] = useState("");
-  const [sitemapUrl, setSitemapUrl] = useState("");
   const loading = useLinkStore((state) => state.loading);
   const loading2 = useSitemapStore((state) => state.loading);
   const include = useFormDataStore((state) => state.formData.include);
+  const website = useFormDataStore((state) => state.formData.website);
+  const sitemap = useFormDataStore((state) => state.formData.sitemap);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await useLinkStore.getState().fetchLinksAndUpdateInclude(url);
+    await useLinkStore.getState().fetchLinksAndUpdateInclude(website);
   };
 
   const sitemapSubmit = async (e) => {
     e.preventDefault();
-    await useSitemapStore.getState().fetchSitemapAndUpdateInclude(sitemapUrl);
+    await useSitemapStore.getState().fetchSitemapAndUpdateInclude(sitemap);
   };
 
+  const handleWebsite = (e) => {
+    const website = e.target.value;
+    useFormDataStore.getState().addWebsite(website);
+  };
+
+  const handleSitemap = (e) => {
+    const sitemap = e.target.value;
+    useFormDataStore.getState().addSitemap(sitemap);
+  };
   return (
     <div className="flex flex-col  items-center justify-center w-full">
       <div className="flex mt-[60px] items-center lg:flex-row lg:items-start gap-3 flex-col  justify-center">
@@ -37,8 +45,9 @@ function Website() {
                 </div>
                 <div className="flex w-full flex-col lg:flex-row items-center justify-between gap-2">
                   <input
-                    onChange={(e) => setUrl(e.target.value)}
+                    onChange={handleWebsite}
                     type="text"
+                    value={website}
                     className="w-full lg:w-[413px] h-[47px] px-3.5 py-2.5 bg-white rounded shadow border border-zinc-100 justify-start items-center gap-2 inline-flex"
                   />
                   <button
@@ -70,8 +79,9 @@ function Website() {
                 </div>
                 <div className="flex flex-col w-full lg:flex-row items-center justify-between gap-2">
                   <input
+                    value={sitemap}
                     type="text"
-                    onChange={(e) => setSitemapUrl(e.target.value)}
+                    onChange={handleSitemap}
                     className="w-full lg:w-[383px] h-[47px] px-3.5 py-2.5 bg-white rounded shadow border border-zinc-100 justify-start items-center gap-2 inline-flex"
                   />
                   <button

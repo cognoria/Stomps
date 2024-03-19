@@ -4,28 +4,21 @@ import { useState } from "react";
 import useFormDataStore from "../../../store/chat_bot_state/chat_bot_store";
 
 function Text() {
-  // const [textInput, setTextInput] = useState("");
-  /* i think it make sense you update the store directly, 
-    or 
-    update the store so that add text doesn't remove old text and replace with new one. TODO: this is the most desirable result
-  */
-  const text = useFormDataStore((state) => state.text)
+  const [textInput, setTextInput] = useState("");
 
   const handleInputChange = (event) => {
-    // setTextInput(event.target.value);
+    setTextInput(event.target.value);
     useFormDataStore.getState().addText(event.target.value);
   };
 
-  const handleSubmit = async () => {
+  const text = useFormDataStore((state) => state.formData.text);
 
+  const handleSubmit = async () => {
     try {
-      // useFormDataStore.getState().addText(textInput);
-      // setTextInput("");
     } catch (error) {
       console.error("Failed to create bot:", error.message);
     }
   };
-
   return (
     <div className="flex flex-col  items-center justify-center w-full">
       <div className="flex mt-[60px] w-full flex-col lg:flex-row items-center lg:items-start gap-3  justify-center">

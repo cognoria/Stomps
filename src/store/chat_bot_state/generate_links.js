@@ -10,36 +10,30 @@ const initialState = {
 const useLinkStore = create((set) => ({
   ...initialState,
   fetchLinksAndUpdateInclude: async (url) => {
-    console.log(url);
     try {
       set({ loading: true, error: null });
-      if (!url.startsWith("http://") && !url.startsWith("https://")) {
-        url = "https://" + url;
-      }
-      const response = await fetch(`/api/v1/data/links?web=${url}`);
+      const response = await fetch(`/api/v1/data/links?type=web&url=${url}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
 
       const html = await response.json();
-      // const parser = new DOMParser();
-      // const doc = parser.parseFromString(html, "text/html");
 
-      // const anchorElements = doc.querySelectorAll("a");
-      // const extractedLinks = Array.from(anchorElements).map((a) => a.href);
-
-
-      console.log(extractedLinks);
       set((state) => ({
         ...state,
-        links: html,
+        links: html.data,
         loading: false,
       }));
-      extractedLinks.forEach((link) => {
-        useFormDataStore.getState().addDataToInclude(link);
-      });
+
+      useFormDataStore.getState().addDataToInclude(html.data);
+
+      console.log(links);
       useFormDataStore.getState().addDataToUrls(url);
-      useFormDataStore.getState().addWebsite(url);
     } catch (error) {
       set({ error: error.message, loading: false });
       console.error("Error fetching links:", error);

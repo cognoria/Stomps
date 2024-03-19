@@ -5,6 +5,7 @@ const initialState = {
   website: "",
   name: "",
   text: "",
+  sitemap: "",
   urls: [],
   doc_count: 0,
   include: [],
@@ -67,8 +68,10 @@ const useFormDataStore = create((set) => ({
       formData: {
         ...state.formData,
         files: [...state.formData.files, stringFile],
+        doc_count: state.formData.doc_count + contentLength,
       },
     }));
+
     triggerUpdate(set);
 
     const fileIndex = files.length - 1;
@@ -138,12 +141,16 @@ const useFormDataStore = create((set) => ({
     triggerUpdate(set);
   },
   deleteFileFromContent: (index) => {
+    const fileToDelete = state.formData.files[index];
+    const { content } = JSON.parse(fileToDelete);
     set((state) => ({
       formData: {
         ...state.formData,
         files: state.formData.files.filter((_, i) => i !== index),
+        doc_count: state.formData.doc_count - contentLength,
       },
     }));
+
     triggerUpdate(set);
   },
   addWebsite: (newWebsite) => {
@@ -151,6 +158,16 @@ const useFormDataStore = create((set) => ({
       formData: {
         ...state.formData,
         website: newWebsite,
+      },
+    }));
+    triggerUpdate(set);
+  },
+
+  addSitemap: (newSitemap) => {
+    set((state) => ({
+      formData: {
+        ...state.formData,
+        sitemap: newSitemap,
       },
     }));
     triggerUpdate(set);

@@ -1,14 +1,11 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import Empty_bot from "../../../../components/mainComponent/chatbot/empty_bot";
 import Main_bot from "../../../../components/mainComponent/chatbot/main_bot";
 import useUserChatbot from "../../../../store/chat_bot_state/user_chatbot";
 
 function Page() {
-  const router = useRouter();
-
   const { userChatBot, loading, error, chatbots } = useUserChatbot((state) => ({
     userChatBot: state.userChatBot,
     loading: state.loading,
@@ -17,10 +14,9 @@ function Page() {
   }));
 
   useEffect(() => {
-    // Fetch user chatbot data
     userChatBot();
-  }, [userChatBot]);
-
+  }, []);
+  console.log(userChatBot.data);
   return (
     <div>
       {loading && <p>Loading...</p>}
@@ -32,15 +28,15 @@ function Page() {
           <Main_bot />
         </div>
       )} */}
-      {chatbots === null || chatbots.length === 0 ? (
+      {/* {chatbots === null || chatbots.length === 0 ? (
         <Empty_bot />
-      ) : userChatBot.data ? (
+      ) : userChatBot.data ? ( */}
         <div className="mt-[80px] w-full">
           <Main_bot chatbots={chatbots} />
         </div>
-      ) : (
+      {/* ) : (
         <Empty_bot />
-      )}
+      )} */}
     </div>
   );
 }
