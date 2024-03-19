@@ -11,24 +11,27 @@ const useSitemapStore = create((set) => ({
   fetchSitemapAndUpdateInclude: async (sitemapUrl) => {
     console.log("Fetching sitemap...");
     try {
-     set({ loading: true, error: null });
-     const response = await fetch(`/api/v1/data/links?type=web&url=${url}`, {
-       method: "GET",
-       headers: {
-         "Content-Type": "application/json",
-       },
-     });
-     if (!response.ok) {
-       throw new Error(`HTTP error! Status: ${response.status}`);
-     }
+      set({ loading: true, error: null });
+      const response = await fetch(
+        `/api/v1/data/links?type=sitemap&url=${sitemapUrl}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
 
-     const html = await response.json();
+      const html = await response.json();
 
-     set((state) => ({
-       ...state,
-       links: html,
-       loading: false,
-     }));
+      set((state) => ({
+        ...state,
+        links: html,
+        loading: false,
+      }));
 
       extractedLinks.forEach((link) => {
         useFormDataStore.getState().addDataToInclude(link);

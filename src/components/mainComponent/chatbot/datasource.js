@@ -1,14 +1,21 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import {toast} from 'react-toastify'
+import { toast } from "react-toastify";
 import useFormDataStore from "../../../store/chat_bot_state/chat_bot_store";
-import { extractTextFromDoc, extractTextFromPDF, extractTextFromTXT, isDOCFile, isPDFFile, isTXTFile } from "../../../utils/extractDoc/file_extract";
+import {
+  extractTextFromDoc,
+  extractTextFromPDF,
+  extractTextFromTXT,
+  isDOCFile,
+  isPDFFile,
+  isTXTFile,
+} from "../../../utils/extractDoc/file_extract";
 
 export default function Datasource() {
   const [selectedFile, setSelectedFile] = useState(null);
   // const [files, setFiles] = useState([])
-  const files = useFormDataStore(state =>state.formData.files)
+  const files = useFormDataStore((state) => state.formData.files);
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
@@ -27,25 +34,24 @@ export default function Datasource() {
     const file = event.dataTransfer.files[0];
     if (file) {
       console.log("Dropped file:", file);
-      if(!isTXTFile(file) && !isPDFFile(file) && !isDOCFile(file)){
-        return //toaste file not supported
+      if (!isTXTFile(file) && !isPDFFile(file) && !isDOCFile(file)) {
+        return; //toaste file not supported
       } else {
-      setSelectedFile(file);
-      //add file to content;
-
+        setSelectedFile(file);
+        //add file to content;
       }
     }
   };
 
-  async function deleteFile(index){
-    return await useFormDataStore.getState().deleteFileFromContent(index)
+  async function deleteFile(index) {
+    return await useFormDataStore.getState().deleteFileFromContent(index);
   }
 
-  async function deleteAllFile(){
-    if(files.length == 0) return;
+  async function deleteAllFile() {
+    if (files.length == 0) return;
 
-    for(const file of files){
-      deleteFile(file.index)
+    for (const file of files) {
+      deleteFile(file.index);
     }
   }
 
@@ -62,18 +68,20 @@ export default function Datasource() {
       } else {
         return toast.error("unspported file selected"); //toast file not supported
       }
-  
-      const savedFile = await useFormDataStore.getState().addFileToContents(file);
+
+      const savedFile = await useFormDataStore
+        .getState()
+        .addFileToContents(file);
     } catch (e) {
       console.error("error adding file: ", e);
-      toast.error("Failed to add file")
+      toast.error("Failed to add file");
       //toast
     }
   }
 
-  useEffect(() =>{
-    console.log(files)
-  },[files])
+  useEffect(() => {
+    console.log(files);
+  }, [files]);
 
   return (
     <div className="flex flex-col  items-center justify-center w-full">
@@ -83,7 +91,7 @@ export default function Datasource() {
             File
           </div>
           <div className="flex flex-col  justify-between  h-[83%] items-center">
-            <div className="flex flex-col p-3 w-full h-full">
+            <div className="flex flex-col py-5 px-3 w-full h-full">
               <div
                 className="upload-container"
                 onDragOver={handleDragOver}
@@ -101,7 +109,7 @@ export default function Datasource() {
                   <div className="main-text">
                     Select a File Upload, or Drag and Drop it here
                   </div>
-                  <div className="sub-text">
+                  <div className="sub-text mb-2">
                     Supported file type: .pdf, .doc, .txt, .docx
                   </div>
                 </label>
@@ -131,13 +139,19 @@ export default function Datasource() {
               </div>
               <div className="flex flex-row  p-5 items-end lg:mt-0 mt-[70px] [mt-50px]  h-auto lg:h-[70%] justify-end">
                 <div className="flex flex-row items-center  gap-x-5 ">
-                  <button onClick={deleteAllFile} className="bg-transparent items-center gap-2 flex flex-row">
+                  <button
+                    onClick={deleteAllFile}
+                    className="bg-transparent items-center gap-2 flex flex-row"
+                  >
                     <img src="/images/chatbox/trash.svg" />
                     <p className="text-red-500 text-xs font-bold font-manrope leading-snug">
                       Delete all
                     </p>
                   </button>
-                  <button onClick={handleAddFile} className=" px-5 py-3 text-[#1261AC] text-xs font-bold font-manrope leading-snug bg-[#EEF8FF] flex items-center justify-center flex-col  rounded-lg">
+                  <button
+                    onClick={handleAddFile}
+                    className=" px-5 py-3 text-[#1261AC] text-xs font-bold font-manrope leading-snug bg-[#EEF8FF] flex items-center justify-center flex-col  rounded-lg"
+                  >
                     Add
                   </button>
                 </div>
@@ -174,4 +188,3 @@ export default function Datasource() {
     </div>
   );
 }
-
