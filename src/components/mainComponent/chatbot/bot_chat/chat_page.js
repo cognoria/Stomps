@@ -1,6 +1,8 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
+
+import useBotMessagingStore from "../../../../store/chat_bot_state/chats_messaging";
 import useSingleChatbot from "../../../../store/chat_bot_state/single_chat_bot";
 import { formatDate } from "../../../../utils/data_format/date";
 
@@ -17,8 +19,6 @@ function ChatPage({ bot_id }) {
   useEffect(() => {
     singleChatBot(bot_id);
   }, [bot_id, singleChatBot]);
-
-  console.log(chatbot);
 
   function getStatusColor(status) {
     switch (status) {
@@ -133,32 +133,80 @@ function ChatPage({ bot_id }) {
 export default ChatPage;
 
 function Chat({ id }) {
-  console.log(id);
+  const [messageInput, setMessageInput] = useState("");
+  const chatContainerRef = useRef(null);
+  const chatMessages = useBotMessagingStore((state) => state.chatMessages);
+  const loading = useBotMessagingStore((state) => state.loading);
+  const error = useBotMessagingStore((state) => state.error);
+
+  async function sendMessage(e) {
+    e.preventDefault();
+
+    if (!messageInput.trim()) return; // Prevent sending empty messages
+    try {
+      const data = {
+        role: "user",
+        content: messageInput,
+      };
+      await useBotMessagingStore.getState().chat_messaging({ id, data });
+      setMessageInput("");
+    } catch (error) {
+      setMessageInput("");
+      console.log("Failed to send message:", error);
+    }
+  }
+  useEffect(() => {
+    chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+  }, [chatMessages]);
   return (
     <div className="border-[1px] w-[55%] h-[588px] border-gray-200  items-start flex-col ">
       <div className="flex border-b-[1px] border-gray-200  p-4 w-full flex-end items-end justify-end">
         <img src="/images/chatbox/refresh.svg" alt="" />
       </div>
-      <div className="w-full h-[75%] p-4">
-        <div className="w-[45%] h-[45px] px-[15px] py-[11px] bg-zinc-100 rounded-tl rounded-tr rounded-br border justify-center items-center gap-2.5 flex-col flex">
-          <div className="text-stone-900 text-sm font-normal font-manrope leading-snug">
-            👋 Hi! How can I help
+      <div
+        ref={chatContainerRef}
+        style={{ scrollBehavior: "smooth" }}
+        className="w-full overflow-y-scroll h-[75%] flex flex-col gap-3 p-4"
+      >
+        {chatMessages.map((message, index) => (
+          <div
+            key={index}
+            className={`w-full h-auto flex flex-col ${
+              message?.role === "user"
+                ? "justify-end items-end"
+                : " justify-start"
+            } `}
+          >
+            <div className="w-[45%] h-auto px-[15px] items-start py-[11px] bg-zinc-100 rounded-tl rounded-tr rounded-br border justify-center  flex-col flex">
+              <div className="text-stone-900 text-start text-sm font-normal font-manrope leading-snug">
+                {message?.content}
+              </div>
+            </div>
           </div>
-        </div>
+        ))}
       </div>
 
-      <div className="w-full h-[15%] relative p-4 items-center flex-col  flex">
+      <form
+        onSubmit={sendMessage}
+        className="w-full h-[15%] relative p-4 items-center flex-col  flex"
+      >
         <input
+          value={messageInput}
+          onChange={(e) => setMessageInput(e.target.value)}
           placeholder="message... "
-          className="text-neutral-700 outline-gray-200 w-full h-full border  active:outline-gray-300 pl-[15px] rounded-lg  pr-[9px]   decoration-none placeholder:text-neutral-300 text-sm font-normal font-manrope leading-snug"
+          className="text-neutral-700 outline-gray-200 w-full h-full border  flex flex-col  active:outline-gray-300 pl-[15px] rounded-lg  pr-[50px]   decoration-none placeholder:text-neutral-300 text-sm font-normal font-manrope leading-snug"
         />
-
-        <img
-          src="/images/chatbox/send.svg"
-          alt=""
-          className="w-[32px] h-[32px] absolute top-7 right-7 "
-        />
-      </div>
+        <button
+          className="w-[32px] h-[32px] absolute top-7 right-7"
+          type="submit"
+        >
+          <img
+            src="/images/chatbox/send.svg"
+            alt=""
+            className="w-full h-full "
+          />
+        </button>
+      </form>
     </div>
   );
 }

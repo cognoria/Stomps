@@ -22,7 +22,6 @@ const useSingleChatbot = create(
           throw new Error(data.message || "An error occurred");
         }
 
-        console.log(data);
         if (onSuccess) onSuccess(data); // Pass data to onSuccess callback if provided
         set({ loading: false, chatbot: data }); // Update chatbot instead of chatbots
         return data; // Return data after successful fetching
