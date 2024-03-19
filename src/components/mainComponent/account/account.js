@@ -29,7 +29,7 @@ function Account() {
 
         <div className="w-full lg:w-[570px] h-[0px] my-2  border border-gray-200" />
         <div className="p-4 mt-3 text-gray-900 text-xl font-medium font-manrope leading-7 tracking-tight">
-          {user.email}
+          {user?.email}
         </div>
       </div>
 
