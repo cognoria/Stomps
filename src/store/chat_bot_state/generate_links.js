@@ -30,13 +30,13 @@ const useLinkStore = create((set) => ({
 
         return {
         ...state,
-        links: [...linksSet],
+        links: Array.from(linksSet),
         loading: false,
       }});
 
       useFormDataStore.getState().addDataToInclude(html);
 
-      console.log(links);
+      // console.log(links);
       useFormDataStore.getState().addDataToUrls(url);
     } catch (error) {
       set({ error: error.message, loading: false });

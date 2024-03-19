@@ -49,12 +49,15 @@ const useFormDataStore = create((set) => ({
     triggerUpdate(set);
   },
   addDataToInclude: (newInclude) => {
-    set((state) => ({
+    set((state) => {
+      const linksSet = new Set([...state.formData.include, ...newInclude]);
+
+      return {
       formData: {
         ...state.formData,
-        include: [...state.formData.include, ...newInclude],
+        include: Array.from(linksSet),
       },
-    }));
+    }});
     triggerUpdate(set);
   },
   addDataToExclude: (newExclude) => {
