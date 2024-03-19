@@ -141,7 +141,7 @@ function Website() {
               </div>
               {include && (
                 <div className="w-full px-2 mt-[40px]">
-                  <ul className="w-full">
+                  <ul className="w-full flex-col gap-1 flex">
                     {include.slice(0, 10).map((link, index) => (
                       <li
                         key={index}
