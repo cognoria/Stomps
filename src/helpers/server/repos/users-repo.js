@@ -210,7 +210,7 @@ async function googleAuth(token) {
 }
 
 async function forgetPassword(email) {
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ email }).lean();
 
     if (!user) throw `Error: User not found`
 

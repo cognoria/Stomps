@@ -23,7 +23,7 @@ export async function getUserActivity() {
 
         const currentUserId = headers().get('userId');
         // Retrieve user's activities from the logs collection
-        const activities = await Log.find({ user: currentUserId }).sort({ timestamp: -1 });
+        const activities = await Log.find({ user: currentUserId }).sort({ timestamp: -1 }).lean();
 
         // Check if activities exist
         if (!activities.length) throw "No activities found for this user";

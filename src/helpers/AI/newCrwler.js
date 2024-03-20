@@ -108,8 +108,12 @@ export class Crawler {
             this.chatbot.crawlData.crawledUrls.push(url);
         }
 
-        // Push new page content
-        this.chatbot.crawlData.pagesContent.push({ url, content });
+        const isUnique = this.chatbot.crawlData.pagesContent.every(entry => entry.url !== url && entry.content !== content);
+        if (isUnique) {
+            // Push new page content
+            this.chatbot.crawlData.pagesContent.push({ url, content });
+        }
+
         await this.chatbot.save();
     }
 

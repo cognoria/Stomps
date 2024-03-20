@@ -5,6 +5,9 @@ import { useEffect, useRef, useState } from "react";
 import useBotMessagingStore from "../../../../store/chat_bot_state/chats_messaging";
 import useSingleChatbot from "../../../../store/chat_bot_state/single_chat_bot";
 import { formatDate } from "../../../../utils/data_format/date";
+import {remark} from 'remark';
+import remarkHTML from 'remark-html';
+
 
 function ChatPage({ bot_id }) {
   const { singleChatBot, loading, error, chatbot } = useSingleChatbot(
@@ -58,13 +61,12 @@ function ChatPage({ bot_id }) {
                 </div>
                 <div className="flex flex-row gap-1 items-center">
                   <div
-                    className={`w-3 h-3 ${
-                      getStatusColor(chatbot?.status) === "green"
+                    className={`w-3 h-3 ${getStatusColor(chatbot?.status) === "green"
                         ? "bg-emerald-500"
                         : getStatusColor(chatbot?.status) === "red"
-                        ? "bg-red-500"
-                        : "bg-yellow-500"
-                    } rounded-full`}
+                          ? "bg-red-500"
+                          : "bg-yellow-500"
+                      } rounded-full`}
                   />
                   <div className="text-gray-900 text-sm font-bold font-manrope leading-snug">
                     {chatbot?.status}
@@ -139,6 +141,12 @@ function Chat({ id }) {
   const loading = useBotMessagingStore((state) => state.loading);
   const error = useBotMessagingStore((state) => state.error);
 
+
+  // Function to convert Markdown to HTML
+  const markdownToHtml = markdown => {
+    return remark().use(remarkHTML).processSync(markdown).toString();
+  };
+
   async function sendMessage(e) {
     e.preventDefault();
 
@@ -158,6 +166,7 @@ function Chat({ id }) {
   useEffect(() => {
     chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
   }, [chatMessages]);
+
   return (
     <div className="border-[1px] w-[55%] h-[588px] border-gray-200  items-start flex-col ">
       <div className="flex border-b-[1px] border-gray-200  p-4 w-full flex-end items-end justify-end">
@@ -171,15 +180,14 @@ function Chat({ id }) {
         {chatMessages.map((message, index) => (
           <div
             key={index}
-            className={`w-full h-auto flex flex-col ${
-              message?.role === "user"
+            className={`w-full h-auto flex flex-col ${message?.role === "user"
                 ? "justify-end items-end"
                 : " justify-start"
-            } `}
+              } `}
           >
             <div className="w-[45%] h-auto px-[15px] items-start py-[11px] bg-zinc-100 rounded-tl rounded-tr rounded-br border justify-center  flex-col flex">
               <div className="text-stone-900 text-start text-sm font-normal font-manrope leading-snug">
-                {message?.content}
+                {message?.role === "user" ? message?.content : <div dangerouslySetInnerHTML={{ __html: markdownToHtml(message?.content) }} />}
               </div>
             </div>
           </div>

@@ -69,15 +69,15 @@ const chatBotCustomizeData = new Schema({
     formSubmitErrorMsg: { type: String, required: true, default: "Oops! Something went wrong" },
     formSendAgainBtnLabel: { type: String, required: true, default: "Send again" },
     formTryAgainBtnLabel: { type: String, required: true, default: "Try again" },
-    model: { type: String, required: true, enum: ['gpt-4', 'gpt-4-turbo-preview', 'gpt-3.5-turbo'], default: 'gpt-3.5-turbo' }
+    model: { type: String, required: true, enum: ['gpt-4', 'gpt-4-turbo-preview', 'gpt-3.5-turbo'], default: 'gpt-4-turbo-preview' }
 }, { _id: false });
 
 export default function chatbotModel() {
     const schema = new Schema({
         knowledgebase: {type: knowledgebase, select: false},
-        pIndex: { type: String, required: true },
+        pIndex: { type: String, required: true, immutable: true },
         name: { type: String, required: true, unique: true },
-        owner: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+        owner: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true, immutable: true },
         visibility: { type: String, enum: ['PRIVATE', 'PUBLIC'], default: 'PRIVATE' },
         status: { type: String, enum: Object.values(KnowledgebaseStatus), default: KnowledgebaseStatus.CREATED },
         crawlData: { type: crawlData, default: () => ({ pagesContent: [], crawledUrls: [], queue: [] }), select: false },

@@ -33,7 +33,6 @@ export async function getMatchesFromEmbeddings(embeddings, topK, pinconeIndex, n
         vector: embeddings,
         topK,
         includeMetadata: true,
-        // namespace
     }
 
     try {

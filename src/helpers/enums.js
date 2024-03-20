@@ -78,12 +78,12 @@ export const chatBotCustomizeDataDefault = {
     formSubmitErrorMsg: "Oops! Something went wrong",
     formSendAgainBtnLabel: "Send again",
     formTryAgainBtnLabel: "Try again",
-    model: 'gpt-3.5-turbo'
+    model: 'gpt-4-turbo-preview'
 };
 
 // /**
 //  * Regions available with the AWS cloud provider
-//  * @export
+//  * 
 //  */
 // export const AwsRegions = {
 //     East1: 'us-east-1',
@@ -93,7 +93,7 @@ export const chatBotCustomizeDataDefault = {
 
 // /**
 //  * Regions available with the GCP cloud provider
-//  * @export
+//  * 
 //  */
 // export const GcpRegions = {
 //     UsWest1: 'us-west1',

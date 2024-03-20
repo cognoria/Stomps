@@ -12,21 +12,21 @@ export const globalRepo = {
 
 async function getServiceKey(provider) {
     // there'd be only one Global document
-    let globalSettings = await Global.findOne();
+    let globalSettings = await Global.findOne().lean();
 
     if (!globalSettings) {
         await seedGlobalKeys();
-        globalSettings = await Global.findOne();
+        globalSettings = await Global.findOne().lean();
     }
 
-    // Find the OpenAI service entry
+    // Find the provider service key
     const service = globalSettings.services.find(service => service.name === provider);
 
     if (!service) {
         throw `You have not added ${provider} keys yet`;
     }
 
-    // Assuming you want to decrypt the apiKey here
+    // decrypt the apiKey here
     const decryptedApiKey = decrypt(service.apiKey);
 
     return decryptedApiKey;
@@ -34,21 +34,21 @@ async function getServiceKey(provider) {
 
 async function getJwtSecret() {
     // there'd be only one Global document
-    let globalSettings = await Global.findOne();
+    let globalSettings = await Global.findOne().lean();
 
     if (!globalSettings) {
         await seedGlobalKeys();
-        globalSettings = await Global.findOne();
+        globalSettings = await Global.findOne().lean();
     }
 
-    // Find the OpenAI service entry
+    // Find the jwt key
     const service = globalSettings.jwt_secret;
 
     if (!service) {
         throw 'Global jwt not set yet.';
     }
 
-    // Assuming you want to decrypt the apiKey here
+    // decrypt the apiKey here
     const decryptedApiKey = decrypt(service);
 
     return decryptedApiKey;
@@ -57,14 +57,14 @@ async function getJwtSecret() {
 async function getEmbedModel() {
 
     // there'd be only one Global document
-    let globalSettings = await Global.findOne();
+    let globalSettings = await Global.findOne().lean();
 
     if (!globalSettings) {
         await seedGlobalKeys();
-        globalSettings = await Global.findOne();
+        globalSettings = await Global.findOne().lean();
     }
 
-    // Find the OpenAI service entry
+    // Find the model
     const service = globalSettings.embedModel;
 
     if (!service) {
@@ -80,12 +80,13 @@ async function getEmbedModel() {
  */
 async function seedGlobalKeys(){
     const global = await Global.create({})
-
-    const jwtHash =await  encrypt(process.env.JWT_SECRET)
+    if(!process.env.JWT_SECRET || !process.env.OPENAI_KEY || process.env.PINECONE_KEY) throw 'set JWT_SECRET, OPENAI_KEY & PINECONE_KEY in .env to seed'
+    
+    const jwtHash = encrypt(process.env.JWT_SECRET)
     global.jwt_secret = jwtHash;
 
-    const openaiKeyHash =await encrypt(process.env.OPENAI_KEY)
-    const pineconeKeyHash =await encrypt(process.env.PINECONE_KEY)
+    const openaiKeyHash = encrypt(process.env.OPENAI_KEY)
+    const pineconeKeyHash = encrypt(process.env.PINECONE_KEY)
 
     global.services.push({
         name: AppServiceProviders.OPENAI,
@@ -102,6 +103,7 @@ async function seedGlobalKeys(){
             desc: "pinecone demo api key"
         }
     })
-    // console.log("seeding done")
+    
+    console.log("seeding done")
     return await global.save()
 }

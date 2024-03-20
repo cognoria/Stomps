@@ -90,35 +90,39 @@ async function trainChatbot(chatbotId) {
 }
 
 async function getById(id) {
-    const chatbot = await Chatbot.findById(id).select(" +chatBotCustomizeData ");
+    const chatbot = await Chatbot.findById(id).select(" +chatBotCustomizeData owner").lean();
     if (!chatbot) throw 'Chatbot with id "' + id + '"  not found';
+
+    const owner = headers().get('userId');
+    if (chatbot.owner != owner) throw 'You do not own this chatbot'
+
     return chatbot;
 }
 
 async function getByName(name) {
     const ownerId = headers().get('userId');
-    const chatbot = await Chatbot.findOne({ owner: ownerId, name })
+    const chatbot = await Chatbot.findOne({ owner: ownerId, name }).lean()
     if (!chatbot) throw 'Chatbot with name "' + name + '"  not found';
     return chatbot
 }
 
 async function getAllUserBot() {
     const ownerId = headers().get('userId');
-    return await Chatbot.find({ owner: ownerId }).sort({ timestamp: -1 })
+    return await Chatbot.find({ owner: ownerId }).sort({ timestamp: -1 }).lean()
 }
 
 async function getAllNewBot() {
-    return await Chatbot.find({ status: KnowledgebaseStatus.CREATED }).sort({ timestamp: -1 })
+    return await Chatbot.find({ status: KnowledgebaseStatus.CREATED }).sort({ timestamp: -1 }).lean()
 }
 
 async function _delete(id) {
     try {
-        const chatbot = await Chatbot.findById(id);
+        const chatbot = await Chatbot.findById(id).lean();
         if (!chatbot) throw `chatbot not found`;
 
         //delete pincone index
         await deletePinconeIndex(chatbot.pIndex)
-        await Chatbot.findByIdAndDelete(id)
+        await chatbot.findByIdAndDelete(id)
 
         return true
     } catch (error) {

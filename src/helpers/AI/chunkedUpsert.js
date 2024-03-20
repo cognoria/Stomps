@@ -1,4 +1,7 @@
-import { Index, PineconeRecord } from '@pinecone-database/pinecone';
+// import { Index, PineconeRecord } from '@pinecone-database/pinecone';
+import { globalRepo } from "../server/repos/global-repo";
+import { getPineconeClient } from "./pinecone";
+import { AppServiceProviders } from "../enums";
 
 const sliceIntoChunks = (arr, chunkSize) => {
   return Array.from({ length: Math.ceil(arr.length / chunkSize) }, (_, i) =>
@@ -6,12 +9,14 @@ const sliceIntoChunks = (arr, chunkSize) => {
   );
 };
 
-export const chunkedUpsert = async (
-  index,
-  vectors,
-  namespace,
-  chunkSize = 10
-) => {
+export const chunkedUpsert = async (index, vectors, chunkSize = 10) => {
+  const apiKey = await globalRepo.getServiceKey(AppServiceProviders.PINECONE)
+  const pinecone = await getPineconeClient(apiKey);
+
+  if (!index) throw 'Cannot upsert without Index'
+
+  const Index = pinecone.index(index);
+
   // Split the vectors into chunks
   const chunks = sliceIntoChunks(vectors, chunkSize);
 
@@ -20,9 +25,10 @@ export const chunkedUpsert = async (
     await Promise.allSettled(
       chunks.map(async (chunk) => {
         try {
-          await index.namespace(namespace).upsert(chunk);
+          await Index.upsert(chunk);
         } catch (e) {
           console.log('Error upserting chunk', e);
+          // throw e
         }
       })
     );

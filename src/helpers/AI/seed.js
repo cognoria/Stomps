@@ -1,27 +1,24 @@
-import { getEmbeddings } from "./embeddings";
+import { getEmbeddings } from "./openai";
 import {
   Document,
   MarkdownTextSplitter,
   RecursiveCharacterTextSplitter,
 } from "@pinecone-database/doc-splitter";
 import md5 from "md5";
-import { getPineconeClient } from "./pinecone";
 import { truncateStringByBytes } from "../truncateString";
 import { chunkedUpsert } from "./chunkedUpsert";
 import { db } from "../server/db";
-import { AppServiceProviders, KnowledgebaseStatus } from "../enums";
+import { KnowledgebaseStatus } from "../enums";
 import PQueue from "p-queue"
-import { globalRepo } from "../server/repos/global-repo";
+
 const Chatbot = db.Chatbot;
 
 async function seed(chatbotId) {
   try {
     console.log("Seeding ", chatbotId)
-    const apiKey = await globalRepo.getServiceKey(AppServiceProviders.PINECONE)
-    const pinecone = await getPineconeClient(apiKey);
 
-    const chatbot = await Chatbot.findByIdAndUpdate(chatbotId, { status: KnowledgebaseStatus.GENERATING_EMBEDDINGS }).select("+crawlData knowledgebase");
-
+    const chatbot = await Chatbot.findByIdAndUpdate(chatbotId, { status: KnowledgebaseStatus.GENERATING_EMBEDDINGS }).select("+ crawlData knowledgebase pIndex");
+    console.log(chatbot)
     //TODO: make these dynamic either store in Global or inside each chatbot make editable
     let splittingMethod = "markdown";
     let chunkSize = 2048;
@@ -29,7 +26,8 @@ async function seed(chatbotId) {
 
     const indexName = chatbot.pIndex;
     const pages = [...chatbot.crawlData.pagesContent, ...chatbot.knowledgebase.contents];
-    // console.log(pages)
+    
+    if(!indexName) throw 'chatbot Index not found.'
     // Choose the appropriate document splitter based on the splitting method
     const splitter =
       splittingMethod === "recursive"
@@ -41,9 +39,6 @@ async function seed(chatbotId) {
       pages.map((page) => prepareDocument(page, splitter))
     );
 
-    const index = pinecone && pinecone.Index(indexName);
-
-
     // Get the vector embeddings for the documents
     console.log("Generating embeddings for: " + chatbotId)
     const queue = new PQueue({ concurrency: 1 });
@@ -52,8 +47,8 @@ async function seed(chatbotId) {
     );
 
     // Upsert vectors into the Pinecone index
-    console.log("chunking and upserting", vectors)
-    await chunkedUpsert(index, vectors, "", 10);
+    console.log("chunking and upserting")
+    await chunkedUpsert(indexName, vectors, 10);
 
     return await Chatbot.findByIdAndUpdate(chatbotId, { status: KnowledgebaseStatus.READY });
   } catch (error) {
