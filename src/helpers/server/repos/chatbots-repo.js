@@ -90,7 +90,7 @@ async function trainChatbot(chatbotId) {
 }
 
 async function getById(id) {
-    const chatbot = await Chatbot.findById(id).select(" +chatBotCustomizeData owner").lean();
+    const chatbot = await Chatbot.findById(id).select(" +chatBotCustomizeData owner visibility status name").lean();
     if (!chatbot) throw 'Chatbot with id "' + id + '"  not found';
 
     const owner = headers().get('userId');
