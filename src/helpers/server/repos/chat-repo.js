@@ -5,10 +5,23 @@ import { KnowledgebaseStatus } from "../../enums";
 import { headers } from "next/headers";
 
 const Chatbot = db.Chatbot;
+const Chat = db.Chat;
 
 export const chatRepo = {
-    getChatResponse
+    createSession,
+    getChatsPerDay,
+    getChatResponse,
+    getChatsPerCountry
 }
+
+async function createSession(chatbotId, params){
+    //create chat session, return sessionId
+
+}
+
+//get Session messages
+//get All sessions (for analytics page)
+//
 
 async function getChatResponse(messages, chatbotId) {
     const chatbot = await Chatbot.findById(chatbotId)
@@ -38,4 +51,35 @@ async function getChatResponse(messages, chatbotId) {
 
     const message = [...prompt, ...messages.filter((msg) => msg.role === 'user')]
     return await getChatCompletion(message, chatbot.chatBotCustomizeData.model)
+}
+
+async function getChatsPerDay(chatbotId) {
+    const chatsPerDay = await Chat.aggregate([
+        {
+            $match: { chatbot: mongoose.Types.ObjectId(chatbotId) }
+        },
+        {
+            $group: {
+                _id: { $dateToString: { format: "%Y-%m-%d", date: "$createdAt" } },
+                count: { $sum: 1 }
+            }
+        },
+        { $sort: { _id: 1 } }
+    ]);
+    return chatsPerDay.map(item => ({ date: item._id, count: item.count }));
+}
+
+async function getChatsPerCountry(chatbotId) {
+    const chatsPerCountry = await Chat.aggregate([
+        {
+            $match: { chatbot: mongoose.Types.ObjectId(chatbotId) }
+        },
+        {
+            $group: {
+                _id: "$userData.country",
+                count: { $sum: 1 }
+            }
+        }
+    ]);
+    return chatsPerCountry.map(item => ({ country: item._id, count: item.count }));
 }
