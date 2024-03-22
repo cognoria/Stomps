@@ -140,11 +140,17 @@ function Chat({ id }) {
   const chatMessages = useBotMessagingStore((state) => state.chatMessages);
   const loading = useBotMessagingStore((state) => state.loading);
   const error = useBotMessagingStore((state) => state.error);
-
+  const chatting = useBotMessagingStore((state) => state.chatting);
   // Function to convert Markdown to HTML
   const markdownToHtml = (markdown) => {
     return remark().use(remarkHTML).processSync(markdown).toString();
   };
+
+  useEffect(() => {
+    if (chatting) {
+      setMessageInput("");
+    }
+  }, [chatting]);
 
   async function sendMessage(e) {
     e.preventDefault();
@@ -168,8 +174,8 @@ function Chat({ id }) {
 
   return (
     <div className="border-[1px] w-[55%] h-[588px] border-gray-200  items-start flex-col ">
-      <div className="flex border-b-[1px] border-gray-200  p-4 w-full flex-end items-end justify-end">
-        <img src="/images/chatbox/refresh.svg" alt="" />
+      <div className="flex border-b-[1px] border-gray-200 flex-row  p-4 w-full flex-end items-end justify-end">
+        <p>{error && error}</p> <img src="/images/chatbox/refresh.svg" alt="" />
       </div>
       <div
         ref={chatContainerRef}
@@ -208,6 +214,7 @@ function Chat({ id }) {
       >
         <input
           value={messageInput}
+          readonly={chatting}
           onChange={(e) => setMessageInput(e.target.value)}
           placeholder="message... "
           className="text-neutral-700 outline-gray-200 w-full h-full border  flex flex-col  active:outline-gray-300 pl-[15px] rounded-lg  pr-[50px]   decoration-none placeholder:text-neutral-300 text-sm font-normal font-manrope leading-snug"

@@ -7,17 +7,15 @@ const useBotMessagingStore = create((set) => ({
   error: null,
   chatMessages: [],
   chat_messaging: async ({ id, data }) => {
-    set({ chatting: true, loading: true, error: null });
-
     // Push chatData into chatMessages
     set((state) => ({
       chatMessages: [...state.chatMessages, data],
     }));
-
+    set({ chatting: true, loading: true, error: null });
     try {
       console.log(id);
-      const msg = await useBotMessagingStore.getState().chatMessages
-      console.log(msg)
+      const msg = await useBotMessagingStore.getState().chatMessages;
+      console.log(msg);
       const response = await fetch(`/api/v1/chatbot/${id}/chat`, {
         method: "POST",
         headers: {
