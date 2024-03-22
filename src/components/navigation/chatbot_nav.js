@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import { useUserStore } from "../../store/auth/userState";
 import bot_nav from "../../store/chat_bot_state/chatbot_state";
 
-function Chat_bot_nav() {
+function Chat_bot_nav({ nav, tag }) {
   const [expanded, setExpanded] = useState(false);
   const toggleExpansion = () => {
     setExpanded(!expanded);
@@ -73,10 +73,10 @@ function Chat_bot_nav() {
       {/* desktop nav for chat bot */}
 
       {/* mobile nav for chatbot */}
-      <div className="w-screen  flex flex-col items-center lg:hidden  px-5">
+      <div className="w-full  flex flex-col items-center lg:hidden  px-5">
         <div className="flex flex-row w-full justify-between ">
           <div className="text-sky-700 text-2xl font-bold font-manrope leading-[28.80px]">
-            Data Sources
+            {tag}
           </div>
 
           <div className="flex  ">
@@ -155,26 +155,3 @@ function Chat_bot_nav() {
 }
 
 export default Chat_bot_nav;
-
-const nav = [
-  {
-    link_name: "File",
-    img_link: "/images/chatbox/document-text.svg",
-    link: "/",
-  },
-  {
-    link_name: "Text",
-    img_link: "/images/chatbox/text1.svg",
-    link: "/text",
-  },
-  {
-    link_name: "Website",
-    img_link: "/images/chatbox/global.svg",
-    link: "/website",
-  },
-  {
-    link_name: "Q & A",
-    img_link: "/images/chatbox/message-question.svg",
-    link: "/QA",
-  },
-];

@@ -2,12 +2,11 @@
 
 import { useEffect, useRef, useState } from "react";
 
+import { remark } from "remark";
+import remarkHTML from "remark-html";
 import useBotMessagingStore from "../../../../store/chat_bot_state/chats_messaging";
 import useSingleChatbot from "../../../../store/chat_bot_state/single_chat_bot";
 import { formatDate } from "../../../../utils/data_format/date";
-import {remark} from 'remark';
-import remarkHTML from 'remark-html';
-
 
 function ChatPage({ bot_id }) {
   const { singleChatBot, loading, error, chatbot } = useSingleChatbot(
@@ -61,12 +60,13 @@ function ChatPage({ bot_id }) {
                 </div>
                 <div className="flex flex-row gap-1 items-center">
                   <div
-                    className={`w-3 h-3 ${getStatusColor(chatbot?.status) === "green"
+                    className={`w-3 h-3 ${
+                      getStatusColor(chatbot?.status) === "green"
                         ? "bg-emerald-500"
                         : getStatusColor(chatbot?.status) === "red"
-                          ? "bg-red-500"
-                          : "bg-yellow-500"
-                      } rounded-full`}
+                        ? "bg-red-500"
+                        : "bg-yellow-500"
+                    } rounded-full`}
                   />
                   <div className="text-gray-900 text-sm font-bold font-manrope leading-snug">
                     {chatbot?.status}
@@ -141,9 +141,8 @@ function Chat({ id }) {
   const loading = useBotMessagingStore((state) => state.loading);
   const error = useBotMessagingStore((state) => state.error);
 
-
   // Function to convert Markdown to HTML
-  const markdownToHtml = markdown => {
+  const markdownToHtml = (markdown) => {
     return remark().use(remarkHTML).processSync(markdown).toString();
   };
 
@@ -180,14 +179,23 @@ function Chat({ id }) {
         {chatMessages.map((message, index) => (
           <div
             key={index}
-            className={`w-full h-auto flex flex-col ${message?.role === "user"
-                ? "justify-end items-end"
+            className={`w-full h-auto flex flex-col ${
+              message?.role === "user"
+                ? "justify-end items-end "
                 : " justify-start"
-              } `}
+            } `}
           >
-            <div className="w-[45%] h-auto px-[15px] items-start py-[11px] bg-zinc-100 rounded-tl rounded-tr rounded-br border justify-center  flex-col flex">
+            <div className="max-w-[70%] h-auto px-[15px] items-start py-[11px] bg-zinc-100 rounded-tl rounded-tr rounded-br border justify-center  flex-col flex">
               <div className="text-stone-900 text-start text-sm font-normal font-manrope leading-snug">
-                {message?.role === "user" ? message?.content : <div dangerouslySetInnerHTML={{ __html: markdownToHtml(message?.content) }} />}
+                {message?.role === "user" ? (
+                  message?.content
+                ) : (
+                  <div
+                    dangerouslySetInnerHTML={{
+                      __html: markdownToHtml(message?.content),
+                    }}
+                  />
+                )}
               </div>
             </div>
           </div>

@@ -21,7 +21,7 @@ const useBotCreationStore = create((set) => ({
       const data = await response.json();
       set({ creatingBot: false, loading: false });
       toast.success("Bot created successfully");
-      return response.json();
+      return data;
     } catch (error) {
       set({ creatingBot: false, loading: false, error: error.message });
       toast.error(`Failed to create bot ${error.message}`);

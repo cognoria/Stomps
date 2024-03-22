@@ -8,7 +8,7 @@ const inter = Inter({ subsets: ["latin"] });
 export default function Layout({ children }) {
   return (
     <div className={inter.className}>
-      <div className="flex flex-col  items-center">
+      <div className="flex flex-col justify-center  items-center">
         <Bot_nav />
       </div>
 

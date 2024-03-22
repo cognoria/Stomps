@@ -37,7 +37,7 @@ function page() {
       </div>
       <div className="w-full gap-x-4 lg:max-w-[80%] gap-3 flex flex-col lg:flex-row  items-start justify-center">
         <div className="lg:max-w-[212px] mt-[60px]">
-          <Chat_bot_nav />
+          <Chat_bot_nav tag={"Data Sources"} nav={nav} />
         </div>
         <div className="w-full">{renderContent()}</div>
         <div className="flex flex-col w-full items-center justify-center">
@@ -49,3 +49,25 @@ function page() {
 }
 
 export default page;
+const nav = [
+  {
+    link_name: "File",
+    img_link: "/images/chatbox/document-text.svg",
+    link: "/",
+  },
+  {
+    link_name: "Text",
+    img_link: "/images/chatbox/text1.svg",
+    link: "/text",
+  },
+  {
+    link_name: "Website",
+    img_link: "/images/chatbox/global.svg",
+    link: "/website",
+  },
+  {
+    link_name: "Q & A",
+    img_link: "/images/chatbox/message-question.svg",
+    link: "/QA",
+  },
+];
