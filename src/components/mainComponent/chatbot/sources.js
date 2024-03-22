@@ -20,7 +20,10 @@ export default function Sources() {
     contents: [
       { url: "Q&A", content: `${questionsJSON}` },
       { url: "TXT", content: `${formData.text}` },
-      ...formData.files.map(file => ({ url: file.name, content: file.content })),
+      ...formData.files.map((file) => ({
+        url: file.name,
+        content: file.content,
+      })),
     ],
   };
 
@@ -31,8 +34,8 @@ export default function Sources() {
     console.log(dataToSend);
     try {
       const newBot = await useBotCreationStore.getState().createBot(dataToSend);
-       useFormDataStore.getState().clearFormData(newBot._id);
       router.push(`/bot/${newBot._id}`);
+      useFormDataStore.getState().clearFormData(newBot._id);
     } catch (error) {
       console.error("Failed to create bot:", error);
     }

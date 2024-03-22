@@ -36,7 +36,7 @@ function page() {
         </div>
       </div>
       <div className="w-full gap-x-4 lg:max-w-[80%] gap-3 flex flex-col lg:flex-row  items-start justify-center">
-        <div className="lg:max-w-[212px] mt-[60px]">
+        <div className="lg:max-w-[212px] w-full  mt-[60px]">
           <Chat_bot_nav tag={"Data Sources"} nav={nav} />
         </div>
         <div className="w-full">{renderContent()}</div>

@@ -2,8 +2,7 @@
 
 import { useEffect } from "react";
 import Loading from "../../../../components/customComponents/loading/loading";
-import Empty_bot from "../../../../components/mainComponent/chatbot/empty_bot";
-import Main_bot from "../../../../components/mainComponent/chatbot/main_bot";
+import Chatbot_key_check from "../../../../components/mainComponent/chatbot/key_check/chatbot_key_check";
 import useUserChatbot from "../../../../store/chat_bot_state/user_chatbot";
 
 function Page() {
@@ -29,7 +28,9 @@ function Page() {
           <Main_bot />
         </div>
       )} */}
-      {chatbots === null || chatbots.length === 0 ? (
+
+      <Chatbot_key_check />
+      {/* {chatbots === null || chatbots.length === 0 ? (
         <Empty_bot />
       ) : chatbots ? (
         <div className="mt-[80px] w-full">
@@ -37,7 +38,8 @@ function Page() {
         </div>
       ) : (
         <Empty_bot />
-      )}
+
+      )} */}
     </div>
   );
 }

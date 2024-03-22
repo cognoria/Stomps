@@ -1,8 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
 
-import { remark } from "remark";
-import remarkHTML from "remark-html";
 function Chat_logs() {
   const bot = true;
 
@@ -12,9 +10,6 @@ function Chat_logs() {
 }
 
 export default Chat_logs;
-const markdownToHtml = (markdown) => {
-  return remark().use(remarkHTML).processSync(markdown).toString();
-};
 
 const Filled_bot_state = () => {
   const data = [{ question: "", answer: "" }];
@@ -37,14 +32,8 @@ const Filled_bot_state = () => {
           <div class="relative">
             <input
               type="date"
-              class="appearance-none py-[20px] border border-gray-300 font-manrope rounded  px-4 w-[150px] leading-tight focus:outline-none focus:border-blue-500"
+              class=" custom-date-input "
               placeholder="Select a date"
-            />
-
-            <img
-              src="/images/chatbox/calendar.svg"
-              alt="Calendar Icon"
-              class="absolute right-0 top-0 mt-2 mr-3 h-6 w-6 pointer-events-none"
             />
           </div>
         </div>

@@ -55,6 +55,53 @@ html {
     opacity: 1;
   }
 }
+/* Input Style */
+/* Input Style */
+/* Input Style */
+/* Input Style */
+.custom-date-input {
+  display: flex;
+  align-items: center;
+  position: relative;
+  padding: 0.9375rem;
+  color: #f0f0f0;
+  background-color: #2c2c3c;
+  border: 2px solid #3e3e56;
+  border-radius: 0.3125rem;
+  cursor: pointer;
+}
+
+/* Button Icon */
+.custom-date-input::before {
+  margin-right: 0.625rem;
+  content: url("/images/chatbox/calendar.svg"); /* Change the path to your image */
+}
+
+/* Input Button */
+.custom-date-input::-webkit-calendar-picker-indicator {
+  display: none; /* Hide the default arrow */
+}
+
+/* Input Text */
+.custom-date-input::after {
+  margin-left: 0.625rem;
+  content: "Select Date";
+}
+
+.custom-date-input {
+  color: transparent; /* Hide the default text */
+}
+
+.custom-date-input::-webkit-datetime-edit {
+  color: inherit; /* Ensure the selected date remains visible */
+}
+
+/* Date Picker Modal */
+.custom-date-input::-webkit-inner-spin-button,
+.custom-date-input::-webkit-clear-button {
+  display: none; /* Hide the default spinner and clear button */
+}
+
 
 
 .circular-list {

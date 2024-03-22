@@ -7,11 +7,11 @@ function Bot_nav() {
   const segments = pathname.split("/");
   const id = segments[2];
   const navItems = [
-    { name: "Chatbot", link: `/bot/${id}` },
-    { name: "Settings", link: "settings" },
-    { name: "Dashboard", link: "/" },
-    { name: "Sources", link: `/bot/${id}/bot_source` },
-    { name: "Embed on site", link: "/" },
+    { name: "chatbot", link: `/bot/${id}` },
+    { name: "settings", link: "settings" },
+    { name: "dashboard", link: "/bot/${id}/dashboard" },
+    { name: "sources", link: `/bot/${id}/bot_source` },
+    { name: "embed on site", link: "/" },
   ];
   console.log(lastSegment);
   return (
@@ -21,9 +21,9 @@ function Bot_nav() {
           <li className="w-full" key={i}>
             <Link
               className={
-                lastSegment === items.link
-                  ? " p-3 border-[#1261AC] border-[1px] px-3 py-1.5 bg-sky-50 rounded-[300px]  "
-                  : " "
+                lastSegment === items.name
+                  ? "p-3 border-[#1261AC] capitalize border-[1px] px-3 py-1.5 bg-sky-50 rounded-[300px]"
+                  : " capitalize"
               }
               href={items.link}
             >
