@@ -101,14 +101,14 @@ async function getEmbedModel() {
 }
 
 async function setGlobalKeys(params) {
-    if (!params.openai_key && !params.pinecone_key) throw 'Openai and Pinecone keys are required'
+    if (!params.openaiKey && !params.pineconeKey) throw 'Openai and Pinecone keys are required'
 
     // there'd be only one Global document 
     // and it should and be initalized before now.
     const global = await Global.findOne()
 
-    const openaiKeyHash = encrypt(params.openai_key)
-    const pineconeKeyHash = encrypt(params.pinecone_key)
+    const openaiKeyHash = encrypt(params.openaiKey)
+    const pineconeKeyHash = encrypt(params.pineconeKey)
 
     global.services.push({
         name: AppServiceProviders.OPENAI,
