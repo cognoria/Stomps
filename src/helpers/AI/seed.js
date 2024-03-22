@@ -41,7 +41,7 @@ async function seed(chatbotId) {
 
     // Get the vector embeddings for the documents
     console.log("Generating embeddings for: " + chatbotId)
-    const queue = new PQueue({ concurrency: 1 });
+    const queue = new PQueue({ concurrency: 3 });
     const vectors = await Promise.all(
       documents.flat().map(doc => queue.add(() => embedDocument(doc)))
     );

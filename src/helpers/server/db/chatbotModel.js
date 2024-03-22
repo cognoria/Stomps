@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import { KnowledgebaseStatus, chatBotCustomizeDataDefault } from '../../enums';
+import { KnowledgebaseStatus, chatBotCustomizeDataDefault, chatModelEnum } from '../../enums';
 
 const Schema = mongoose.Schema;
 
@@ -51,25 +51,14 @@ const chatBotCustomizeData = new Schema({
     launcherIcon: { type: String, required: true, default: 'icon1' },
     chatInputPlaceholderText: { type: String, required: true, default: 'Type your message' },
     assistantTabHeader: { type: String, required: true, default: 'AI assistant' },
-    offlineMsgTabHeader: { type: String, required: true, default: 'Offline message' },
     readMoreText: { type: String, required: true, default: 'Read more:' },
-    offlineMsgHeading: { type: String, required: true, default: "Offline message" },
-    offlineMsgDescription: { type: String, required: true, default: "Please fill out the form below and we will get back to you as soon as possible." },
-    nameFieldLabel: { type: String, required: true, default: "Name" },
-    nameFieldPlaceholder: { type: String, required: true, default: "Enter your name" },
-    emailFieldLabel: { type: String, required: true, default: "Email" },
-    emailFieldPlaceholder: { type: String, required: true, default: "Enter your email" },
-    msgFieldLabel: { type: String, required: true, default: "Message" },
-    msgFieldPlaceholder: { type: String, required: true, default: "Enter your message" },
-    requiredFieldMsg: { type: String, required: true, default: "This field is required" },
-    invalidEmailMsg: { type: String, required: true, default: "Please enter a valid email" },
-    formSubmitBtnLabel: { type: String, required: true, default: "Submit" },
-    formSubmitBtnSubmittingText: { type: String, required: true, default: "Submitting..." },
-    formSubmitSuccessMsg: { type: String, required: true, default: "Your message sent successfully!" },
-    formSubmitErrorMsg: { type: String, required: true, default: "Oops! Something went wrong" },
-    formSendAgainBtnLabel: { type: String, required: true, default: "Send again" },
-    formTryAgainBtnLabel: { type: String, required: true, default: "Try again" },
-    model: { type: String, required: true, enum: ['gpt-4', 'gpt-4-turbo-preview', 'gpt-3.5-turbo'], default: 'gpt-4-turbo-preview' }
+    leadMsgDescription: { type: String, required: true, default: "Let us know how to contact you." },
+    temparature: {type: Number, default: 0.7, required: true},
+    collectName: {type: Boolean, default: false, required: true},
+    collectEmail: {type: Boolean, default: false, required: true},
+    collectPhone: {type: Boolean, default: false, required: true},
+    widgetTheme: {type: String, default: "LIGHT", enum: ['LIGHT', 'DARK', 'SYSTEM']},
+    model: { type: String, required: true, enum: Object.values(chatModelEnum), default: chatModelEnum.GPT_4_turbo }
 }, { _id: false });
 
 export default function chatbotModel() {

@@ -13,10 +13,22 @@ export const KnowledgebaseStatus = {
     READY: 'READY',
 }
 
+export const ChatAnswerFeedback = {
+    BAD: 'BAD',
+    GOOD: 'GOOD',
+    NONE: 'NONE'
+}
+
 export const EmbeddingModels = {
-   TEXT_ADA: "text-embedding-ada-002", 
-   TEXT_3_SMALL: "text-embedding-3-small", 
-   TEXT_3_LARGE: "text-embedding-3-large"
+    TEXT_ADA: "text-embedding-ada-002",
+    TEXT_3_SMALL: "text-embedding-3-small",
+    TEXT_3_LARGE: "text-embedding-3-large"
+}
+
+export const chatModelEnum = {
+    GPT_4: 'gpt-4',
+    GPT_4_turbo: 'gpt-4-turbo-preview',
+    GPT_3_5: 'gpt-3.5-turbo'
 }
 
 export const AppServiceProviders = {
@@ -60,30 +72,19 @@ export const chatBotCustomizeDataDefault = {
     launcherIcon: 'icon1',
     chatInputPlaceholderText: 'Type your message',
     assistantTabHeader: 'AI assistant',
-    offlineMsgTabHeader: 'Offline message',
     readMoreText: 'Read more:',
-    offlineMsgHeading: "Offline message",
-    offlineMsgDescription: "Please fill out the form below and we will get back to you as soon as possible.",
-    nameFieldLabel: "Name",
-    nameFieldPlaceholder: "Enter your name",
-    emailFieldLabel: "Email",
-    emailFieldPlaceholder: "Enter your email",
-    msgFieldLabel: "Message",
-    msgFieldPlaceholder: "Enter your message",
-    requiredFieldMsg: "This field is required",
-    invalidEmailMsg: "Please enter a valid email",
-    formSubmitBtnLabel: "Submit",
-    formSubmitBtnSubmittingText: "Submitting...",
-    formSubmitSuccessMsg: "Your message sent successfully!",
-    formSubmitErrorMsg: "Oops! Something went wrong",
-    formSendAgainBtnLabel: "Send again",
-    formTryAgainBtnLabel: "Try again",
-    model: 'gpt-4-turbo-preview'
+    leadMsgDescription: "Let us know how to contact you.",
+    model: 'gpt-4-turbo-preview',
+    temparature: 0.7,
+    widgetTheme: 'LIGHT',
+    collectName: false,
+    collectEmail: false,
+    collectPhone: false
 };
 
 // /**
 //  * Regions available with the AWS cloud provider
-//  * 
+//  *
 //  */
 // export const AwsRegions = {
 //     East1: 'us-east-1',
@@ -93,7 +94,7 @@ export const chatBotCustomizeDataDefault = {
 
 // /**
 //  * Regions available with the GCP cloud provider
-//  * 
+//  *
 //  */
 // export const GcpRegions = {
 //     UsWest1: 'us-west1',

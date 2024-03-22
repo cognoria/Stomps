@@ -5,7 +5,7 @@ import { db } from "../db";
 import { createPinconeIndex, deletePinconeIndex } from "../../AI/pinecone";
 import { headers } from "next/headers";
 import generateRandomString, { generateName } from "../../generaterandomString";
-
+import { globalRepo } from "./global-repo";
 const User = db.User;
 const Chatbot = db.Chatbot;
 
@@ -13,10 +13,15 @@ export const chatbotRepo = {
     create,
     getById,
     getByName,
+    updateName,
     getAllNewBot,
     trainChatbot,
     getAllUserBot,
+    updateLeadInfo,
     delete: _delete,
+    updateModelData,
+    updateSecurityData,
+    updateChatInterface,
 }
 
 async function create(params) {
@@ -24,6 +29,9 @@ async function create(params) {
 
     const user = await User.findById(ownerId)
     if (!user) throw `User not found.`;
+
+    //check user has added api keys
+    if (!(await globalRepo.isKeys())) throw 'Please add Api keys first';
 
     // validate name
     // if (await Chatbot.findOne({ name: params.name })) {
@@ -122,7 +130,7 @@ async function _delete(id) {
 
         //delete pincone index
         await deletePinconeIndex(chatbot.pIndex)
-        await chatbot.findByIdAndDelete(id)
+        await Chatbot.findByIdAndDelete(id)
 
         return true
     } catch (error) {
@@ -130,4 +138,77 @@ async function _delete(id) {
         console.error('Error deleting chatbot:', error);
         throw error;
     }
+}
+
+async function updateName(chatbotId, name) {
+    const chatbotWname = await await Chatbot.findOne({ name });
+    if (chatbotWname) throw 'Chatbot with name "' + name + '"  Already exists'
+
+    const ownerId = headers().get('userId');
+    const chatbot = await Chatbot.findOne({ owner: ownerId, _id: chatbotId })
+    if (!chatbot) throw 'Chatbot with id "' + chatbotId + '"  not found';
+
+    chatbot.name = name;
+    await chatbot.save()
+
+    return true;
+}
+
+async function updateModelData(chatbotId, modelData) {
+    const ownerId = headers().get('userId');
+    const chatbot = await Chatbot.findOne({ owner: ownerId, _id: chatbotId })
+    if (!chatbot) throw 'Your Chatbot with id "' + chatbotId + '" not found';
+
+    chatbot.chatBotCustomizeData.prompt = modelData.prompt
+    chatbot.chatBotCustomizeData.model = modelData.model
+    chatbot.chatBotCustomizeData.temparature = modelData.temparature
+    await chatbot.save()
+
+    return true;
+}
+
+//TODO: incomplete
+async function updateChatInterface(chatbotId, interfaceData) {
+    const ownerId = headers().get('userId');
+    const chatbot = await Chatbot.findOne({ owner: ownerId, _id: chatbotId })
+    if (!chatbot) throw 'Your Chatbot with id "' + chatbotId + '" not found';
+
+    // chatbot.chatBotCustomizeData.prompt = modelData.prompt
+    // chatbot.chatBotCustomizeData.model = modelData.model
+    // chatbot.chatBotCustomizeData.temparature = modelData.temparature
+    await chatbot.save()
+
+    return true;
+}
+
+//TODO: incomplete
+async function updateSecurityData(chatbotId, securityData) {
+    const ownerId = headers().get('userId');
+    const chatbot = await Chatbot.findOne({ owner: ownerId, _id: chatbotId })
+    if (!chatbot) throw 'Your Chatbot with id "' + chatbotId + '" not found';
+
+    chatbot.visibility = securityData.visibility;
+    await chatbot.save()
+
+    return true;
+}
+
+/**
+ * 
+ * @param {String} chatbotId 
+ * @param {Object} leadInfo  {title: String, collectName: Boolean, collectEmail: Boolean, collectPhone: Boolean, }
+ * @returns Boolean
+ */
+async function updateLeadInfo(chatbotId, leadInfo) {
+    const ownerId = headers().get('userId');
+    const chatbot = await Chatbot.findOne({ owner: ownerId, _id: chatbotId })
+    if (!chatbot) throw 'Your Chatbot with id "' + chatbotId + '" not found';
+
+    chatbot.chatBotCustomizeData.leadMsgDescription = leadInfo.title;
+    chatbot.chatBotCustomizeData.collectName = leadInfo.collectName;
+    chatbot.chatBotCustomizeData.collectEmail = leadInfo.collectEmail;
+    chatbot.chatBotCustomizeData.collectPhone = leadInfo.collectPhone;
+    await chatbot.save()
+
+    return 'Lead informations updated';
 }
