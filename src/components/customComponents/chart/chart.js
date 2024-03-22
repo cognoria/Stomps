@@ -1,16 +1,12 @@
 // pages/index.js
-import React, { useState, useEffect } from "react";
-import Chart from "react-chartjs-2";
-import L from "leaflet";
-import "leaflet/dist/leaflet.css";
+import { useEffect, useState } from "react";
+import Map from "../map/map";
 
 function Chart_page() {
   const [chartData, setChartData] = useState({});
   const [mapData, setMapData] = useState([]);
 
   useEffect(() => {
-    // Fetch your data here
-    // Replace this with your actual data fetching logic
     fetch("https://api.example.com/chat-data")
       .then((res) => res.json())
       .then((data) => {
@@ -50,11 +46,18 @@ function Chart_page() {
   }, []);
 
   return (
-    <div>
-      <Chart data={chartData} />
-      <div id="map" style={{ height: "400px" }} />
+    <div className="flex flex-col w-full items-center overflow-hidden">
+      {/* <Chart data={chartData} /> */}
+      <Map markers={mapData} />
     </div>
   );
 }
 
 export default Chart_page;
+
+
+
+
+const dummy_chart = [
+    
+]

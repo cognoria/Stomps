@@ -1,11 +1,9 @@
 import Chart_page from "../../../customComponents/chart/chart";
-import Map from "../../../customComponents/map/map";
 
 function Analytics() {
   return (
-    <div>
-      {/* <Chart_page /> */}
-      <Map />
+    <div className="flex flex-col w-full items-center overflow-hidden">
+      <Chart_page />
     </div>
   );
 }
