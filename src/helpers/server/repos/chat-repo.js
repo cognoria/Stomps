@@ -14,7 +14,7 @@ export const chatRepo = {
     getChatsPerCountry
 }
 
-async function createSession(chatbotId, params){
+async function createSession(chatbotId, params) {
     //create chat session, return sessionId
 
 }
@@ -42,9 +42,12 @@ async function getChatResponse(messages, chatbotId) {
         {
             role: `system`,
             content: `${chatbot.chatBotCustomizeData.prompt}
+            As an assistant, your responses will be based only on the given data.
             START CONTEXT BLOCK
             ${context}
             END OF CONTEXT BLOCK
+            Remember to not provide any additional information or answer from outside the given data. 
+            If you can't answer from the given data reply with predefined message \"{${chatbot.chatBotCustomizeData.defaultAnswer}}\"
             `
         }
     ]
