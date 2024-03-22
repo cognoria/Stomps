@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import { KnowledgebaseStatus, chatBotCustomizeDataDefault } from '../../enums';
+import { KnowledgebaseStatus, chatBotCustomizeDataDefault, chatModelEnum } from '../../enums';
 
 const Schema = mongoose.Schema;
 
@@ -58,7 +58,7 @@ const chatBotCustomizeData = new Schema({
     collectEmail: {type: Boolean, default: false, required: true},
     collectPhone: {type: Boolean, default: false, required: true},
     widgetTheme: {type: String, default: "LIGHT", enum: ['LIGHT', 'DARK', 'SYSTEM']},
-    model: { type: String, required: true, enum: ['gpt-4', 'gpt-4-turbo-preview', 'gpt-3.5-turbo'], default: 'gpt-4-turbo-preview' }
+    model: { type: String, required: true, enum: Object.values(chatModelEnum), default: chatModelEnum.GPT_4_turbo }
 }, { _id: false });
 
 export default function chatbotModel() {
