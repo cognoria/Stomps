@@ -1,8 +1,10 @@
 "use client";
 
-import Analytics from "../../../../../../../components/mainComponent/chatbot/bot_dashboard/analytics";
-import Chat_logs from "../../../../../../../components/mainComponent/chatbot/bot_dashboard/chat_logs";
-import Leeds from "../../../../../../../components/mainComponent/chatbot/bot_dashboard/leeds";
+import Bot_leads from "../../../../../../../components/mainComponent/chatbot/bot_settings/bot_leads";
+import Bot_security from "../../../../../../../components/mainComponent/chatbot/bot_settings/bot_security";
+import Chat_interface from "../../../../../../../components/mainComponent/chatbot/bot_settings/chat_interface";
+import General_settings from "../../../../../../../components/mainComponent/chatbot/bot_settings/general_settings";
+import Model_settings from "../../../../../../../components/mainComponent/chatbot/bot_settings/model_settings";
 
 import Chat_bot_nav from "../../../../../../../components/navigation/chatbot_nav";
 import bot_nav from "../../../../../../../store/chat_bot_state/chatbot_state";
@@ -13,15 +15,19 @@ function page({ params: { bot } }) {
 
   const renderContent = () => {
     switch (currentPage) {
+      case "General":
+        return <General_settings bot_id={bot} />;
+      case "Model":
+        return <Model_settings bot_id={bot} />;
+      case "Chat interface":
+        return <Chat_interface bot_id={bot} />;
+      case "security":
+        return <Bot_security bot_id={bot} />;
       case "Leads":
-        return <Leeds />;
-      case "Analytics":
-        return <Analytics />;
-      case "Chat logs":
-        return <Chat_logs />;
+        return <Bot_leads bot_id={bot} />;
 
       default:
-        return <Chat_logs />;
+        return <General_settings bot_id={bot} />;
     }
   };
   return (
@@ -49,18 +55,28 @@ export default page;
 
 const nav = [
   {
-    link_name: "Chat logs",
-    img_link: "/images/chatbox/directbox-notif.svg",
+    link_name: "General",
+    img_link: "/images/chatbox/setting_icon.svg",
     link: "/",
   },
   {
-    link_name: "Leads",
-    img_link: "/images/chatbox/profile.svg",
+    link_name: "Model",
+    img_link: "/images/chatbox/magicpen.svg",
     link: "/text",
   },
   {
-    link_name: "Analytics",
-    img_link: "/images/chatbox/chart.svg",
+    link_name: "Chat interface",
+    img_link: "/images/chatbox/droplet1.svg",
+    link: "/website",
+  },
+  {
+    link_name: "security",
+    img_link: "/images/chatbox/security.svg",
+    link: "/website",
+  },
+  {
+    link_name: "Leads",
+    img_link: "/images/chatbox/leads.svg",
     link: "/website",
   },
 ];

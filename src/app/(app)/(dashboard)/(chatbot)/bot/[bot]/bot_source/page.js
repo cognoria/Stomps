@@ -9,7 +9,7 @@ import Chat_bot_nav from "../../../../../../../components/navigation/chatbot_nav
 import bot_nav from "../../../../../../../store/chat_bot_state/chatbot_state";
 
 function page({ params: { bot } }) {
-  console.log(bot);
+  // console.log(bot);
   const currentPage = bot_nav((state) => state.currentPage);
 
   const renderContent = () => {

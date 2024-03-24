@@ -7,6 +7,7 @@ import remarkHTML from "remark-html";
 import useBotMessagingStore from "../../../../store/chat_bot_state/chats_messaging";
 import useSingleChatbot from "../../../../store/chat_bot_state/single_chat_bot";
 import { formatDate } from "../../../../utils/data_format/date";
+import Temprature_slider from "../../../customComponents/slider/temprature_slider";
 
 function ChatPage({ bot_id }) {
   const { singleChatBot, loading, error, chatbot } = useSingleChatbot(
@@ -35,12 +36,12 @@ function ChatPage({ bot_id }) {
   }
 
   return (
-    <div className="flex w-full lg:w-[767px] rounded-md flex-col h-auto items-start  border-gray-200 justify-center border-[1px] ">
+    <div className="flex w-[95%] lg:w-[767px] rounded-md flex-col h-auto items-start  border-gray-200 justify-center border-[1px] ">
       <div className="text-gray-900 text-base font-bold font-manrope p-4 border-b-[1px] border-gray-200 w-full  leading-snug">
         {chatbot?.name}
       </div>
-      <div className="w-full py-6 px-2 items-start flex flex-row  justify-start ">
-        <div className="w-[45%] pl-2 h-[588px]  flex flex-col items-start justify-start">
+      <div className="w-full py-6 px-2 items-start flex gap-y-3 flex-col lg:flex-row  justify-start ">
+        <div className="w-full lg:w-[45%] pl-2 h-auto lg:h-[588px]  flex flex-col items-start justify-start">
           <div className="flex w-full mt-10 flex-col gap-y-8 justify-start h-[90%]">
             <div className="flex flex-col w-full">
               <div className="text-gray-900 text-sm font-normal font-manrope leading-snug">
@@ -54,11 +55,11 @@ function ChatPage({ bot_id }) {
               </div>
             </div>
             <div className=" flex flex-row w-full justify-between items-start">
-              <div className="flex-1 flex flex-col gap-y-2 items-start">
-                <div className="text-gray-900 text-sm font-normal font-manrope leading-snug">
+              <div className="flex-1 w-full flex flex-col gap-y-2 items-start">
+                <div className="text-gray-900 w-full text-sm font-normal font-manrope leading-snug">
                   Status
                 </div>
-                <div className="flex flex-row gap-1 items-center">
+                <div className="flex flex-row w-full gap-1 items-center">
                   <div
                     className={`w-3 h-3 ${
                       getStatusColor(chatbot?.status) === "green"
@@ -111,17 +112,20 @@ function ChatPage({ bot_id }) {
               </div>
               <div className="flex-1"></div>
             </div>
-            <div className="flex flex-col items-start">
-              <div className="text-gray-900 text-sm font-normal font-['Manrope'] leading-snug">
+            <div className="flex w-full flex-col gap-y-2  items-start">
+              <div className="text-gray-900 text-sm font-normal font-manrope leading-snug">
                 Temperature
+              </div>
+              <div className="w-[70%]">
+                <Temprature_slider height={"h-2"} />
               </div>
             </div>
           </div>
-          <div>
-            <div className="text-gray-900 text-sm font-normal font-['Manrope'] leading-snug">
+          <div className="lg:my-0 my-10">
+            <div className="text-gray-900 text-sm font-normal font-manrope leading-snug">
               Last Trained:
             </div>
-            <div className="text-gray-900 text-sm font-bold font-['Manrope'] leading-snug">
+            <div className="text-gray-900 text-sm font-bold font-manrope leading-snug">
               {formatDate(chatbot?.updatedAt)}
             </div>
           </div>
@@ -173,9 +177,12 @@ function Chat({ id }) {
   }, [chatMessages]);
 
   return (
-    <div className="border-[1px] w-[55%] h-[588px] border-gray-200  items-start flex-col ">
+    <div className="border-[1px] w-full lg:w-[55%] h-[588px] border-gray-200  items-start flex-col ">
       <div className="flex border-b-[1px] border-gray-200 flex-row  p-4 w-full flex-end items-end justify-end">
-        <p>{error && error}</p> <img src="/images/chatbox/refresh.svg" alt="" />
+        <p className="mx-3 text-red-500 font-manrope font-normal text-sm">
+          {error && error}
+        </p>{" "}
+        <img src="/images/chatbox/refresh.svg" alt="" />
       </div>
       <div
         ref={chatContainerRef}

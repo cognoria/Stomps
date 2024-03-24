@@ -28,7 +28,7 @@ function Page() {
     userChatBot();
     userApiKeyCheck();
   }, []);
-  console.log(key_val);
+  // console.log(key_val);
   return (
     <div>
       {loading && <Loading height={"h-50px"} width={"w-50px"} />}
