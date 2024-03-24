@@ -18,8 +18,8 @@ function Page() {
   const { userApiKeyCheck, key_loading, key_error, key_val } = useUserApiKey(
     (state) => ({
       userApiKeyCheck: state.userApiKeyCheck,
-      loading: state.loading,
-      error: state.error,
+      key_loading: state.loading,
+      key_error: state.error,
       key_val: state.key_val,
     })
   );
@@ -31,7 +31,8 @@ function Page() {
   // console.log(key_val);
   return (
     <div>
-      {loading && <Loading height={"h-50px"} width={"w-50px"} />}
+      {key_loading ||
+        (loading && <Loading height={"h-50px"} width={"w-50px"} />)}
 
       {key_val && (
         <>

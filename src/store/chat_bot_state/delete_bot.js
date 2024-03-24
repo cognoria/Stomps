@@ -22,6 +22,7 @@ const useDeleteChatbot = create(
 
         if (onSuccess) onSuccess(data);
         set({ loading: false });
+        toast.success(data.message);
         return data;
       } catch (error) {
         set({ error: error.message, loading: false });

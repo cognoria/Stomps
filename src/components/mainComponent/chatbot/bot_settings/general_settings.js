@@ -56,7 +56,7 @@ function General_settings({ bot_id }) {
 
             <input
               placeholder="examplesite.com"
-              className="w-full h-[44px] p-4 active:border-gray-200 border-[1px]  text-gray-900 text-xs font-medium font-manrope leading-none tracking-tight"
+              className="w-full  h-[44px] p-4 active:border-gray-200 border-[1px]  text-gray-900 text-xs font-medium font-manrope leading-none tracking-tight"
             />
           </div>
         </div>

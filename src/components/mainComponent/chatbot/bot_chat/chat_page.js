@@ -20,7 +20,18 @@ function ChatPage({ bot_id }) {
   );
 
   useEffect(() => {
-    singleChatBot(bot_id);
+    const interval = setInterval(async () => {
+      try {
+        const data = await singleChatBot(bot_id);
+        if (data.chatbot.status === "READY") {
+          clearInterval(interval);
+        }
+      } catch (error) {
+        console.error("Error fetching status:", error);
+      }
+    }, 10000);
+
+    return () => clearInterval(interval);
   }, [bot_id, singleChatBot]);
 
   function getStatusColor(status) {
@@ -130,7 +141,7 @@ function ChatPage({ bot_id }) {
             </div>
           </div>
         </div>
-        <Chat id={bot_id} />
+        <Chat id={bot_id} status={chatbot?.status} />
       </div>
     </div>
   );
@@ -138,7 +149,7 @@ function ChatPage({ bot_id }) {
 
 export default ChatPage;
 
-function Chat({ id }) {
+function Chat({ id, status }) {
   const [messageInput, setMessageInput] = useState("");
   const chatContainerRef = useRef(null);
   const chatMessages = useBotMessagingStore((state) => state.chatMessages);
@@ -176,6 +187,7 @@ function Chat({ id }) {
     chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
   }, [chatMessages]);
 
+  console.log(status);
   return (
     <div className="border-[1px] w-full lg:w-[55%] h-[588px] border-gray-200  items-start flex-col ">
       <div className="flex border-b-[1px] border-gray-200 flex-row  p-4 w-full flex-end items-end justify-end">
@@ -221,7 +233,7 @@ function Chat({ id }) {
       >
         <input
           value={messageInput}
-          readonly={chatting}
+          readonly={chatting | status != "READY"}
           onChange={(e) => setMessageInput(e.target.value)}
           placeholder="message... "
           className="text-neutral-700 outline-gray-200 w-full h-full border  flex flex-col  active:outline-gray-300 pl-[15px] rounded-lg  pr-[50px]   decoration-none placeholder:text-neutral-300 text-sm font-normal font-manrope leading-snug"
