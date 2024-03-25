@@ -22,6 +22,7 @@ export const chatbotRepo = {
     updateModelData,
     updateSecurityData,
     updateChatInterface,
+    updateKnowledgebase,
 }
 
 async function create(params) {
@@ -98,7 +99,7 @@ async function trainChatbot(chatbotId) {
 }
 
 async function getById(id) {
-    const chatbot = await Chatbot.findById(id).select(" +chatBotCustomizeData owner visibility status name").lean();
+    const chatbot = await Chatbot.findById(id).select(" +chatBotCustomizeData owner visibility status name createdAt updatedAt").lean();
     if (!chatbot) throw 'Chatbot with id "' + id + '"  not found';
 
     const owner = headers().get('userId');
@@ -211,4 +212,43 @@ async function updateLeadInfo(chatbotId, leadInfo) {
     await chatbot.save()
 
     return 'Lead informations updated';
+}
+
+
+async function updateKnowledgebase(chatbotId, params) {
+    const ownerId = headers().get('userId');
+
+    const chatbot = await Chatbot.findOne({ owner: ownerId, _id: chatbotId })
+    if (!chatbot) throw 'Your Chatbot with id "' + chatbotId + '" not found';
+
+    // Function to remove duplicates and merge arrays
+    const mergeAndRemoveDuplicates = (existingData, newData) => {
+        const mergedData = [...new Set([...existingData, ...newData])];
+        return mergedData;
+    };
+
+    // Merge and remove duplicates from includes, urls, and contents
+    chatbot.knowledgebase.include = mergeAndRemoveDuplicates(chatbot.knowledgebase.include, params.include);
+    chatbot.knowledgebase.exclude = mergeAndRemoveDuplicates(chatbot.knowledgebase.exclude, params.exclude);
+    chatbot.knowledgebase.urls = mergeAndRemoveDuplicates(chatbot.knowledgebase.urls, params.urls);
+
+    // params.contents.forEach(content => {
+    //     const existingContentIndex = chatbot.knowledgebase.contents.findIndex(c => c.url === content.url);
+    //     if (existingContentIndex === -1) {
+    //         chatbot.knowledgebase.contents.push(content);
+    //     } else {
+    //         // Replace existing content with new content
+    //         chatbot.knowledgebase.contents[existingContentIndex] = content;
+    //     }
+    // });
+
+    params.contents.forEach(content => {
+        const existingContent = chatbot.knowledgebase.contents.find(c => c.content === content.content);
+        if (!existingContent) {
+            chatbot.knowledgebase.contents.push(content);
+        }
+    });
+
+    await chatbot.save();
+    return chatbot;
 }

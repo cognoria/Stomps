@@ -3,7 +3,7 @@ import { getEmbeddings } from './openai'
 
 // The function `getContext` is used to retrieve the context of a given message
 //TODO: maxToken, minscore, getTextOnly should be dynamic
-export const getContext = async (message, pineconeIndex, namespace, maxTokens = 3000, minScore = 0.5, getOnlyText = true) => {
+export const getContext = async (message, pineconeIndex, namespace, maxTokens = 1000, minScore = 0.5, getOnlyText = true) => {
 
   // Get the embeddings of the input message
   const embedding = await getEmbeddings(message);

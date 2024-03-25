@@ -6,6 +6,7 @@ module.exports = apiHandler({
   GET: chatbot,
 });
 
+//route GET api/v1/chatbot/
 async function chatbot() {
  return await chatbotRepo.getAllUserBot();
 }

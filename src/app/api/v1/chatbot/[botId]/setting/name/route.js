@@ -6,7 +6,7 @@ import { apiHandler } from "../../../../../../../helpers/server/api";
 module.exports = apiHandler({
   POST: updateName,
 });
-
+//route POST api/v1/chatbot/[botId]/setting/name
 async function updateName(req) {
   const { botId } = req.params;
   const { name } = await req.json()

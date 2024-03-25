@@ -35,7 +35,7 @@ const chatBotCustomizeData = new Schema({
     fontColor: { type: String, required: true, default: "#FFF" },
     heading: { type: String, required: true, default: "I am your AI assistant" },
     prompt: { type: String, default: "You are a very enthusiastic chatbot who loves to help people! Your name is Stomp and you are designed to respond only based on the given context, outputted in Markdown format." },
-    defaultAnswer: { type: String, default: "I don't know how to answer that" },
+    defaultAnswer: { type: String, default: "As Stomps ai i can only answer qustions related to stomps.io" },
     placement: { type: String, enum: ['left', 'right'], required: true, default: 'right' },
     showReadMore: { type: Boolean, required: true, default: true },
     showAsPopup: { type: Boolean, required: true, default: false },

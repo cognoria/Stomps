@@ -7,6 +7,7 @@ module.exports = apiHandler({
   POST: createChatbot,
 });
 
+//route POST api/v1/chatbot/create
 async function createChatbot(req) {
   const body = await req.json();
   body.filePaths = req.files;

@@ -8,6 +8,7 @@ module.exports = apiHandler({
     POST: updateModel,
 });
 
+//route POST api/v1/chatbot/[botId]/setting/model
 async function updateModel(req) {
     const { botId } = req.params;
     const params = await req.json()

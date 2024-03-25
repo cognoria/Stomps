@@ -47,7 +47,7 @@ async function getChatResponse(messages, chatbotId) {
             ${context}
             END OF CONTEXT BLOCK
             Remember to not provide any additional information or answer from outside the given data. 
-            If you can't answer from the given data reply with predefined message \"{${chatbot.chatBotCustomizeData.defaultAnswer}}\"
+            If you can't answer from the given data reply with predefined message \"${chatbot.chatBotCustomizeData.defaultAnswer}\"
             `
         }
     ]
