@@ -11,7 +11,7 @@ module.exports = apiHandler({
 async function updateLeadInfo(req) {
   const { botId } = req.params;
   const params = await req.json()
-  return await chatbotRepo.updateName(botId, params);
+  return await chatbotRepo.updateLeadInfo(botId, params);
 }
 
 updateLeadInfo.schema = joi.object({
