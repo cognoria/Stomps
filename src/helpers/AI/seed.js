@@ -18,7 +18,7 @@ async function seed(chatbotId) {
     console.log("Seeding ", chatbotId)
 
     const chatbot = await Chatbot.findByIdAndUpdate(chatbotId, { status: KnowledgebaseStatus.GENERATING_EMBEDDINGS }).select("+ crawlData knowledgebase pIndex");
-    console.log(chatbot)
+    // console.log(chatbot)
     //TODO: make these dynamic either store in Global or inside each chatbot make editable
     let splittingMethod = "markdown";
     let chunkSize = 2048;

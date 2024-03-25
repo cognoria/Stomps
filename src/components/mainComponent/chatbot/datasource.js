@@ -14,7 +14,7 @@ import {
 
 export default function Datasource() {
   const [selectedFile, setSelectedFile] = useState(null);
-  // const [files, setFiles] = useState([])
+  const [uploadProgress, setUploadProgress] = useState(0);
   const files = useFormDataStore((state) => state.formData.files);
 
   const handleFileChange = (event) => {
@@ -64,18 +64,50 @@ export default function Datasource() {
       } else if (isDOCFile(selectedFile)) {
         file = await extractTextFromDoc(selectedFile);
       } else if (isPDFFile(selectedFile)) {
-        file = await extractTextFromPDF(selectedFile);
+        // file = await extractTextFromPDF(selectedFile);
+        await getPdfContents()
       } else {
         return toast.error("unspported file selected"); //toast file not supported
       }
-      await useFormDataStore.getState().addDataToFiles(file);
-      await useFormDataStore.getState().addFileToContents(file);
+      if(file){
+        await useFormDataStore.getState().addDataToFiles(file);
+        await useFormDataStore.getState().addFileToContents(file);
+      }
     } catch (e) {
       console.error("error adding file: ", e);
       toast.error("Failed to add file");
       //toast
     }
   }
+
+  const getPdfContents = async () => {
+    const formData = new FormData();
+    formData.append('pdf', selectedFile);
+
+    const uploadRequest = new XMLHttpRequest();
+    uploadRequest.open('POST', '/api/v1/data/pdf');
+
+    uploadRequest.upload.addEventListener('progress', (event) => {
+      if (event.lengthComputable) {
+        const progress = Math.round((event.loaded / event.total) * 100);
+        setUploadProgress(progress);
+      }
+    });
+
+    uploadRequest.onload = async () => {
+      if (uploadRequest.status === 200) {
+        const response = JSON.parse(uploadRequest.response);
+        console.log('PDF Name:', response.name);
+        console.log('PDF Content:', response.content);
+        await useFormDataStore.getState().addDataToFiles(file);
+        await useFormDataStore.getState().addFileToContents(file);
+      } else {
+        console.error('Upload failed:', uploadRequest.statusText);
+      }
+    };
+
+    uploadRequest.send(formData);
+  };
 
   useEffect(() => {
     console.log(files);
