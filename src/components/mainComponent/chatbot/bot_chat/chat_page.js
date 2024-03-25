@@ -233,7 +233,7 @@ function Chat({ id, status }) {
       >
         <input
           value={messageInput}
-          readonly={chatting | status != "READY"}
+          readonly={chatting || status != "READY"}
           onChange={(e) => setMessageInput(e.target.value)}
           placeholder="message... "
           className="text-neutral-700 outline-gray-200 w-full h-full border  flex flex-col  active:outline-gray-300 pl-[15px] rounded-lg  pr-[50px]   decoration-none placeholder:text-neutral-300 text-sm font-normal font-manrope leading-snug"

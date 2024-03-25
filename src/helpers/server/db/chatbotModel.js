@@ -21,7 +21,7 @@ const crawlData = new Schema({
     crawledUrls: [{ type: String }],
     charCount: {type: String},
     queue: [{ type: String }],
-}, { _id: false })
+}, { _id: false, timestamps: true })
 
 const questionExample = new Schema({
     question: { type: String, required: true },

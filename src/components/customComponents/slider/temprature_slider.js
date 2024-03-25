@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 function Temprature_slider({ height }) {
-  const [value, setValue] = useState(0);
+  const [value, setValue] = useState(0.1);
 
   const handleChange = (e) => {
     setValue(e.target.value);
