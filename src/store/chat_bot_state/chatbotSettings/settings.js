@@ -8,11 +8,11 @@ export const useBotModelStore = create((set) => ({
     console.log({ botData, bot_id });
     set({ updatingModel: true, loading: true, error: null });
     try {
-      const response = await fetch(`api/v1/chatbot/${bot_id}/setting/model`, {
+      const response = await fetch(`/api/v1/chatbot/${bot_id}/setting/model`, {
         method: "POST",
-        // headers: {
-        //   "Content-Type": "application/json",
-        // },
+        headers: {
+          "Content-Type": "application/json",
+        },
         body: JSON.stringify(botData),
       });
 
@@ -42,12 +42,12 @@ export const useBotSecuritySettingsStore = create((set) => ({
     set({ updatingSecuritySettings: true, loading: true, error: null });
     try {
       const response = await fetch(
-        `api/v1/chatbot/${bot_id}/setting/security`,
+        `/api/v1/chatbot/${bot_id}/setting/security`,
         {
           method: "POST",
-          // headers: {
-          //   "Content-Type": "application/json",
-          // },
+          headers: {
+            "Content-Type": "application/json",
+          },
           body: JSON.stringify(botSecurityData),
         }
       );
@@ -81,7 +81,7 @@ export const useBotLeadsSettingsStore = create((set) => ({
     console.log({ botLeadsData, bot_id });
     set({ updatingLeadsSettings: true, loading: true, error: null });
     try {
-      const response = await fetch(`api/v1/chatbot/${bot_id}/setting/lead`, {
+      const response = await fetch(`/api/v1/chatbot/${bot_id}/setting/lead`, {
         method: "POST",
         // headers: {
         //   "Content-Type": "application/json",
@@ -118,14 +118,15 @@ export const useBotNameSettingsStore = create((set) => ({
     console.log({ botName, bot_id });
     set({ updatingBotName: true, loading: true, error: null });
     try {
-      const response = await fetch(`api/v1/chatbot/${bot_id}/setting/name`, {
+      console.log("update bot name fetch")
+      const response = await fetch(`/api/v1/chatbot/${bot_id}/setting/name`, {
         method: "POST",
-        // headers: {
-        //   "Content-Type": "application/json",
-        // },
+        headers: {
+          "Content-Type": "application/json",
+        },
         body: JSON.stringify(botName),
       });
-
+      console.log("update bot name fetch")
       if (!response.ok) {
         const data = await response.json();
         console.log(data);
