@@ -1,4 +1,5 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { chatModelEnum } from "../../../../helpers/enums";
 import useSingleChatbot from "../../../../store/chat_bot_state/single_chat_bot";
 import { formatDate } from "../../../../utils/data_format/date";
 import Temprature_slider from "../../../customComponents/slider/temprature_slider";
@@ -17,6 +18,29 @@ function Model_settings({ bot_id }) {
   useEffect(() => {
     singleChatBot(bot_id);
   }, [bot_id, singleChatBot]);
+
+  // model selection
+  const [selectedModel, setSelectedModel] = useState(chatModelEnum.GPT_3_5);
+  const handleModelChange = (event) => {
+    setSelectedModel(event.target.value);
+  };
+  // model selection
+
+  // open ai and picone key
+  const [openAiKey, setOpenAiKey] = useState("");
+  const [pineconeKey, setPineconeKey] = useState("");
+
+  // open ai and picone key
+
+  //chatbot temprature
+  const [selectedTemperature, setSelectedTemperature] = useState(0.1);
+  const handleTemperatureChange = (value) => {
+    setSelectedTemperature(value);
+  };
+
+  console.log(selectedTemperature);
+  //chatbot temprature
+
   return (
     <div className="w-full px-3 lg:p-[6%]  flex flex-col items-center justify-center ">
       <div className="flex w-full flex-col items-center  justify-center border-gray-200 border-[1px] gap-4 rounded-md ">
@@ -49,15 +73,29 @@ function Model_settings({ bot_id }) {
               <div className="text-zinc-800 text-[10px]  font-bold font-manrope leading-[14px] tracking-tight">
                 Model
               </div>
-              <select className="h-[50px] w-full -mt-2 border-[1px] border-gray-200 rounded-md">
-                {model.map((model, i) => (
-                  <option
-                    key={i}
-                    className="text-gray-900 text-xs font-medium font-manrope leading-none tracking-tight"
-                  >
-                    {model}
-                  </option>
-                ))}
+              <select
+                value={selectedModel}
+                onChange={handleModelChange}
+                className="h-[50px] w-full -mt-2 border-[1px] border-gray-200 rounded-md"
+              >
+                <option
+                  value={chatModelEnum.GPT_3_5}
+                  className="text-gray-900 text-xs font-medium font-manrope leading-none tracking-tight"
+                >
+                  {chatModelEnum.GPT_3_5}
+                </option>
+                <option
+                  value={chatModelEnum.GPT_4}
+                  className="text-gray-900 text-xs font-medium font-manrope leading-none tracking-tight"
+                >
+                  {chatModelEnum.GPT_4}
+                </option>
+                <option
+                  value={chatModelEnum.GPT_4_turbo}
+                  className="text-gray-900 text-xs font-medium font-manrope leading-none tracking-tight"
+                >
+                  {chatModelEnum.GPT_4_turbo}
+                </option>
               </select>
               <div className="w-auto text-gray-600 text-[10px] font-normal font-manrope leading-[14px] tracking-tight">
                 gpt-4 is much better at following the instructions and not
@@ -71,13 +109,19 @@ function Model_settings({ bot_id }) {
                 <div className="text-zinc-800 text-[10px] mb-2 font-bold font-manrope leading-[14px] tracking-tight">
                   OpenAI API Key
                 </div>
-                <input className="w-full h-[50px] p-3 rounded-md font-manrope active:border-gray-200 border-gray-200 border-[1px]" />
+                <input
+                  onChange={(e) => setOpenAiKey(e.target.value)}
+                  className="w-full h-[50px] p-3 rounded-md font-manrope active:border-gray-200 border-gray-200 border-[1px]"
+                />
               </div>
               <div className="flex flex-col w-full">
                 <div className="text-zinc-800 text-[10px] mb-4 font-bold font-manrope leading-[14px] tracking-tight">
                   Pinecone API Key
                 </div>
-                <input className="w-full h-[50px] p-3 rounded-md font-manrope active:border-gray-200 border-gray-200 border-[1px]" />
+                <input
+                  onChange={(e) => setPineconeKey(e.target.value)}
+                  className="w-full h-[50px] p-3 rounded-md font-manrope active:border-gray-200 border-gray-200 border-[1px]"
+                />
               </div>
             </div>
           </div>
@@ -86,7 +130,11 @@ function Model_settings({ bot_id }) {
               Temprature
             </p>
             <div className="w-full">
-              <Temprature_slider height={"h-3"} />
+              <Temprature_slider
+                height={"h-3"}
+                value={selectedTemperature}
+                onChange={handleTemperatureChange}
+              />
             </div>
             <div className="flex w-full flex-row items-end justify-between">
               <p className="text-zinc-800 text-[10px] font-normal font-manrope leading-[14px] tracking-tight">

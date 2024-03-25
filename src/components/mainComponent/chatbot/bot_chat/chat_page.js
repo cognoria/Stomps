@@ -46,6 +46,16 @@ function ChatPage({ bot_id }) {
     }
   }
 
+  //temperture slider
+
+  const [selectedTemperature, setSelectedTemperature] = useState(0.3);
+  const handleTemperatureChange = (value) => {
+    setSelectedTemperature(value);
+  };
+
+  console.log(selectedTemperature);
+  //temprature slider
+
   return (
     <div className="flex w-[95%] lg:w-[767px] rounded-md flex-col h-auto items-start  border-gray-200 justify-center border-[1px] ">
       <div className="text-gray-900 text-base font-bold font-manrope p-4 border-b-[1px] border-gray-200 w-full  leading-snug">
@@ -127,8 +137,12 @@ function ChatPage({ bot_id }) {
               <div className="text-gray-900 text-sm font-normal font-manrope leading-snug">
                 Temperature
               </div>
-              <div className="w-[70%]">
-                <Temprature_slider height={"h-2"} />
+              <div className="w-[70%] my-3">
+                <Temprature_slider
+                  height={"h-2"}
+                  value={selectedTemperature}
+                  onChange={handleTemperatureChange}
+                />
               </div>
             </div>
           </div>
@@ -187,7 +201,7 @@ function Chat({ id, status }) {
     chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
   }, [chatMessages]);
 
-  console.log(status);
+  // console.log(status);
   return (
     <div className="border-[1px] w-full lg:w-[55%] h-[588px] border-gray-200  items-start flex-col ">
       <div className="flex border-b-[1px] border-gray-200 flex-row  p-4 w-full flex-end items-end justify-end">
