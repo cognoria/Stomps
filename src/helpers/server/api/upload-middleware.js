@@ -15,7 +15,8 @@ const upload = multer({
 });
 
 
-export async function uploadMiddleware(req) {
+export async function uploadMiddleware(req, res) {
+    // console.log(req)
     await new Promise((resolve, reject) => {
         upload.single('pdf')(req, res, (err) => {
             if (err) {

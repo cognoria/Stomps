@@ -39,9 +39,9 @@ function apiHandler(handler) {
                 await jwtMiddleware(req);
 
                 // Handle file uploads for POST, PUT, PATCH methods
-                if (['POST', 'PUT', 'PATCH'].includes(req.method.toUpperCase()) && req.headers.get('content-type')?.startsWith('multipart/form-data')) {
-                    await uploadMiddleware(req);
-                }
+                // if (['POST', 'PUT', 'PATCH'].includes(req.method.toUpperCase()) && req.headers.get('content-type')?.startsWith('multipart/form-data')) {
+                //     await uploadMiddleware(req);
+                // }
 
                 //validate form inputs
                 await validateMiddleware(req, handler[method].schema);
