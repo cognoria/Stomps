@@ -1,12 +1,69 @@
 import { useState } from "react";
+import { useBotSecuritySettingsStore } from "../../../../store/chat_bot_state/chatbotSettings/settings";
 import Toggle from "../../../customComponents/slider/toggler";
 
-function Bot_security() {
-  const [inputValue, setInputValue] = useState("");
+function Bot_security({ bot_id }) {
+  const { updateSecurity, loadingSecurity, securityError } =
+    useBotSecuritySettingsStore((state) => ({
+      updateSecurity: state.botSecuritySettings,
+      loadingSecurity: state.loading,
+      securityError: state.error,
+    }));
+
+  //limimt values
+  const [inputLimit, setInputLimit] = useState("");
+  const [inputMessage, setInputMessage] = useState("");
   const handleChange = (e) => {
     setInputValue(e.target.value);
   };
 
+  // console.log({
+  //   inputLimit,
+  //   inputMessage,
+  // });
+  // Limit values
+
+  //iframe & widget toggle
+  const [toggleChecked, setToggleChecked] = useState(false);
+  const handleToggleChange = () => {
+    setToggleChecked(!toggleChecked);
+  };
+
+  // console.log(toggleChecked);
+  //iframe & widget toggle
+
+  // privacy selection
+  const [selectedPrivacy, setSelectedPrivacy] = useState("");
+  const handlePrivacyChange = (event) => {
+    setSelectedPrivacy(event.target.value);
+  };
+
+  // console.log(selectedPrivacy);
+  //privacy selection
+
+  // exceed limit message
+  const [limitMessage, setLimitMessage] = useState("");
+  // console.log(limitMessage);
+  // Exceed limit message
+
+  // security submission
+
+  const handleSubmitBotSecurity = (e) => {
+    e.preventDefault();
+    const botSecurityData = {
+      visibility: selectedPrivacy,
+      allowPublicDomains: toggleChecked,
+      rateLimit: {
+        limitMsg: limitMessage,
+        msgCount: inputMessage,
+        timeframe: inputLimit,
+      },
+    };
+
+    updateSecurity({ bot_id, botSecurityData });
+  };
+
+  //security submission
   return (
     <div className="w-full px-3 lg:p-[6%]  flex flex-col items-center justify-center ">
       <div className="flex w-full flex-col items-center  justify-center border-gray-200 border-[1px] gap-4 rounded-md ">
@@ -18,10 +75,15 @@ function Bot_security() {
             <div className="text-zinc-800 text-[10px]  font-bold font-manrope leading-[14px] tracking-tight">
               Model
             </div>
-            <select className="h-[50px] w-full -mt-2 border-[1px] border-gray-200 rounded-md">
+            <select
+              value={selectedPrivacy}
+              onChange={handlePrivacyChange}
+              className="h-[50px] w-full -mt-2 border-[1px] border-gray-200 rounded-md"
+            >
               {visibility.map((visibility, i) => (
                 <option
                   key={i}
+                  value={visibility}
                   className="text-gray-900 text-xs font-medium font-manrope leading-none tracking-tight"
                 >
                   {visibility}
@@ -45,7 +107,7 @@ function Bot_security() {
             <div className="text-zinc-800 mb-2 text-[10px] font-bold font-manrope leading-[14px] tracking-tight">
               Only allow the iframe and widget on specific domains
             </div>
-            <Toggle />
+            <Toggle checked={toggleChecked} onChange={handleToggleChange} />
           </div>
           <div className="w-full p-3 gap-y-3 items-start ">
             <div className="w-full mb-6 flex-row flex justify-around  lg:gap-x-10 lg:justify-start items-start">
@@ -68,7 +130,8 @@ function Bot_security() {
                 Limit to only
               </div>
               <input
-                style={{ width: `${inputValue.length * 8 + 55}px` }}
+                onChange={(e) => setInputLimit(e.target.value)}
+                style={{ width: `${inputLimit.length * 8 + 55}px` }}
                 type="number"
                 className="w-[75px] h-[30px] lg:h-[37px] px-3.5 py-2.5 bg-white rounded shadow border border-zinc-100 justify-start items-center"
               />
@@ -79,8 +142,9 @@ function Bot_security() {
                 messages every
               </div>
               <input
+                onChange={(e) => setInputMessage(e.target.value)}
                 type="number"
-                style={{ width: `${inputValue.length * 8 + 55}px` }}
+                style={{ width: `${inputMessage.length * 8 + 55}px` }}
                 className="w-[75px] max-w-auto h-[30px] lg:h-[37px] px-3.5 py-2.5 bg-white rounded shadow border border-zinc-100 justify-start items-center"
               />
               <div className="text-gray-600 text-xs font-medium font-['Manrope'] leading-none tracking-tight">
@@ -93,6 +157,7 @@ function Bot_security() {
               Show this message to show when limit is hit
             </div>
             <input
+              onChange={(e) => setLimitMessage(e.target.value)}
               placeholder="Too many messages in a row"
               className="h-[50px] p-2 w-full -mt-2 border-[1px] text-xs font-manrope border-gray-200 rounded-md"
             />
@@ -100,7 +165,10 @@ function Bot_security() {
         </div>
 
         <div className="w-full p-3 flex-end items-end flex flex-col">
-          <button className="text-white h-11 rounded-lg justify-start items-start  px-5 py-3 bg-sky-700  shadow border border-sky-700  gap-2 ">
+          <button
+            onClick={handleSubmitBotSecurity}
+            className="text-white h-11 rounded-lg justify-start items-start  px-5 py-3 bg-sky-700  shadow border border-sky-700  gap-2 "
+          >
             Save Changes
           </button>
         </div>
@@ -111,7 +179,7 @@ function Bot_security() {
 
 export default Bot_security;
 
-const visibility = ["Private", "Public"];
+const visibility = ["PRIVATE", "PUBLIC"];
 const visibility_description = [
   {
     tag: `Private:`,

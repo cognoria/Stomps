@@ -53,7 +53,7 @@ function ChatPage({ bot_id }) {
     setSelectedTemperature(value);
   };
 
-  console.log(selectedTemperature);
+  // console.log(selectedTemperature);
   //temprature slider
 
   return (

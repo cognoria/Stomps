@@ -1,4 +1,7 @@
-import { useEffect } from "react";
+"use client";
+
+import { useEffect, useState } from "react";
+import { useBotNameSettingsStore } from "../../../../store/chat_bot_state/chatbotSettings/settings";
 import useSingleChatbot from "../../../../store/chat_bot_state/single_chat_bot";
 
 function General_settings({ bot_id }) {
@@ -11,9 +14,33 @@ function General_settings({ bot_id }) {
     })
   );
 
+  const { updateName, loadingName, nameError } = useBotNameSettingsStore(
+    (state) => ({
+      updateName: state.botName,
+      loadingName: state.loading,
+      nameError: state.error,
+    })
+  );
+
   useEffect(() => {
     singleChatBot(bot_id);
   }, [bot_id, singleChatBot]);
+
+  // chatbot name
+
+  const [name, setName] = useState("");
+
+  // chatbot name
+
+  //handle update name
+
+  const handleUpdateName = () => {
+    const botName = {
+      name: name,
+    };
+    updateName({ botName, bot_id });
+  };
+  //handle update udate name
   return (
     <div className="w-full px-3 lg:p-[6%]  flex flex-col items-center justify-center ">
       <div className="flex w-full flex-col items-center  justify-center border-gray-200 border-[1px] gap-4 rounded-md ">
@@ -55,6 +82,8 @@ function General_settings({ bot_id }) {
             </div>
 
             <input
+              onChange={(e) => setName(e.target.value)}
+              value={name}
               placeholder="examplesite.com"
               className="w-full  h-[44px] p-4 active:border-gray-200 border-[1px]  text-gray-900 text-xs font-medium font-manrope leading-none tracking-tight"
             />
@@ -62,7 +91,11 @@ function General_settings({ bot_id }) {
         </div>
 
         <div className="w-full p-3 flex-end items-end flex flex-col">
-          <button className="text-white h-11 rounded-lg justify-start items-start  px-5 py-3 bg-sky-700  shadow border border-sky-700  gap-2 ">
+          <button
+            onClick={handleUpdateName}
+            disabled={loadingName}
+            className="text-white h-11 rounded-lg disabled:bg-sky-300 justify-start items-start  px-5 py-3 bg-sky-700  shadow border border-sky-700  gap-2 "
+          >
             Save Changes
           </button>
         </div>

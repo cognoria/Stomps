@@ -20,7 +20,7 @@ const useBotCreationStore = create((set) => ({
       }
       const data = await response.json();
       set({ creatingBot: false, loading: false });
-      toast.success(data.nessage);
+      toast.success(data.message);
       return data;
     } catch (error) {
       set({ creatingBot: false, loading: false, error: error.message });

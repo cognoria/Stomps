@@ -1,6 +1,59 @@
+"use client";
+import { useState } from "react";
+import { useBotLeadsSettingsStore } from "../../../../store/chat_bot_state/chatbotSettings/settings";
 import Toggle from "../../../customComponents/slider/toggler";
 
-function Bot_leads() {
+function Bot_leads({ bot_id }) {
+  const { updateLeads, loadingLeads, leadsError } = useBotLeadsSettingsStore(
+    (state) => ({
+      updateLeads: state.botLeadsSettings,
+      loadingLeads: state.loading,
+      LeadsError: state.error,
+    })
+  );
+
+  //title value
+
+  const [title, setTitle] = useState("");
+  //title value
+
+  // name toggle
+  const [nameToggle, setNameToggle] = useState(false);
+  const handleNameToggleChange = () => {
+    setNameToggle(!nameToggle);
+  };
+  // name toggle
+
+  //email toggle
+  const [emailToggle, setEmailToggle] = useState(false);
+  const handleEmailToggleChange = () => {
+    setEmailToggle(!emailToggle);
+  };
+  //email toggle
+
+  //phone number
+  const [phoneToggle, setPhoneToggle] = useState(false);
+  const handlePhoneToggleChange = () => {
+    setPhoneToggle(!phoneToggle);
+  };
+
+  //phone number
+
+  // handle lead submission
+  const handleSubmitBotSecurity = (e) => {
+    e.preventDefault();
+    const botLeadsData = {
+      title: title,
+      collectName: nameToggle,
+      collectEmail: emailToggle,
+      collectPhone: phoneToggle,
+    };
+    updateLeads({
+      botLeadsData,
+      bot_id,
+    });
+  };
+  // handle lead submission
   return (
     <div className="w-full px-3 lg:p-[6%]  flex flex-col items-center justify-center ">
       <div className="flex w-full flex-col items-center  justify-center border-gray-200 border-[1px] gap-4 rounded-md ">
@@ -17,6 +70,8 @@ function Bot_leads() {
           </div>
           <div className="flex gap-x-3 flex-row w-full items-start justify-center">
             <input
+              onChange={(e) => setTitle(e.target.value)}
+              value={title}
               placeholder="Let us know how to contact you"
               className="w-full h-[44px] p-4 active:border-gray-200 border-[1px]  text-gray-900 text-xs font-medium font-manrope leading-none tracking-tight"
             />
@@ -31,24 +86,28 @@ function Bot_leads() {
             <div className="text-gray-900 text-xs font-medium font-['Manrope'] leading-none tracking-tight">
               Name
             </div>
-            <Toggle />
+            <Toggle checked={nameToggle} onChange={handleNameToggleChange} />
           </div>
           <div className="flex items-start justify-between w-full flex-row py-3 border-b-[1px] border-gray-200 ">
             <div className="text-gray-900 text-xs font-medium font-['Manrope'] leading-none tracking-tight">
               Email
             </div>
-            <Toggle />
+            <Toggle checked={emailToggle} onChange={handleEmailToggleChange} />
           </div>
           <div className="flex items-start justify-between w-full flex-row py-3  ">
             <div className="text-gray-900 text-xs font-medium font-['Manrope'] leading-none tracking-tight">
               Phone Number
             </div>
-            <Toggle />
+            <Toggle onChange={handlePhoneToggleChange} checked={phoneToggle} />
           </div>
         </div>
 
         <div className="w-full p-3 flex-end items-end flex flex-col">
-          <button className="text-white h-11 rounded-lg justify-start items-start  px-5 py-3 bg-sky-700  shadow border border-sky-700  gap-2 ">
+          <button
+            disabled={loadingLeads}
+            onClick={handleSubmitBotSecurity}
+            className="text-white h-11 disabled:bg-sky-300 rounded-lg justify-start items-start  px-5 py-3 bg-sky-700  shadow border border-sky-700  gap-2 "
+          >
             Save Changes
           </button>
         </div>

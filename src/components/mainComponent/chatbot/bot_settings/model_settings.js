@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { chatModelEnum } from "../../../../helpers/enums";
+import { useBotModelStore } from "../../../../store/chat_bot_state/chatbotSettings/settings";
 import useSingleChatbot from "../../../../store/chat_bot_state/single_chat_bot";
 import { formatDate } from "../../../../utils/data_format/date";
 import Temprature_slider from "../../../customComponents/slider/temprature_slider";
@@ -12,6 +13,13 @@ function Model_settings({ bot_id }) {
       loading: state.loading,
       error: state.error,
       chatbot: state.chatbot,
+    })
+  );
+  const { updatemodel, loading_model, model_error } = useBotModelStore(
+    (state) => ({
+      updatemodel: state.botModel,
+      loading_model: state.loading,
+      model_error: state.error,
     })
   );
 
@@ -38,9 +46,32 @@ function Model_settings({ bot_id }) {
     setSelectedTemperature(value);
   };
 
-  console.log(selectedTemperature);
+  // console.log(selectedTemperature);
   //chatbot temprature
 
+  //model prompt
+  const [modelText, setModelText] = useState(
+    chatbot ? chatbot?.model?.text : text
+  );
+  const handleTextChange = (event) => {
+    setModelText(event.target.value);
+  };
+  //model prompt
+
+  // submit handler
+
+  const handleSubmitBotModel = (e) => {
+    e.preventDefault();
+    const botData = {
+      prompt: modelText,
+      model: selectedModel,
+      temparature: selectedTemperature,
+    };
+
+    updatemodel({ botData, bot_id });
+  };
+
+  // submit handler
   return (
     <div className="w-full px-3 lg:p-[6%]  flex flex-col items-center justify-center ">
       <div className="flex w-full flex-col items-center  justify-center border-gray-200 border-[1px] gap-4 rounded-md ">
@@ -59,7 +90,8 @@ function Model_settings({ bot_id }) {
             </div>
 
             <textarea
-              value={text}
+              value={modelText}
+              onChange={handleTextChange}
               className="flex flex-col items-start p-3 h-[150px] active:border-gray-300  border-[1px]  border-gray-200 shadow-md w-full"
             ></textarea>
           </div>
@@ -156,7 +188,10 @@ function Model_settings({ bot_id }) {
               </div>
             </div>
             <div className="flex fle-end items-end  w-full flex-col ">
-              <button className="text-white justify-end lg:w-auto w-[150px] h-11 flex-end mt-[70px] lg:mt-0 rounded-lg lg:justify-start items-start   lg:px-5 lg:py-3 bg-sky-700  shadow border border-sky-700  gap-2 ">
+              <button
+                onClick={handleSubmitBotModel}
+                className="text-white justify-end lg:w-auto w-[150px] h-11 flex-end mt-[70px] lg:mt-0 rounded-lg lg:justify-start items-start   lg:px-5 lg:py-3 bg-sky-700  shadow border border-sky-700  gap-2 "
+              >
                 Save Changes
               </button>
             </div>
