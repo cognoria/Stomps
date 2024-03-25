@@ -68,10 +68,15 @@ function Bot_leads({ bot_id }) {
       collectEmail: emailToggle,
       collectPhone: phoneToggle,
     };
-    updateLeads({
-      botLeadsData,
-      bot_id,
-    });
+    updateLeads(
+      {
+        botLeadsData,
+        bot_id,
+      },
+      async () => {
+        await singleChatBot();
+      }
+    );
   };
   // handle lead submission
   return (

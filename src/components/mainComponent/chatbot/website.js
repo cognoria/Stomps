@@ -16,6 +16,8 @@ function Website() {
     e.preventDefault();
     if (!website.startsWith("http://") && !website.startsWith("https://")) {
       return setError("invalid Url , Must contain http:// or https://");
+    } else {
+      setError(null);
     }
 
     await useLinkStore.getState().fetchLinksAndUpdateInclude(website);

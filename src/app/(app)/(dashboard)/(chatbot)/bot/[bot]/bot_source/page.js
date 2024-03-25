@@ -35,8 +35,8 @@ function page({ params: { bot } }) {
         </div>
 
         <div className="flex flex-col lg:flex-row w-full  items-start justify-center">
-          <div className="lg:max-w-[212px] flex flex-col mt-[60px]">
-            <Chat_bot_nav tag={"Dashboard"} nav={nav} />
+          <div className="lg:max-w-[212px]  w-full flex-end flex flex-col mt-[60px]">
+            <Chat_bot_nav tag={" Data Sources"} nav={nav} />
           </div>
           <div className="w-full">{renderContent()}</div>
           <div className="flex flex-col w-full items-center justify-center">

@@ -26,19 +26,17 @@ function page({ params: { bot } }) {
   };
   return (
     <div className="flex flex-col w-[98%] lg:w-full items-center overflow-x-hidden justify-center mt-[100px]">
-      <div className="w-full p-3 lg:max-w-[80%] gap-3 flex flex-col lg:flex-col items-center justify-center  ">
-        <div className="text-sky-700  hidden lg:block text-[32px] font-bold font-manrope leading-[38.40px]">
+      <div className="lg:flex hidden flex-col w-full  items-start justify-start"></div>
+      <div className="w-full gap-x-4 lg:max-w-[80%] gap-3 flex flex-col lg:flex-col  ">
+        <div className="text-sky-700 hidden lg:block text-[32px] font-bold font-['Manrope'] leading-[38.40px]">
           Dashboard
         </div>
 
-        <div className="flex flex-col lg:flex-row w-full items-center lg:items-start justify-center ">
-          <div className="lg:max-w-[212px] relative  flex w-full lg:flex-col  flex-row lg:justify-start justify-between my-[40px] lg:mt-[60px]">
-            <div className="text-sky-700 absolute top-0 left-0 lg:hidden text-2xl w-full p-3 font-bold font-manrope leading-[28.80px]">
-              Dashboard
-            </div>
-            <Chat_bot_nav nav={nav} />
+        <div className="flex flex-col lg:flex-row w-full  items-start justify-center">
+          <div className="lg:max-w-[212px] w-full flex-end flex flex-col mt-[60px]">
+            <Chat_bot_nav tag={"Dashboard"} nav={nav} />
           </div>
-          <div className="w-full">{renderContent()}</div>
+          <div className="w-full lg:mt-0 mt-[30px]">{renderContent()}</div>
         </div>
       </div>
     </div>
