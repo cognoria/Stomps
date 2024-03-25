@@ -1,13 +1,11 @@
 import useDeleteChatbot from "../../../../store/chat_bot_state/delete_bot";
 import useUserChatbot from "../../../../store/chat_bot_state/user_chatbot";
 import useModalStore from "../../../../store/modal/modal_state";
-import useUserChatbot from "../../../../store/chat_bot_state/user_chatbot";
 
 export function Delete_Bot_Modal({ text, button_name, id }) {
   const hideModal = useModalStore((state) => state.hideModal);
   const userChatBot = useUserChatbot((state) => state.userChatBot);
   const deleteChatBot = useDeleteChatbot((state) => state.deleteChatBot);
-  const userChatBot = useUserChatbot((state) => state.userChatBot);
   const deleting = useDeleteChatbot((state) => state.loading);
 
   const delete_bot = async (id) => {

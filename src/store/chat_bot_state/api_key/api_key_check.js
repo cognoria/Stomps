@@ -6,7 +6,8 @@ const useUserApiKey = create(
   devtools((set) => ({
     error: null,
     loading: false,
-    key_val: null,
+    fetched: false,
+    key_val: undefined,
     userApiKeyCheck: async (onSuccess) => {
       set({ loading: true, error: null });
       try {
@@ -20,7 +21,7 @@ const useUserApiKey = create(
           throw new Error(data.message || "An error occurred");
         }
         console.log(data);
-        set({ loading: false, key_val: data });
+        set({ loading: false, key_val: data, fetched: true });
         // return data;
       } catch (error) {
         set({ error: error.message, loading: false });
