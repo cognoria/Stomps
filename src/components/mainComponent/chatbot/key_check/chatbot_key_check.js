@@ -1,3 +1,5 @@
+"use client";
+
 import { useState } from "react";
 import useAddApiKeyStore from "../../../../store/chat_bot_state/api_key/add_api_key";
 

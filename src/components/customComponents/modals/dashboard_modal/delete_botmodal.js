@@ -1,4 +1,5 @@
 import useDeleteChatbot from "../../../../store/chat_bot_state/delete_bot";
+import useUserChatbot from "../../../../store/chat_bot_state/user_chatbot";
 import useModalStore from "../../../../store/modal/modal_state";
 import useUserChatbot from "../../../../store/chat_bot_state/user_chatbot";
 
@@ -6,6 +7,8 @@ export function Delete_Bot_Modal({ text, button_name, id }) {
   const hideModal = useModalStore((state) => state.hideModal);
   const userChatBot = useUserChatbot((state) => state.userChatBot);
   const deleteChatBot = useDeleteChatbot((state) => state.deleteChatBot);
+  const userChatBot = useUserChatbot((state) => state.userChatBot);
+  const deleting = useDeleteChatbot((state) => state.loading);
 
   const delete_bot = async (id) => {
     try {
@@ -48,10 +51,13 @@ export function Delete_Bot_Modal({ text, button_name, id }) {
         <div className="self-stretch rounded-lg justify-start items-start inline-flex">
           <div className="grow shrink basis-0 h-10 px-4 py-2.5 rounded-lg shadow border border-red-600 justify-center items-center gap-2 flex">
             <button
+              disabled={deleting}
               onClick={() => delete_bot(id)}
-              className="grow shrink basis-0 text-center text-red-600 text-sm font-bold font-['Manrope'] leading-snug"
+              className={`grow shrink basis-0 text-center ${
+                deleting ? "" : ""
+              }  text-red-600 text-sm font-bold font-['Manrope'] leading-snug`}
             >
-              {button_name}
+              {deleting ? "deleting" : button_name}
             </button>
           </div>
         </div>

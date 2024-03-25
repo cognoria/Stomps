@@ -25,20 +25,22 @@ function Main_bot({ chatbots }) {
               className="lg:w-[388px] w-full h-[392px] relative bg-white rounded-2xl border border-sky-700"
               key={i}
             >
-              <div className="h-[65%] w-full items-center justify-center border-b-[2px] border-[#1261AC]">
-                <img />
-              </div>
+              <Link className=" w-full " href={`/bot/${item._id}`}>
+                <div className="h-[65%] w-full z-20  items-center justify-center border-b-[2px] border-[#1261AC]">
+                  <img />
+                </div>
+              </Link>
               <div className="flex flex-col h-[35%] justify-between p-3">
                 <div className="text-sky-700 text-xl font-bold font-['Manrope'] leading-7">
                   {item.name}
                 </div>
                 <div className="flex flex-row items-center justify-between">
                   <Link
-                    href={`/bot/${item._id}`}
+                    href={`/bot/${item._id}/settings`}
                     className="inline-flex items-center p-3 bg-[#1261AC] rounded-lg gap-3 text-white text-sm font-bold font-['Manrope'] leading-snug"
                   >
                     <img alt="" src="/images/chatbox/edit.svg" />
-                    View/ Edith
+                    Edith
                   </Link>
                   <button
                     onClick={() =>
