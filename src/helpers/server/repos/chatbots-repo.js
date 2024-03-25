@@ -152,7 +152,7 @@ async function updateName(chatbotId, name) {
     chatbot.name = name;
     await chatbot.save()
 
-    return true;
+    return { message: "Successfully updated chatbot name" };
 }
 
 async function updateModelData(chatbotId, modelData) {
@@ -165,7 +165,7 @@ async function updateModelData(chatbotId, modelData) {
     chatbot.chatBotCustomizeData.temparature = modelData.temparature
     await chatbot.save()
 
-    return true;
+    return { message: "Successfully updated chatbot " };
 }
 
 async function updateChatInterface(chatbotId, interfaceData) {
@@ -184,7 +184,7 @@ async function updateChatInterface(chatbotId, interfaceData) {
     chatbot.chatBotCustomizeData.profileImage = interfaceData.profileImage
     await chatbot.save()
 
-    return true;
+    return { message: "Successfully updated chatbot widget interface" };
 }
 
 
@@ -200,7 +200,7 @@ async function updateSecurityData(chatbotId, securityData) {
     chatbot.chatBotCustomizeData.allowPublicDomains = securityData.allowPublicDomains
     await chatbot.save()
 
-    return true;
+    return { message: "Successfully updated chatbot security" };
 }
 
 /**
@@ -220,7 +220,7 @@ async function updateLeadInfo(chatbotId, leadInfo) {
     chatbot.chatBotCustomizeData.collectPhone = leadInfo.collectPhone;
     await chatbot.save()
 
-    return 'Lead informations updated';
+    return  { message: "Successfully updated Lead informations" };
 }
 
 
@@ -259,5 +259,5 @@ async function updateKnowledgebase(chatbotId, params) {
     });
 
     await chatbot.save();
-    return chatbot;
+    return { message: "successfully updated chatbot knowledgebase" };
 }

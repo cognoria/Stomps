@@ -1,0 +1,377 @@
+{
+    "info": {
+      "_postman_id": "4a0f9a8d-7b0d-4b3e-a7f6-c9b9d9f6d4e6",
+      "name": "Chatbot API",
+      "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "item": [
+      {
+        "name": "Get All User Bots",
+        "request": {
+          "method": "GET",
+          "header": [
+            {
+              "key": "userId",
+              "value": "{{userId}}",
+              "type": "text"
+            }
+          ],
+          "url": {
+            "raw": "{{baseUrl}}/api/v1/chatbot/",
+            "host": [
+              "{{baseUrl}}"
+            ],
+            "path": [
+              "api",
+              "v1",
+              "chatbot",
+              ""
+            ]
+          }
+        }
+      },
+      {
+        "name": "Create Chatbot",
+        "request": {
+          "method": "POST",
+          "header": [],
+          "body": {
+            "mode": "raw",
+            "raw": "{\n    \"website\": \"https://example.com\",\n    \"name\": \"My Chatbot\",\n    \"urls\": [\"https://example.com/page1\", \"https://example.com/page2\"],\n    \"include\": [\"include1\", \"include2\"],\n    \"exclude\": [\"exclude1\", \"exclude2\"],\n    \"contents\": [\"content1\", \"content2\"]\n}",
+            "options": {
+              "raw": {
+                "language": "json"
+              }
+            }
+          },
+          "url": {
+            "raw": "{{baseUrl}}/api/v1/chatbot/create",
+            "host": [
+              "{{baseUrl}}"
+            ],
+            "path": [
+              "api",
+              "v1",
+              "chatbot",
+              "create"
+            ]
+          }
+        }
+      },
+      {
+        "name": "Get Chatbot by ID",
+        "request": {
+          "method": "GET",
+          "header": [
+            {
+              "key": "userId",
+              "value": "{{userId}}",
+              "type": "text"
+            }
+          ],
+          "url": {
+            "raw": "{{baseUrl}}/api/v1/chatbot/{{botId}}",
+            "host": [
+              "{{baseUrl}}"
+            ],
+            "path": [
+              "api",
+              "v1",
+              "chatbot",
+              "{{botId}}"
+            ]
+          }
+        }
+      },
+      {
+        "name": "Update Chatbot Source",
+        "request": {
+          "method": "POST",
+          "header": [],
+          "body": {
+            "mode": "raw",
+            "raw": "{\n    \"urls\": [\"https://example.com/page3\", \"https://example.com/page4\"],\n    \"include\": [\"include3\", \"include4\"],\n    \"exclude\": [\"exclude3\", \"exclude4\"],\n    \"contents\": [\"content3\", \"content4\"]\n}",
+            "options": {
+              "raw": {
+                "language": "json"
+              }
+            }
+          },
+          "url": {
+            "raw": "{{baseUrl}}/api/v1/chatbot/{{botId}}/source",
+            "host": [
+              "{{baseUrl}}"
+            ],
+            "path": [
+              "api",
+              "v1",
+              "chatbot",
+              "{{botId}}",
+              "source"
+            ]
+          }
+        }
+      },
+      {
+        "name": "Update Chatbot Security Settings",
+        "request": {
+          "method": "POST",
+          "header": [],
+          "body": {
+            "mode": "raw",
+            "raw": "{\n    \"visibility\": \"PRIVATE\",\n    \"allowPublicDomains\": true,\n    \"rateLimit\": {\n        \"limitMsg\": \"Rate limit exceeded\",\n        \"msgCount\": 10,\n        \"timeframe\": 60\n    }\n}",
+            "options": {
+              "raw": {
+                "language": "json"
+              }
+            }
+          },
+          "url": {
+            "raw": "{{baseUrl}}/api/v1/chatbot/{{botId}}/setting/security",
+            "host": [
+              "{{baseUrl}}"
+            ],
+            "path": [
+              "api",
+              "v1",
+              "chatbot",
+              "{{botId}}",
+              "setting",
+              "security"
+            ]
+          }
+        }
+      },
+      {
+        "name": "Update Chatbot Name",
+        "request": {
+          "method": "POST",
+          "header": [],
+          "body": {
+            "mode": "raw",
+            "raw": "{\n    \"name\": \"New Chatbot Name\"\n}",
+            "options": {
+              "raw": {
+                "language": "json"
+              }
+            }
+          },
+          "url": {
+            "raw": "{{baseUrl}}/api/v1/chatbot/{{botId}}/setting/name",
+            "host": [
+              "{{baseUrl}}"
+            ],
+            "path": [
+              "api",
+              "v1",
+              "chatbot",
+              "{{botId}}",
+              "setting",
+              "name"
+            ]
+          }
+        }
+      },
+      {
+        "name": "Update Chatbot Model",
+        "request": {
+          "method": "POST",
+          "header": [],
+          "body": {
+            "mode": "raw",
+            "raw": "{\n    \"prompt\": \"You are a helpful assistant\",\n    \"model\": \"GPT-3\",\n    \"temparature\": 0.7\n}",
+            "options": {
+              "raw": {
+                "language": "json"
+              }
+            }
+          },
+          "url": {
+            "raw": "{{baseUrl}}/api/v1/chatbot/{{botId}}/setting/model",
+            "host": [
+              "{{baseUrl}}"
+            ],
+            "path": [
+              "api",
+              "v1",
+              "chatbot",
+              "{{botId}}",
+              "setting",
+              "model"
+            ]
+          }
+        }
+      },
+      {
+        "name": "Update Chatbot Lead Info",
+        "request": {
+          "method": "POST",
+          "header": [],
+          "body": {
+            "mode": "raw",
+            "raw": "{\n    \"title\": \"Contact Us\",\n    \"collectName\": true,\n    \"collectEmail\": true,\n    \"collectPhone\": false\n}",
+            "options": {
+              "raw": {
+                "language": "json"
+              }
+            }
+          },
+          "url": {
+            "raw": "{{baseUrl}}/api/v1/chatbot/{{botId}}/setting/lead",
+            "host": [
+              "{{baseUrl}}"
+            ],
+            "path": [
+              "api",
+              "v1",
+              "chatbot",
+              "{{botId}}",
+              "setting",
+              "lead"
+            ]
+          }
+        }
+      },
+      {
+        "name": "Update Chatbot Interface",
+        "request": {
+          "method": "POST",
+          "header": [],
+          "body": {
+            "mode": "raw",
+            "raw": "{\n    \"initialMsg\": \"Welcome to my chatbot!\",\n    \"suggestedMsgs\": [\n        {\n            \"question\": \"What is your name?\",\n            \"label\": \"Introduction\"\n        },\n        {\n            \"question\": \"What services do you offer?\",\n            \"label\": \"Services\"\n        }\n    ],\n    \"msgPlaceholder\": \"Type your message here\",\n    \"theme\": \"dark\",\n    \"displayName\": \"My Chatbot\",\n    \"chatIcon\": \"https://example.com/icon.png\",\n    \"alignChatButton\": \"right\",\n    \"autoShowMsg\": 10,\n    \"profileImage\": \"https://example.com/profile.jpg\"\n}",
+            "options": {
+              "raw": {
+                "language": "json"
+              }
+            }
+          },
+          "url": {
+            "raw": "{{baseUrl}}/api/v1/chatbot/{{botId}}/setting/interface",
+            "host": [
+              "{{baseUrl}}"
+            ],
+            "path": [
+              "api",
+              "v1",
+              "chatbot",
+              "{{botId}}",
+              "setting",
+              "interface"
+            ]
+          }
+        }
+      },
+      {
+        "name": "Get Chatbot Analytics",
+        "request": {
+          "method": "GET",
+          "header": [],
+          "url": {
+            "raw": "{{baseUrl}}/api/v1/chatbot/{{botId}}/analytics",
+            "host": [
+              "{{baseUrl}}"
+            ],
+            "path": [
+              "api",
+              "v1",
+              "chatbot",
+              "{{botId}}",
+              "analytics"
+            ]
+          }
+        }
+      },
+      {
+        "name": "Get Chatbot Leads",
+        "request": {
+          "method": "GET",
+          "header": [],
+          "url": {
+            "raw": "{{baseUrl}}/api/v1/chatbot/{{botId}}/analytics/leads",
+            "host": [
+              "{{baseUrl}}"
+            ],
+            "path": [
+              "api",
+              "v1",
+              "chatbot",
+              "{{botId}}",
+              "analytics",
+              "leads"
+            ]
+          }
+        }
+      },
+      {
+        "name": "Get Chatbot Chats",
+        "request": {
+          "method": "GET",
+          "header": [],
+          "url": {
+            "raw": "{{baseUrl}}/api/v1/chatbot/{{botId}}/analytics/chats",
+            "host": [
+              "{{baseUrl}}"
+            ],
+            "path": [
+              "api",
+              "v1",
+              "chatbot",
+              "{{botId}}",
+              "analytics",
+              "chats"
+            ]
+          }
+        }
+      },
+      {
+        "name": "Chat Completion",
+        "request": {
+          "method": "POST",
+          "header": [],
+          "body": {
+            "mode": "raw",
+            "raw": "{\n    \"messages\": [\n        {\"role\": \"user\", \"content\": \"Hello\"},\n        {\"role\": \"assistant\", \"content\": \"Hi there! How can I assist you today?\"}\n    ]\n}",
+            "options": {
+              "raw": {
+                "language": "json"
+              }
+            }
+          },
+          "url": {
+            "raw": "{{baseUrl}}/api/v1/chatbot/{{botId}}/chat",
+            "host": [
+              "{{baseUrl}}"
+            ],
+            "path": [
+              "api",
+              "v1",
+              "chatbot",
+              "{{botId}}",
+              "chat"
+            ]
+          }
+        }
+      },
+      {
+        "name": "Delete Chatbot",
+        "request": {
+          "method": "DELETE",
+          "header": [],
+          "url": {
+            "raw": "{{baseUrl}}/api/v1/chatbot/{{botId}}/delete",
+            "host": [
+              "{{baseUrl}}"
+            ],
+            "path": [
+              "api",
+              "v1",
+              "chatbot",
+              "{{botId}}",
+              "delete"
+            ]
+          }
+        }
+      }
+    ]
+  }
