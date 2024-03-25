@@ -168,27 +168,36 @@ async function updateModelData(chatbotId, modelData) {
     return true;
 }
 
-//TODO: incomplete
 async function updateChatInterface(chatbotId, interfaceData) {
     const ownerId = headers().get('userId');
     const chatbot = await Chatbot.findOne({ owner: ownerId, _id: chatbotId })
     if (!chatbot) throw 'Your Chatbot with id "' + chatbotId + '" not found';
 
-    // chatbot.chatBotCustomizeData.prompt = modelData.prompt
-    // chatbot.chatBotCustomizeData.model = modelData.model
-    // chatbot.chatBotCustomizeData.temparature = modelData.temparature
+    chatbot.chatBotCustomizeData.welcomeMessage = interfaceData.initialMsg
+    chatbot.chatBotCustomizeData.questionExamples = interfaceData.suggestedMsgs
+    chatbot.chatBotCustomizeData.chatInputPlaceholderText = interfaceData.msgPlaceholder
+    chatbot.chatBotCustomizeData.widgetTheme = interfaceData.theme
+    chatbot.chatBotCustomizeData.assistantTabHeader = interfaceData.displayName
+    chatbot.chatBotCustomizeData.launcherIcon = interfaceData.chatIcon
+    chatbot.chatBotCustomizeData.placement = interfaceData.alignChatButton
+    chatbot.chatBotCustomizeData.popupDelay = interfaceData.autoShowMsg
+    chatbot.chatBotCustomizeData.profileImage = interfaceData.profileImage
     await chatbot.save()
 
     return true;
 }
 
-//TODO: incomplete
+
 async function updateSecurityData(chatbotId, securityData) {
     const ownerId = headers().get('userId');
     const chatbot = await Chatbot.findOne({ owner: ownerId, _id: chatbotId })
     if (!chatbot) throw 'Your Chatbot with id "' + chatbotId + '" not found';
 
     chatbot.visibility = securityData.visibility;
+    chatbot.rateLimiting.limitMsg = securityData.rateLimit.limitMsg;
+    chatbot.rateLimiting.msg_count = securityData.rateLimit.msgCount;
+    chatbot.rateLimiting.timeframe = securityData.rateLimit.timeframe;
+    chatbot.chatBotCustomizeData.allowPublicDomains = securityData.allowPublicDomains
     await chatbot.save()
 
     return true;

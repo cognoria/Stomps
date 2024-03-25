@@ -49,6 +49,7 @@ const chatBotCustomizeData = new Schema({
     questionExamples: { type: [questionExample], default: () => ([{ question: 'How can I contact you?', label: 'Contact' }]) },
     welcomeMessages: [{ type: String, default: ['Hello! How can I assist you today?'] }],
     launcherIcon: { type: String, required: true, default: 'icon1' },
+    profileImage: { type: String, required: true, default: 'icon1' },
     chatInputPlaceholderText: { type: String, required: true, default: 'Type your message' },
     assistantTabHeader: { type: String, required: true, default: 'AI assistant' },
     readMoreText: { type: String, required: true, default: 'Read more:' },
@@ -57,8 +58,15 @@ const chatBotCustomizeData = new Schema({
     collectName: {type: Boolean, default: false, required: true},
     collectEmail: {type: Boolean, default: false, required: true},
     collectPhone: {type: Boolean, default: false, required: true},
+    allowPublicDomains: {type: Boolean, default: false, required: true},
     widgetTheme: {type: String, default: "LIGHT", enum: ['LIGHT', 'DARK', 'SYSTEM']},
     model: { type: String, required: true, enum: Object.values(chatModelEnum), default: chatModelEnum.GPT_4_turbo }
+}, { _id: false });
+
+const rateLimiting = new Schema({
+    limitMsg: { type: String, required: true, default: 'Too many messages in a row' },
+    msg_count: { type: Number, required: true, default: 0 },
+    timeframe: { type: Number, required: true, default: 0 },
 }, { _id: false });
 
 export default function chatbotModel() {
@@ -70,7 +78,8 @@ export default function chatbotModel() {
         visibility: { type: String, enum: ['PRIVATE', 'PUBLIC'], default: 'PRIVATE' },
         status: { type: String, enum: Object.values(KnowledgebaseStatus), default: KnowledgebaseStatus.CREATED },
         crawlData: { type: crawlData, default: () => ({ pagesContent: [], crawledUrls: [], queue: [] }), select: false },
-        chatBotCustomizeData: { type: chatBotCustomizeData, default: () => ({ ...chatBotCustomizeDataDefault }), select: false }
+        chatBotCustomizeData: { type: chatBotCustomizeData, default: () => ({ ...chatBotCustomizeDataDefault }), select: false },
+        rateLimiting: { type: rateLimiting, default: () => ({limitMsg: 'Too many messages in a row', msg_count: 0, timeframe: 0 }), select: false }
     }, { timestamps: true });
 
     return mongoose.models.Chatbot || mongoose.model('Chatbot', schema);

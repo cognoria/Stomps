@@ -70,6 +70,7 @@ export const chatBotCustomizeDataDefault = {
     questionExamples: [{ question: 'How can I contact you?', label: 'Contact' }],
     welcomeMessages: ['Hello! How can I assist you today?'],
     launcherIcon: 'icon1',
+    profileImage: 'icon1',
     chatInputPlaceholderText: 'Type your message',
     assistantTabHeader: 'AI assistant',
     readMoreText: 'Read more:',
@@ -79,7 +80,8 @@ export const chatBotCustomizeDataDefault = {
     widgetTheme: 'LIGHT',
     collectName: false,
     collectEmail: false,
-    collectPhone: false
+    collectPhone: false,
+    allowPublicDomains: false
 };
 
 // /**

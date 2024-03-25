@@ -5,17 +5,26 @@ import { KnowledgebaseStatus } from "../../enums";
 import { headers } from "next/headers";
 
 const Chatbot = db.Chatbot;
-const Chat = db.Chat;
+const Chats = db.Chat;
+const Leads = db.Lead;
 
 export const chatRepo = {
     createSession,
     getChatsPerDay,
+    getChatbotLeads,
+    getChatbotChats,
     getChatResponse,
-    getChatsPerCountry
+    getChatsPerCountry,
 }
 
 async function createSession(chatbotId, params) {
     //create chat session, return sessionId
+
+}
+
+
+async function saveLead(chatbotId, params) {
+    //perform save lead action
 
 }
 
@@ -57,7 +66,7 @@ async function getChatResponse(messages, chatbotId) {
 }
 
 async function getChatsPerDay(chatbotId) {
-    const chatsPerDay = await Chat.aggregate([
+    const chatsPerDay = await Chats.aggregate([
         {
             $match: { chatbot: mongoose.Types.ObjectId(chatbotId) }
         },
@@ -72,8 +81,18 @@ async function getChatsPerDay(chatbotId) {
     return chatsPerDay.map(item => ({ date: item._id, count: item.count }));
 }
 
+
+async function getChatbotLeads(chatbotId) {
+    return await Leads.find({chatbot: chatbotId}).lean()  
+}
+
+
+async function getChatbotChats(chatbotId) {
+    return await Chats.find({chatbot: chatbotId}).lean()  
+}
+
 async function getChatsPerCountry(chatbotId) {
-    const chatsPerCountry = await Chat.aggregate([
+    const chatsPerCountry = await Chats.aggregate([
         {
             $match: { chatbot: mongoose.Types.ObjectId(chatbotId) }
         },
