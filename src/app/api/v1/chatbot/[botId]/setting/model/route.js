@@ -12,7 +12,7 @@ module.exports = apiHandler({
 async function updateModel(req) {
     const { botId } = req.params;
     const params = await req.json()
-    return await chatbotRepo.updateName(botId, params);
+    return await chatbotRepo.updateModelData(botId, params);
 }
 
 updateModel.schema = joi.object({
