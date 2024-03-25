@@ -1,9 +1,18 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useBotLeadsSettingsStore } from "../../../../store/chat_bot_state/chatbotSettings/settings";
+import useSingleChatbot from "../../../../store/chat_bot_state/single_chat_bot";
 import Toggle from "../../../customComponents/slider/toggler";
 
 function Bot_leads({ bot_id }) {
+  const { singleChatBot, loading, error, chatbot } = useSingleChatbot(
+    (state) => ({
+      singleChatBot: state.singleChatBot,
+      loading: state.loading,
+      error: state.error,
+      chatbot: state.chatbot,
+    })
+  );
   const { updateLeads, loadingLeads, leadsError } = useBotLeadsSettingsStore(
     (state) => ({
       updateLeads: state.botLeadsSettings,
@@ -12,27 +21,38 @@ function Bot_leads({ bot_id }) {
     })
   );
 
+  useEffect(() => {
+    singleChatBot(bot_id);
+  }, [bot_id, singleChatBot]);
+
+  console.log(chatbot);
   //title value
 
   const [title, setTitle] = useState("");
   //title value
 
   // name toggle
-  const [nameToggle, setNameToggle] = useState(false);
+  const [nameToggle, setNameToggle] = useState(
+    chatbot ? chatbot?.chatBotCustomizeData?.collectName : false
+  );
   const handleNameToggleChange = () => {
     setNameToggle(!nameToggle);
   };
   // name toggle
 
   //email toggle
-  const [emailToggle, setEmailToggle] = useState(false);
+  const [emailToggle, setEmailToggle] = useState(
+    chatbot ? chatbot?.chatBotCustomizeData?.collectEmail : false
+  );
   const handleEmailToggleChange = () => {
     setEmailToggle(!emailToggle);
   };
   //email toggle
 
   //phone number
-  const [phoneToggle, setPhoneToggle] = useState(false);
+  const [phoneToggle, setPhoneToggle] = useState(
+    chatbot ? chatbot?.chatBotCustomizeData?.collectPhone : false
+  );
   const handlePhoneToggleChange = () => {
     setPhoneToggle(!phoneToggle);
   };

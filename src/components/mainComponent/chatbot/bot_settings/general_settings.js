@@ -14,6 +14,7 @@ function General_settings({ bot_id }) {
     })
   );
 
+  console.log(chatbot);
   const { updateName, loadingName, nameError } = useBotNameSettingsStore(
     (state) => ({
       updateName: state.botName,
@@ -28,7 +29,7 @@ function General_settings({ bot_id }) {
 
   // chatbot name
 
-  const [name, setName] = useState("");
+  const [name, setName] = useState(chatbot ? chatbot?.name : "");
 
   // chatbot name
 
@@ -84,7 +85,7 @@ function General_settings({ bot_id }) {
             <input
               onChange={(e) => setName(e.target.value)}
               value={name}
-              placeholder="examplesite.com"
+              placeholder={chatbot ? chatbot?.name : "examplesite.com"}
               className="w-full  h-[44px] p-4 active:border-gray-200 border-[1px]  text-gray-900 text-xs font-medium font-manrope leading-none tracking-tight"
             />
           </div>
