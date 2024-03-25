@@ -32,7 +32,7 @@ function apiHandler(handler) {
                     const json = await req.json();
                     req.json = () => Promise.resolve(json);
                 }
-            } catch { /* Ignore JSON parsing errors */  }
+            } catch { /* Ignore JSON parsing errors */ }
 
             try {
                 // global middleware
@@ -41,9 +41,6 @@ function apiHandler(handler) {
                 // Handle file uploads for POST, PUT, PATCH methods
                 if (['POST', 'PUT', 'PATCH'].includes(req.method.toUpperCase()) && req.headers.get('content-type')?.startsWith('multipart/form-data')) {
                     await uploadMiddleware(req);
-
-                    // Update req.json() to return the unified req.body
-                    req.json = () => Promise.resolve(req.fields);
                 }
 
                 //validate form inputs

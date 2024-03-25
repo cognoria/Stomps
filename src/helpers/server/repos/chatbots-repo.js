@@ -99,7 +99,7 @@ async function trainChatbot(chatbotId) {
 }
 
 async function getById(id) {
-    const chatbot = await Chatbot.findById(id).select(" +chatBotCustomizeData owner visibility status name createdAt updatedAt").lean();
+    const chatbot = await Chatbot.findById(id).select("+chatBotCustomizeData owner visibility status name createdAt updatedAt").lean();
     if (!chatbot) throw 'Chatbot with id "' + id + '"  not found';
 
     const owner = headers().get('userId');
@@ -157,7 +157,7 @@ async function updateName(chatbotId, name) {
 
 async function updateModelData(chatbotId, modelData) {
     const ownerId = headers().get('userId');
-    const chatbot = await Chatbot.findOne({ owner: ownerId, _id: chatbotId })
+    const chatbot = await Chatbot.findOne({ owner: ownerId, _id: chatbotId }).select("+chatBotCustomizeData ")
     if (!chatbot) throw 'Your Chatbot with id "' + chatbotId + '" not found';
 
     chatbot.chatBotCustomizeData.prompt = modelData.prompt
@@ -170,7 +170,7 @@ async function updateModelData(chatbotId, modelData) {
 
 async function updateChatInterface(chatbotId, interfaceData) {
     const ownerId = headers().get('userId');
-    const chatbot = await Chatbot.findOne({ owner: ownerId, _id: chatbotId })
+    const chatbot = await Chatbot.findOne({ owner: ownerId, _id: chatbotId }).select("+chatBotCustomizeData ")
     if (!chatbot) throw 'Your Chatbot with id "' + chatbotId + '" not found';
 
     chatbot.chatBotCustomizeData.welcomeMessage = interfaceData.initialMsg
@@ -190,7 +190,7 @@ async function updateChatInterface(chatbotId, interfaceData) {
 
 async function updateSecurityData(chatbotId, securityData) {
     const ownerId = headers().get('userId');
-    const chatbot = await Chatbot.findOne({ owner: ownerId, _id: chatbotId })
+    const chatbot = await Chatbot.findOne({ owner: ownerId, _id: chatbotId }).select("+chatBotCustomizeData visibility rateLimiting")
     if (!chatbot) throw 'Your Chatbot with id "' + chatbotId + '" not found';
 
     chatbot.visibility = securityData.visibility;
@@ -211,7 +211,7 @@ async function updateSecurityData(chatbotId, securityData) {
  */
 async function updateLeadInfo(chatbotId, leadInfo) {
     const ownerId = headers().get('userId');
-    const chatbot = await Chatbot.findOne({ owner: ownerId, _id: chatbotId })
+    const chatbot = await Chatbot.findOne({ owner: ownerId, _id: chatbotId }).select("+chatBotCustomizeData ")
     if (!chatbot) throw 'Your Chatbot with id "' + chatbotId + '" not found';
 
     chatbot.chatBotCustomizeData.leadMsgDescription = leadInfo.title;
@@ -227,7 +227,7 @@ async function updateLeadInfo(chatbotId, leadInfo) {
 async function updateKnowledgebase(chatbotId, params) {
     const ownerId = headers().get('userId');
 
-    const chatbot = await Chatbot.findOne({ owner: ownerId, _id: chatbotId })
+    const chatbot = await Chatbot.findOne({ owner: ownerId, _id: chatbotId }).select("+knowledgebase ")
     if (!chatbot) throw 'Your Chatbot with id "' + chatbotId + '" not found';
 
     // Function to remove duplicates and merge arrays
