@@ -35,10 +35,9 @@ export default function Sources_datasource() {
     if (file) {
       console.log("Dropped file:", file);
       if (!isTXTFile(file) && !isPDFFile(file) && !isDOCFile(file)) {
-        return; //toaste file not supported
-      } else {
+        return; 
         setSelectedFile(file);
-        //add file to content;
+
       }
     }
   };
@@ -66,20 +65,20 @@ export default function Sources_datasource() {
       } else if (isPDFFile(selectedFile)) {
         file = await extractTextFromPDF(selectedFile);
       } else {
-        return toast.error("unspported file selected"); //toast file not supported
+        return toast.error("unspported file selected");
       }
       await useFormDataStore.getState().addDataToFiles(file);
       await useFormDataStore.getState().addFileToContents(file);
     } catch (e) {
       console.error("error adding file: ", e);
       toast.error("Failed to add file");
-      //toast
+
     }
   }
 
-  useEffect(() => {
-    console.log(files);
-  }, [files]);
+  // useEffect(() => {
+  //   console.log(files);
+  // }, [files]);
 
   return (
     <div className="flex flex-col  items-center justify-center w-full">
@@ -92,15 +91,15 @@ export default function Sources_datasource() {
             <div className="flex flex-col py-5 px-3 w-full h-full">
               <div
                 className="upload-container"
-                // onDragOver={handleDragOver}
-                // onDrop={handleDrop}
+                 onDragOver={handleDragOver}
+                 onDrop={handleDrop}
               >
                 <input
                   type="file"
                   id="file-input"
                   accept=".pdf,.doc,.txt,.docx"
                   style={{ display: "none" }}
-                  // onChange={handleFileChange}
+                   onChange={handleFileChange}
                 />
                 <label htmlFor="file-input" className="upload-label">
                   <img src="/images/chatbox/folder-add.svg" alt="Upload icon" />
@@ -138,7 +137,7 @@ export default function Sources_datasource() {
               <div className="flex flex-row  p-5 items-end lg:mt-0 mt-[70px] [mt-50px]  h-auto lg:h-[70%] justify-end">
                 <div className="flex flex-row items-center  gap-x-5 ">
                   <button
-                    // onClick={deleteAllFile}
+                     onClick={deleteAllFile}
                     className="bg-transparent items-center gap-2 flex flex-row"
                   >
                     <img src="/images/chatbox/trash.svg" />
@@ -147,7 +146,7 @@ export default function Sources_datasource() {
                     </p>
                   </button>
                   <button
-                    // onClick={handleAddFile}
+                     onClick={handleAddFile}
                     className=" px-5 py-3 text-[#1261AC] text-xs font-bold font-manrope leading-snug bg-[#EEF8FF] flex items-center justify-center flex-col  rounded-lg"
                   >
                     Add
@@ -168,7 +167,7 @@ export default function Sources_datasource() {
                           </div>
                         </div>
                         <button
-                        // onClick={() => deleteFile(index)}
+                         onClick={() => deleteFile(index)}
                         >
                           <img
                             src="/images/chatbox/trash.svg"

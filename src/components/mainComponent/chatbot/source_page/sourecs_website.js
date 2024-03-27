@@ -51,13 +51,13 @@ function Source_Website() {
                 </div>
                 <div className="flex w-full flex-col lg:flex-row items-center justify-between gap-2">
                   <input
-                    // onChange={handleWebsite}
+                     onChange={handleWebsite}
                     type="text"
-                    // value={website}
+                     value={website}
                     className="w-full lg:w-[413px] h-[47px] px-3.5 py-2.5 bg-white rounded shadow border border-zinc-100 justify-start items-center gap-2 inline-flex"
                   />
                   <button
-                    // onClick={handleSubmit}
+                     onClick={handleSubmit}
                     className={`h-11 w-full lg:w-fit px-5 py-3    ${
                       !loading ? "bg-sky-700" : "bg-sky-700/20"
                     } rounded-lg shadow border border-sky-700 justify-center items-center gap-2 flex`}
@@ -70,7 +70,7 @@ function Source_Website() {
 
                 {error && (
                   <p className="text-red-500 text-[10px] font-normal font-manrope leading-[10px] tracking-tight">
-                    {/* {error} */}
+                    {error}
                   </p>
                 )}
 
@@ -94,11 +94,11 @@ function Source_Website() {
                   <input
                     value={sitemap}
                     type="text"
-                    // onChange={handleSitemap}
+                     onChange={handleSitemap}
                     className="w-full lg:w-[383px] h-[47px] px-3.5 py-2.5 bg-white rounded shadow border border-zinc-100 justify-start items-center gap-2 inline-flex"
                   />
                   <button
-                    // onClick={sitemapSubmit}
+                     onClick={sitemapSubmit}
                     className={`h-11 w-full lg:w-fit px-5 py-3 ${
                       loading2 ? "bg-sky-700/20" : "bg-sky-700"
                     }  rounded-lg shadow border border-sky-700 justify-center items-center gap-2 flex`}
@@ -125,9 +125,9 @@ function Source_Website() {
               <div className="flex flex-row  p-5 items-end lg:mt-0 mt-[70px] [mt-50px]  h-auto lg:h-[70%] justify-end">
                 <div className="flex flex-row items-center  gap-x-5 ">
                   <button
-                    // onClick={() =>
-                    //   useFormDataStore.getState().deleteAll(["include", "urls"])
-                    // }
+                     onClick={() =>
+                       useFormDataStore.getState().deleteAll(["include", "urls"])
+                     }
                     className="bg-transparent items-center gap-2 flex flex-row"
                   >
                     <img src="/images/chatbox/trash.svg" />
@@ -154,9 +154,9 @@ function Source_Website() {
                           </div>
                         </div>
                         <button
-                        // onClick={() =>
-                        //   useFormDataStore.getState().deleteInclude(index)
-                        // }
+                         onClick={() =>
+                           useFormDataStore.getState().deleteInclude(index)
+                         }
                         >
                           <img
                             src="/images/chatbox/trash.svg"
