@@ -1,8 +1,5 @@
-import DatePicker from "../../../customComponents/datepicker/date";
-import ExportButton from "../../../customComponents/exportButton/exportButton";
-
 function Leeds() {
-  const bot = true;
+  const bot = false;
   return (
     <div className="w-full flex flex-col">
       {bot ? <Filled_bot_state /> : <Empty_bot />}
@@ -122,12 +119,19 @@ const Empty_bot = () => {
           <div className="text-gray-900 w-full text-base font-bold p-3 border-gray-200 border-b-[2px] font-manrope leading-snug">
             Chat logs
           </div>
-          <div className="flex flex-row items-center  p-3 w-full justify-between ">
-            <div className="flex flex-1 w-full h-auto flex-col lg:flex-row gap-6 p-3 ">
-              <DatePicker />
-            </div>
-            <div className="flex flex-col flex-1 justify-end flex-end w-full items-end">
-              <ExportButton />
+          <div className="flex flex-row gap-6 w-full p-3 ">
+            <div class="relative">
+              <input
+                type="date"
+                class="appearance-none py-[20px] border border-gray-300 font-manrope rounded  px-4 w-[150px] leading-tight focus:outline-none focus:border-blue-500"
+                placeholder="Select a date"
+              />
+
+              <img
+                src="/images/chatbox/calendar.svg"
+                alt="Calendar Icon"
+                class="absolute right-0 top-0 mt-2 mr-3 h-6 w-6 pointer-events-none"
+              />
             </div>
           </div>
           <div className="w-full gap-4 h-[541px] flex flex-col items-center justify-center">

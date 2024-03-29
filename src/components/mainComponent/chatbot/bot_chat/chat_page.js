@@ -48,9 +48,7 @@ function ChatPage({ bot_id }) {
 
   //temperture slider
 
-  const [selectedTemperature, setSelectedTemperature] = useState(
-    chatbot ? chatbot?.chatBotCustomizeData?.temparature : 0.0
-  );
+  const [selectedTemperature, setSelectedTemperature] = useState(0.3);
   const handleTemperatureChange = (value) => {
     setSelectedTemperature(value);
   };

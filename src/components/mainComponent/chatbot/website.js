@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import useFormDataStore from "../../../store/chat_bot_state/chat_bot_store";
 import useLinkStore from "../../../store/chat_bot_state/generate_links";
 import useSitemapStore from "../../../store/chat_bot_state/generate_sitemap";
@@ -12,8 +12,6 @@ function Website() {
   const website = useFormDataStore((state) => state.formData.website);
   const sitemap = useFormDataStore((state) => state.formData.sitemap);
   const [error, setError] = useState(null);
-  const [displayedLinks, setDisplayedLinks] = useState([]);
-  const [numDisplayedLinks, setNumDisplayedLinks] = useState(10);
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!website.startsWith("http://") && !website.startsWith("https://")) {
@@ -38,18 +36,6 @@ function Website() {
   const handleSitemap = (e) => {
     const sitemap = e.target.value;
     useFormDataStore.getState().addSitemap(sitemap);
-  };
-
-  useEffect(() => {
-    if (include) {
-      setDisplayedLinks(include.slice(0, numDisplayedLinks));
-    }
-  }, [include, numDisplayedLinks]);
-
-  const loadMoreLinks = () => {
-    const nextBatch = include.slice(numDisplayedLinks, numDisplayedLinks + 10);
-    setDisplayedLinks([...displayedLinks, ...nextBatch]);
-    setNumDisplayedLinks(numDisplayedLinks + 10);
   };
   return (
     <div className="flex flex-col  items-center justify-center w-full">
@@ -158,7 +144,7 @@ function Website() {
               {include && (
                 <div className="w-full px-2 mt-[40px]">
                   <ul className="w-full flex-col gap-1 flex">
-                    {displayedLinks.map((link, index) => (
+                    {include.slice(0, 10).map((link, index) => (
                       <li
                         key={index}
                         className="w-full flex flex-row items-center gap-2 justify-between "
@@ -182,16 +168,6 @@ function Website() {
                       </li>
                     ))}
                   </ul>
-                  <div className="w-full flex flex-col items-center justify-center my-4">
-                    {include && include.length > numDisplayedLinks && (
-                      <button
-                        onClick={loadMoreLinks}
-                        className=" rounded-lg p-3 bg-[#1261AC] text-xs text-white"
-                      >
-                        Load More
-                      </button>
-                    )}
-                  </div>
                 </div>
               )}
             </div>

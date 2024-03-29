@@ -25,7 +25,7 @@ function Bot_leads({ bot_id }) {
     singleChatBot(bot_id);
   }, [bot_id, singleChatBot]);
 
-  // console.log(chatbot);
+  console.log(chatbot);
   //title value
 
   const [title, setTitle] = useState("");
