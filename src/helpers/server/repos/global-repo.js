@@ -1,36 +1,42 @@
+import { headers } from "next/headers";
 import { decrypt, encrypt } from "../../cryptography";
 import { AppServiceProviders } from "../../enums";
 import { db } from "../db";
 
 const Global = db.Global;
+const Chatbots = db.Chatbot
+const Users = db.User
 
 export const globalRepo = {
     isKeys,
+    getService,
     getJwtSecret,
     getServiceKey,
     getEmbedModel,
     setGlobalKeys,
 }
 
-async function getServiceKey(provider) {
-    // there'd be only one Global document
-    let globalSettings = await Global.findOne().lean();
-
-    if (!globalSettings) {
-        await seedGlobalKeys();
-        globalSettings = await Global.findOne().lean();
+async function getService(provider, owner) {
+    if (process.env.ALLOW_INDIVIDUAL_KEYS) {
+        const userId = owner ?? headers().get('userId');
+        const user = await Users.findById(userId).select("+services").lean();
+        return user.services.find(service => service.name === provider);
+    } else {
+        const globalSettings = await Global.findOne().lean();
+        if (!globalSettings) {
+            throw 'Global variables not set yet';
+        }
+        return globalSettings.services.find(service => service.name === provider);
     }
+}
 
-    // Find the provider service key
-    const service = globalSettings.services.find(service => service.name === provider);
-
+async function getServiceKey(provider, owner) {
+    const service = await getService(provider, owner);
     if (!service) {
         throw `You have not added ${provider} keys yet`;
     }
 
-    // decrypt the apiKey here
     const decryptedApiKey = decrypt(service.apiKey);
-
     return decryptedApiKey;
 }
 
@@ -59,6 +65,26 @@ async function getJwtSecret() {
 
 //this function will check if user has added all providers keys
 async function isKeys() {
+    if (process.env.ALLOW_INDIVIDUAL_KEYS?? true) {
+        const userId = headers().get('userId');
+        const user = await Users.findById(userId).select("+services").lean()
+        
+        if(user.services.length < 1) return false;
+
+        // Iterate through each provider
+        for (const provider of Object.values(AppServiceProviders)) {
+            // Find the provider service key
+            const service = user.services?.find(service => service.name === provider);
+
+            // If service key is not found, return false
+            if (!service || !service.apiKey) {
+                return false;
+            }
+        }
+
+        return true
+    }
+
     // Retrieve the global settings
     const globalSettings = await Global.findOne().lean();
 
@@ -96,19 +122,64 @@ async function getEmbedModel() {
     if (!service) {
         throw 'embed model not set yet.';
     }
-
     return service;
 }
 
 async function setGlobalKeys(params) {
     if (!params.openaiKey && !params.pineconeKey) throw 'Openai and Pinecone keys are required'
 
+    const openaiKeyHash = encrypt(params.openaiKey)
+    const pineconeKeyHash = encrypt(params.pineconeKey)
+    
+    if (process.env.ALLOW_INDIVIDUAL_KEYS?? true) {
+        const userId = headers().get('userId');
+        const user = await Users.findById(userId).select("+services")
+
+        // Check if the service already exists, and update it if it does
+        const openaiService = user.services?.find(
+            (service) => service.name === AppServiceProviders.OPENAI
+        );
+        if (openaiService) {
+            openaiService.apiKey = openaiKeyHash;
+        } else {
+            user.services.push({
+                name: AppServiceProviders.OPENAI,
+                apiKey: openaiKeyHash,
+                meta: { desc: 'open ai api key' },
+            });
+        }
+
+        const pineconeService = user.services?.find(
+            (service) => service.name === AppServiceProviders.PINECONE
+        );
+        if (pineconeService) {
+            // Check if there are any chatbots associated with this Pinecone key
+            const chatbotsCount = await Chatbots.countDocuments({
+                pineconeKeyId: pineconeService._id,
+            });
+
+            if (chatbotsCount > 0) {
+                throw new Error(
+                    'Cannot update or remove the Pinecone key as there are chatbots associated with it'
+                );
+            }
+
+            pineconeService.apiKey = pineconeKeyHash;
+        } else {
+            user.services.push({
+                name: AppServiceProviders.PINECONE,
+                apiKey: pineconeKeyHash,
+                meta: { desc: 'pinecone api key' },
+            });
+        }
+
+        await user.save();
+        return {message: "Api keys set successfully"};
+    }
+
     // there'd be only one Global document 
     // and it should and be initalized before now.
     const global = await Global.findOne()
-
-    const openaiKeyHash = encrypt(params.openaiKey)
-    const pineconeKeyHash = encrypt(params.pineconeKey)
 
     global.services.push({
         name: AppServiceProviders.OPENAI,
@@ -125,8 +196,8 @@ async function setGlobalKeys(params) {
             desc: "pinecone api key"
         }
     })
-
-    return await global.save()
+    await global.save()        
+    return {message: "Api keys set successfully"};
 }
 
 /**

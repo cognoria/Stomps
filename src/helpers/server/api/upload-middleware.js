@@ -1,18 +1,18 @@
-import multer from 'multer';
+// import multer from 'multer';
 
-const upload = multer({
-    storage: multer.memoryStorage(),
-    limits: {
-        fileSize: 5 * 1024 * 1024, // Max file size of 10MB
-    },
-    fileFilter: (req, file, cb) => {
-        if (file.mimetype === 'application/pdf') {
-            cb(null, true);
-        } else {
-            cb(new Error('Only PDF files are allowed'));
-        }
-    },
-});
+// const upload = multer({
+//     storage: multer.memoryStorage(),
+//     limits: {
+//         fileSize: 5 * 1024 * 1024, // Max file size of 10MB
+//     },
+//     fileFilter: (req, file, cb) => {
+//         if (file.mimetype === 'application/pdf') {
+//             cb(null, true);
+//         } else {
+//             cb(new Error('Only PDF files are allowed'));
+//         }
+//     },
+// });
 
 
 export async function uploadMiddleware(req, res) {

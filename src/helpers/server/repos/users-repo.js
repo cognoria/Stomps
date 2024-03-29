@@ -39,7 +39,8 @@ async function authenticate({ email, password }) {
 
     // create a jwt token that is valid for 7 days
     //TODO: JWT_Secret will be created randomly and saved for the user
-    const token = jwt.sign({ sub: user.id }, await globalRepo.getJwtSecret(), { expiresIn: '7d' });
+    const token = jwt.sign({ sub: user.id }, process.env.JWT_SECRET??'1234567890abcefjhijkl', { expiresIn: '7d' });
+    // const token = jwt.sign({ sub: user.id }, await globalRepo.getJwtSecret(), { expiresIn: '7d' });
 
     await logUserActivity(user.id, 'User Login', { ip: headers().get('X-Forwarded-For') })
     return {
@@ -78,6 +79,13 @@ async function create(params) {
     // validate
     if (await User.findOne({ email: params.email })) {
         throw 'User "' + params.email + '"  already exist';
+    }
+
+    // Check if the maximum number of users has been reached
+    const maxUsers = process.env.MAX_USERS ? parseInt(process.env.MAX_USERS, 10) : Infinity;
+    const currentUserCount = await User.countDocuments();
+    if (currentUserCount >= maxUsers) {
+        throw 'You cannot register. contact support@stomps.io';
     }
 
     const hash = bcrypt.hashSync(params.password, 10);

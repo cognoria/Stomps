@@ -13,7 +13,7 @@ const useAddApiKeyStore = create(
         const response = await fetch("/api/v1/user/global", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ openaikey, pineconeKey }),
+          body: JSON.stringify({ openaiKey: openaikey, pineconeKey }),
         });
         const data = await response.json();
 

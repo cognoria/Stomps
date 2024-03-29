@@ -2,15 +2,20 @@
 
 import { useState } from "react";
 import useAddApiKeyStore from "../../../../store/chat_bot_state/api_key/add_api_key";
+import { useRouter } from "next/navigation";
+import {toast} from "react-toastify"
 
 function Chatbot_key_check() {
+  const router = useRouter()
   const [openaikey, setOpenaikey] = useState("");
   const [pineconeKey, setPineconeKey] = useState("");
+
   const { add_api_key, loading, error } = useAddApiKeyStore((state) => ({
     add_api_key: state.add_api_key,
     loading: state.loading,
     error: state.error,
   }));
+
   const onSubmit = (e) => {
     e.preventDefault();
     const data = { openaikey, pineconeKey };

@@ -1,11 +1,15 @@
 import { Crawler } from "../../AI/newCrwler";
 import seed from "../../AI/seed";
-import { KnowledgebaseStatus, chatBotCustomizeDataDefault } from "../../enums";
 import { db } from "../db";
+import { AppServiceProviders, KnowledgebaseStatus, chatBotCustomizeDataDefault } from "../../enums";
 import { createPinconeIndex, deletePinconeIndex } from "../../AI/pinecone";
 import { headers } from "next/headers";
 import generateRandomString, { generateName } from "../../generaterandomString";
 import { globalRepo } from "./global-repo";
+import { trainChatbotQueue } from "../addJob";
+
+// Add a job to the queue
+// queue.add({ data: 'your job data here' });
 const User = db.User;
 const Chatbot = db.Chatbot;
 
@@ -28,11 +32,17 @@ export const chatbotRepo = {
 async function create(params) {
     const ownerId = headers().get('userId');
 
-    const user = await User.findById(ownerId)
+    const user = await User.findById(ownerId).select('+services')
     if (!user) throw `User not found.`;
 
     //check user has added api keys
     if (!(await globalRepo.isKeys())) throw 'Please add Api keys first';
+
+    // Get the Pinecone service object
+    const pineconeService = await globalRepo.getService(AppServiceProviders.PINECONE);
+    if (!pineconeService) {
+        throw 'Pinecone key not found';
+    }
 
     // validate name
     // if (await Chatbot.findOne({ name: params.name })) {
@@ -63,6 +73,7 @@ async function create(params) {
         name: chatbotName,
         owner: ownerId,
         pIndex: indexName,
+        pineconeKeyId: pineconeService._id,
         knowledgebase: {
             urls: params.urls,
             exclude: params.exclude,
@@ -75,10 +86,15 @@ async function create(params) {
 
     const newChatbot = await Chatbot.create(newChatbotDetails);
 
+    console.log("here")
+    
+    await trainChatbotQueue.add("trainChatbot", { chatbotId: newChatbot._id})
+
     return newChatbot;
 }
 
 async function trainChatbot(chatbotId) {
+    if (!chatbotId || chatbotId == 'undefined') throw 'Please provide a valid bot id'
     const crawler = new Crawler(chatbotId)
 
     const crawlPages = new Promise(async (resolve, reject) => {
@@ -99,6 +115,7 @@ async function trainChatbot(chatbotId) {
 }
 
 async function getById(id) {
+    if (!id || id == 'undefined') throw 'Please provide a valid bot id'
     const chatbot = await Chatbot.findById(id).select("+chatBotCustomizeData owner visibility status name createdAt updatedAt").lean();
     if (!chatbot) throw 'Chatbot with id "' + id + '"  not found';
 
@@ -110,6 +127,7 @@ async function getById(id) {
 
 async function getByName(name) {
     const ownerId = headers().get('userId');
+    if (!name || name == 'undefined') throw 'Please provide a valid bot name'
     const chatbot = await Chatbot.findOne({ owner: ownerId, name }).lean()
     if (!chatbot) throw 'Chatbot with name "' + name + '"  not found';
     return chatbot
@@ -125,6 +143,7 @@ async function getAllNewBot() {
 }
 
 async function _delete(id) {
+    if (!id || id == 'undefined') throw 'Please provide a valid bot id'
     try {
         const chatbot = await Chatbot.findById(id).lean();
         if (!chatbot) throw `chatbot not found`;
@@ -133,7 +152,7 @@ async function _delete(id) {
         await deletePinconeIndex(chatbot.pIndex)
         await Chatbot.findByIdAndDelete(id)
 
-        return true
+        return { message: "Chatbot deleted"}
     } catch (error) {
         // Handle any errors that occurred during the deletion process
         console.error('Error deleting chatbot:', error);
@@ -142,6 +161,8 @@ async function _delete(id) {
 }
 
 async function updateName(chatbotId, name) {
+    if (!chatbotId || chatbotId == 'undefined') throw 'Please provide a valid bot id'
+
     const chatbotWname = await await Chatbot.findOne({ name });
     if (chatbotWname) throw 'Chatbot with name "' + name + '"  Already exists'
 
@@ -157,6 +178,7 @@ async function updateName(chatbotId, name) {
 
 async function updateModelData(chatbotId, modelData) {
     const ownerId = headers().get('userId');
+    if (!chatbotId || chatbotId == 'undefined') throw 'Please provide a valid bot id'
     const chatbot = await Chatbot.findOne({ owner: ownerId, _id: chatbotId }).select("+chatBotCustomizeData ")
     if (!chatbot) throw 'Your Chatbot with id "' + chatbotId + '" not found';
 
@@ -170,6 +192,7 @@ async function updateModelData(chatbotId, modelData) {
 
 async function updateChatInterface(chatbotId, interfaceData) {
     const ownerId = headers().get('userId');
+    if (!chatbotId || chatbotId == 'undefined') throw 'Please provide a valid bot id'
     const chatbot = await Chatbot.findOne({ owner: ownerId, _id: chatbotId }).select("+chatBotCustomizeData ")
     if (!chatbot) throw 'Your Chatbot with id "' + chatbotId + '" not found';
 
@@ -190,6 +213,7 @@ async function updateChatInterface(chatbotId, interfaceData) {
 
 async function updateSecurityData(chatbotId, securityData) {
     const ownerId = headers().get('userId');
+    if (!chatbotId || chatbotId == 'undefined') throw 'Please provide a valid bot id'
     const chatbot = await Chatbot.findOne({ owner: ownerId, _id: chatbotId }).select("+chatBotCustomizeData visibility rateLimiting")
     if (!chatbot) throw 'Your Chatbot with id "' + chatbotId + '" not found';
 
@@ -211,6 +235,7 @@ async function updateSecurityData(chatbotId, securityData) {
  */
 async function updateLeadInfo(chatbotId, leadInfo) {
     const ownerId = headers().get('userId');
+    if (!chatbotId || chatbotId == 'undefined') throw 'Please provide a valid bot id'
     const chatbot = await Chatbot.findOne({ owner: ownerId, _id: chatbotId }).select("+chatBotCustomizeData ")
     if (!chatbot) throw 'Your Chatbot with id "' + chatbotId + '" not found';
 
@@ -220,13 +245,13 @@ async function updateLeadInfo(chatbotId, leadInfo) {
     chatbot.chatBotCustomizeData.collectPhone = leadInfo.collectPhone;
     await chatbot.save()
 
-    return  { message: "Successfully updated Lead informations" };
+    return { message: "Successfully updated Lead informations" };
 }
 
 
 async function updateKnowledgebase(chatbotId, params) {
     const ownerId = headers().get('userId');
-
+    if (!chatbotId || chatbotId == 'undefined') throw 'Please provide a valid bot id'
     const chatbot = await Chatbot.findOne({ owner: ownerId, _id: chatbotId }).select("+knowledgebase ")
     if (!chatbot) throw 'Your Chatbot with id "' + chatbotId + '" not found';
 

@@ -1,7 +1,6 @@
 import { PDFDocument } from "pdf-lib"; 
 import Docxtemplater  from "docxtemplater";
 import PizZip from "pizzip";
-// import textract from 'textract';
 
 
 // Function to extract text from PDF files

@@ -17,12 +17,13 @@ async function seed(chatbotId) {
   try {
     console.log("Seeding ", chatbotId)
 
-    const chatbot = await Chatbot.findByIdAndUpdate(chatbotId, { status: KnowledgebaseStatus.GENERATING_EMBEDDINGS }).select("+ crawlData knowledgebase pIndex");
+    const chatbot = await Chatbot.findByIdAndUpdate(chatbotId, { status: KnowledgebaseStatus.GENERATING_EMBEDDINGS }).select("+crawlData knowledgebase pIndex owner");
     // console.log(chatbot)
     //TODO: make these dynamic either store in Global or inside each chatbot make editable
     let splittingMethod = "markdown";
     let chunkSize = 2048;
     let chunkOverlap = 20;
+    const owner = await chatbot.owner.toString()
 
     const indexName = chatbot.pIndex;
     const pages = [...chatbot.crawlData.pagesContent, ...chatbot.knowledgebase.contents];
@@ -43,12 +44,12 @@ async function seed(chatbotId) {
     console.log("Generating embeddings for: " + chatbotId)
     const queue = new PQueue({ concurrency: 3 });
     const vectors = await Promise.all(
-      documents.flat().map(doc => queue.add(() => embedDocument(doc)))
+      documents.flat().map(doc => queue.add(() => embedDocument(doc, owner)))
     );
 
     // Upsert vectors into the Pinecone index
     console.log("chunking and upserting")
-    await chunkedUpsert(indexName, vectors, 10);
+    await chunkedUpsert(indexName, vectors, 10, owner);
 
     return await Chatbot.findByIdAndUpdate(chatbotId, { status: KnowledgebaseStatus.READY });
   } catch (error) {
@@ -60,10 +61,11 @@ async function seed(chatbotId) {
   }
 }
 
-async function embedDocument(doc) {
+async function embedDocument(doc, owner) {
+  console.log("embedd owner: ", owner)
   try {
     // Generate OpenAI embeddings for the document content
-    const embedding = await getEmbeddings(doc.pageContent);
+    const embedding = await getEmbeddings(doc.pageContent, owner);
 
     // Create a hash of the document content
     const hash = md5(doc.pageContent);

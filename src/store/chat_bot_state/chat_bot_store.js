@@ -25,10 +25,10 @@ const useFormDataStore = create((set) => ({
   },
   clearFormData: async (botId) => {
     set({ formData: initialState });
-    const response = await fetch(`/api/v1/chatbot/${botId}/train`, {
-      method: "GET",
-    });
-    console.log(await response.json());
+    // const response = await fetch(`/api/v1/chatbot/${botId}/train`, {
+    //   method: "GET",
+    // });
+    // console.log(await response.json());
   },
   addText: (newText) => {
     set((state) => ({

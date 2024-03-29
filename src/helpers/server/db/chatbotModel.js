@@ -73,6 +73,7 @@ export default function chatbotModel() {
     const schema = new Schema({
         knowledgebase: {type: knowledgebase, select: false},
         pIndex: { type: String, required: true, immutable: true },
+        pineconeKeyId: { type: mongoose.Schema.Types.ObjectId, ref: 'Service', select: false, required: true },
         name: { type: String, required: true, unique: true },
         owner: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true, immutable: true },
         visibility: { type: String, enum: ['PRIVATE', 'PUBLIC'], default: 'PRIVATE' },

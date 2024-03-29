@@ -62,7 +62,7 @@ async function getChatResponse(messages, chatbotId) {
     ]
 
     const message = [...prompt, ...messages.filter((msg) => msg.role === 'user')]
-    return await getChatCompletion(message, chatbot.chatBotCustomizeData.model)
+    return await getChatCompletion(message, chatbot.chatBotCustomizeData.model, chatbot.owner)
 }
 
 async function getChatsPerDay(chatbotId) {

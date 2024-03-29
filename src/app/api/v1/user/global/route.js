@@ -14,11 +14,12 @@ async function isGlobalKeysSet() {
 
 //route POST api/v1/user/global
 async function setGlobalKeys(req) {
-    const params = req.json()
+    const params = await req.json()
+    console.log(params)
     return await globalRepo.setGlobalKeys(params);
 }
 
 setGlobalKeys.schema = joi.object({
-    openaiKey: joi.string().email().required(),
+    openaiKey: joi.string().required(),
     pineconeKey: joi.string().required(),
 });

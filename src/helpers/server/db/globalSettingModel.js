@@ -14,7 +14,7 @@ export default function globalModel() {
         name: { type: String, required: true, enum: AppServiceProviders },
         apiKey: hashed,
         meta: mongoose.Schema.Types.Mixed
-    }, { _id: false })
+    })
 
     const schema = new Schema({
         jwt_secret: hashed,

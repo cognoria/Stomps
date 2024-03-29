@@ -10,10 +10,11 @@ export const getOpenaiClient = async (apikey) => {
     return openai
 }
 
-export async function getEmbeddings(input) {
+export async function getEmbeddings(input, owner) {
     try {
-        const apiKey = await globalRepo.getServiceKey(AppServiceProviders.OPENAI)
+        const apiKey = await globalRepo.getServiceKey(AppServiceProviders.OPENAI, owner)
         const embedModel = await globalRepo.getEmbedModel();
+
         const openai = await getOpenaiClient(apiKey)
 
         const embedding = await openai.embeddings.create({
@@ -29,10 +30,11 @@ export async function getEmbeddings(input) {
     }
 }
 
-export async function getChatCompletion(messages, model) {
+export async function getChatCompletion(messages, model, owner) {
     try {
-        const apiKey = await globalRepo.getServiceKey(AppServiceProviders.OPENAI)
+        const apiKey = await globalRepo.getServiceKey(AppServiceProviders.OPENAI, owner)
         const openai = await getOpenaiClient(apiKey)
+        
         const completion = await openai.chat.completions.create({
             messages,
             model,

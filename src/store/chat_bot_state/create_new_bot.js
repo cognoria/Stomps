@@ -14,11 +14,11 @@ const useBotCreationStore = create((set) => ({
         },
         body: JSON.stringify(botData),
       });
+      const data = await response.json();
 
       if (!response.ok) {
-        throw new Error("Failed to create bot");
+        throw new Error(data.message || "An error occurred");
       }
-      const data = await response.json();
       set({ creatingBot: false, loading: false });
       toast.success(data.message);
       return data;

@@ -9,8 +9,8 @@ const sliceIntoChunks = (arr, chunkSize) => {
   );
 };
 
-export const chunkedUpsert = async (index, vectors, chunkSize = 10) => {
-  const apiKey = await globalRepo.getServiceKey(AppServiceProviders.PINECONE)
+export const chunkedUpsert = async (index, vectors, chunkSize = 10, owner) => {
+  const apiKey = await globalRepo.getServiceKey(AppServiceProviders.PINECONE, owner)
   const pinecone = await getPineconeClient(apiKey);
 
   if (!index) throw 'Cannot upsert without Index'
@@ -28,7 +28,7 @@ export const chunkedUpsert = async (index, vectors, chunkSize = 10) => {
           await Index.upsert(chunk);
         } catch (e) {
           console.log('Error upserting chunk', e);
-          // throw e
+          throw new Error(e.message)
         }
       })
     );
