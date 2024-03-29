@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import useFormDataStore from "../../../../store/chat_bot_state/chat_bot_store";
 import useLinkStore from "../../../../store/chat_bot_state/generate_links";
@@ -13,6 +13,8 @@ function Source_Website() {
   const website = useFormDataStore((state) => state.formData.website);
   const sitemap = useFormDataStore((state) => state.formData.sitemap);
   const [error, setError] = useState(null);
+  const [displayedLinks, setDisplayedLinks] = useState([]);
+  const [numDisplayedLinks, setNumDisplayedLinks] = useState(10);
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!website.startsWith("http://") && !website.startsWith("https://")) {
@@ -36,6 +38,18 @@ function Source_Website() {
     const sitemap = e.target.value;
     useFormDataStore.getState().addSitemap(sitemap);
   };
+
+  useEffect(() => {
+    if (include) {
+      setDisplayedLinks(include.slice(0, numDisplayedLinks));
+    }
+  }, [include, numDisplayedLinks]);
+
+  const loadMoreLinks = () => {
+    const nextBatch = include.slice(numDisplayedLinks, numDisplayedLinks + 10);
+    setDisplayedLinks([...displayedLinks, ...nextBatch]);
+    setNumDisplayedLinks(numDisplayedLinks + 10);
+  };
   return (
     <div className="flex flex-col  items-center justify-center w-full">
       <div className="flex mt-[60px] items-center lg:flex-row lg:items-start gap-3 flex-col  justify-center">
@@ -51,13 +65,13 @@ function Source_Website() {
                 </div>
                 <div className="flex w-full flex-col lg:flex-row items-center justify-between gap-2">
                   <input
-                     onChange={handleWebsite}
+                    onChange={handleWebsite}
                     type="text"
-                     value={website}
+                    value={website}
                     className="w-full lg:w-[413px] h-[47px] px-3.5 py-2.5 bg-white rounded shadow border border-zinc-100 justify-start items-center gap-2 inline-flex"
                   />
                   <button
-                     onClick={handleSubmit}
+                    onClick={handleSubmit}
                     className={`h-11 w-full lg:w-fit px-5 py-3    ${
                       !loading ? "bg-sky-700" : "bg-sky-700/20"
                     } rounded-lg shadow border border-sky-700 justify-center items-center gap-2 flex`}
@@ -94,11 +108,11 @@ function Source_Website() {
                   <input
                     value={sitemap}
                     type="text"
-                     onChange={handleSitemap}
+                    onChange={handleSitemap}
                     className="w-full lg:w-[383px] h-[47px] px-3.5 py-2.5 bg-white rounded shadow border border-zinc-100 justify-start items-center gap-2 inline-flex"
                   />
                   <button
-                     onClick={sitemapSubmit}
+                    onClick={sitemapSubmit}
                     className={`h-11 w-full lg:w-fit px-5 py-3 ${
                       loading2 ? "bg-sky-700/20" : "bg-sky-700"
                     }  rounded-lg shadow border border-sky-700 justify-center items-center gap-2 flex`}
@@ -125,9 +139,9 @@ function Source_Website() {
               <div className="flex flex-row  p-5 items-end lg:mt-0 mt-[70px] [mt-50px]  h-auto lg:h-[70%] justify-end">
                 <div className="flex flex-row items-center  gap-x-5 ">
                   <button
-                     onClick={() =>
-                       useFormDataStore.getState().deleteAll(["include", "urls"])
-                     }
+                    onClick={() =>
+                      useFormDataStore.getState().deleteAll(["include", "urls"])
+                    }
                     className="bg-transparent items-center gap-2 flex flex-row"
                   >
                     <img src="/images/chatbox/trash.svg" />
@@ -143,7 +157,7 @@ function Source_Website() {
               {include && (
                 <div className="w-full px-2 mt-[40px]">
                   <ul className="w-full flex-col gap-1 flex">
-                    {include.slice(0, 10).map((link, index) => (
+                    {displayedLinks.map((link, index) => (
                       <li
                         key={index}
                         className="w-full flex flex-row items-center gap-2 justify-between "
@@ -154,9 +168,9 @@ function Source_Website() {
                           </div>
                         </div>
                         <button
-                         onClick={() =>
-                           useFormDataStore.getState().deleteInclude(index)
-                         }
+                          onClick={() =>
+                            useFormDataStore.getState().deleteInclude(index)
+                          }
                         >
                           <img
                             src="/images/chatbox/trash.svg"
@@ -167,6 +181,16 @@ function Source_Website() {
                       </li>
                     ))}
                   </ul>
+                  <div className="w-full flex flex-col items-center justify-center my-4">
+                    {include && include.length > numDisplayedLinks && (
+                      <button
+                        onClick={loadMoreLinks}
+                        className=" rounded-lg p-3 bg-[#1261AC] text-xs text-white"
+                      >
+                        Load More
+                      </button>
+                    )}
+                  </div>
                 </div>
               )}
             </div>

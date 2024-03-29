@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useBotSecuritySettingsStore } from "../../../../store/chat_bot_state/chatbotSettings/settings";
-import Toggle from "../../../customComponents/slider/toggler";
 import useSingleChatbot from "../../../../store/chat_bot_state/single_chat_bot";
+import Toggle from "../../../customComponents/slider/toggler";
 
 function Bot_security({ bot_id }) {
   const { singleChatBot, loading, error, chatbot } = useSingleChatbot(
@@ -35,6 +35,7 @@ function Bot_security({ bot_id }) {
   // });
   // Limit values
 
+  console.log(chatbot?.chatBotCustomizeData?.inputMessage);
   //iframe & widget toggle
   const [toggleChecked, setToggleChecked] = useState(
     chatbot ? chatbot?.chatBotCustomizeData?.allowPublicDomains : false
