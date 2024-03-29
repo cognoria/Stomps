@@ -2,17 +2,14 @@ import { Queue, Worker } from 'bullmq';
 import IORedis from 'ioredis';
 import { chatbotRepo } from './repos';
 
-const QueueConnection = new IORedis({
+const connection = new IORedis({
   url: process.env.REDIS_URI,
   maxRetriesPerRequest: null,
 });
-const WorkerConnection = new IORedis({
-  url: process.env.REDIS_URI,
-  maxRetriesPerRequest: null,
-});
+
 // Create a queue instance
 const trainChatbotQueue = new Queue('trainChatbot', {
-  connection: QueueConnection,
+  connection,
 });
 
 // Create a worker instance
@@ -33,7 +30,7 @@ const worker = new Worker(
     }
   },
   {
-    connection: WorkerConnection
+    connection
   }
 );
 
@@ -47,11 +44,13 @@ worker.on('failed', (job, err) => {
 });
 
 // Start the worker
-(async () => {
-  if (!worker.isRunning()) {
-    await worker.run();
-  }
-  console.log('Worker started');
-})();
+// (async () => {
+//   if (!worker.isRunning()) {
+//     await worker.run();
+//   }
+//   console.log('Worker started');
+// })();
+
+console.log("Worker running: ", worker.isRunning() )
 
 export { trainChatbotQueue };
