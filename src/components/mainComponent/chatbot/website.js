@@ -14,14 +14,20 @@ function Website() {
   const [error, setError] = useState(null);
   const [displayedLinks, setDisplayedLinks] = useState([]);
   const [numDisplayedLinks, setNumDisplayedLinks] = useState(10);
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+
+  useEffect(() => {
     if (!website.startsWith("http://") && !website.startsWith("https://")) {
-      return setError("invalid Url , Must contain http:// or https://");
+      setError("Invalid URL, must contain http:// or https://");
     } else {
       setError(null);
     }
+  }, [website]);
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (error) {
+      return; // Do not submit if there is an error
+    }
     await useLinkStore.getState().fetchLinksAndUpdateInclude(website);
   };
 
