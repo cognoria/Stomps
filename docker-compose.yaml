@@ -8,10 +8,8 @@ services:
       - mongo-data:/data/stomps_db
 
   redis:
-    image: redis
-    restart: always
-    ports:
-      - '6379:6379'
+  image: redis
+  restart: always
 
   app:
     build:

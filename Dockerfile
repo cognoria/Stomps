@@ -17,7 +17,7 @@ COPY . .
 RUN npm run build
 
 #start worker
-# RUN npm run worker #workeer now starts inside of the next app 💫
+RUN npm run worker
 
 # Expose the port for the Next.js app
 EXPOSE 3000
