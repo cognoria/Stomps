@@ -2,9 +2,9 @@
 
 import { useRouter } from "next/navigation";
 import useFormDataStore from "../../../../store/chat_bot_state/chat_bot_store";
-import useBotCreationStore from "../../../../store/chat_bot_state/create_new_bot";
+import { useBotRetrainStore } from "../../../../store/chat_bot_state/chatbotSource/sourceSettings";
 
-export default function Retrain() {
+export default function Retrain({ bot_id }) {
   const formData = useFormDataStore((state) => state.formData);
   const textLength = useFormDataStore((state) => state.getTextLength());
   const includeCount = useFormDataStore((state) => state.getIncludeCount());
@@ -12,7 +12,7 @@ export default function Retrain() {
   const filesCount = useFormDataStore((state) => state.getFilesCount());
   const questionsJSON = JSON.stringify(formData.questions);
 
-  const dataToSend = {
+  const botData = {
     website: formData.website,
     urls: formData.urls,
     include: formData.include,
@@ -27,15 +27,16 @@ export default function Retrain() {
     ],
   };
 
-  const isLoading = useBotCreationStore((state) => state.loading);
+  // console.log(bot_id);
+  const isLoading = useBotRetrainStore((state) => state.loading);
   const router = useRouter();
   async function retrainBot(e) {
     e.preventDefault();
-    console.log(dataToSend);
+    console.log(botData);
     try {
-      const newBot = await useBotCreationStore.getState().createBot(dataToSend);
-      useFormDataStore.getState().clearFormData(newBot._id);
-      router.push(`/bot/${newBot._id}`);
+      await useBotRetrainStore.getState().retrainBot({ botData, bot_id });
+      useFormDataStore.getState().clearFormData(bot_id);
+      router.push(`/bot/${bot_id}`);
     } catch (error) {
       console.error("Failed to create bot:", error);
     }
@@ -75,7 +76,7 @@ export default function Retrain() {
 
       <div className=" w-full  px-3  py-3 justify-center items-center gap-2 flex">
         <button
-          // onClick={retrainBot}
+          onClick={retrainBot}
           className={`text-white py-[16px] px-5 w-full text-sm font-bold font-manrope ${
             isLoading ? "bg-sky-700/20" : "bg-sky-700"
           }  rounded-lg shadow border border-sky-700  text-center leading-snug`}

@@ -1,8 +1,11 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
 
+import DatePicker from "../../../customComponents/datepicker/date";
+import ExportButton from "../../../customComponents/exportButton/exportButton";
+
 function Chat_logs() {
-  const bot = true;
+  const bot = false;
 
   return (
     <div className="w-full ">{bot ? <Filled_bot_state /> : <Empty_bot />}</div>
@@ -28,17 +31,9 @@ const Filled_bot_state = () => {
         <div className="text-gray-900 w-full text-base font-bold p-3 border-gray-200 border-b-[2px] font-manrope leading-snug">
           Chat logs
         </div>
-        <div className="flex flex-row gap-6 w-full p-3 ">
-          <div class="relative">
-            <input
-              type="date"
-              class=" custom-date-input "
-              placeholder="Select a date"
-            />
-          </div>
-        </div>
-        <div className="flex gap-3 p-3 w-full flex-row items-start justify-start">
-          <div className="flex border-[1px]  p-3 flex-col max-w-[40%] items-start justify-start gap-3">
+        <DatePicker />
+        <div className="flex gap-3 p-3 w-full flex-col lg:flex-row items-start justify-start">
+          <div className="flex border-[1px]  p-3 flex-col w-full lg:max-w-[40%] items-start justify-start gap-3">
             <div className="w-full flex flex-row justify-between  text-zinc-500 my-3 text-xs font-normal font-manrope leading-none tracking-tight">
               <div className="w-auto text-right text-zinc-500 text-xs font-normal font-manrope leading-none tracking-tight">
                 User: Tell me about Learnable
@@ -57,7 +52,7 @@ const Filled_bot_state = () => {
               kickstart their careers in the technology industry.
             </div>
           </div>
-          <div className="flex flex-col  items-start justify-start border-gray-200 border-[1px] w-[60%]">
+          <div className="flex flex-col  items-start justify-start border-gray-200 border-[1px] w-full lg:w-[60%]">
             <div
               // ref={chatContainerRef}
               style={{ scrollBehavior: "smooth" }}
@@ -86,7 +81,7 @@ const Filled_bot_state = () => {
                         <div>
                           {" "}
                           <div>
-                            <div className="flex my-2 w-[60%] p-1 rounded-lg bg-sky-50 border-[1px] border-[#1261AC] text-[#1261AC] bg-[] ">
+                            <div className="flex my-2 w-full lg:w-[60%] p-1 rounded-lg bg-sky-50 border-[1px] border-[#1261AC] text-[#1261AC] bg-[] ">
                               Confidence score {message?.confidence_score}
                             </div>
                             {message?.content}
@@ -112,39 +107,33 @@ const Empty_bot = () => {
         <div className="text-gray-900 w-full text-base font-bold p-3 border-gray-200 border-b-[2px] font-manrope leading-snug">
           Chat logs
         </div>
-        <div className="flex w-full flex-col lg:flex-row gap-6 p-3 ">
-          <div class="relative">
-            <input
-              type="date"
-              class="appearance-none py-[10px] lg:py-[20px] border border-gray-300 font-manrope rounded  px-4 w-[100px] lg:w-[150px] leading-tight focus:outline-none focus:border-blue-500"
-              placeholder="Select a date"
-            />
-
-            <img
-              src="/images/chatbox/calendar.svg"
-              alt="Calendar Icon"
-              class="absolute right-0 top-0 hidden lg:block mt-2 mr-3 h-6 w-6 pointer-events-none"
-            />
+        <div className="flex flex-row items-center  p-3 w-full justify-between ">
+          <div className="flex flex-1 w-full h-auto flex-col lg:flex-row gap-6 p-3 ">
+            <DatePicker />
+            <div class="relative  ">
+              <select className="text-zinc-500 h-[40px] text-[15px] lg:text-[18px] font-normal py-[10px]  lg:py-[5px] font-manrope tracking-tight border w-150 lg:w-[250px] appearance-none border-gray-300 rounded pl-16 pr-3 leading-tight focus:outline-none focus:border-blue-500">
+                <option>confidence 1</option>
+                <option>confidence 2</option>
+                <option>confidence 3</option>
+                <option>confidence 4</option>
+              </select>
+              <img
+                src="/images/chatbox/arrow-down.svg"
+                alt="Calendar Icon"
+                class="absolute right-2 hidden lg:block -top-1 mt-4 mr-3 h-4 w-4 pointer-events-none"
+              />
+              <img
+                src="/images/chatbox/filter.svg"
+                alt="Calendar Icon"
+                class="absolute left-3 hidden lg:block -top-1 mt-4 mr-3 h-5 w-5 pointer-events-none"
+              />
+            </div>
           </div>
-          <div class="relative">
-            <select className="text-zinc-500 text-[15px] lg:text-[18px] font-normal py-[10px]  lg:py-[20px] font-manrope tracking-tight border w-150 lg:w-[250px] appearance-none border-gray-300 rounded pl-16 pr-3 leading-tight focus:outline-none focus:border-blue-500">
-              <option>confidence 1</option>
-              <option>confidence 2</option>
-              <option>confidence 3</option>
-              <option>confidence 4</option>
-            </select>
-            <img
-              src="/images/chatbox/arrow-down.svg"
-              alt="Calendar Icon"
-              class="absolute right-1 hidden lg:block top-0 mt-4 mr-3 h-6 w-6 pointer-events-none"
-            />
-            <img
-              src="/images/chatbox/filter.svg"
-              alt="Calendar Icon"
-              class="absolute left-1 hidden lg:block top-0 mt-4 mr-3 h-6 w-6 pointer-events-none"
-            />
+          <div className="flex flex-col flex-1 justify-end flex-end w-full items-end">
+            <ExportButton />
           </div>
         </div>
+
         <div className="w-full gap-4 h-[541px] flex flex-col items-center justify-center">
           <img src="/images/chatbox/chatbox.svg" alt="" className="" />
 

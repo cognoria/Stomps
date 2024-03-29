@@ -119,7 +119,6 @@ export const useBotNameSettingsStore = create((set) => ({
     console.log({ botName, bot_id });
     set({ updatingBotName: true, loading: true, error: null });
     try {
-      console.log("update bot name fetch")
       const response = await fetch(`/api/v1/chatbot/${bot_id}/setting/name`, {
         method: "POST",
         headers: {
@@ -127,7 +126,7 @@ export const useBotNameSettingsStore = create((set) => ({
         },
         body: JSON.stringify(botName),
       });
-      console.log("update bot name fetch")
+      console.log("update bot name fetch");
       if (!response.ok) {
         const data = await response.json();
         console.log(data);

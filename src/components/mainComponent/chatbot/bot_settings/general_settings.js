@@ -39,7 +39,9 @@ function General_settings({ bot_id }) {
     const botName = {
       name: name,
     };
-    updateName({ botName, bot_id });
+    updateName({ botName, bot_id }, async () => {
+      await singleChatBot();
+    });
   };
   //handle update udate name
   return (

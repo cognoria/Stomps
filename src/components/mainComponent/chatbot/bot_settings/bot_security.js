@@ -1,30 +1,45 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useBotSecuritySettingsStore } from "../../../../store/chat_bot_state/chatbotSettings/settings";
+import useSingleChatbot from "../../../../store/chat_bot_state/single_chat_bot";
 import Toggle from "../../../customComponents/slider/toggler";
 
 function Bot_security({ bot_id }) {
+  const { singleChatBot, loading, error, chatbot } = useSingleChatbot(
+    (state) => ({
+      singleChatBot: state.singleChatBot,
+      loading: state.loading,
+      error: state.error,
+      chatbot: state.chatbot,
+    })
+  );
   const { updateSecurity, loadingSecurity, securityError } =
     useBotSecuritySettingsStore((state) => ({
       updateSecurity: state.botSecuritySettings,
       loadingSecurity: state.loading,
       securityError: state.error,
     }));
+  useEffect(() => {
+    singleChatBot(bot_id);
+  }, [bot_id, singleChatBot]);
 
   //limimt values
-  const [inputLimit, setInputLimit] = useState("");
-  const [inputMessage, setInputMessage] = useState("");
-  const handleChange = (e) => {
-    setInputValue(e.target.value);
-  };
-
+  const [inputLimit, setInputLimit] = useState(
+    chatbot ? chatbot?.chatBotCustomizeData?.msgCount : ""
+  );
+  const [inputMessage, setInputMessage] = useState(
+    chatbot ? chatbot?.chatBotCustomizeData?.inputMessage : ""
+  );
   // console.log({
   //   inputLimit,
   //   inputMessage,
   // });
   // Limit values
 
+  console.log(chatbot?.chatBotCustomizeData?.inputMessage);
   //iframe & widget toggle
-  const [toggleChecked, setToggleChecked] = useState(false);
+  const [toggleChecked, setToggleChecked] = useState(
+    chatbot ? chatbot?.chatBotCustomizeData?.allowPublicDomains : false
+  );
   const handleToggleChange = () => {
     setToggleChecked(!toggleChecked);
   };
@@ -33,7 +48,9 @@ function Bot_security({ bot_id }) {
   //iframe & widget toggle
 
   // privacy selection
-  const [selectedPrivacy, setSelectedPrivacy] = useState("");
+  const [selectedPrivacy, setSelectedPrivacy] = useState(
+    chatbot ? chatbot?.chatBotCustomizeData?.visibility : ""
+  );
   const handlePrivacyChange = (event) => {
     setSelectedPrivacy(event.target.value);
   };
@@ -42,7 +59,9 @@ function Bot_security({ bot_id }) {
   //privacy selection
 
   // exceed limit message
-  const [limitMessage, setLimitMessage] = useState("");
+  const [limitMessage, setLimitMessage] = useState(
+    chatbot ? chatbot?.chatBotCustomizeData?.limitMsg : ""
+  );
   // console.log(limitMessage);
   // Exceed limit message
 
@@ -55,12 +74,14 @@ function Bot_security({ bot_id }) {
       allowPublicDomains: toggleChecked,
       rateLimit: {
         limitMsg: limitMessage,
-        msgCount: inputMessage,
-        timeframe: inputLimit,
+        msgCount: inputLimit,
+        timeframe: inputMessage,
       },
     };
 
-    updateSecurity({ bot_id, botSecurityData });
+    updateSecurity({ bot_id, botSecurityData }, async () => {
+      await singleChatBot();
+    });
   };
 
   //security submission
@@ -131,7 +152,7 @@ function Bot_security({ bot_id }) {
               </div>
               <input
                 onChange={(e) => setInputLimit(e.target.value)}
-                style={{ width: `${inputLimit.length * 8 + 55}px` }}
+                style={{ width: `${inputLimit?.length * 8 + 55}px` }}
                 type="number"
                 className="w-[75px] h-[30px] lg:h-[37px] px-3.5 py-2.5 bg-white rounded shadow border border-zinc-100 justify-start items-center"
               />
@@ -144,7 +165,7 @@ function Bot_security({ bot_id }) {
               <input
                 onChange={(e) => setInputMessage(e.target.value)}
                 type="number"
-                style={{ width: `${inputMessage.length * 8 + 55}px` }}
+                style={{ width: `${inputMessage?.length * 8 + 55}px` }}
                 className="w-[75px] max-w-auto h-[30px] lg:h-[37px] px-3.5 py-2.5 bg-white rounded shadow border border-zinc-100 justify-start items-center"
               />
               <div className="text-gray-600 text-xs font-medium font-['Manrope'] leading-none tracking-tight">
@@ -166,8 +187,9 @@ function Bot_security({ bot_id }) {
 
         <div className="w-full p-3 flex-end items-end flex flex-col">
           <button
+            disabled={loadingSecurity}
             onClick={handleSubmitBotSecurity}
-            className="text-white h-11 rounded-lg justify-start items-start  px-5 py-3 bg-sky-700  shadow border border-sky-700  gap-2 "
+            className="text-white h-11 disabled:bg-sky-300 rounded-lg justify-start items-start  px-5 py-3 bg-sky-700  shadow border border-sky-700  gap-2 "
           >
             Save Changes
           </button>

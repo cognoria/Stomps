@@ -57,15 +57,49 @@ function Account() {
         </div>
         <div className="flex w-full flex-col items-start justify-between p-4 ">
           <div className="rounded-lg flex flex-col gap-y-4 lg:flex-row items-start justify-between  border w-full border-gray-200 p-4">
-            <div className="flex flex-row gap-4 mt-2">
-              <div className="w-[287px] text-zinc-800 text-sm font-medium font-['Manrope'] leading-tight tracking-tight">
-                {key}
+            <div className="flex flex-col">
+              <div className="text-zinc-800 text-[10px] mb-2 font-bold font-manrope leading-[14px] tracking-tight">
+                Pinecone Key
               </div>
-              <img
-                src="/images/main/support/eye-slash.svg"
-                className="w-5 h-5"
-              />
+              <div className="flex flex-row gap-4 mt-2">
+                <div className="w-[287px] text-zinc-800 text-sm font-medium font-['Manrope'] leading-tight tracking-tight">
+                  {key}
+                </div>
+                <img
+                  src="/images/main/support/eye-slash.svg"
+                  className="w-5 h-5"
+                />
+              </div>
             </div>
+
+            <div className="flex items-end flex-col justify-end w-full lg:w-auto bg:block">
+              <div className="flex flex-row gap-4 justify-start items-center">
+                <button>
+                  <img src="/images/main/support/_Parent Button Base.svg" />
+                </button>
+                <img src="/images/main/support/trash.svg" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="flex w-full flex-col items-start justify-between p-4 ">
+          <div className="rounded-lg flex flex-col gap-y-4 lg:flex-row items-start justify-between  border w-full border-gray-200 p-4">
+            <div className="flex-col">
+              <div className="text-zinc-800 text-[10px] mb-2 font-bold font-manrope leading-[14px] tracking-tight">
+                OpenAI API Key
+              </div>
+              <div className="flex flex-row gap-4 mt-2">
+                <div className="w-[287px] text-zinc-800 text-sm font-medium font-['Manrope'] leading-tight tracking-tight">
+                  {key}
+                </div>
+                <img
+                  src="/images/main/support/eye-slash.svg"
+                  className="w-5 h-5"
+                />
+              </div>
+            </div>
+
             <div className="flex items-end flex-col justify-end w-full lg:w-auto bg:block">
               <div className="flex flex-row gap-4 justify-start items-center">
                 <button>

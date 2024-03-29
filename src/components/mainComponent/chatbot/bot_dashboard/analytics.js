@@ -1,14 +1,31 @@
-// import Chart_page from "../../../customComponents/chart/chart";
+"use client";
 
-function Analytics() {
-  const analytics = false;
+import { useEffect } from "react";
+import useSingleChatbot from "../../../../store/chat_bot_state/single_chat_bot";
+import { Chart_page } from "../../../customComponents/chart/chart";
+
+function Analytics({ bot_id }) {
+  const analytics = true;
+  const { singleChatBot, loading, error, chatbot } = useSingleChatbot(
+    (state) => ({
+      singleChatBot: state.singleChatBot,
+      loading: state.loading,
+      error: state.error,
+      chatbot: state.chatbot,
+    })
+  );
+
+  console.log(bot_id);
+  useEffect(() => {
+    singleChatBot(bot_id);
+  }, [bot_id, singleChatBot]);
+
+  console.log(chatbot);
   return (
     <div className="flex flex-col w-full items-center overflow-hidden">
-      {/* {analytics ?
-        <Chart_page />
-        : <Empty_state />} */}
+      {analytics ? <Chart_page /> : <Empty_state />}
 
-      <Empty_state />
+      {/* <Empty_state /> */}
     </div>
   );
 }
