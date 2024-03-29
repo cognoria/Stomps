@@ -6,10 +6,12 @@ const QueueConnection = new IORedis({
   url: process.env.REDIS_URI,
   maxRetriesPerRequest: null,
 });
+
 const WorkerConnection = new IORedis({
   url: process.env.REDIS_URI,
   maxRetriesPerRequest: null,
 });
+
 // Create a queue instance
 const trainChatbotQueue = new Queue('trainChatbot', {
   connection: QueueConnection,
