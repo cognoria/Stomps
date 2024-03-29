@@ -25,8 +25,8 @@ services:
     depends_on:
       - mongo
       - redis
-    volumes:
-      - .:/app
+    # volumes:
+    #   - .:/app
     # command: npm run watch
 
 volumes:

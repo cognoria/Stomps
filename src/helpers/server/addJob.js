@@ -1,6 +1,7 @@
 import { Queue, Worker } from 'bullmq';
 import IORedis from 'ioredis';
 import { chatbotRepo } from './repos';
+// import { createClient } from 'redis';
 
 const QueueConnection = new IORedis({
   url: process.env.REDIS_URI,
