@@ -3,13 +3,12 @@ import Redis from 'ioredis';
 import { chatbotRepo } from './repos';
 
 const connection = new Redis({
+  url: process.env.REDIS_URI,
   maxRetriesPerRequest: null
 });
-// console.log(process.env.REDIS_URI)
+
 // Create a queue instance
-const trainChatbotQueue = new Queue('trainChatbot', {
-  connection
-});
+const trainChatbotQueue = new Queue('trainChatbot', connection);
 
 // Create a worker instance
 const worker = new Worker(
@@ -29,8 +28,9 @@ const worker = new Worker(
     }
   },
   {
-    connection,
-  }
+    concurrency: 1
+  },
+  connection
 );
 
 // Handle worker events
