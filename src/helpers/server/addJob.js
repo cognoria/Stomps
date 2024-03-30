@@ -2,13 +2,17 @@ import { Queue, Worker } from 'bullmq';
 import Redis from 'ioredis';
 import { chatbotRepo } from './repos';
 
+const REDIS_URI = process.env.REDIS_URI;
+
 const connection = new Redis({
-  url: process.env.REDIS_URI,
+  url: REDIS_URI,
   maxRetriesPerRequest: null
 });
 
+console.log(REDIS_URI)
+
 // Create a queue instance
-const trainChatbotQueue = new Queue('trainChatbot', connection);
+const trainChatbotQueue = new Queue('trainChatbot', { connection });
 
 // Create a worker instance
 const worker = new Worker(
@@ -28,9 +32,9 @@ const worker = new Worker(
     }
   },
   {
-    concurrency: 1
+    concurrency: 1,
+    connection
   },
-  connection
 );
 
 // Handle worker events

@@ -16,9 +16,6 @@ COPY . .
 # Build the Next.js app
 RUN npm run build
 
-#start worker
-# RUN npm run worker //disabled. in Next worker is working 💫
-
 # Expose the port for the Next.js app
 EXPOSE 3000
 
