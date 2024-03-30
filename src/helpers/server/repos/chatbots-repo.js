@@ -87,8 +87,8 @@ async function create(params) {
     const newChatbot = await Chatbot.create(newChatbotDetails);
 
     console.log("here")
-    
-    await trainChatbotQueue.add("trainChatbot", { chatbotId: newChatbot._id})
+
+    await trainChatbotQueue.add("trainChatbot", { chatbotId: newChatbot._id })
 
     return newChatbot;
 }
@@ -152,7 +152,7 @@ async function _delete(id) {
         await deletePinconeIndex(chatbot.pIndex)
         await Chatbot.findByIdAndDelete(id)
 
-        return { message: "Chatbot deleted"}
+        return { message: "Chatbot deleted" }
     } catch (error) {
         // Handle any errors that occurred during the deletion process
         console.error('Error deleting chatbot:', error);
@@ -284,5 +284,6 @@ async function updateKnowledgebase(chatbotId, params) {
     });
 
     await chatbot.save();
+    await trainChatbotQueue.add("trainChatbot", { chatbotId: chatbot._id })
     return { message: "successfully updated chatbot knowledgebase" };
 }

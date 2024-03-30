@@ -39,7 +39,7 @@ async function authenticate({ email, password }) {
 
     // create a jwt token that is valid for 7 days
     //TODO: JWT_Secret will be created randomly and saved for the user
-    const token = jwt.sign({ sub: user.id }, process.env.JWT_SECRET??'1234567890abcefjhijkl', { expiresIn: '7d' });
+    const token = jwt.sign({ sub: user.id }, process.env.JWT_SECRET, { expiresIn: '7d' });
     // const token = jwt.sign({ sub: user.id }, await globalRepo.getJwtSecret(), { expiresIn: '7d' });
 
     await logUserActivity(user.id, 'User Login', { ip: headers().get('X-Forwarded-For') })

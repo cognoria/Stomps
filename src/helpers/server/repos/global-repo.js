@@ -65,7 +65,7 @@ async function getJwtSecret() {
 
 //this function will check if user has added all providers keys
 async function isKeys() {
-    if (process.env.ALLOW_INDIVIDUAL_KEYS?? true) {
+    if (process.env.ALLOW_INDIVIDUAL_KEYS) {
         const userId = headers().get('userId');
         const user = await Users.findById(userId).select("+services").lean()
         
@@ -131,7 +131,7 @@ async function setGlobalKeys(params) {
     const openaiKeyHash = encrypt(params.openaiKey)
     const pineconeKeyHash = encrypt(params.pineconeKey)
     
-    if (process.env.ALLOW_INDIVIDUAL_KEYS?? true) {
+    if (process.env.ALLOW_INDIVIDUAL_KEYS) {
         const userId = headers().get('userId');
         const user = await Users.findById(userId).select("+services")
 

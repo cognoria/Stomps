@@ -5,13 +5,13 @@ services:
     image: mongo
     restart: always
     volumes:
-      - mongo-data:/data/stomps_db
+      - mongo-data:/data/stompsdb
 
   redis:
     image: redis
     restart: always
-    ports:
-      - '6379:6379'
+    # ports:
+      # - '6370:6370'
 
   app:
     build:
