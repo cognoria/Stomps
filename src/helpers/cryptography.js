@@ -1,6 +1,6 @@
 import crypto from 'crypto';
 
-const SECRET_KEY = process.env.SECERET_KEY;
+const SECRET_KEY = process.env.SECRET_KEY;
 
 export function encrypt(text) {
     if (typeof text !== 'string') {

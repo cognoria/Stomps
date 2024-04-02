@@ -1,6 +1,6 @@
 import { headers } from "next/headers";
 import { decrypt, encrypt } from "../../cryptography";
-import { AppServiceProviders } from "../../enums";
+import { AppServiceProviders, EmbeddingModels } from "../../enums";
 import { db } from "../db";
 
 const Global = db.Global;
@@ -24,7 +24,9 @@ async function getService(provider, owner) {
     } else {
         const globalSettings = await Global.findOne().lean();
         if (!globalSettings) {
-            throw 'Global variables not set yet';
+            await seedGlobalKeys();
+            globalSettings = await Global.findOne().lean();
+            // throw 'Global variables not set yet';
         }
         return globalSettings.services.find(service => service.name === provider);
     }
@@ -68,8 +70,9 @@ async function isKeys() {
     if (process.env.ALLOW_INDIVIDUAL_KEYS) {
         const userId = headers().get('userId');
         const user = await Users.findById(userId).select("+services").lean()
-        
-        if(user.services.length < 1) return false;
+        if (!user) throw "User not found"
+
+        if (user.services.length < 1) return false;
 
         // Iterate through each provider
         for (const provider of Object.values(AppServiceProviders)) {
@@ -107,6 +110,9 @@ async function isKeys() {
 }
 
 async function getEmbedModel() {
+    if (process.env.ALLOW_INDIVIDUAL_KEYS) {
+        return EmbeddingModels.TEXT_ADA
+    }
 
     // there'd be only one Global document
     let globalSettings = await Global.findOne().lean();
@@ -130,12 +136,14 @@ async function setGlobalKeys(params) {
 
     const openaiKeyHash = encrypt(params.openaiKey)
     const pineconeKeyHash = encrypt(params.pineconeKey)
-    
+
     if (process.env.ALLOW_INDIVIDUAL_KEYS) {
         const userId = headers().get('userId');
         const user = await Users.findById(userId).select("+services")
 
         // Check if the service already exists, and update it if it does
+        if (!user) throw "User not found"
+
         const openaiService = user.services?.find(
             (service) => service.name === AppServiceProviders.OPENAI
         );
@@ -174,12 +182,15 @@ async function setGlobalKeys(params) {
         }
 
         await user.save();
-        return {message: "Api keys set successfully"};
+        return { message: "Api keys set successfully" };
     }
 
     // there'd be only one Global document 
     // and it should and be initalized before now.
-    const global = await Global.findOne()
+    let global = await Global.findOne()
+    if (!global) {
+        global = await Global.create({})
+    }
 
     global.services.push({
         name: AppServiceProviders.OPENAI,
@@ -196,8 +207,8 @@ async function setGlobalKeys(params) {
             desc: "pinecone api key"
         }
     })
-    await global.save()        
-    return {message: "Api keys set successfully"};
+    await global.save()
+    return { message: "Api keys set successfully" };
 }
 
 /**
