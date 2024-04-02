@@ -7,11 +7,13 @@ services:
     volumes:
       - mongo-data:/data/stompsdb
 
-  redis:
-    image: redis
-    restart: always
-    ports:
-      - '6370:6370'
+  # redis:
+  #   image: redis
+  #   restart: always
+  #   ports:
+  #     - '6370:6370'
+  #   volumes:
+  #     - redis:/data/stompsdb
 
   app:
     build:
@@ -24,7 +26,8 @@ services:
       - .env
     depends_on:
       - mongo
-      - redis
+      # - redis
 
 volumes:
   mongo-data:
+  # redis:
