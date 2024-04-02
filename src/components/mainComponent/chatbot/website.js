@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import useFormDataStore from "../../../store/chat_bot_state/chat_bot_store";
 import useLinkStore from "../../../store/chat_bot_state/generate_links";
 import useSitemapStore from "../../../store/chat_bot_state/generate_sitemap";
