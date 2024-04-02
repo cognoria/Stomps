@@ -22,7 +22,7 @@ async function getService(provider, owner) {
         const user = await Users.findById(userId).select("+services").lean();
         return user.services.find(service => service.name === provider);
     } else {
-        const globalSettings = await Global.findOne().lean();
+        let globalSettings = await Global.findOne().lean();
         if (!globalSettings) {
             await seedGlobalKeys();
             globalSettings = await Global.findOne().lean();
@@ -72,7 +72,7 @@ async function isKeys() {
         const user = await Users.findById(userId).select("+services").lean()
         if (!user) throw "User not found"
 
-        if (user.services.length < 1) return false;
+        if (user.services?.length < 1) return false;
 
         // Iterate through each provider
         for (const provider of Object.values(AppServiceProviders)) {
