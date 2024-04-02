@@ -10,8 +10,8 @@ services:
   redis:
     image: redis
     restart: always
-    # ports:
-      # - '6370:6370'
+    ports:
+      - '6370:6370'
 
   app:
     build:
@@ -19,7 +19,7 @@ services:
       dockerfile: Dockerfile
     stdin_open: true
     ports:
-      - '3000:3000'
+      - '80:80'
     env_file:
       - .env
     depends_on:
