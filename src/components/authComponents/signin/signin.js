@@ -15,6 +15,12 @@ function Signin_form() {
     loading: state.loading,
     error: state.error,
   }));
+  const onFailure = () => {
+    router.push("/account/add_keys");
+  };
+  const onSuccess = () => {
+    router.push("/");
+  };
   const {
     register,
     handleSubmit,
@@ -23,11 +29,12 @@ function Signin_form() {
   } = useForm({
     resolver: yupResolver(auth_schema),
   });
-  const onSubmit = (data, e) => {
-    e.preventDefault();
-    loginUser(data, () => {
-      router.push("/");
-    });
+  const onSubmit = async (data) => {
+    try {
+      await loginUser(data, onSuccess, onFailure);
+    } catch (error) {
+      console.error("Error during login:", error);
+    }
   };
   const [eye_open, setEye_open] = useState(false);
   return (

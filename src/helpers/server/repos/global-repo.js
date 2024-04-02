@@ -71,7 +71,6 @@ async function isKeys() {
         const userId = headers().get('userId');
         const user = await Users.findById(userId).select("+services").lean()
         if (!user) throw "User not found"
-
         if (user.services?.length < 1) return false;
 
         // Iterate through each provider
@@ -185,7 +184,7 @@ async function setGlobalKeys(params) {
         return { message: "Api keys set successfully" };
     }
 
-    // there'd be only one Global document 
+    // there'd be only one Global document
     // and it should and be initalized before now.
     let global = await Global.findOne()
     if (!global) {

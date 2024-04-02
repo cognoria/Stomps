@@ -16,13 +16,12 @@ function Page() {
     error: state.error,
     chatbots: state.chatbots,
   }));
-  const { userApiKeyCheck, key_loading, key_error, key_val, fetched_key } = useUserApiKey(
+  const { userApiKeyCheck, key_loading, key_error, key_val } = useUserApiKey(
     (state) => ({
       userApiKeyCheck: state.userApiKeyCheck,
       key_loading: state.loading,
       key_error: state.error,
       key_val: state.key_val,
-      fetched_key: state.fetched
     })
   );
 
@@ -32,8 +31,8 @@ function Page() {
   }, []);
 
   useEffect(() => {
-    if (fetched_key && !key_val) router.push("/account/add_keys");
-  }, [key_val, fetched_key, router]);
+    if (!key_val) router.push("/account/add_keys");
+  }, [key_val, router]);
   return (
     <div>
       {key_loading ||
