@@ -1,7 +1,22 @@
 // import Chart_page from "../../../customComponents/chart/chart";
 
-function Analytics() {
+function Analytics({ bot_id }) {
   const analytics = false;
+  const { singleChatBot, loading, error, chatbot } = useSingleChatbot(
+    (state) => ({
+      singleChatBot: state.singleChatBot,
+      loading: state.loading,
+      error: state.error,
+      chatbot: state.chatbot,
+    })
+  );
+
+  console.log(bot_id);
+  useEffect(() => {
+    singleChatBot(bot_id);
+  }, [bot_id, singleChatBot]);
+
+  console.log(chatbot);
   return (
     <div className="flex flex-col w-full items-center overflow-hidden">
       {/* {analytics ?
