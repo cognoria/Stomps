@@ -8,7 +8,7 @@ module.exports = apiHandler({
 //route GET api/v1/data/links
 async function getWebLinks(req) {
   const { type, url } = req.query;
-  console.log(req.query)
+  // console.log(req.query)
   return await websiteRepo.getUrls(type, url);
 }
 
