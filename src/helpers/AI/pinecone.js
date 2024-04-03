@@ -2,11 +2,11 @@ import { Pinecone } from "@pinecone-database/pinecone";
 import { globalRepo } from "../server/repos/global-repo";
 import { AppServiceProviders } from "../enums";
 
-let pinecone = null;
+// let pinecone = null;
 
 export const getPineconeClient = async (apikey) => {
-    if (!pinecone) pinecone = new Pinecone({ apiKey: apikey });
-    return pinecone
+    // if (!pinecone) pinecone = new Pinecone({ apiKey: apikey });
+    return new Pinecone({ apiKey: apikey })
 }
 
 // The function `getMatchesFromEmbeddings` is used to retrieve matches for the given embeddings
@@ -111,7 +111,7 @@ export async function createPinconeIndex(name, type = 'starter', owner) {
                     }
                 });
         }
-        return index;
+        // return index;
     } catch (e) {
         console.log("Error creating pinecone index: ", e)
         if (e.message.includes("FORBIDDEN")) {
