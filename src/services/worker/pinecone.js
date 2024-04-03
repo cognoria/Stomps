@@ -29,7 +29,7 @@ const chunkedUpsert = async (index, vectors, chunkSize = 10) => {
                     await Index.upsert(chunk);
                 } catch (e) {
                     console.log('Error upserting chunk', e);
-                    // throw e
+                    throw e
                 }
             })
         );

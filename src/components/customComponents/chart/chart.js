@@ -1,60 +1,63 @@
-import {
-  CategoryScale,
-  Chart as ChartJS,
-  Filler,
-  Legend,
-  LineElement,
-  LinearScale,
-  PointElement,
-  Title,
-  Tooltip,
-} from "chart.js";
-import { Line } from "react-chartjs-2";
+// // pages/index.js
+// import { useEffect, useState } from "react";
+// import Map from "../map/map";
 
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Title,
-  Tooltip,
-  Legend,
-  Filler
-);
+// function Chart_page() {
+//   const [chartData, setChartData] = useState({});
+//   const [mapData, setMapData] = useState([]);
 
-const options = {
-  responsive: true,
-  plugins: {
-    legend: {
-      position: "top",
-    },
-    title: {
-      display: true,
-      text: "Chart.js Line Chart",
-    },
-  },
-  scales: {
-    x: {
-      type: "category", // Set x-axis scale type to "category"
-      labels: ["January", "February", "March", "April", "May", "June", "July"],
-    },
-  },
-};
+//   useEffect(() => {
+//     fetch("https://api.example.com/chat-data")
+//       .then((res) => res.json())
+//       .then((data) => {
+//         const chartLabels = Object.keys(data);
+//         const chartValues = Object.values(data);
+//         const chartDataset = {
+//           label: "Chat Activity",
+//           data: chartValues,
+//           backgroundColor: "rgba(255, 99, 132, 0.2)",
+//           borderColor: "rgba(255, 99, 132, 1)",
+//           borderWidth: 1,
+//         };
+//         const chartConfig = {
+//           type: "bar",
+//           data: {
+//             labels: chartLabels,
+//             datasets: [chartDataset],
+//           },
+//           options: {
+//             scales: {
+//               y: {
+//                 beginAtZero: true,
+//               },
+//             },
+//           },
+//         };
+//         setChartData(chartConfig);
 
-const data = {
-  datasets: [
-    {
-      label: "Dataset 1",
-      data: [65, 59, 80, 81, 56, 55, 40],
-      borderColor: "rgb(255, 99, 132)",
-      backgroundColor: "#1261AC",
-      fill: true,
-    },
-  ],
-};
+//         // Process map data (adjust according to your data structure)
+//         const mapMarkers = data.map(({ country, value }) => ({
+//           lat: getLocationData(country).latitude,
+//           lng: getLocationData(country).longitude,
+//           value,
+//         }));
+//         setMapData(mapMarkers);
+//       });
+//   }, []);
 
-export function Chart_page() {
+//   return (
+//     <div className="flex flex-col w-full items-center overflow-hidden">
+//       {/* <Chart data={chartData} /> */}
+//       <Map markers={mapData} />
+//     </div>
+//   );
+// }
 
-    
-  return <Line options={options} data={data} />;
-}
+// export default Chart_page;
+
+
+
+
+// const dummy_chart = [
+
+// ]

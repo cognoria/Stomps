@@ -40,7 +40,7 @@ function page({ params: { bot } }) {
           </div>
           <div className="w-full">{renderContent()}</div>
           <div className="flex flex-col w-full items-center justify-center">
-            <Retrain bot_id={bot} />
+            <Retrain />
           </div>
         </div>
       </div>

@@ -1,8 +1,4 @@
-"use client";
-
-import { useEffect } from "react";
-import useSingleChatbot from "../../../../store/chat_bot_state/single_chat_bot";
-import { Chart_page } from "../../../customComponents/chart/chart";
+// import Chart_page from "../../../customComponents/chart/chart";
 
 function Analytics({ bot_id }) {
   const analytics = false;
@@ -23,9 +19,11 @@ function Analytics({ bot_id }) {
   console.log(chatbot);
   return (
     <div className="flex flex-col w-full items-center overflow-hidden">
-      {analytics ? <Chart_page /> : <Empty_state />}
+      {/* {analytics ?
+        <Chart_page />
+        : <Empty_state />} */}
 
-      {/* <Empty_state /> */}
+      <Empty_state />
     </div>
   );
 }

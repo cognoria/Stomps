@@ -28,9 +28,7 @@ function Model_settings({ bot_id }) {
   }, [bot_id, singleChatBot]);
 
   // model selection
-  const [selectedModel, setSelectedModel] = useState(
-    chatbot ? chatbot?.chatBotCustomizeData?.model : chatModelEnum.GPT_3_5
-  );
+  const [selectedModel, setSelectedModel] = useState(chatModelEnum.GPT_3_5);
   const handleModelChange = (event) => {
     setSelectedModel(event.target.value);
   };
@@ -43,9 +41,7 @@ function Model_settings({ bot_id }) {
   // open ai and picone key
 
   //chatbot temprature
-  const [selectedTemperature, setSelectedTemperature] = useState(
-    chatbot ? chatbot?.chatBotCustomizeData?.temparature : 0.0
-  );
+  const [selectedTemperature, setSelectedTemperature] = useState(0.1);
   const handleTemperatureChange = (value) => {
     setSelectedTemperature(value);
   };
@@ -55,7 +51,7 @@ function Model_settings({ bot_id }) {
 
   //model prompt
   const [modelText, setModelText] = useState(
-    chatbot ? chatbot?.chatBotCustomizeData?.prompt : text
+    chatbot ? chatbot?.model?.text : text
   );
   const handleTextChange = (event) => {
     setModelText(event.target.value);
@@ -72,9 +68,7 @@ function Model_settings({ bot_id }) {
       temparature: selectedTemperature,
     };
 
-    updatemodel({ botData, bot_id }, async () => {
-      await singleChatBot();
-    });
+    updatemodel({ botData, bot_id });
   };
 
   // submit handler

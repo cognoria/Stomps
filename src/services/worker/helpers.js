@@ -15,9 +15,9 @@ const sliceIntoChunks = (arr, chunkSize) => {
     );
 };
 
-async function getService(provider) {
-    if (process.env.ALLOW_INDIVIDUAL_KEYS?? true) {
-        const userId = headers().get('userId');
+async function getService(provider, owner) {
+    if (process.env.ALLOW_INDIVIDUAL_KEYS && owner) {
+        const userId =owner;
         const user = await Users.findById(userId).select("+services").lean();
         return user.services.find(service => service.name === provider);
     } else {
@@ -29,8 +29,8 @@ async function getService(provider) {
     }
 }
 
-async function getServiceKey(provider) {
-    const service = await getService(provider);
+async function getServiceKey(provider, owner) {
+    const service = await getService(provider, owner);
     if (!service) {
         throw `You have not added ${provider} keys yet`;
     }

@@ -1,20 +1,20 @@
-import { useState } from "react";
+// import { useState } from "react";
 
 import useFormDataStore from "../../../../store/chat_bot_state/chat_bot_store";
 
 export default function Sources_QA() {
-  const [question, setQuestion] = useState("");
-  const [answer, setAnswer] = useState("");
+  // const [question, setQuestion] = useState("");
+  // const [answer, setAnswer] = useState("");
   const questionList = useFormDataStore((state) => state.formData.questions);
 
-  const addQuestionToEquationStore = async (e) => {
-    e.preventDefault();
-    const newQuestion = { question, answer };
-    if (question && answer != null)
-      await useFormDataStore.getState().addQuestion(newQuestion);
-    await setQuestion("");
-    await setAnswer("");
-  };
+  // const addQuestionToEquationStore = async (e) => {
+  //   e.preventDefault();
+  //   const newQuestion = { question, answer };
+  //   if (question && answer != null)
+  //     await useFormDataStore.getState().addQuestion(newQuestion);
+  //   await setQuestion("");
+  //   await setAnswer("");
+  // };
 
   //did a small move around of your jsx
   //so that button does goes below the page when more Q&A are been applied
@@ -33,8 +33,8 @@ export default function Sources_QA() {
                     Question
                   </div>
                   <input
-                    value={question}
-                    onChange={(e) => setQuestion(e.target.value)}
+                    // value={question}
+                    // onChange={(e) => setQuestion(e.target.value)}
                     className=" w-full h-[40px] p-2 rounded-md border-[1px] border-gray-200"
                   />
                 </div>
@@ -43,8 +43,8 @@ export default function Sources_QA() {
                     Answer
                   </div>
                   <textarea
-                    value={answer}
-                    onChange={(e) => setAnswer(e.target.value)}
+                    // value={answer}
+                    // onChange={(e) => setAnswer(e.target.value)}
                     className="h-[130px] rounded-md w-full border-[1px] p-3 border-gray-200"
                   ></textarea>
                 </div>
@@ -53,9 +53,9 @@ export default function Sources_QA() {
             <div className="h-[20%] p-5 border-gray-200 flex flex-col items-end justify-end">
               <div className="flex flex-row items-center  gap-x-5 ">
                 <button
-                  onClick={() =>
-                    useFormDataStore.getState().deleteAll(["questions"])
-                  }
+                  // onClick={() =>
+                  //   useFormDataStore.getState().deleteAll(["questions"])
+                  // }
                   className="bg-transparent items-center gap-2 flex flex-row"
                 >
                   <img src="/images/chatbox/trash.svg" />
@@ -64,7 +64,7 @@ export default function Sources_QA() {
                   </p>
                 </button>
                 <button
-                  onClick={addQuestionToEquationStore}
+                  // onClick={addQuestionToEquationStore}
                   className=" px-5 py-3 text-[#1261AC] text-xs font-bold font-manrope leading-snug bg-[#EEF8FF] flex items-center justify-center flex-col  rounded-lg"
                 >
                   Add
@@ -88,7 +88,7 @@ export default function Sources_QA() {
                             <input
                               readonly
                               value={items.question}
-                              onChange={(e) => setQuestion(e.target.value)}
+                              // onChange={(e) => setQuestion(e.target.value)}
                               className="px-2 w-full h-[40px] rounded-md border-[1px] border-gray-200"
                             />
                           </div>
@@ -99,7 +99,7 @@ export default function Sources_QA() {
                             <textarea
                               readonly
                               value={items.answer}
-                              onChange={(e) => setAnswer(e.target.value)}
+                              // onChange={(e) => setAnswer(e.target.value)}
                               className="h-[130px] px-2 rounded-md w-full border-[1px] border-gray-200"
                             ></textarea>
                           </div>
@@ -107,9 +107,9 @@ export default function Sources_QA() {
                       </div>
                       <div className="flex flex-row  w-full items-end justify-end">
                         <button
-                          onClick={() =>
-                            useFormDataStore.getState().deleteQuestion(index)
-                          }
+                        // onClick={() =>
+                        //   useFormDataStore.getState().deleteQuestion(index)
+                        // }
                         >
                           <img
                             src="/images/chatbox/trash.svg"
@@ -129,3 +129,5 @@ export default function Sources_QA() {
     </div>
   );
 }
+
+// QA;

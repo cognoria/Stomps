@@ -14,14 +14,14 @@ function page({ params: { bot } }) {
   const renderContent = () => {
     switch (currentPage) {
       case "Leads":
-        return <Leeds bot_id={bot} />;
+        return <Leeds />;
       case "Analytics":
-        return <Analytics bot_id={bot} />;
+        return <Analytics />;
       case "Chat logs":
-        return <Chat_logs bot_id={bot} />;
+        return <Chat_logs />;
 
       default:
-        return <Chat_logs bot_id={bot} />;
+        return <Chat_logs />;
     }
   };
   return (

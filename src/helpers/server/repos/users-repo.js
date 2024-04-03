@@ -39,7 +39,7 @@ async function authenticate({ email, password }) {
 
     // create a jwt token that is valid for 7 days
     //TODO: JWT_Secret will be created randomly and saved for the user
-    const token = jwt.sign({ sub: user.id }, process.env.JWT_SECRET??'1234567890abcefjhijkl', { expiresIn: '7d' });
+    const token = jwt.sign({ sub: user.id }, process.env.JWT_SECRET, { expiresIn: '7d' });
     // const token = jwt.sign({ sub: user.id }, await globalRepo.getJwtSecret(), { expiresIn: '7d' });
 
     await logUserActivity(user.id, 'User Login', { ip: headers().get('X-Forwarded-For') })
@@ -98,8 +98,10 @@ async function create(params) {
     const verifyTokenHash = hashToken(verifyToken)
     await tokenRepo.create(user.id, verifyTokenHash)
 
-    //TODO: change this to use app's root url
-    const verifyBaseUrl = 'https://stomp-ai-app-zkwp.vercel.app/verify'
+    const origin = headers().get("origin")
+    const url = new URL(origin);
+
+    const verifyBaseUrl = `${url}verify`
     // ///TODO: send verifyToken to user email email
     const text = getEmailText('verify');
     const link = `${verifyBaseUrl}/${verifyToken}?email=${params.email}`
@@ -178,7 +180,12 @@ async function resendVerificationEmail(email) {
     await tokenRepo.create(user._id, verifyTokenHash)
 
     //TODO: change this to use app's root url
-    const verifyBaseUrl = 'https://stomp-ai-app-zkwp.vercel.app/verify'
+    // const verifyBaseUrl = 'https://stomp-ai-app-zkwp.vercel.app/verify'
+    
+    const origin = headers().get("origin")
+    const url = new URL(origin);
+
+    const verifyBaseUrl = `${url}verify`
     const text = getEmailText('verify');
     const link = `${verifyBaseUrl}/${verifyToken}/${email}`
     const title = "Stomps Email Verification"
@@ -229,7 +236,12 @@ async function forgetPassword(email) {
     await tokenRepo.create(user._id, resetTokenHash)
 
     //TODO: change this to use app's root url
-    const resetBaseUrl = 'https://stomp-ai-app-zkwp.vercel.app/reset'
+    // const resetBaseUrl = 'https://stomp-ai-app-zkwp.vercel.app/reset'
+    
+    const origin = headers().get("origin")
+    const url = new URL(origin);
+
+    const resetBaseUrl = `${url}verify`
     const text = getEmailText('reset');
     const link = `${resetBaseUrl}/${resetToken}`
     const title = "[Action Required]: Reset Password."

@@ -62,7 +62,6 @@ async function seed(chatbotId) {
 }
 
 async function embedDocument(doc, owner) {
-  console.log("embedd owner: ", owner)
   try {
     // Generate OpenAI embeddings for the document content
     const embedding = await getEmbeddings(doc.pageContent, owner);

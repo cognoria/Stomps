@@ -26,7 +26,7 @@ export function Forget_password_modal({ email }) {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    console.log(email);
+    // console.log(email);
     forgetPassword({ email }, () => {
       setCountdown(59);
     });
