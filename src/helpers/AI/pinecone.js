@@ -91,6 +91,8 @@ export async function createPinconeIndex(name, type = 'starter', owner) {
                     spec: {
                         pod: {
                             environment: 'gcp-starter',
+                            podType: 'p1.x1',
+                            pods: 1
                         }
                     }
                 });
@@ -103,6 +105,8 @@ export async function createPinconeIndex(name, type = 'starter', owner) {
                     spec: {
                         pod: {
                             environment: 'gcp-starter',
+                            podType: 'p1.x1',
+                            pods: 1
                         }
                     }
                 });
