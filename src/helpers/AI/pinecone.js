@@ -46,10 +46,10 @@ export async function getMatchesFromEmbeddings(embeddings, topK, pinconeIndex, n
     }
 }
 
-export async function createPinconeIndex(name, type = 'starter') {
+export async function createPinconeIndex(name, type = 'starter', owner) {
     try {
         // ///TODO: pass apikey
-        const apiKey = await globalRepo.getServiceKey(AppServiceProviders.PINECONE)
+        const apiKey = await globalRepo.getServiceKey(AppServiceProviders.PINECONE, owner)
         const pinecone = await getPineconeClient(apiKey);
 
         let index;

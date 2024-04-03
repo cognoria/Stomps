@@ -67,7 +67,7 @@ async function create(params) {
     const indexName = `${chatbotName}-${generateRandomString(6)}-index`
 
     //create pinecone index
-    await createPinconeIndex(indexName)
+    await createPinconeIndex(indexName, ownerId)
 
     const newChatbotDetails = {
         name: chatbotName,
