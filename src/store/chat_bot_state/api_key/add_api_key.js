@@ -2,6 +2,7 @@
 import { toast } from "react-toastify";
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
+import useUserApiKey from "./api_key_check";
 const useAddApiKeyStore = create(
   devtools((set) => ({
     error: null,
@@ -24,7 +25,7 @@ const useAddApiKeyStore = create(
         set({
           loading: false,
         });
-
+        useUserApiKey.setState({ key_val: true });
         toast.success(data.message, {
           position: "top-right",
           autoClose: 5000,
