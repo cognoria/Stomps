@@ -26,13 +26,15 @@ function Page() {
   );
 
   useEffect(() => {
+   userApiKeyCheck(() => {
+     if (!key_val) {
+       router.push("/account/add_keys");
+     }
+   });
     userChatBot();
-    userApiKeyCheck();
-  }, []);
+  }, [key_val, router, userApiKeyCheck, userChatBot]);
 
-  useEffect(() => {
-    if (!key_val) router.push("/account/add_keys");
-  }, [key_val, router]);
+ 
   return (
     <div>
       {key_loading ||
