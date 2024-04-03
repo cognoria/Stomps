@@ -91,25 +91,21 @@ export async function createPinconeIndex(name, type = 'starter', owner) {
                     spec: {
                         pod: {
                             environment: 'gcp-starter',
-                            podType: 'p1.x1',
-                            pods: 1
                         }
                     }
                 });
 
             default:
-                index = await pinecone.createIndex({
+                return index = await pinecone.createIndex({
                     name,
                     dimension: 1536,
                     metric: 'cosine',
                     spec: {
-                        serverless: {
-                            cloud: 'aws',
-                            region: 'us-west-2'
+                        pod: {
+                            environment: 'gcp-starter',
                         }
                     }
                 });
-                break;
         }
         return index;
     } catch (e) {
