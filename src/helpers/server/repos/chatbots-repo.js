@@ -39,7 +39,8 @@ async function create(params) {
     if (!(await globalRepo.isKeys())) throw 'Please add Api keys first';
 
     // Get the Pinecone service object
-    const pineconeService = await globalRepo.getService(AppServiceProviders.PINECONE);
+    const pineconeService = await globalRepo.getService(AppServiceProviders.PINECONE, ownerId);
+    console.log(pineconeService)
     if (!pineconeService) {
         throw 'Pinecone key not found';
     }
@@ -67,7 +68,7 @@ async function create(params) {
     const indexName = `${chatbotName}-${generateRandomString(6)}-index`
 
     //create pinecone index
-    await createPinconeIndex(indexName, ownerId)
+    await createPinconeIndex(indexName, 'starter', ownerId)
 
     const newChatbotDetails = {
         name: chatbotName,
