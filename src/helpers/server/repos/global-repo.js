@@ -68,8 +68,8 @@ async function isKeys() {
     if (process.env.ALLOW_INDIVIDUAL_KEYS?? true) {
         const userId = headers().get('userId');
         const user = await Users.findById(userId).select("+services").lean()
-        
-        if(user.services.length < 1) return false;
+        if(!user) throw 'User not found'
+        if(user.services?.length < 1) return false;
 
         // Iterate through each provider
         for (const provider of Object.values(AppServiceProviders)) {
@@ -130,7 +130,7 @@ async function setGlobalKeys(params) {
 
     const openaiKeyHash = encrypt(params.openaiKey)
     const pineconeKeyHash = encrypt(params.pineconeKey)
-    
+
     if (process.env.ALLOW_INDIVIDUAL_KEYS?? true) {
         const userId = headers().get('userId');
         const user = await Users.findById(userId).select("+services")
@@ -177,7 +177,7 @@ async function setGlobalKeys(params) {
         return {message: "Api keys set successfully"};
     }
 
-    // there'd be only one Global document 
+    // there'd be only one Global document
     // and it should and be initalized before now.
     const global = await Global.findOne()
 
@@ -196,7 +196,7 @@ async function setGlobalKeys(params) {
             desc: "pinecone api key"
         }
     })
-    await global.save()        
+    await global.save()
     return {message: "Api keys set successfully"};
 }
 

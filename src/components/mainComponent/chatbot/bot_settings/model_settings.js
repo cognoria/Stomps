@@ -142,7 +142,7 @@ function Model_settings({ bot_id }) {
                 using gpt-4-turbo costs 10 message credits.)
               </div>
             </div>
-            <div className="flex-1 w-full flex gap-y-4 p-3 flex-col items-start ">
+            {/* <div className="flex-1 w-full flex gap-y-4 p-3 flex-col items-start ">
               <div className="flex flex-col w-full">
                 <div className="text-zinc-800 text-[10px] mb-2 font-bold font-manrope leading-[14px] tracking-tight">
                   OpenAI API Key
@@ -161,7 +161,7 @@ function Model_settings({ bot_id }) {
                   className="w-full h-[50px] p-3 rounded-md font-manrope active:border-gray-200 border-gray-200 border-[1px]"
                 />
               </div>
-            </div>
+            </div> */}
           </div>
           <div className="w-full gap-y-3 p-3 flex flex-col items-start ">
             <p className="text-zinc-800 text-[10px] font-bold font-manrope leading-[14px] tracking-tight">

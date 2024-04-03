@@ -1,16 +1,18 @@
-// useAuthStore.js
+"use client";
 import { toast } from "react-toastify";
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
+import useUserApiKey from "../chat_bot_state/api_key/api_key_check";
 import { useUserStore } from "./userState";
+
 const useLoginAuthStore = create(
   devtools((set) => ({
     user: null,
     error: null,
-    loading: false, // Add loading state
-    loginUser: async ({ email, password }, onSuccess) => {
+    loading: false,
+    loginUser: async ({ email, password }, onSuccess, onFailure) => {
       // console.log(`store hitted ${email}, ${password}`);
-      set({ loading: true, error: null }); // Start loading and reset any previous errors
+      set({ loading: true, error: null });
       try {
         const response = await fetch("/api/v1/auth/login", {
           method: "POST",
@@ -29,6 +31,12 @@ const useLoginAuthStore = create(
           isLoggedIn: true,
         });
         useUserStore.getState().setUser(data);
+        await useUserApiKey.getState().userApiKeyCheck();
+
+        await useUserApiKey.getState().userApiKeyCheck();
+
+        const { key_val } = useUserApiKey.getState();
+
         toast.success("Login successful!", {
           position: "top-right",
           autoClose: 5000,
@@ -39,7 +47,13 @@ const useLoginAuthStore = create(
           progress: false,
         });
 
-        if (onSuccess) onSuccess();
+        if (!key_val) {
+          onFailure();
+        } else {
+          onSuccess();
+        }
+
+        // if (onSuccess)
       } catch (error) {
         set({ error: error.message, loading: false });
         toast.error(error.message || "Failed to login!");
