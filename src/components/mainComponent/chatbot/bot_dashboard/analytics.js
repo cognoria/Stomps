@@ -1,5 +1,7 @@
 // import Chart_page from "../../../customComponents/chart/chart";
 
+import useSingleChatbot from "../../../../store/chat_bot_state/single_chat_bot";
+
 function Analytics({ bot_id }) {
   const analytics = false;
   const { singleChatBot, loading, error, chatbot } = useSingleChatbot(
