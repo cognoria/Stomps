@@ -86,9 +86,7 @@ async function create(params) {
 
     const newChatbot = await Chatbot.create(newChatbotDetails);
 
-    await trainChatbotQueue.add("trainChatbot", { chatbotId: newChatbot._id }, {
-        delay: 60000
-    })
+    await trainChatbotQueue.add("trainChatbot", { chatbotId: newChatbot._id })
 
     return newChatbot;
 }
