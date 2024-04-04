@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import useFormDataStore from "../../../../store/chat_bot_state/chat_bot_store";
 import useLinkStore from "../../../../store/chat_bot_state/generate_links";
@@ -15,6 +15,7 @@ function Source_Website() {
   const [error, setError] = useState(null);
   const [displayedLinks, setDisplayedLinks] = useState([]);
   const [numDisplayedLinks, setNumDisplayedLinks] = useState(10);
+  
   useEffect(() => {
     if (!website.startsWith("http://") && !website.startsWith("https://")) {
       setError("Invalid URL, must contain http:// or https://");
@@ -67,9 +68,8 @@ function Source_Website() {
                   />
                   <button
                     // onClick={handleSubmit}
-                    className={`h-11 w-full lg:w-fit px-5 py-3    ${
-                      !loading ? "bg-sky-700" : "bg-sky-700/20"
-                    } rounded-lg shadow border border-sky-700 justify-center items-center gap-2 flex`}
+                    className={`h-11 w-full lg:w-fit px-5 py-3    ${!loading ? "bg-sky-700" : "bg-sky-700/20"
+                      } rounded-lg shadow border border-sky-700 justify-center items-center gap-2 flex`}
                   >
                     <p className="text-white text-sm font-bold font-manrope leading-snug">
                       {loading ? "fetching..." : " Fetch link"}
@@ -108,9 +108,8 @@ function Source_Website() {
                   />
                   <button
                     // onClick={sitemapSubmit}
-                    className={`h-11 w-full lg:w-fit px-5 py-3 ${
-                      loading2 ? "bg-sky-700/20" : "bg-sky-700"
-                    }  rounded-lg shadow border border-sky-700 justify-center items-center gap-2 flex`}
+                    className={`h-11 w-full lg:w-fit px-5 py-3 ${loading2 ? "bg-sky-700/20" : "bg-sky-700"
+                      }  rounded-lg shadow border border-sky-700 justify-center items-center gap-2 flex`}
                   >
                     <p className="text-white text-sm font-bold font-manrope leading-snug">
                       {loading2 ? "Loading Sitemap..." : "Load Sitemap"}

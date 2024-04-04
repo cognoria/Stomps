@@ -51,7 +51,6 @@ export async function createPinconeIndex(name, type = 'starter', owner) {
         // ///TODO: pass apikey
         const apiKey = await globalRepo.getServiceKey(AppServiceProviders.PINECONE, owner)
         const pinecone = await getPineconeClient(apiKey);
-        console.log({apiKey})
 
         let index;
 
