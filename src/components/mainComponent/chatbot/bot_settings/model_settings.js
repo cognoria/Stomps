@@ -5,6 +5,7 @@ import useSingleChatbot from "../../../../store/chat_bot_state/single_chat_bot";
 import { formatDate } from "../../../../utils/data_format/date";
 import Temprature_slider from "../../../customComponents/slider/temprature_slider";
 
+
 /* eslint-disable react/no-unescaped-entities */
 function Model_settings({ bot_id }) {
   const { singleChatBot, loading, error, chatbot } = useSingleChatbot(

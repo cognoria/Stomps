@@ -22,7 +22,7 @@ function Main_bot({ chatbots }) {
         {chatbots?.map((item, i) => {
           return (
             <div
-              className="lg:w-[388px] w-full h-[392px] relative bg-white rounded-2xl border border-sky-700"
+              className="lg:w-[385px] w-full h-[392px] relative bg-white rounded-2xl border border-sky-700"
               key={i}
             >
               <Link className=" w-full " href={`/bot/${item._id}`}>

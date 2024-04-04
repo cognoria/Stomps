@@ -28,6 +28,11 @@
     rgb(var(--background-start-rgb));
 } */
 
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
 html {
   scroll-behavior: smooth;
 }
@@ -101,8 +106,6 @@ html {
 .custom-date-input::-webkit-clear-button {
   display: none; /* Hide the default spinner and clear button */
 }
-
-
 
 .circular-list {
   list-style-type: disc;
