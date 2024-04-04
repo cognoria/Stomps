@@ -91,7 +91,7 @@ function Model_settings({ bot_id }) {
             </div>
 
             <textarea
-              value={modelText}
+              value={chatbot?.chatBotCustomizeData.prompt}
               onChange={handleTextChange}
               className="flex flex-col items-start p-3 h-[150px] active:border-gray-300  border-[1px]  border-gray-200 shadow-md w-full"
             ></textarea>
@@ -107,7 +107,7 @@ function Model_settings({ bot_id }) {
                 Model
               </div>
               <select
-                value={selectedModel}
+                value={chatbot?.chatBotCustomizeData.model}
                 onChange={handleModelChange}
                 className="h-[50px] w-full -mt-2 border-[1px] border-gray-200 rounded-md"
               >
@@ -165,7 +165,7 @@ function Model_settings({ bot_id }) {
             <div className="w-full">
               <Temprature_slider
                 height={"h-3"}
-                value={selectedTemperature}
+                value={chatbot?.chatBotCustomizeData.temparature}
                 onChange={handleTemperatureChange}
               />
             </div>
