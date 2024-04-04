@@ -97,7 +97,7 @@ function Bot_security({ bot_id }) {
               Model
             </div>
             <select
-              value={selectedPrivacy}
+              value={selectedPrivacy ? selectedPrivacy : chatbot?.visibility}
               onChange={handlePrivacyChange}
               className="h-[50px] w-full -mt-2 border-[1px] border-gray-200 rounded-md"
             >

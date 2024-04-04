@@ -48,7 +48,7 @@ function Chat_bot_nav({ nav, tag }) {
   };
 
   return (
-    <div style={navbarStyles} className={`flex  flex-col  z-50  w-full`}>
+    <div style={navbarStyles} className={`flex  flex-col    w-full`}>
       {/* desktop nav for chat bot */}
       <div className="lg:flex hidden flex-col gap-2 ">
         {nav.map((items, i) => {
