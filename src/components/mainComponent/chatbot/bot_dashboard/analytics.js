@@ -15,7 +15,6 @@ function Analytics({ bot_id }) {
     })
   );
 
-  // console.log(bot_id);
   useEffect(() => {
     singleChatBot(bot_id);
   }, [bot_id, singleChatBot]);
