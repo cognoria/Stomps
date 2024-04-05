@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import useChatbotSettings from "../../../../store/chatbot/useChatbotSettings";
 import useChatbotStore from "../../../../store/chatbot/useChatbotStore";
+import Image from "next/image";
 
 export default function GeneralSettings({ botId }) {
   const { getChatbot, loading, chatbot } = useChatbotStore((state) => ({
@@ -29,7 +30,7 @@ export default function GeneralSettings({ botId }) {
   //handle update name
   const handleUpdateName = () => {
     const botName = {
-      name: name,
+      name: name.trim(),
     };
     updateBotName({ botName, botId });
   };
@@ -50,7 +51,7 @@ export default function GeneralSettings({ botId }) {
               <div className="text-gray-900 text-sm font-bold font-manrope leading-snug">
                 {chatbot?._id}
               </div>
-              <img src="/images/chatbox/copy.svg" className="w-6 h-6" />
+              <Image width={20} height={20} alt="" src="/images/chatbox/copy.svg" className="w-6 h-6" />
             </div>
           </div>
 
