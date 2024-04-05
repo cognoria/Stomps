@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 
 function EmptyChatbotDisplay() {
@@ -8,7 +9,7 @@ function EmptyChatbotDisplay() {
           ChatBots
         </p>
         <div className="w-full gap-4 bg-[#EEF8FF] h-[541px] flex flex-col items-center justify-center">
-          <img src="/images/chatbox/chatbox.svg" alt="" className="" />
+          <Image src="/images/chatbox/chatbox.svg" width={160} height={160} alt="" className="" />
           <div className="text-zinc-500 mt-5 text-sm font-bold font-manrope leading-tight tracking-tight">
             You haven’t created any chatbots yet.
           </div>

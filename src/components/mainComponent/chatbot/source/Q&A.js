@@ -1,5 +1,6 @@
 // import { useState } from "react";
 
+import Image from "next/image";
 import useFormDataStore from "../../../../store/chatbot/useChatbotSource";
 
 export default function QandA() {
@@ -58,7 +59,7 @@ export default function QandA() {
                   // }
                   className="bg-transparent items-center gap-2 flex flex-row"
                 >
-                  <img src="/images/chatbox/trash.svg" />
+                  <Image width={15} height={15} src="/images/chatbox/trash.svg" alt="" />
                   <p className="text-red-500 text-xs font-bold font-manrope leading-snug">
                     Delete all
                   </p>
@@ -111,7 +112,7 @@ export default function QandA() {
                         //   useFormDataStore.getState().deleteQuestion(index)
                         // }
                         >
-                          <img
+                          <Image width={15} height={15}
                             src="/images/chatbox/trash.svg"
                             alt=""
                             classNAme="w-full h-auto"

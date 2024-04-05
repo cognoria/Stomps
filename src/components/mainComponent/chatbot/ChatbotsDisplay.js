@@ -3,6 +3,7 @@
 import Link from "next/link";
 import useModalStore from "../../../store/modal/modalState";
 import { DeleteBot } from "../../customComponents/modals/dashboardModal/deleteBot";
+import Image from "next/image";
 
 function ChatbotsDisplay({ chatbots }) {
   return (
@@ -27,7 +28,7 @@ function ChatbotsDisplay({ chatbots }) {
             >
               <Link className=" w-full " href={`/bot/${item._id}`}>
                 <div className="h-[65%] w-full z-20  items-center justify-center border-b-[2px] border-[#1261AC]">
-                  <img />
+                  {/* <img /> */}
                 </div>
               </Link>
               <div className="flex flex-col h-[35%] justify-between p-3">
@@ -39,7 +40,7 @@ function ChatbotsDisplay({ chatbots }) {
                     href={`/bot/${item._id}/settings`}
                     className="inline-flex items-center p-3 bg-[#1261AC] rounded-lg gap-3 text-white text-sm font-bold font-['Manrope'] leading-snug"
                   >
-                    <img alt="" src="/images/chatbox/edit.svg" />
+                    <Image width={25} height={25} alt="" src="/images/chatbox/edit.svg" />
                     Edith
                   </Link>
                   <button
@@ -58,7 +59,7 @@ function ChatbotsDisplay({ chatbots }) {
                     }
                     className="inline-flex items-center p-3  rounded-lg gap-3 text-red-500 text-sm font-bold font-['Manrope'] leading-snug"
                   >
-                    <img alt="" src="/images/chatbox/trash.svg" />
+                    <Image width={25} height={25} alt="" src="/images/chatbox/trash.svg" />
                     Delete
                   </button>
                 </div>

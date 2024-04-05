@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import useFormDataStore from "../../../../store/chatbot/useChatbotSource";
 import useLinksStore from "../../../../store/chatbot/useLinksStore";
+import Image from "next/image";
 
 function WebsiteSource() {
   const [error, setError] = useState(null);
@@ -143,7 +144,7 @@ function WebsiteSource() {
                     // }
                     className="bg-transparent items-center gap-2 flex flex-row"
                   >
-                    <img src="/images/chatbox/trash.svg" />
+                    <Image width={15} height={15} alt="" src="/images/chatbox/trash.svg" />
                     <p className="text-red-500 text-xs font-bold font-manrope leading-snug">
                       Delete all
                     </p>
@@ -171,7 +172,7 @@ function WebsiteSource() {
                         //   useFormDataStore.getState().deleteInclude(index)
                         // }
                         >
-                          <img
+                          <Image width={15} height={15}
                             src="/images/chatbox/trash.svg"
                             alt=""
                             classNAme="w-full h-auto"
