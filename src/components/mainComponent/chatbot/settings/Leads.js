@@ -1,33 +1,25 @@
 "use client";
 import { useEffect, useState } from "react";
-import { useBotLeadsSettingsStore } from "../../../../store/chatbot/chatbotSettings/settings";
-import useSingleChatbot from "../../../../store/chatbot/getChatbot";
+import useChatbotSettings from "../../../../store/chatbot/useChatbotSettings";
 import Toggle from "../../../customComponents/slider/toggler";
+import useChatbotStore from "../../../../store/chatbot/useChatbotStore";
 
 function LeadsSettings({ botId }) {
-  const { singleChatBot, loading, error, chatbot } = useSingleChatbot(
-    (state) => ({
-      singleChatBot: state.singleChatBot,
-      loading: state.loading,
-      error: state.error,
-      chatbot: state.chatbot,
-    })
-  );
-  const { updateLeads, loadingLeads, leadsError } = useBotLeadsSettingsStore(
-    (state) => ({
-      updateLeads: state.botLeadsSettings,
-      loadingLeads: state.loading,
-      LeadsError: state.error,
-    })
-  );
+  const { getChatbot, loading, chatbot } = useChatbotStore((state) => ({
+    getChatbot: state.getChatbot,
+    loading: state.loading
+  }))
+
+  const { updateLeadsSettings, updatingLeadsSettings } = useChatbotSettings((state) => ({
+    updateLeadsSettings: state.updateLeadsSettings,
+    updatingLeadsSettings: state.updatingLeadsSettings,
+  }));
 
   useEffect(() => {
-    singleChatBot(botId);
-  }, [botId, singleChatBot]);
+    getChatbot(botId);
+  }, [botId, getChatbot]);
 
-  console.log(chatbot);
   //title value
-
   const [title, setTitle] = useState("");
   //title value
 
@@ -56,7 +48,6 @@ function LeadsSettings({ botId }) {
   const handlePhoneToggleChange = () => {
     setPhoneToggle(!phoneToggle);
   };
-
   //phone number
 
   // handle lead submission
@@ -68,16 +59,16 @@ function LeadsSettings({ botId }) {
       collectEmail: emailToggle,
       collectPhone: phoneToggle,
     };
-    updateLeads(
-      {
-        botLeadsData,
-        botId,
-      },
+    updateLeadsSettings({
+      botLeadsData,
+      botId,
+    },
       async () => {
-        await singleChatBot();
+        await getChatbot(botId);
       }
     );
   };
+
   // handle lead submission
   return (
     <div className="w-full px-3 lg:p-[6%]  flex flex-col items-center justify-center ">
@@ -129,7 +120,7 @@ function LeadsSettings({ botId }) {
 
         <div className="w-full p-3 flex-end items-end flex flex-col">
           <button
-            disabled={loadingLeads}
+            disabled={updatingLeadsSettings}
             onClick={handleSubmitBotSecurity}
             className="text-white h-11 disabled:bg-sky-300 rounded-lg justify-start items-start  px-5 py-3 bg-sky-700  shadow border border-sky-700  gap-2 "
           >

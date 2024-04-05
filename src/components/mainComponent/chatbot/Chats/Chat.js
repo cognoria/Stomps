@@ -4,26 +4,22 @@ import { useEffect, useRef, useState } from "react";
 
 import { remark } from "remark";
 import remarkHTML from "remark-html";
-import useBotMessagingStore from "../../../../store/chatbot/messaging";
-import useSingleChatbot from "../../../../store/chatbot/getChatbot";
+import useBotMessagingStore from "../../../../store/chatbot/useChatbotMessaging";
 import { formatDate } from "../../../../utils/data_format/date";
 import Temprature_slider from "../../../customComponents/slider/temprature_slider";
+import useChatbotStore from "../../../../store/chatbot/useChatbotStore";
 
 
 function ChatPage({ botId }) {
-  const { singleChatBot, loading, error, chatbot } = useSingleChatbot(
-    (state) => ({
-      singleChatBot: state.singleChatBot,
-      loading: state.loading,
-      error: state.error,
-      chatbot: state.chatbot,
-    })
-  );
+  const { getChatbot, loading, chatbot } = useChatbotStore((state) => ({
+    getChatbot: state.getChatbot,
+    loading: state.loading
+  }))
 
   useEffect(() => {
     const interval = setInterval(async () => {
       try {
-        const data = await singleChatBot(botId);
+        const data = await getChatbot(botId);
         if (data.chatbot.status === "READY") {
           clearInterval(interval);
         }
@@ -33,7 +29,7 @@ function ChatPage({ botId }) {
     }, 10000);
 
     return () => clearInterval(interval);
-  }, [botId, singleChatBot]);
+  }, [botId, getChatbot]);
 
   function getStatusColor(status) {
     switch (status) {
@@ -81,13 +77,12 @@ function ChatPage({ botId }) {
                 </div>
                 <div className="flex flex-row w-full gap-1 items-center">
                   <div
-                    className={`w-3 h-3 ${
-                      getStatusColor(chatbot?.status) === "green"
+                    className={`w-3 h-3 ${getStatusColor(chatbot?.status) === "green"
                         ? "bg-emerald-500"
                         : getStatusColor(chatbot?.status) === "red"
-                        ? "bg-red-500"
-                        : "bg-yellow-500"
-                    } rounded-full`}
+                          ? "bg-red-500"
+                          : "bg-yellow-500"
+                      } rounded-full`}
                   />
                   <div className="text-gray-900 text-sm font-bold font-manrope leading-snug">
                     {chatbot?.status}
@@ -139,10 +134,8 @@ function ChatPage({ botId }) {
               <div className="w-[70%] my-3">
                 <Temprature_slider
                   height={"h-2"}
-                  value={
-                    chatbot ? chatbot?.chatBotCustomizeData?.temparature : 0.0
-                  }
-                  // onChange={() => {}}
+                  value={chatbot?.chatBotCustomizeData?.temparature}
+                // onChange={() => {}}
                 />
               </div>
             </div>
@@ -219,11 +212,10 @@ function Chat({ id, status }) {
         {chatMessages.map((message, index) => (
           <div
             key={index}
-            className={`w-full h-auto flex flex-col ${
-              message?.role === "user"
+            className={`w-full h-auto flex flex-col ${message?.role === "user"
                 ? "justify-end items-end "
                 : " justify-start"
-            } `}
+              } `}
           >
             <div className="max-w-[70%] h-auto px-[15px] items-start py-[11px] bg-zinc-100 rounded-tl rounded-tr rounded-br border justify-center  flex-col flex">
               <div className="text-stone-900 text-start text-sm font-normal font-manrope leading-snug">

@@ -4,7 +4,7 @@
 
 import { useEffect, useState } from "react";
 import { useUserStore } from "../../store/auth/userState";
-import bot_nav from "../../store/chatbot/chatbot_state";
+import useSourceNav from "../../store/chatbot/useSourceNav";
 
 function Chat_bot_nav({ nav, tag }) {
   const [expanded, setExpanded] = useState(false);
@@ -17,8 +17,8 @@ function Chat_bot_nav({ nav, tag }) {
   // const { user } = useLoginAuthStore((state) => ({
   //   user: state.user,
   // }));
-  const setCurrentPage = bot_nav((state) => state.setCurrentPage);
-  const currentPage = bot_nav((state) => state.currentPage);
+  const setCurrentPage = useSourceNav((state) => state.setCurrentPage);
+  const currentPage = useSourceNav((state) => state.currentPage);
   const user = useUserStore((state) => state.user);
 
   useEffect(() => {

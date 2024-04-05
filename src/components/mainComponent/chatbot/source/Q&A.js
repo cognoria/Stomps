@@ -1,6 +1,6 @@
 // import { useState } from "react";
 
-import useFormDataStore from "../../../../store/chatbot/chatbotSource";
+import useFormDataStore from "../../../../store/chatbot/useChatbotSource";
 
 export default function QandA() {
   // const [question, setQuestion] = useState("");

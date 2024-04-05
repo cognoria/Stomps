@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import useKeysStore from "../../../../store/chatbot/keys";
+import useKeysStore from "../../../../store/chatbot/useKeysStore";
 
 export default function AddKeys() {
   const router = useRouter()

@@ -1,25 +1,12 @@
 "use client";
 
 import { useEffect } from "react";
-import useSingleChatbot from "../../../../store/chatbot/getChatbot";
 import { Chart_page } from "../../../customComponents/chart/chart";
 
 function Analytics({ botId }) {
   const analytics = false;
-  const { singleChatBot, loading, error, chatbot } = useSingleChatbot(
-    (state) => ({
-      singleChatBot: state.singleChatBot,
-      loading: state.loading,
-      error: state.error,
-      chatbot: state.chatbot,
-    })
-  );
 
-  useEffect(() => {
-    singleChatBot(botId);
-  }, [botId, singleChatBot]);
-
-  // console.log(chatbot);
+  //TODO: call the analytics endpoint.
   return (
     <div className="flex flex-col w-full items-center overflow-hidden">
       {analytics ? <Chart_page /> : <Empty_state />}

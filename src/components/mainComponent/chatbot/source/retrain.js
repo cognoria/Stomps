@@ -1,8 +1,8 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import useFormDataStore from "../../../../store/chatbot/chatbotSource";
-import useBotCreationStore from "../../../../store/chatbot/createBot";
+import useFormDataStore from "../../../../store/chatbot/useChatbotSource";
+import useChatbotSettings from "../../../../store/chatbot/useChatbotSettings";
 
 export default function Retrain() {
   const formData = useFormDataStore((state) => state.formData);
@@ -27,13 +27,18 @@ export default function Retrain() {
     ],
   };
 
-  const isLoading = useBotCreationStore((state) => state.loading);
+  const { updateKnowledgebase, updatingKnowledgebase } = useChatbotSettings((state) => ({
+    updateLeadsSettings: state.updateKnowledgebase,
+    updatingKnowledgebase: state.updatingKnowledgebase,
+  }));
+  
   const router = useRouter();
+
   async function retrainBot(e) {
     e.preventDefault();
     console.log(dataToSend);
     try {
-      const newBot = await useBotCreationStore.getState().createBot(dataToSend);
+      const newBot = await updateKnowledgebase(dataToSend);
       useFormDataStore.getState().clearFormData(newBot._id);
       router.push(`/bot/${newBot._id}`);
     } catch (error) {
@@ -77,10 +82,10 @@ export default function Retrain() {
         <button
           // onClick={retrainBot}
           className={`text-white py-[16px] px-5 w-full text-sm font-bold font-manrope ${
-            isLoading ? "bg-sky-700/20" : "bg-sky-700"
+            updatingKnowledgebase ? "bg-sky-700/20" : "bg-sky-700"
           }  rounded-lg shadow border border-sky-700  text-center leading-snug`}
         >
-          {isLoading ? "Retraining Bot..." : "Retrain Chatbot"}
+          {updatingKnowledgebase ? "Retraining Bot..." : "Retrain Chatbot"}
         </button>
       </div>
     </div>

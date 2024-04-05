@@ -5,11 +5,11 @@ import Chat_logs from "../../../../../../../components/mainComponent/chatbot/das
 import Leeds from "../../../../../../../components/mainComponent/chatbot/dashboard/leeds";
 
 import Chat_bot_nav from "../../../../../../../components/navigation/chatbot_nav";
-import bot_nav from "../../../../../../../store/chatbot/chatbot_state";
+import useSourceNav from "../../../../../../../store/chatbot/useSourceNav";
 
-function page({ params: { bot } }) {
+function Page({ params: { bot } }) {
   // console.log(bot);
-  const currentPage = bot_nav((state) => state.currentPage);
+  const currentPage = useSourceNav((state) => state.currentPage);
 
   const renderContent = () => {
     switch (currentPage) {

@@ -1,47 +1,40 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useBotNameSettingsStore } from "../../../../store/chatbot/chatbotSettings/settings";
-import useSingleChatbot from "../../../../store/chatbot/getChatbot";
+import useChatbotSettings from "../../../../store/chatbot/useChatbotSettings";
+import useChatbotStore from "../../../../store/chatbot/useChatbotStore";
 
 export default function GeneralSettings({ botId }) {
-  const { singleChatBot, loading, error, chatbot } = useSingleChatbot(
-    (state) => ({
-      singleChatBot: state.singleChatBot,
-      loading: state.loading,
-      error: state.error,
-      chatbot: state.chatbot,
-    })
-  );
+  const { getChatbot, loading, chatbot } = useChatbotStore((state) => ({
+    getChatbot: state.getChatbot,
+    loading: state.loading
+  }))
 
   console.log(chatbot);
-  const { updateName, loadingName, nameError } = useBotNameSettingsStore(
+  const { updateBotName, loadingName } = useChatbotSettings(
     (state) => ({
-      updateName: state.botName,
-      loadingName: state.loading,
-      nameError: state.error,
+      updateBotName: state.updateBotName,
+      loadingName: state.updatingBotName,
     })
   );
 
   useEffect(() => {
-    singleChatBot(botId);
-  }, [botId, singleChatBot]);
+    getChatbot(botId);
+  }, [botId, getChatbot]);
 
   // chatbot name
-
   const [name, setName] = useState(chatbot ? chatbot?.name : "");
-
   // chatbot name
 
   //handle update name
-
   const handleUpdateName = () => {
     const botName = {
       name: name,
     };
-    updateName({ botName, botId });
+    updateBotName({ botName, botId });
   };
   //handle update udate name
+
   return (
     <div className="w-full px-3 lg:p-[6%]  flex flex-col items-center justify-center ">
       <div className="flex w-full flex-col items-center  justify-center border-gray-200 border-[1px] gap-4 rounded-md ">

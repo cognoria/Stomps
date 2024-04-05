@@ -1,26 +1,22 @@
 import { useEffect, useState } from "react";
-import { useBotSecuritySettingsStore } from "../../../../store/chatbot/chatbotSettings/settings";
-import useSingleChatbot from "../../../../store/chatbot/getChatbot";
+import useChatbotSettings from "../../../../store/chatbot/useChatbotSettings";
 import Toggle from "../../../customComponents/slider/toggler";
+import useChatbotStore from "../../../../store/chatbot/useChatbotStore";
 
 function SecuritySettings({ botId }) {
-  const { singleChatBot, loading, error, chatbot } = useSingleChatbot(
-    (state) => ({
-      singleChatBot: state.singleChatBot,
-      loading: state.loading,
-      error: state.error,
-      chatbot: state.chatbot,
-    })
-  );
-  const { updateSecurity, loadingSecurity, securityError } =
-    useBotSecuritySettingsStore((state) => ({
-      updateSecurity: state.botSecuritySettings,
-      loadingSecurity: state.loading,
-      securityError: state.error,
-    }));
+  const { getChatbot, loading, chatbot } = useChatbotStore((state) => ({
+    getChatbot: state.getChatbot,
+    loading: state.loading
+  }))
+  
+  const { updateSecuritySettings, updatingSecuritySettings } = useChatbotSettings((state) => ({
+    updateSecuritySettings: state.updateSecuritySettings,
+    updatingSecuritySettings: state.updatingSecuritySettings,
+  }));
+
   useEffect(() => {
-    singleChatBot(botId);
-  }, [botId, singleChatBot]);
+    getChatbot(botId);
+  }, [botId, getChatbot]);
 
   //limimt values
   const [inputLimit, setInputLimit] = useState(
@@ -29,10 +25,6 @@ function SecuritySettings({ botId }) {
   const [inputMessage, setInputMessage] = useState(
     chatbot ? chatbot?.chatBotCustomizeData?.inputMessage : ""
   );
-  // console.log({
-  //   inputLimit,
-  //   inputMessage,
-  // });
   // Limit values
 
   console.log(chatbot?.chatBotCustomizeData?.inputMessage);
@@ -79,8 +71,8 @@ function SecuritySettings({ botId }) {
       },
     };
 
-    updateSecurity({ botId, botSecurityData }, async () => {
-      await singleChatBot();
+    updateSecuritySettings({ botId, botSecurityData }, async () => {
+      await getChatbot(botId);
     });
   };
 

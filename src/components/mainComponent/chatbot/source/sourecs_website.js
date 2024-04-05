@@ -1,21 +1,26 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import useFormDataStore from "../../../../store/chatbot/useChatbotSource";
+import useLinksStore from "../../../../store/chatbot/useLinksStore";
 
-import useFormDataStore from "../../../../store/chatbot/chatbotSource";
-import useLinkStore from "../../../../store/chatbot/getLinksFromLink";
-import useSitemapStore from "../../../../store/chatbot/getLinksFromSitemap";
-
-function Source_Website() {
-  const loading = useLinkStore((state) => state.loading);
-  const loading2 = useSitemapStore((state) => state.loading);
-  const include = useFormDataStore((state) => state.formData.include);
-  const website = useFormDataStore((state) => state.formData.website);
-  const sitemap = useFormDataStore((state) => state.formData.sitemap);
+function WebsiteSource() {
   const [error, setError] = useState(null);
   const [displayedLinks, setDisplayedLinks] = useState([]);
   const [numDisplayedLinks, setNumDisplayedLinks] = useState(10);
   
+  const {sitemap, website, include} = useFormDataStore((state) => ({
+    sitemap: state.formData.sitemap,
+    website: state.formData.website,
+    include: state.formData.include,
+  }))
+
+  const {fetchSitemapAndUpdateInclude, fetchLinksAndUpdateInclude, loading} = useLinksStore((state)  =>({
+    fetchSitemapAndUpdateInclude: state.fetchSitemapAndUpdateInclude,
+    fetchLinksAndUpdateInclude: state.fetchLinksAndUpdateInclude,
+    loading: state.loading
+  }))
+
   useEffect(() => {
     if (!website.startsWith("http://") && !website.startsWith("https://")) {
       setError("Invalid URL, must contain http:// or https://");
@@ -29,12 +34,12 @@ function Source_Website() {
     if (error) {
       return; // Do not submit if there is an error
     }
-    await useLinkStore.getState().fetchLinksAndUpdateInclude(website);
+    await fetchLinksAndUpdateInclude(website);
   };
 
   const sitemapSubmit = async (e) => {
     e.preventDefault();
-    await useSitemapStore.getState().fetchSitemapAndUpdateInclude(sitemap);
+    await fetchSitemapAndUpdateInclude(sitemap);
   };
 
   const handleWebsite = (e) => {
@@ -108,11 +113,11 @@ function Source_Website() {
                   />
                   <button
                     // onClick={sitemapSubmit}
-                    className={`h-11 w-full lg:w-fit px-5 py-3 ${loading2 ? "bg-sky-700/20" : "bg-sky-700"
+                    className={`h-11 w-full lg:w-fit px-5 py-3 ${loading ? "bg-sky-700/20" : "bg-sky-700"
                       }  rounded-lg shadow border border-sky-700 justify-center items-center gap-2 flex`}
                   >
                     <p className="text-white text-sm font-bold font-manrope leading-snug">
-                      {loading2 ? "Loading Sitemap..." : "Load Sitemap"}
+                      {loading ? "Loading Sitemap..." : "Load Sitemap"}
                     </p>
                   </button>
                 </div>
@@ -185,4 +190,4 @@ function Source_Website() {
   );
 }
 
-export default Source_Website;
+export default WebsiteSource;

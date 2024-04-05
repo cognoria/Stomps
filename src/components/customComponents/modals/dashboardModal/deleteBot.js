@@ -1,18 +1,22 @@
-import useDeleteChatbot from "../../../../store/chatbot/deleteBot";
-import useUserChatbot from "../../../../store/chatbot/getChatbots";
+
 import useModalStore from "../../../../store/modal/modalState";
+import useChatbotStore from "../../../../store/chatbot/useChatbotStore";
 
 export function DeleteBot({ text, button_name, id }) {
   const hideModal = useModalStore((state) => state.hideModal);
-  const userChatBot = useUserChatbot((state) => state.userChatBot);
-  const deleteChatBot = useDeleteChatbot((state) => state.deleteChatBot);
-  const deleting = useDeleteChatbot((state) => state.loading);
+
+  const { deleteChatBot, deletingChatbot, getUserChatBots } = useChatbotStore((state) => ({
+    getUserChatBots: state.getUserChatBots,
+    deleteChatBot: state.deleteChatBot,
+    deletingChatbot: state.loading
+  }))
+
 
   const delete_bot = async (id) => {
     try {
       await deleteChatBot(id, async () => {
-        await userChatBot();
         await hideModal();
+        await getUserChatBots();
       });
     } catch (error) {
       await hideModal();
@@ -49,13 +53,12 @@ export function DeleteBot({ text, button_name, id }) {
         <div className="self-stretch rounded-lg justify-start items-start inline-flex">
           <div className="grow shrink basis-0 h-10 px-4 py-2.5 rounded-lg shadow border border-red-600 justify-center items-center gap-2 flex">
             <button
-              disabled={deleting}
+              disabled={deletingChatbot}
               onClick={() => delete_bot(id)}
-              className={`grow shrink basis-0 text-center ${
-                deleting ? "" : ""
-              }  text-red-600 text-sm font-bold font-['Manrope'] leading-snug`}
+              className={`grow shrink basis-0 text-center ${deletingChatbot ? "" : ""
+                }  text-red-600 text-sm font-bold font-['Manrope'] leading-snug`}
             >
-              {deleting ? "deleting" : button_name}
+              {deletingChatbot ? "deleting" : button_name}
             </button>
           </div>
         </div>

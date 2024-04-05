@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import useFormDataStore from "../../../store/chatbot/chatbotSource";
+import useFormDataStore from "../../../store/chatbot/useChatbotSource";
 
 function Text() {
   const [textInput, setTextInput] = useState("");

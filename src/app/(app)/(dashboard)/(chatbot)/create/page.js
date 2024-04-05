@@ -6,10 +6,10 @@ import Sources from "../../../../../components/mainComponent/chatbot/sources";
 import Text from "../../../../../components/mainComponent/chatbot/text";
 import Website from "../../../../../components/mainComponent/chatbot/website";
 import Chat_bot_nav from "../../../../../components/navigation/chatbot_nav";
-import bot_nav from "../../../../../store/chatbot/chatbot_state";
+import useSourceNav from "../../../../../store/chatbot/useSourceNav";
 
 function Page() {
-  const currentPage = bot_nav((state) => state.currentPage);
+  const currentPage = useSourceNav((state) => state.currentPage);
 
   const renderContent = () => {
     switch (currentPage) {

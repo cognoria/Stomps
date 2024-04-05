@@ -4,9 +4,9 @@ import Retrain from "../../../../../../../components/mainComponent/chatbot/sourc
 import QandA from "../../../../../../../components/mainComponent/chatbot/source/Q&A";
 import DataSource from "../../../../../../../components/mainComponent/chatbot/source/dataSource";
 import Source_Text from "../../../../../../../components/mainComponent/chatbot/source/sources_text";
-import Source_Website from "../../../../../../../components/mainComponent/chatbot/source/sourecs_website";
+import WebsiteSource from "../../../../../../../components/mainComponent/chatbot/source/sourecs_website";
 import Chat_bot_nav from "../../../../../../../components/navigation/chatbot_nav";
-import bot_nav from "../../../../../../../store/chatbot/chatbot_state";
+import bot_nav from "../../../../../../../store/chatbot/useSourceNav";
 
 function page({ params: { bot } }) {
   // console.log(bot);
@@ -19,7 +19,7 @@ function page({ params: { bot } }) {
       case "Text":
         return <Source_Text />;
       case "Website":
-        return <Source_Website />;
+        return <WebsiteSource />;
       case "Q & A":
         return <QandA />;
       default:

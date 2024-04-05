@@ -1,32 +1,27 @@
 import { useEffect, useState } from "react";
 import { chatModelEnum } from "../../../../helpers/enums";
-import { useBotModelStore } from "../../../../store/chatbot/chatbotSettings/settings";
-import useSingleChatbot from "../../../../store/chatbot/getChatbot";
 import { formatDate } from "../../../../utils/data_format/date";
 import Temprature_slider from "../../../customComponents/slider/temprature_slider";
-
+import useChatbotSettings from "../../../../store/chatbot/useChatbotSettings"
+import useChatbotStore from "../../../../store/chatbot/useChatbotStore";
 
 /* eslint-disable react/no-unescaped-entities */
 function ModelSettings({ botId }) {
-  const { singleChatBot, loading, error, chatbot } = useSingleChatbot(
+  const { getChatbot, loading, chatbot } = useChatbotStore((state) => ({
+    getChatbot: state.getChatbot,
+    loading: state.loading
+  }))
+
+  const { updateModel, updatingModel } = useChatbotSettings(
     (state) => ({
-      singleChatBot: state.singleChatBot,
-      loading: state.loading,
-      error: state.error,
-      chatbot: state.chatbot,
-    })
-  );
-  const { updatemodel, loading_model, model_error } = useBotModelStore(
-    (state) => ({
-      updatemodel: state.botModel,
-      loading_model: state.loading,
-      model_error: state.error,
+      updateModel: state.updateModel,
+      updatingModel: state.updatingModel,
     })
   );
 
   useEffect(() => {
-    singleChatBot(botId);
-  }, [botId, singleChatBot]);
+    getChatbot(botId);
+  }, [botId, getChatbot]);
 
   // model selection
   const [selectedModel, setSelectedModel] = useState(chatModelEnum.GPT_3_5);
@@ -69,7 +64,7 @@ function ModelSettings({ botId }) {
       temparature: selectedTemperature,
     };
 
-    updatemodel({ botData, botId });
+    updateModel({ botData, botId });
   };
 
   // submit handler

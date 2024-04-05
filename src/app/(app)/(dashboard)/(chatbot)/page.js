@@ -5,21 +5,20 @@ import { useEffect } from "react";
 import Loading from "../../../../components/customComponents/loading/loading";
 import Empty_bot from "../../../../components/mainComponent/chatbot/empty_bot";
 import Main_bot from "../../../../components/mainComponent/chatbot/main_bot";
-import useUserChatbot from "../../../../store/chatbot/getChatbots";
-import useKeysStore from "../../../../store/chatbot/keys";
+import useKeysStore from "../../../../store/chatbot/useKeysStore";
+import useChatbotStore from "../../../../store/chatbot/useChatbotStore";
 
 function Page() {
   const router = useRouter();
-  const { userChatBot, loading, error, chatbots } = useUserChatbot((state) => ({
-    userChatBot: state.userChatBot,
-    loading: state.loading,
-    error: state.error,
-    chatbots: state.chatbots,
-  }));
+  const { getUserChatBots, loading, chatbots } = useChatbotStore((state) => ({
+    getUserChatBots: state.getUserChatBots,
+    loading: state.loading
+  }))
+  
   const { checkKeys, loadingKeys, keysError, hasKeys } = useKeysStore(
     (state) => ({
       checkKeys: state.checkKeys,
-      loadingKeys: stasE.loading,
+      loadingKeys: state.loading,
       key_error: state.error,
       hasKeys: state.hasKeys,
     })
@@ -31,8 +30,8 @@ function Page() {
         router.push("/account/keys");
       }
     });
-    userChatBot();
-  }, [hasKeys, router, checkKeys, userChatBot]);
+    getUserChatBots();
+  }, [hasKeys, router, checkKeys, getUserChatBots]);
 
 
   return (

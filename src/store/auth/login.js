@@ -3,7 +3,7 @@ import { toast } from "react-toastify";
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
 import { useUserStore } from "./userState";
-import useKeysStore from "../chatbot/keys";
+import useKeysStore from "../chatbot/useKeysStore";
 
 const useLoginAuthStore = create(
   devtools((set) => ({
