@@ -58,7 +58,7 @@ export default function QA() {
                   }
                   className="bg-transparent items-center gap-2 flex flex-row"
                 >
-                  <Image width={15} height={15} alt="" src="/images/chatbox/trash.svg" />
+                  <Image width={20} height={20} alt="" src="/images/chatbox/trash.svg" />
                   <p className="text-red-500 text-xs font-bold font-manrope leading-snug">
                     Delete all
                   </p>
@@ -111,7 +111,7 @@ export default function QA() {
                             useFormDataStore.getState().deleteQuestion(index)
                           }
                         >
-                          <Image width={15} height={15}
+                          <Image width={20} height={20}
                             src="/images/chatbox/trash.svg"
                             alt=""
                             classNAme="w-full h-auto"
