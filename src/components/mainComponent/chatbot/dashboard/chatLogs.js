@@ -4,6 +4,7 @@
 function Chat_logs() {
   const bot = true;
 
+  //TODO: call the endpoint.
   return (
     <div className="w-full ">{bot ? <Filled_bot_state /> : <Empty_bot />}</div>
   );

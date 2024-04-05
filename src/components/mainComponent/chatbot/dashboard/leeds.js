@@ -1,5 +1,7 @@
 function Leeds() {
   const bot = false;
+  
+  //TODO: call the analytics endpoint.
   return (
     <div className="w-full flex flex-col">
       {bot ? <Filled_bot_state /> : <Empty_bot />}
