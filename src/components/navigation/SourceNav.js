@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import { useUserStore } from "../../store/auth/userState";
 import useSourceNav from "../../store/chatbot/useSourceNav";
 
-function Chat_bot_nav({ nav, tag }) {
+function SourceNav({ nav, tag }) {
   const [expanded, setExpanded] = useState(false);
   const toggleExpansion = () => {
     setExpanded(!expanded);
@@ -154,4 +154,4 @@ function Chat_bot_nav({ nav, tag }) {
   );
 }
 
-export default Chat_bot_nav;
+export default SourceNav;

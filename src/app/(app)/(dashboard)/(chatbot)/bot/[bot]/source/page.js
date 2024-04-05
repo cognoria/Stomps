@@ -5,7 +5,7 @@ import QandA from "../../../../../../../components/mainComponent/chatbot/source/
 import DataSource from "../../../../../../../components/mainComponent/chatbot/source/dataSource";
 import Source_Text from "../../../../../../../components/mainComponent/chatbot/source/sources_text";
 import WebsiteSource from "../../../../../../../components/mainComponent/chatbot/source/sourecs_website";
-import Chat_bot_nav from "../../../../../../../components/navigation/chatbot_nav";
+import SourceNav from "../../../../../../../components/navigation/SourceNav";
 import useSourceNav from "../../../../../../../store/chatbot/useSourceNav";
 
 function Page({ params: { bot } }) {
@@ -36,7 +36,7 @@ function Page({ params: { bot } }) {
 
         <div className="flex flex-col lg:flex-row w-full  items-start justify-center">
           <div className="lg:max-w-[212px]  w-full flex-end flex flex-col mt-[60px]">
-            <Chat_bot_nav tag={" Data Sources"} nav={nav} />
+            <SourceNav tag={" Data Sources"} nav={nav} />
           </div>
           <div className="w-full">{renderContent()}</div>
           <div className="flex flex-col w-full items-center justify-center">

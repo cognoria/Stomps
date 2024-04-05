@@ -6,7 +6,7 @@ import InterfaceSettings from "../../../../../../../components/mainComponent/cha
 import GeneralSettings from "../../../../../../../components/mainComponent/chatbot/settings/General";
 import ModelSettings from "../../../../../../../components/mainComponent/chatbot/settings/Model";
 
-import Chat_bot_nav from "../../../../../../../components/navigation/chatbot_nav";
+import SourceNav from "../../../../../../../components/navigation/SourceNav";
 import useSourceNav from "../../../../../../../store/chatbot/useSourceNav";
 
 function Page({ params: { bot } }) {
@@ -40,7 +40,7 @@ function Page({ params: { bot } }) {
 
         <div className="flex flex-col lg:flex-row w-full  items-start justify-center">
           <div className="lg:max-w-[212px] w-full flex-end flex flex-col mt-[60px]">
-            <Chat_bot_nav tag={"Settings"} nav={nav} />
+            <SourceNav tag={"Settings"} nav={nav} />
           </div>
           <div className="w-full lg:mt-0 mt-[30px]">{renderContent()}</div>
         </div>

@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-function Bot_nav() {
+function ChatbotNav() {
   const pathname = usePathname();
   const lastSegment = pathname.split("/").pop();
   const segments = pathname.split("/");
@@ -37,4 +37,4 @@ function Bot_nav() {
   );
 }
 
-export default Bot_nav;
+export default ChatbotNav;

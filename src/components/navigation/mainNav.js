@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 import { useUserStore } from "../../store/auth/userState";
 import { RoundedSubmitButton } from "../customComponents/buttons/button1";
 
-function Nav_bar() {
+function MainNav() {
   const [expanded, setExpanded] = useState(false);
   const toggleExpansion = () => {
     setExpanded(!expanded);
@@ -244,4 +244,4 @@ function Nav_bar() {
   );
 }
 
-export default Nav_bar;
+export default MainNav;

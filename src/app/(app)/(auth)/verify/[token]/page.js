@@ -1,7 +1,7 @@
 "use client"
 // import Forgot_password from "@/src/components/authComponents/forgot_password/forgot_password";
 // import Auth_header from "@/src/components/authComponents/header";
-// import Nav_bar from "@/src/components/navigation/nav_bar";
+// import MainNav from "@/src/components/navigation/MainNav";
 
 import Auth_header from "../../../../../components/authComponents/header";
 import { useSearchParams } from 'next/navigation';

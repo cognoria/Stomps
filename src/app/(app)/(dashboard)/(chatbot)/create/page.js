@@ -5,7 +5,7 @@ import Datasource from "../../../../../components/mainComponent/chatbot/datasour
 import Sources from "../../../../../components/mainComponent/chatbot/sources";
 import Text from "../../../../../components/mainComponent/chatbot/text";
 import Website from "../../../../../components/mainComponent/chatbot/website";
-import Chat_bot_nav from "../../../../../components/navigation/chatbot_nav";
+import SourceNav from "../../../../../components/navigation/SourceNav";
 import useSourceNav from "../../../../../store/chatbot/useSourceNav";
 
 function Page() {
@@ -37,7 +37,7 @@ function Page() {
       </div>
       <div className="w-full gap-x-4 lg:max-w-[80%] gap-3 flex flex-col lg:flex-row  items-start justify-center">
         <div className="lg:max-w-[212px] w-full  mt-[60px]">
-          <Chat_bot_nav tag={"Data Sources"} nav={nav} />
+          <SourceNav tag={"Data Sources"} nav={nav} />
         </div>
         <div className="w-full">{renderContent()}</div>
         <div className="flex flex-col w-full items-center justify-center">
