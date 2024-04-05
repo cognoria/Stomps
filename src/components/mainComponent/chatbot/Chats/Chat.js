@@ -13,7 +13,8 @@ import useChatbotStore from "../../../../store/chatbot/useChatbotStore";
 function ChatPage({ botId }) {
   const { getChatbot, loading, chatbot } = useChatbotStore((state) => ({
     getChatbot: state.getChatbot,
-    loading: state.loading
+    loading: state.loading,
+    chatbot: state.chatbot,
   }))
 
   useEffect(() => {
@@ -50,7 +51,6 @@ function ChatPage({ botId }) {
   //   setSelectedTemperature(value);
   // };
 
-  console.log(chatbot);
   return (
     <div className="flex w-[95%] lg:w-[767px] rounded-md flex-col h-auto items-start  border-gray-200 justify-center border-[1px] ">
       <div className="text-gray-900 text-base font-bold font-manrope p-4 border-b-[1px] border-gray-200 w-full  leading-snug">

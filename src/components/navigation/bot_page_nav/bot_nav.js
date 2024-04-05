@@ -10,7 +10,7 @@ function Bot_nav() {
     { name: "chatbot", link: `/bot/${id}`, tag: "chatbot" },
     { name: "settings", link: `/bot/${id}/settings`, tag: "settings" },
     { name: "dashboard", link: `/bot/${id}/dashboard`, tag: "dashboard" },
-    { name: "sources", link: `/bot/${id}/bot_source`, tag: "bot_source" },
+    { name: "sources", link: `/bot/${id}/source`, tag: "source" },
     { name: "embed on site", link: "/", tag: "embed" },
   ];
   // console.log(lastSegment);

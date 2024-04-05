@@ -6,11 +6,11 @@ import DataSource from "../../../../../../../components/mainComponent/chatbot/so
 import Source_Text from "../../../../../../../components/mainComponent/chatbot/source/sources_text";
 import WebsiteSource from "../../../../../../../components/mainComponent/chatbot/source/sourecs_website";
 import Chat_bot_nav from "../../../../../../../components/navigation/chatbot_nav";
-import bot_nav from "../../../../../../../store/chatbot/useSourceNav";
+import useSourceNav from "../../../../../../../store/chatbot/useSourceNav";
 
-function page({ params: { bot } }) {
+function Page({ params: { bot } }) {
   // console.log(bot);
-  const currentPage = bot_nav((state) => state.currentPage);
+  const currentPage = useSourceNav((state) => state.currentPage);
 
   const renderContent = () => {
     switch (currentPage) {
@@ -48,7 +48,7 @@ function page({ params: { bot } }) {
   );
 }
 
-export default page;
+export default Page;
 
 const nav = [
   {

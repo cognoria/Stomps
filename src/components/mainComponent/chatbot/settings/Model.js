@@ -9,7 +9,8 @@ import useChatbotStore from "../../../../store/chatbot/useChatbotStore";
 function ModelSettings({ botId }) {
   const { getChatbot, loading, chatbot } = useChatbotStore((state) => ({
     getChatbot: state.getChatbot,
-    loading: state.loading
+    loading: state.loading,
+    chatbot: state.chatbot,
   }))
 
   const { updateModel, updatingModel } = useChatbotSettings(

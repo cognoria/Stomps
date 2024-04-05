@@ -51,9 +51,8 @@ const useKeysStore = create(
                 if (!response.ok) {
                     throw new Error(data.message || "An error occurred");
                 }
-                console.log(data);
                 set({ loading: false, hasKeys: data, fetched: true });
-                if (onSuccess) onSuccess();
+                if (onSuccess) await onSuccess(await useKeysStore.getState().hasKeys);
             } catch (error) {
                 set({ error: error.message, loading: false });
                 toast.error(error.message || "Failed to fetch!");

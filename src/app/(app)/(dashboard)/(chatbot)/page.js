@@ -25,13 +25,13 @@ function Page() {
   );
 
   useEffect(() => {
-    checkKeys(() => {
+    checkKeys((hasKeys) => {
       if (!hasKeys) {
         router.push("/account/keys");
       }
     });
     getUserChatBots();
-  }, [hasKeys, router, checkKeys, getUserChatBots]);
+  }, []);
 
 
   return (
@@ -40,7 +40,7 @@ function Page() {
         (loading && <Loading height={"h-50px"} width={"w-50px"} />)}
 
       <div>
-        {chatbots === null || chatbots.length === 0 ? (
+        {chatbots && chatbots?.length === 0 ? (
           <Empty_bot />
         ) : chatbots ? (
           <div className="mt-[80px] w-full">

@@ -6,7 +6,8 @@ import useChatbotStore from "../../../../store/chatbot/useChatbotStore";
 function SecuritySettings({ botId }) {
   const { getChatbot, loading, chatbot } = useChatbotStore((state) => ({
     getChatbot: state.getChatbot,
-    loading: state.loading
+    loading: state.loading,
+    chatbot: state.chatbot,
   }))
   
   const { updateSecuritySettings, updatingSecuritySettings } = useChatbotSettings((state) => ({
@@ -179,7 +180,7 @@ function SecuritySettings({ botId }) {
 
         <div className="w-full p-3 flex-end items-end flex flex-col">
           <button
-            disabled={loadingSecurity}
+            disabled={updatingSecuritySettings}
             onClick={handleSubmitBotSecurity}
             className="text-white h-11 disabled:bg-sky-300 rounded-lg justify-start items-start  px-5 py-3 bg-sky-700  shadow border border-sky-700  gap-2 "
           >

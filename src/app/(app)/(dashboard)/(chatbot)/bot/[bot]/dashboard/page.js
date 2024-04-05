@@ -43,7 +43,7 @@ function Page({ params: { bot } }) {
   );
 }
 
-export default page;
+export default Page;
 
 const nav = [
   {

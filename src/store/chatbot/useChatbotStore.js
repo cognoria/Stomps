@@ -59,8 +59,8 @@ export default create(
         });
         const data = await response.json();
         if (!response.ok) throw new Error(data.message || "An error occurred");
-        if (onSuccess) onSuccess(data);
         set({ loading: false, chatbot: data });
+        if (onSuccess) onSuccess(data);
         return data;
       } catch (error) {
         set({ error: error.message, loading: false });

@@ -7,10 +7,10 @@ import useChatbotStore from "../../../../store/chatbot/useChatbotStore";
 export default function GeneralSettings({ botId }) {
   const { getChatbot, loading, chatbot } = useChatbotStore((state) => ({
     getChatbot: state.getChatbot,
-    loading: state.loading
+    loading: state.loading,
+    chatbot: state.chatbot,
   }))
 
-  console.log(chatbot);
   const { updateBotName, loadingName } = useChatbotSettings(
     (state) => ({
       updateBotName: state.updateBotName,
