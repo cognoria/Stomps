@@ -1,5 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 
+import Image from "next/image";
 import { plan_data } from "../../../data/data";
 import { RoundedSubmitButton } from "../buttons/button1";
 
@@ -9,7 +10,7 @@ export function PlanCards() {
     <div className="w-[95%] md:w-[570px] rounded-[16px]  border-[1px] p-[22px] md:p-[44px] border-gray-200">
       {plan_data?.map((items, i) => (
         <div className="mb-2 flex flex-row items-start gap-3" key={i}>
-          {items.availability && <img src="./images/landing/Check_icon.svg" />}
+          {items.availability && <Image width={25} height={25} alt="" src="./images/landing/Check_icon.svg" />}
 
           <div className="w-[434px]">
             <span className="text-sky-700 text-base font-bold font-manrope leading-snug tracking-tight">
