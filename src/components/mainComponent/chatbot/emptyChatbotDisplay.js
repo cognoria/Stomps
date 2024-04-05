@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-function Empty_bot() {
+function EmptyChatbotDisplay() {
   return (
     <div className="w-full p-[6%] mt-[80px] flex flex-col itmes-center justify-center ">
       <div className="flex flex-col gap-4">
@@ -24,4 +24,4 @@ function Empty_bot() {
   );
 }
 
-export default Empty_bot;
+export default EmptyChatbotDisplay;

@@ -4,7 +4,7 @@ import Link from "next/link";
 import useModalStore from "../../../store/modal/modalState";
 import { DeleteBot } from "../../customComponents/modals/dashboardModal/deleteBot";
 
-function Main_bot({ chatbots }) {
+function ChatbotsDisplay({ chatbots }) {
   return (
     <div className="w-full py-[3%] px-[3%]  lg:px-[6%]">
       <div className="flex flex-row  items-center justify-between">
@@ -71,4 +71,4 @@ function Main_bot({ chatbots }) {
   );
 }
 
-export default Main_bot;
+export default ChatbotsDisplay;

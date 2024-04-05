@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useUserStore } from "../../../store/auth/userState";
 import useModalStore from "../../../store/modal/modalState";
-import { Plan_cards } from "../../customComponents/cards/plan_cards";
+import { PlanCards } from "../../customComponents/cards/planCards";
 import { AccountModal } from "../../customComponents/modals/dashboardModal/accountModal";
 
 function Account() {
@@ -78,7 +78,7 @@ function Account() {
         </div>
       </div>
 
-      <Plan_cards />
+      <PlanCards />
       <div className="lg:w-[570px] w-[95%] rounded-lg flex-row flex gap-4  justify-end items-end ">
         <button
           className="w-[146px] p-2 rounded-lg shadow border border-red-500 justify-center items-center gap-2 flex"

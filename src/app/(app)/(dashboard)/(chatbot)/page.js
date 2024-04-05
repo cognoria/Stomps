@@ -3,26 +3,25 @@
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import Loading from "../../../../components/customComponents/loading/loading";
-import Empty_bot from "../../../../components/mainComponent/chatbot/empty_bot";
-import Main_bot from "../../../../components/mainComponent/chatbot/main_bot";
+import EmptyChatbotsDisplay from "../../../../components/mainComponent/chatbot/emptyChatbotDisplay";
+import ChatbotsDisplay from "../../../../components/mainComponent/chatbot/ChatbotsDisplay";
 import useKeysStore from "../../../../store/chatbot/useKeysStore";
 import useChatbotStore from "../../../../store/chatbot/useChatbotStore";
 
-function Page() {
+const Page = () => {
   const router = useRouter();
   const { getUserChatBots, loading, chatbots } = useChatbotStore((state) => ({
     getUserChatBots: state.getUserChatBots,
-    loading: state.loading
-  }))
-  
-  const { checkKeys, loadingKeys, keysError, hasKeys } = useKeysStore(
-    (state) => ({
-      checkKeys: state.checkKeys,
-      loadingKeys: state.loading,
-      key_error: state.error,
-      hasKeys: state.hasKeys,
-    })
-  );
+    loading: state.loading,
+    chatbots: state.chatbots,
+  }));
+
+  const { checkKeys, loadingKeys } = useKeysStore((state) => ({
+    checkKeys: state.checkKeys,
+    loadingKeys: state.loading,
+    keysError: state.error,
+    hasKeys: state.hasKeys,
+  }));
 
   useEffect(() => {
     checkKeys((hasKeys) => {
@@ -31,27 +30,21 @@ function Page() {
       }
     });
     getUserChatBots();
-  }, []);
+  }, [checkKeys, getUserChatBots, router]);
 
+  if (loadingKeys || loading) {
+    return <Loading height="h-50px" width="w-50px" />;
+  }
+
+  if (!chatbots || chatbots.length === 0) {
+    return <EmptyChatbotsDisplay />;
+  }
 
   return (
-    <div>
-      {loadingKeys ||
-        (loading && <Loading height={"h-50px"} width={"w-50px"} />)}
-
-      <div>
-        {chatbots && chatbots?.length === 0 ? (
-          <Empty_bot />
-        ) : chatbots ? (
-          <div className="mt-[80px] w-full">
-            <Main_bot chatbots={chatbots} />
-          </div>
-        ) : (
-          <Empty_bot />
-        )}
-      </div>
+    <div className="mt-[80px] w-full">
+      <ChatbotsDisplay chatbots={chatbots} />
     </div>
   );
-}
+};
 
 export default Page;

@@ -4,7 +4,7 @@ import { plan_data } from "../../../data/data";
 import { RoundedSubmitButton } from "../buttons/button1";
 
 /* eslint-disable react/no-unescaped-entities */
-export function Plan_cards() {
+export function PlanCards() {
   return (
     <div className="w-[95%] md:w-[570px] rounded-[16px]  border-[1px] p-[22px] md:p-[44px] border-gray-200">
       {plan_data?.map((items, i) => (
