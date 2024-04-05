@@ -2,7 +2,7 @@
 
 import { Dialog, Transition } from "@headlessui/react";
 import { Fragment } from "react";
-import useModalStore from "../../../store/modal/modal_state";
+import useModalStore from "../../../store/modal/modalState";
 
 export function Modal() {
   const { isModalShown, showModal, hideModal, modalContent } = useModalStore(
@@ -40,7 +40,7 @@ export function Modal() {
                 leaveFrom="opacity-100 scale-100"
                 leaveTo="opacity-0 scale-95"
               >
-                <Dialog.Panel className="w-fit  transform overflow-hidden rounded-2xl bg-white p-2 text-left align-middle shadow-xl transition-all">
+                <Dialog.Panel className="w-fit z-60   transform overflow-hidden rounded-2xl bg-white p-2 text-left align-middle shadow-xl transition-all">
                   <div>{modalContent}</div>
                 </Dialog.Panel>
               </Transition.Child>

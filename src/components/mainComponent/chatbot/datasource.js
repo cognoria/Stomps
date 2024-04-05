@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
-import useFormDataStore from "../../../store/chat_bot_state/chat_bot_store";
+import useFormDataStore from "../../../store/chatbot/useChatbotSource";
 import {
   extractTextFromDoc,
   extractTextFromPDF,
@@ -11,6 +11,7 @@ import {
   isPDFFile,
   isTXTFile,
 } from "../../../utils/extractDoc/file_extract";
+import Image from "next/image";
 
 export default function Datasource() {
   const [selectedFile, setSelectedFile] = useState(null);
@@ -135,7 +136,7 @@ export default function Datasource() {
                   onChange={handleFileChange}
                 />
                 <label htmlFor="file-input" className="upload-label">
-                  <img src="/images/chatbox/folder-add.svg" alt="Upload icon" />
+                  <Image width={90} height={90} src="/images/chatbox/folder-add.svg" alt="Upload icon" />
                   <div className="main-text">
                     Select a File Upload, or Drag and Drop it here
                   </div>
@@ -152,7 +153,7 @@ export default function Datasource() {
             </div>
 
             <div className="items-center flex flex-row justify-center gap-x-2 text-neutral-400 py-4 lg:p-0 p-2 text-xs w-full tracking-tigh leading-none  font-normal font-manrope">
-              <img src="/images/chatbox/warning-2.svg" alt="" />
+              <Image width={20} height={20} src="/images/chatbox/warning-2.svg" alt="" />
               <p>
                 If you’re uploading a PDF, be sure that the texts can be
                 highlighted
@@ -173,7 +174,7 @@ export default function Datasource() {
                     onClick={deleteAllFile}
                     className="bg-transparent items-center gap-2 flex flex-row"
                   >
-                    <img src="/images/chatbox/trash.svg" />
+                    <Image width={20} height={20} alt="" src="/images/chatbox/trash.svg" />
                     <p className="text-red-500 text-xs font-bold font-manrope leading-snug">
                       Delete all
                     </p>
@@ -195,12 +196,12 @@ export default function Datasource() {
                         className="w-full flex flex-row items-center gap-2 justify-between "
                       >
                         <div className="w-[94%]  h-[42px] pl-[15px] pr-4 pt-3 pb-[13px] rounded-lg border border-gray-200 justify-between items-start gap-[158px] flex flex-row">
-                          <div className="text-gray-900  w-full  w-[92%] text-xs font-normal font-['Manrope'] leading-none tracking-tight">
+                          <div className="text-gray-900  w-[92%] text-xs font-normal font-['Manrope'] leading-none tracking-tight">
                             {file.name}
                           </div>
                         </div>
                         <button onClick={() => deleteFile(index)}>
-                          <img
+                          <Image width={20} height={20}
                             src="/images/chatbox/trash.svg"
                             alt=""
                             classNAme="w-full h-auto"

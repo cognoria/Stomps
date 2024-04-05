@@ -2,9 +2,10 @@
 
 import Link from "next/link";
 import { useUserStore } from "../../../store/auth/userState";
-import useModalStore from "../../../store/modal/modal_state";
-import { Plan_cards } from "../../customComponents/custom_cards/plan_cards";
-import { Account_modal } from "../../customComponents/modals/dashboard_modal/account_modal";
+import useModalStore from "../../../store/modal/modalState";
+import { PlanCards } from "../../customComponents/cards/planCards";
+import { AccountModal } from "../../customComponents/modals/dashboardModal/accountModal";
+import Image from "next/image";
 
 function Account() {
   const key = "6ecee3b3-81ee-496d-b5d4-f30290a9b172";
@@ -47,7 +48,7 @@ function Account() {
               <div className="text-sky-700 text-sm font-bold font-['Manrope'] leading-snug">
                 Create New Secret key
               </div>
-              <img
+              <Image width={15} height={15}
                 className="w-5 h-5"
                 alt=""
                 src="/images/main/support/add.svg"
@@ -61,7 +62,7 @@ function Account() {
               <div className="w-[287px] text-zinc-800 text-sm font-medium font-['Manrope'] leading-tight tracking-tight">
                 {key}
               </div>
-              <img
+              <Image width={15} height={15} alt=""
                 src="/images/main/support/eye-slash.svg"
                 className="w-5 h-5"
               />
@@ -69,16 +70,15 @@ function Account() {
             <div className="flex items-end flex-col justify-end w-full lg:w-auto bg:block">
               <div className="flex flex-row gap-4 justify-start items-center">
                 <button>
-                  <img src="/images/main/support/_Parent Button Base.svg" />
+                  <Image width={80} height={80} alt="" src="/images/main/support/_Parent Button Base.svg" />
                 </button>
-                <img src="/images/main/support/trash.svg" />
+                <Image width={20} height={20} alt="" src="/images/main/support/trash.svg" />
               </div>
             </div>
           </div>
         </div>
       </div>
-
-      <Plan_cards />
+      <PlanCards />
       <div className="lg:w-[570px] w-[95%] rounded-lg flex-row flex gap-4  justify-end items-end ">
         <button
           className="w-[146px] p-2 rounded-lg shadow border border-red-500 justify-center items-center gap-2 flex"
@@ -86,14 +86,14 @@ function Account() {
             useModalStore
               .getState()
               .showModal(
-                <Account_modal
+                <AccountModal
                   text={" Are you sure you want to delete your account?"}
                   button_name="Delete Account"
                 />
               )
           }
         >
-          <img src="/images/main/support/trash.svg" />
+          <Image width={20} height={20} alt="" src="/images/main/support/trash.svg" />
           <p className="text-red-500 text-xs font-bold font-manrope leading-snug">
             Delete Account
           </p>
@@ -103,7 +103,7 @@ function Account() {
           className="w-[146px]   p-2 rounded-lg shadow bg-[#1261AC] justify-center items-center gap-2 flex"
           href="/signin"
         >
-          <img src="/images/main/support/logout.svg" />
+          <Image width={20} height={20} alt="" src="/images/main/support/logout.svg" />
           <p className="text-white text-xs font-bold font-manrope leading-snug">
             Logout
           </p>

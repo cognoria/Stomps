@@ -40,7 +40,6 @@ async function create(params) {
 
     // Get the Pinecone service object
     const pineconeService = await globalRepo.getService(AppServiceProviders.PINECONE, ownerId);
-    console.log(pineconeService)
     if (!pineconeService) {
         throw 'Pinecone key not found';
     }
@@ -87,11 +86,7 @@ async function create(params) {
 
     const newChatbot = await Chatbot.create(newChatbotDetails);
 
-    console.log("here")
-
-    await trainChatbotQueue.add("trainChatbot", { chatbotId: newChatbot._id }, {
-        delay: 60000
-    })
+    await trainChatbotQueue.add("trainChatbot", { chatbotId: newChatbot._id })
 
     return newChatbot;
 }

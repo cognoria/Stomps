@@ -15,6 +15,12 @@ export const chunkedUpsert = async (index, vectors, chunkSize = 10, owner) => {
 
   if (!index) throw 'Cannot upsert without Index'
 
+  while(!(await checkIndexReady(pinecone, index))){
+    console.log(`Index '${index}' not ready. Retrying in 15 seconds...`);
+    await new Promise(resolve => setTimeout(resolve, 15000));
+  }
+
+  console.log(`Index '${index}' is ready. Upserting...`);
   const Index = pinecone.index(index);
 
   // Split the vectors into chunks
@@ -37,4 +43,10 @@ export const chunkedUpsert = async (index, vectors, chunkSize = 10, owner) => {
   } catch (e) {
     throw new Error(`Error upserting vectors into index: ${e}`);
   }
+};
+
+const checkIndexReady = async (pinecone, indexName) => {
+  const response = await pinecone.listIndexes();
+  const indexExists = response.indexes.some(index => index.name === indexName && index.status.ready);
+  return indexExists;
 };
