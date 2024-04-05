@@ -13,7 +13,7 @@ function Empty_bot() {
             You haven’t created any chatbots yet.
           </div>
           <Link
-            href="/create_bot"
+            href="/create"
             className="w-64  text-white text-sm font-bold font-manrope leading-snug shrink basis-0 mt-5 h-11 px-5 py-3 bg-sky-700 rounded-lg shadow border border-sky-700 justify-center items-center gap-2 flex"
           >
             Create ChatBot

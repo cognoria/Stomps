@@ -1,12 +1,12 @@
 "use client";
 
-import Retrain from "../../../../../../../components/mainComponent/chatbot/source_page/retrain";
-import Sources_QA from "../../../../../../../components/mainComponent/chatbot/source_page/sources_QA";
-import Sources_datasource from "../../../../../../../components/mainComponent/chatbot/source_page/sources_datasource";
-import Source_Text from "../../../../../../../components/mainComponent/chatbot/source_page/sources_text";
-import Source_Website from "../../../../../../../components/mainComponent/chatbot/source_page/sourecs_website";
+import Retrain from "../../../../../../../components/mainComponent/chatbot/source/retrain";
+import QandA from "../../../../../../../components/mainComponent/chatbot/source/Q&A";
+import DataSource from "../../../../../../../components/mainComponent/chatbot/source/dataSource";
+import Source_Text from "../../../../../../../components/mainComponent/chatbot/source/sources_text";
+import Source_Website from "../../../../../../../components/mainComponent/chatbot/source/sourecs_website";
 import Chat_bot_nav from "../../../../../../../components/navigation/chatbot_nav";
-import bot_nav from "../../../../../../../store/chat_bot_state/chatbot_state";
+import bot_nav from "../../../../../../../store/chatbot/chatbot_state";
 
 function page({ params: { bot } }) {
   // console.log(bot);
@@ -15,15 +15,15 @@ function page({ params: { bot } }) {
   const renderContent = () => {
     switch (currentPage) {
       case "File":
-        return <Sources_datasource />;
+        return <DataSource />;
       case "Text":
         return <Source_Text />;
       case "Website":
         return <Source_Website />;
       case "Q & A":
-        return <Sources_QA />;
+        return <QandA />;
       default:
-        return <Sources_datasource />;
+        return <DataSource />;
     }
   };
   return (

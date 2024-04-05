@@ -2,9 +2,9 @@
 
 import Link from "next/link";
 import { useUserStore } from "../../../store/auth/userState";
-import useModalStore from "../../../store/modal/modal_state";
-import { Plan_cards } from "../../customComponents/custom_cards/plan_cards";
-import { Account_modal } from "../../customComponents/modals/dashboard_modal/account_modal";
+import useModalStore from "../../../store/modal/modalState";
+import { Plan_cards } from "../../customComponents/cards/plan_cards";
+import { AccountModal } from "../../customComponents/modals/dashboardModal/accountModal";
 
 function Account() {
   const key = "6ecee3b3-81ee-496d-b5d4-f30290a9b172";
@@ -86,7 +86,7 @@ function Account() {
             useModalStore
               .getState()
               .showModal(
-                <Account_modal
+                <AccountModal
                   text={" Are you sure you want to delete your account?"}
                   button_name="Delete Account"
                 />

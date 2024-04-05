@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
-import useFormDataStore from "../../../store/chatbot/chatbotSource";
+import useFormDataStore from "../../../../store/chatbot/chatbotSource";
 import {
   extractTextFromDoc,
   extractTextFromPDF,
@@ -10,11 +10,11 @@ import {
   isDOCFile,
   isPDFFile,
   isTXTFile,
-} from "../../../utils/extractDoc/file_extract";
+} from "../../../../utils/extractDoc/file_extract";
 
-export default function Datasource() {
+export default function DataSource() {
   const [selectedFile, setSelectedFile] = useState(null);
-  const [uploadProgress, setUploadProgress] = useState(0);
+  // const [files, setFiles] = useState([])
   const files = useFormDataStore((state) => state.formData.files);
 
   const handleFileChange = (event) => {
@@ -64,50 +64,18 @@ export default function Datasource() {
       } else if (isDOCFile(selectedFile)) {
         file = await extractTextFromDoc(selectedFile);
       } else if (isPDFFile(selectedFile)) {
-        // file = await extractTextFromPDF(selectedFile);
-        await getPdfContents()
+        file = await extractTextFromPDF(selectedFile);
       } else {
         return toast.error("unspported file selected"); //toast file not supported
       }
-      if(file){
-        await useFormDataStore.getState().addDataToFiles(file);
-        await useFormDataStore.getState().addFileToContents(file);
-      }
+      await useFormDataStore.getState().addDataToFiles(file);
+      await useFormDataStore.getState().addFileToContents(file);
     } catch (e) {
       console.error("error adding file: ", e);
       toast.error("Failed to add file");
       //toast
     }
   }
-
-  const getPdfContents = async () => {
-    const formData = new FormData();
-    formData.append('pdf', selectedFile);
-
-    const uploadRequest = new XMLHttpRequest();
-    uploadRequest.open('POST', '/api/v1/data/pdf');
-
-    uploadRequest.upload.addEventListener('progress', (event) => {
-      if (event.lengthComputable) {
-        const progress = Math.round((event.loaded / event.total) * 100);
-        setUploadProgress(progress);
-      }
-    });
-
-    uploadRequest.onload = async () => {
-      if (uploadRequest.status === 200) {
-        const response = JSON.parse(uploadRequest.response);
-        console.log('PDF Name:', response.name);
-        console.log('PDF Content:', response.content);
-        await useFormDataStore.getState().addDataToFiles(file);
-        await useFormDataStore.getState().addFileToContents(file);
-      } else {
-        console.error('Upload failed:', uploadRequest.statusText);
-      }
-    };
-
-    uploadRequest.send(formData);
-  };
 
   useEffect(() => {
     console.log(files);
@@ -124,15 +92,15 @@ export default function Datasource() {
             <div className="flex flex-col py-5 px-3 w-full h-full">
               <div
                 className="upload-container"
-                onDragOver={handleDragOver}
-                onDrop={handleDrop}
+                // onDragOver={handleDragOver}
+                // onDrop={handleDrop}
               >
                 <input
                   type="file"
                   id="file-input"
                   accept=".pdf,.doc,.txt,.docx"
                   style={{ display: "none" }}
-                  onChange={handleFileChange}
+                  // onChange={handleFileChange}
                 />
                 <label htmlFor="file-input" className="upload-label">
                   <img src="/images/chatbox/folder-add.svg" alt="Upload icon" />
@@ -170,7 +138,7 @@ export default function Datasource() {
               <div className="flex flex-row  p-5 items-end lg:mt-0 mt-[70px] [mt-50px]  h-auto lg:h-[70%] justify-end">
                 <div className="flex flex-row items-center  gap-x-5 ">
                   <button
-                    onClick={deleteAllFile}
+                    // onClick={deleteAllFile}
                     className="bg-transparent items-center gap-2 flex flex-row"
                   >
                     <img src="/images/chatbox/trash.svg" />
@@ -179,7 +147,7 @@ export default function Datasource() {
                     </p>
                   </button>
                   <button
-                    onClick={handleAddFile}
+                    // onClick={handleAddFile}
                     className=" px-5 py-3 text-[#1261AC] text-xs font-bold font-manrope leading-snug bg-[#EEF8FF] flex items-center justify-center flex-col  rounded-lg"
                   >
                     Add
@@ -199,7 +167,9 @@ export default function Datasource() {
                             {file.name}
                           </div>
                         </div>
-                        <button onClick={() => deleteFile(index)}>
+                        <button
+                        // onClick={() => deleteFile(index)}
+                        >
                           <img
                             src="/images/chatbox/trash.svg"
                             alt=""

@@ -1,13 +1,13 @@
 "use client";
 
-import Bot_leads from "../../../../../../../components/mainComponent/chatbot/bot_settings/bot_leads";
-import Bot_security from "../../../../../../../components/mainComponent/chatbot/bot_settings/bot_security";
-import Chat_interface from "../../../../../../../components/mainComponent/chatbot/bot_settings/chat_interface";
-import General_settings from "../../../../../../../components/mainComponent/chatbot/bot_settings/general_settings";
-import Model_settings from "../../../../../../../components/mainComponent/chatbot/bot_settings/model_settings";
+import LeadsSettings from "../../../../../../../components/mainComponent/chatbot/settings/Leads";
+import SecuritySettings from "../../../../../../../components/mainComponent/chatbot/settings/Security";
+import InterfaceSettings from "../../../../../../../components/mainComponent/chatbot/settings/Interface";
+import GeneralSettings from "../../../../../../../components/mainComponent/chatbot/settings/General";
+import ModelSettings from "../../../../../../../components/mainComponent/chatbot/settings/Model";
 
 import Chat_bot_nav from "../../../../../../../components/navigation/chatbot_nav";
-import bot_nav from "../../../../../../../store/chat_bot_state/chatbot_state";
+import bot_nav from "../../../../../../../store/chatbot/chatbot_state";
 
 function page({ params: { bot } }) {
   // console.log(bot);
@@ -16,18 +16,18 @@ function page({ params: { bot } }) {
   const renderContent = () => {
     switch (currentPage) {
       case "General":
-        return <General_settings bot_id={bot} />;
+        return <GeneralSettings botId={bot} />;
       case "Model":
-        return <Model_settings bot_id={bot} />;
+        return <ModelSettings botId={bot} />;
       case "Chat interface":
-        return <Chat_interface bot_id={bot} />;
+        return <InterfaceSettings botId={bot} />;
       case "security":
-        return <Bot_security bot_id={bot} />;
+        return <SecuritySettings botId={bot} />;
       case "Leads":
-        return <Bot_leads bot_id={bot} />;
+        return <LeadsSettings botId={bot} />;
 
       default:
-        return <General_settings bot_id={bot} />;
+        return <GeneralSettings botId={bot} />;
     }
   };
   return (

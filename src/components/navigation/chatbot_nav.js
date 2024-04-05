@@ -4,7 +4,7 @@
 
 import { useEffect, useState } from "react";
 import { useUserStore } from "../../store/auth/userState";
-import bot_nav from "../../store/chat_bot_state/chatbot_state";
+import bot_nav from "../../store/chatbot/chatbot_state";
 
 function Chat_bot_nav({ nav, tag }) {
   const [expanded, setExpanded] = useState(false);

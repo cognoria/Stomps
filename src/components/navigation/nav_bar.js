@@ -5,7 +5,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useUserStore } from "../../store/auth/userState";
-import { RoundedSubmitButton } from "../customComponents/custom_buttons/button1";
+import { RoundedSubmitButton } from "../customComponents/buttons/button1";
 
 function Nav_bar() {
   const [expanded, setExpanded] = useState(false);

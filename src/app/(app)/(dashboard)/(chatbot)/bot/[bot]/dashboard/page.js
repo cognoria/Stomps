@@ -1,11 +1,11 @@
 "use client";
 
-import Analytics from "../../../../../../../components/mainComponent/chatbot/bot_dashboard/analytics";
-import Chat_logs from "../../../../../../../components/mainComponent/chatbot/bot_dashboard/chat_logs";
-import Leeds from "../../../../../../../components/mainComponent/chatbot/bot_dashboard/leeds";
+import Analytics from "../../../../../../../components/mainComponent/chatbot/dashboard/analytics";
+import Chat_logs from "../../../../../../../components/mainComponent/chatbot/dashboard/chatLogs";
+import Leeds from "../../../../../../../components/mainComponent/chatbot/dashboard/leeds";
 
 import Chat_bot_nav from "../../../../../../../components/navigation/chatbot_nav";
-import bot_nav from "../../../../../../../store/chat_bot_state/chatbot_state";
+import bot_nav from "../../../../../../../store/chatbot/chatbot_state";
 
 function page({ params: { bot } }) {
   // console.log(bot);
@@ -14,14 +14,14 @@ function page({ params: { bot } }) {
   const renderContent = () => {
     switch (currentPage) {
       case "Leads":
-        return <Leeds bot_id={bot} />;
+        return <Leeds botId={bot} />;
       case "Analytics":
-        return <Analytics bot_id={bot}/>;
+        return <Analytics botId={bot}/>;
       case "Chat logs":
-        return <Chat_logs bot_id={bot}/>;
+        return <Chat_logs botId={bot}/>;
 
       default:
-        return <Chat_logs bot_id={bot}/>;
+        return <Chat_logs botId={bot}/>;
     }
   };
   return (

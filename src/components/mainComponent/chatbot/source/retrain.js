@@ -1,10 +1,10 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import useFormDataStore from "../../../store/chatbot/chatbotSource";
-import useBotCreationStore from "../../../store/chatbot/createBot";
+import useFormDataStore from "../../../../store/chatbot/chatbotSource";
+import useBotCreationStore from "../../../../store/chatbot/createBot";
 
-export default function Sources() {
+export default function Retrain() {
   const formData = useFormDataStore((state) => state.formData);
   const textLength = useFormDataStore((state) => state.getTextLength());
   const includeCount = useFormDataStore((state) => state.getIncludeCount());
@@ -29,13 +29,13 @@ export default function Sources() {
 
   const isLoading = useBotCreationStore((state) => state.loading);
   const router = useRouter();
-  async function createBot(e) {
+  async function retrainBot(e) {
     e.preventDefault();
     console.log(dataToSend);
     try {
       const newBot = await useBotCreationStore.getState().createBot(dataToSend);
-      router.push(`/bot/${newBot._id}`);
       useFormDataStore.getState().clearFormData(newBot._id);
+      router.push(`/bot/${newBot._id}`);
     } catch (error) {
       console.error("Failed to create bot:", error);
     }
@@ -75,12 +75,12 @@ export default function Sources() {
 
       <div className=" w-full  px-3  py-3 justify-center items-center gap-2 flex">
         <button
-          onClick={createBot}
+          // onClick={retrainBot}
           className={`text-white py-[16px] px-5 w-full text-sm font-bold font-manrope ${
             isLoading ? "bg-sky-700/20" : "bg-sky-700"
           }  rounded-lg shadow border border-sky-700  text-center leading-snug`}
         >
-          {isLoading ? "Creating Bot..." : "Create Chatbot"}
+          {isLoading ? "Retraining Bot..." : "Retrain Chatbot"}
         </button>
       </div>
     </div>

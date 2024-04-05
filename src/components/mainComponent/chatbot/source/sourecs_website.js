@@ -1,11 +1,12 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import useFormDataStore from "../../../store/chatbot/chatbotSource";
-import useLinkStore from "../../../store/chatbot/getLinksFromLink";
-import useSitemapStore from "../../../store/chatbot/getLinksFromSitemap";
 
-function Website() {
+import useFormDataStore from "../../../../store/chatbot/chatbotSource";
+import useLinkStore from "../../../../store/chatbot/getLinksFromLink";
+import useSitemapStore from "../../../../store/chatbot/getLinksFromSitemap";
+
+function Source_Website() {
   const loading = useLinkStore((state) => state.loading);
   const loading2 = useSitemapStore((state) => state.loading);
   const include = useFormDataStore((state) => state.formData.include);
@@ -14,7 +15,7 @@ function Website() {
   const [error, setError] = useState(null);
   const [displayedLinks, setDisplayedLinks] = useState([]);
   const [numDisplayedLinks, setNumDisplayedLinks] = useState(10);
-
+  
   useEffect(() => {
     if (!website.startsWith("http://") && !website.startsWith("https://")) {
       setError("Invalid URL, must contain http:// or https://");
@@ -60,16 +61,15 @@ function Website() {
                 </div>
                 <div className="flex w-full flex-col lg:flex-row items-center justify-between gap-2">
                   <input
-                    onChange={handleWebsite}
+                    // onChange={handleWebsite}
                     type="text"
-                    value={website}
+                    // value={website}
                     className="w-full lg:w-[413px] h-[47px] px-3.5 py-2.5 bg-white rounded shadow border border-zinc-100 justify-start items-center gap-2 inline-flex"
                   />
                   <button
-                    onClick={handleSubmit}
-                    className={`h-11 w-full lg:w-fit px-5 py-3    ${
-                      !loading ? "bg-sky-700" : "bg-sky-700/20"
-                    } rounded-lg shadow border border-sky-700 justify-center items-center gap-2 flex`}
+                    // onClick={handleSubmit}
+                    className={`h-11 w-full lg:w-fit px-5 py-3    ${!loading ? "bg-sky-700" : "bg-sky-700/20"
+                      } rounded-lg shadow border border-sky-700 justify-center items-center gap-2 flex`}
                   >
                     <p className="text-white text-sm font-bold font-manrope leading-snug">
                       {loading ? "fetching..." : " Fetch link"}
@@ -79,7 +79,7 @@ function Website() {
 
                 {error && (
                   <p className="text-red-500 text-[10px] font-normal font-manrope leading-[10px] tracking-tight">
-                    {error}
+                    {/* {error} */}
                   </p>
                 )}
 
@@ -103,14 +103,13 @@ function Website() {
                   <input
                     value={sitemap}
                     type="text"
-                    onChange={handleSitemap}
+                    // onChange={handleSitemap}
                     className="w-full lg:w-[383px] h-[47px] px-3.5 py-2.5 bg-white rounded shadow border border-zinc-100 justify-start items-center gap-2 inline-flex"
                   />
                   <button
-                    onClick={sitemapSubmit}
-                    className={`h-11 w-full lg:w-fit px-5 py-3 ${
-                      loading2 ? "bg-sky-700/20" : "bg-sky-700"
-                    }  rounded-lg shadow border border-sky-700 justify-center items-center gap-2 flex`}
+                    // onClick={sitemapSubmit}
+                    className={`h-11 w-full lg:w-fit px-5 py-3 ${loading2 ? "bg-sky-700/20" : "bg-sky-700"
+                      }  rounded-lg shadow border border-sky-700 justify-center items-center gap-2 flex`}
                   >
                     <p className="text-white text-sm font-bold font-manrope leading-snug">
                       {loading2 ? "Loading Sitemap..." : "Load Sitemap"}
@@ -134,9 +133,9 @@ function Website() {
               <div className="flex flex-row  p-5 items-end lg:mt-0 mt-[70px] [mt-50px]  h-auto lg:h-[70%] justify-end">
                 <div className="flex flex-row items-center  gap-x-5 ">
                   <button
-                    onClick={() =>
-                      useFormDataStore.getState().deleteAll(["include", "urls"])
-                    }
+                    // onClick={() =>
+                    //   useFormDataStore.getState().deleteAll(["include", "urls"])
+                    // }
                     className="bg-transparent items-center gap-2 flex flex-row"
                   >
                     <img src="/images/chatbox/trash.svg" />
@@ -163,9 +162,9 @@ function Website() {
                           </div>
                         </div>
                         <button
-                          onClick={() =>
-                            useFormDataStore.getState().deleteInclude(index)
-                          }
+                        // onClick={() =>
+                        //   useFormDataStore.getState().deleteInclude(index)
+                        // }
                         >
                           <img
                             src="/images/chatbox/trash.svg"
@@ -186,4 +185,4 @@ function Website() {
   );
 }
 
-export default Website;
+export default Source_Website;

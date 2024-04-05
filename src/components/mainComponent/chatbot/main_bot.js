@@ -1,8 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import useModalStore from "../../../store/modal/modal_state";
-import { Delete_Bot_Modal } from "../../customComponents/modals/dashboard_modal/delete_botmodal";
+import useModalStore from "../../../store/modal/modalState";
+import { DeleteBot } from "../../customComponents/modals/dashboardModal/deleteBot";
 
 function Main_bot({ chatbots }) {
   return (
@@ -12,7 +12,7 @@ function Main_bot({ chatbots }) {
           Chatbots
         </div>
         <Link
-          href="/create_bot"
+          href="/create"
           className="flex flex-row items-center bg-[#1261AC] text-white px-4 py-3 rounded-md "
         >
           Create New Chatbot +
@@ -47,7 +47,7 @@ function Main_bot({ chatbots }) {
                       useModalStore
                         .getState()
                         .showModal(
-                          <Delete_Bot_Modal
+                          <DeleteBot
                             id={item._id}
                             text={
                               "Are you sure you want to delete this chatbot?"

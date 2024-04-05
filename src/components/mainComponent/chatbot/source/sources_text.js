@@ -1,24 +1,24 @@
 "use client";
 
-import { useState } from "react";
-import useFormDataStore from "../../../store/chatbot/chatbotSource";
+// import { useState } from "react";
+// import useFormDataStore from "../../../../store/chatbot/chat_bot_store";
 
-function Text() {
-  const [textInput, setTextInput] = useState("");
+function Source_Text() {
+  // const [textInput, setTextInput] = useState("");
 
-  const handleInputChange = (event) => {
-    setTextInput(event.target.value);
-    useFormDataStore.getState().addText(event.target.value);
-  };
+  // const handleInputChange = (event) => {
+  //   setTextInput(event.target.value);
+  //   useFormDataStore.getState().addText(event.target.value);
+  // };
 
-  const text = useFormDataStore((state) => state.formData.text);
+  // const text = useFormDataStore((state) => state.formData.text);
 
-  const handleSubmit = async () => {
-    try {
-    } catch (error) {
-      console.error("Failed to create bot:", error.message);
-    }
-  };
+  // const handleSubmit = async () => {
+  //   try {
+  //   } catch (error) {
+  //     console.error("Failed to create bot:", error.message);
+  //   }
+  // };
   return (
     <div className="flex flex-col  items-center justify-center w-full">
       <div className="flex mt-[60px] w-full flex-col lg:flex-row items-center lg:items-start gap-3  justify-center">
@@ -29,15 +29,15 @@ function Text() {
           <div className="h-[85%] ">
             <div className="p-3 h-[80%]">
               <textarea
-                value={text}
-                onChange={handleInputChange}
+                // value={text}
+                // onChange={handleInputChange}
                 placeholder="paste text here"
                 className="h-full placeholder:text-gray-700 p-3 placeholder:text-xs placeholder:font-manrope w-full border-[1px] border-gray-200"
               ></textarea>
             </div>
             <div className="h-[20%] p-5 border-gray-200 flex flex-col items-end justify-end">
               <button
-                onClick={handleSubmit}
+                // onClick={handleSubmit}
                 className=" px-5 py-3 text-[#1261AC] text-xs font-bold font-manrope leading-snug bg-[#EEF8FF] flex items-center justify-center flex-col  rounded-lg"
               >
                 Save
@@ -50,4 +50,4 @@ function Text() {
   );
 }
 
-export default Text;
+export default Source_Text;

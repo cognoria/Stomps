@@ -5,8 +5,8 @@ import { useEffect } from "react";
 import Loading from "../../../../components/customComponents/loading/loading";
 import Empty_bot from "../../../../components/mainComponent/chatbot/empty_bot";
 import Main_bot from "../../../../components/mainComponent/chatbot/main_bot";
-import useUserApiKey from "../../../../store/chat_bot_state/api_key/api_key_check";
-import useUserChatbot from "../../../../store/chat_bot_state/user_chatbot";
+import useUserChatbot from "../../../../store/chatbot/getChatbots";
+import useKeysStore from "../../../../store/chatbot/keys";
 
 function Page() {
   const router = useRouter();
@@ -16,28 +16,28 @@ function Page() {
     error: state.error,
     chatbots: state.chatbots,
   }));
-  const { userApiKeyCheck, key_loading, key_error, key_val } = useUserApiKey(
+  const { checkKeys, loadingKeys, keysError, hasKeys } = useKeysStore(
     (state) => ({
-      userApiKeyCheck: state.userApiKeyCheck,
-      key_loading: state.loading,
+      checkKeys: state.checkKeys,
+      loadingKeys: stasE.loading,
       key_error: state.error,
-      key_val: state.key_val,
+      hasKeys: state.hasKeys,
     })
   );
 
   useEffect(() => {
-   userApiKeyCheck(() => {
-     if (!key_val) {
-       router.push("/account/add_keys");
-     }
-   });
+    checkKeys(() => {
+      if (!hasKeys) {
+        router.push("/account/keys");
+      }
+    });
     userChatBot();
-  }, [key_val, router, userApiKeyCheck, userChatBot]);
+  }, [hasKeys, router, checkKeys, userChatBot]);
 
- 
+
   return (
     <div>
-      {key_loading ||
+      {loadingKeys ||
         (loading && <Loading height={"h-50px"} width={"w-50px"} />)}
 
       <div>
