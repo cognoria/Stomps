@@ -2,11 +2,11 @@ import { Pinecone } from "@pinecone-database/pinecone";
 import { globalRepo } from "../server/repos/global-repo";
 import { AppServiceProviders } from "../enums";
 
-let pinecone = null;
+// let pinecone = null;
 
 export const getPineconeClient = async (apikey) => {
-    if (!pinecone) pinecone = new Pinecone({ apiKey: apikey });
-    return pinecone
+    // if (!pinecone) pinecone = new Pinecone({ apiKey: apikey });
+    return new Pinecone({ apiKey: apikey })
 }
 
 // The function `getMatchesFromEmbeddings` is used to retrieve matches for the given embeddings
@@ -46,10 +46,10 @@ export async function getMatchesFromEmbeddings(embeddings, topK, pinconeIndex, n
     }
 }
 
-export async function createPinconeIndex(name, type = 'starter') {
+export async function createPinconeIndex(name, type = 'starter', owner) {
     try {
         // ///TODO: pass apikey
-        const apiKey = await globalRepo.getServiceKey(AppServiceProviders.PINECONE)
+        const apiKey = await globalRepo.getServiceKey(AppServiceProviders.PINECONE, owner)
         const pinecone = await getPineconeClient(apiKey);
 
         let index;
@@ -97,20 +97,20 @@ export async function createPinconeIndex(name, type = 'starter') {
                 });
 
             default:
-                index = await pinecone.createIndex({
+                return index = await pinecone.createIndex({
                     name,
                     dimension: 1536,
                     metric: 'cosine',
                     spec: {
-                        serverless: {
-                            cloud: 'aws',
-                            region: 'us-west-2'
+                        pod: {
+                            environment: 'gcp-starter',
+                            podType: 'p1.x1',
+                            pods: 1
                         }
                     }
                 });
-                break;
         }
-        return index;
+        // return index;
     } catch (e) {
         console.log("Error creating pinecone index: ", e)
         if (e.message.includes("FORBIDDEN")) {

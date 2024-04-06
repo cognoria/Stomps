@@ -16,11 +16,8 @@ COPY . .
 # Build the Next.js app
 RUN npm run build
 
-#start worker
-RUN npm run worker
-
 # Expose the port for the Next.js app
-EXPOSE 3000
+EXPOSE 80
 
 # Start the Next.js app
 CMD ["npm", "start"]

@@ -1,27 +1,27 @@
 "use client";
 
-import Analytics from "../../../../../../../components/mainComponent/chatbot/bot_dashboard/analytics";
-import Chat_logs from "../../../../../../../components/mainComponent/chatbot/bot_dashboard/chat_logs";
-import Leeds from "../../../../../../../components/mainComponent/chatbot/bot_dashboard/leeds";
+import Analytics from "../../../../../../../components/mainComponent/chatbot/dashboard/analytics";
+import Chat_logs from "../../../../../../../components/mainComponent/chatbot/dashboard/chatLogs";
+import Leeds from "../../../../../../../components/mainComponent/chatbot/dashboard/leeds";
 
-import Chat_bot_nav from "../../../../../../../components/navigation/chatbot_nav";
-import bot_nav from "../../../../../../../store/chat_bot_state/chatbot_state";
+import SourceNav from "../../../../../../../components/navigation/SourceNav";
+import useSourceNav from "../../../../../../../store/chatbot/useSourceNav";
 
-function page({ params: { bot } }) {
+function Page({ params: { bot } }) {
   // console.log(bot);
-  const currentPage = bot_nav((state) => state.currentPage);
+  const currentPage = useSourceNav((state) => state.currentPage);
 
   const renderContent = () => {
     switch (currentPage) {
       case "Leads":
-        return <Leeds bot_id={bot} />;
+        return <Leeds botId={bot} />;
       case "Analytics":
-        return <Analytics bot_id={bot} />;
+        return <Analytics botId={bot}/>;
       case "Chat logs":
-        return <Chat_logs bot_id={bot} />;
+        return <Chat_logs botId={bot}/>;
 
       default:
-        return <Chat_logs bot_id={bot} />;
+        return <Chat_logs botId={bot}/>;
     }
   };
   return (
@@ -34,7 +34,7 @@ function page({ params: { bot } }) {
 
         <div className="flex flex-col lg:flex-row w-full  items-start justify-center">
           <div className="lg:max-w-[212px] w-full flex-end flex flex-col mt-[60px]">
-            <Chat_bot_nav tag={"Dashboard"} nav={nav} />
+            <SourceNav tag={"Dashboard"} nav={nav} />
           </div>
           <div className="w-full lg:mt-0 mt-[30px]">{renderContent()}</div>
         </div>
@@ -43,7 +43,7 @@ function page({ params: { bot } }) {
   );
 }
 
-export default page;
+export default Page;
 
 const nav = [
   {

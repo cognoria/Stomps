@@ -1,7 +1,7 @@
 
 import Auth_header from "../../../../components/authComponents/header";
 import Signup_form from "../../../../components/authComponents/signup/signup";
-import Nav_bar from "../../../../components/navigation/nav_bar";
+import MainNav from "../../../../components/navigation/mainNav";
 
 function page() {
   return (

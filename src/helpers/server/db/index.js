@@ -8,9 +8,9 @@ import globalModel from './globalSettingModel';
 import chatModel from './chatModel';
 import leadModel from './leadModel';
 
-const dbUrl = "mongodb+srv://stomps0:Stomps0Password@stomps0.wwwzweb.mongodb.net/stomp_app";
-// 'mongodb+srv://stomps0:Stomps0Password@stomps0.wwwzweb.mongodb.net/stomp_app'
+const dbUrl = process.env.MONGODB_URI;
 mongoose.connect(dbUrl);
+console.log({dbUrl})
 
 export const db = {
     Log: logModel(),

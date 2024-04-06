@@ -1,5 +1,5 @@
 import Auth_header from "../../../../../components/authComponents/header";
-import Reset_password from "../../../../../components/authComponents/reset_password/reset_password";
+import Reset_password from "../../../../../components/authComponents/resetPassword";
 
 function Page({ params: { token } }) {
   return (

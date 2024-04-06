@@ -1,33 +1,33 @@
 "use client";
 
-import Bot_leads from "../../../../../../../components/mainComponent/chatbot/bot_settings/bot_leads";
-import Bot_security from "../../../../../../../components/mainComponent/chatbot/bot_settings/bot_security";
-import Chat_interface from "../../../../../../../components/mainComponent/chatbot/bot_settings/chat_interface";
-import General_settings from "../../../../../../../components/mainComponent/chatbot/bot_settings/general_settings";
-import Model_settings from "../../../../../../../components/mainComponent/chatbot/bot_settings/model_settings";
+import LeadsSettings from "../../../../../../../components/mainComponent/chatbot/settings/Leads";
+import SecuritySettings from "../../../../../../../components/mainComponent/chatbot/settings/Security";
+import InterfaceSettings from "../../../../../../../components/mainComponent/chatbot/settings/Interface";
+import GeneralSettings from "../../../../../../../components/mainComponent/chatbot/settings/General";
+import ModelSettings from "../../../../../../../components/mainComponent/chatbot/settings/Model";
 
-import Chat_bot_nav from "../../../../../../../components/navigation/chatbot_nav";
-import bot_nav from "../../../../../../../store/chat_bot_state/chatbot_state";
+import SourceNav from "../../../../../../../components/navigation/SourceNav";
+import useSourceNav from "../../../../../../../store/chatbot/useSourceNav";
 
-function page({ params: { bot } }) {
+function Page({ params: { bot } }) {
   // console.log(bot);
-  const currentPage = bot_nav((state) => state.currentPage);
+  const currentPage = useSourceNav((state) => state.currentPage);
 
   const renderContent = () => {
     switch (currentPage) {
       case "General":
-        return <General_settings bot_id={bot} />;
+        return <GeneralSettings botId={bot} />;
       case "Model":
-        return <Model_settings bot_id={bot} />;
+        return <ModelSettings botId={bot} />;
       case "Chat interface":
-        return <Chat_interface bot_id={bot} />;
+        return <InterfaceSettings botId={bot} />;
       case "security":
-        return <Bot_security bot_id={bot} />;
+        return <SecuritySettings botId={bot} />;
       case "Leads":
-        return <Bot_leads bot_id={bot} />;
+        return <LeadsSettings botId={bot} />;
 
       default:
-        return <General_settings bot_id={bot} />;
+        return <GeneralSettings botId={bot} />;
     }
   };
   return (
@@ -40,7 +40,7 @@ function page({ params: { bot } }) {
 
         <div className="flex flex-col lg:flex-row w-full  items-start justify-center">
           <div className="lg:max-w-[212px] w-full flex-end flex flex-col mt-[60px]">
-            <Chat_bot_nav tag={"Settings"} nav={nav} />
+            <SourceNav tag={"Settings"} nav={nav} />
           </div>
           <div className="w-full lg:mt-0 mt-[30px]">{renderContent()}</div>
         </div>
@@ -49,7 +49,7 @@ function page({ params: { bot } }) {
   );
 }
 
-export default page;
+export default Page;
 
 const nav = [
   {

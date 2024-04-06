@@ -2,7 +2,7 @@
 
 import { Dialog, Transition } from "@headlessui/react";
 import { Fragment } from "react";
-import useModalStore from "../../../store/modal/modal_state";
+import useModalStore from "../../../store/modal/modalState";
 
 export function Modal() {
   const { isModalShown, showModal, hideModal, modalContent } = useModalStore(

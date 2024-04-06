@@ -1,6 +1,6 @@
 "use client"
 import { Inter } from "next/font/google";
-import Nav_bar from "../../../components/navigation/nav_bar";
+import MainNav from "../../../components/navigation/mainNav";
 import React from "react";
 import { useRouter } from "next/navigation";
 // import useUserStore  from "../../../store/auth/userState";
@@ -26,7 +26,7 @@ export default function Layout({ children }) {
 
   return (
     <div className={inter.className}>
-      <Nav_bar />
+      <MainNav />
       {children}
     </div>
   );

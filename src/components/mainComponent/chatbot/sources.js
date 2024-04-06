@@ -1,8 +1,8 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import useFormDataStore from "../../../store/chat_bot_state/chat_bot_store";
-import useBotCreationStore from "../../../store/chat_bot_state/create_new_bot";
+import useFormDataStore from "../../../store/chatbot/useChatbotSource";
+import useChatbotStore from "../../../store/chatbot/useChatbotStore";
 
 export default function Sources() {
   const formData = useFormDataStore((state) => state.formData);
@@ -27,13 +27,17 @@ export default function Sources() {
     ],
   };
 
-  const isLoading = useBotCreationStore((state) => state.loading);
+  const {createChatbot, creatingChatbot} = useChatbotStore((state) => ({
+    createChatbot: state.createChatbot,
+    creatingChatbot: state.loading
+  }))
+
   const router = useRouter();
   async function createBot(e) {
     e.preventDefault();
     console.log(dataToSend);
     try {
-      const newBot = await useBotCreationStore.getState().createBot(dataToSend);
+      const newBot = await createChatbot(dataToSend);
       router.push(`/bot/${newBot._id}`);
       useFormDataStore.getState().clearFormData(newBot._id);
     } catch (error) {
@@ -77,10 +81,10 @@ export default function Sources() {
         <button
           onClick={createBot}
           className={`text-white py-[16px] px-5 w-full text-sm font-bold font-manrope ${
-            isLoading ? "bg-sky-700/20" : "bg-sky-700"
+            creatingChatbot ? "bg-sky-700/20" : "bg-sky-700"
           }  rounded-lg shadow border border-sky-700  text-center leading-snug`}
         >
-          {isLoading ? "Creating Bot..." : "Create Chatbot"}
+          {creatingChatbot ? "Creating Bot..." : "Create Chatbot"}
         </button>
       </div>
     </div>

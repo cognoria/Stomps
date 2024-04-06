@@ -5,11 +5,15 @@ services:
     image: mongo
     restart: always
     volumes:
-      - mongo-data:/data/stomps_db
+      - mongo-data:/data/stompsdb
 
-  redis:
-  image: redis
-  restart: always
+  # redis:
+  #   image: redis
+  #   restart: always
+  #   ports:
+  #     - '6370:6370'
+  #   volumes:
+  #     - redis:/data/stompsdb
 
   app:
     build:
@@ -17,12 +21,13 @@ services:
       dockerfile: Dockerfile
     stdin_open: true
     ports:
-      - '3000:3000'
+      - '80:80'
     env_file:
       - .env
     depends_on:
       - mongo
-      - redis
-  
+      # - redis
+
 volumes:
   mongo-data:
+  # redis:

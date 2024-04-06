@@ -1,19 +1,18 @@
 import { Queue, Worker } from 'bullmq';
-import IORedis from 'ioredis';
+import Redis from 'ioredis';
 import { chatbotRepo } from './repos';
 
-const QueueConnection = new IORedis({
-  url: process.env.REDIS_URI,
-  maxRetriesPerRequest: null,
+const REDIS_URI = process.env.REDIS_URI;
+
+const connection = new Redis({
+  url: REDIS_URI,
+  maxRetriesPerRequest: null
 });
-const WorkerConnection = new IORedis({
-  url: process.env.REDIS_URI,
-  maxRetriesPerRequest: null,
-});
+
+console.log({REDIS_URI})
+
 // Create a queue instance
-const trainChatbotQueue = new Queue('trainChatbot', {
-  connection: QueueConnection,
-});
+const trainChatbotQueue = new Queue('trainChatbot', { connection });
 
 // Create a worker instance
 const worker = new Worker(
@@ -33,8 +32,9 @@ const worker = new Worker(
     }
   },
   {
-    connection: WorkerConnection
-  }
+    concurrency: 1,
+    connection
+  },
 );
 
 // Handle worker events
@@ -46,12 +46,5 @@ worker.on('failed', (job, err) => {
   console.log(`Job ${job.id} failed with error: ${err.message}`);
 });
 
-// Start the worker
-(async () => {
-  if (!worker.isRunning()) {
-    await worker.run();
-  }
-  console.log('Worker started');
-})();
-
+console.log("Worker Running: ", worker.isRunning())
 export { trainChatbotQueue };

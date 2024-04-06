@@ -1,6 +1,6 @@
 "use client";
 import { Inter } from "next/font/google";
-import Bot_nav from "../../../../../../components/navigation/bot_page_nav/bot_nav";
+import ChatbotNav from "../../../../../../components/navigation/settingsNav";
 // import useUserStore  from "../../../store/auth/userState";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -9,7 +9,7 @@ export default function Layout({ children }) {
   return (
     <div className={inter.className}>
       <div className="flex flex-col justify-center  items-center">
-        <Bot_nav />
+        <ChatbotNav />
       </div>
 
       {children}

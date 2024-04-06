@@ -3,56 +3,48 @@
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import Loading from "../../../../components/customComponents/loading/loading";
-import Empty_bot from "../../../../components/mainComponent/chatbot/empty_bot";
-import Main_bot from "../../../../components/mainComponent/chatbot/main_bot";
-import useUserApiKey from "../../../../store/chat_bot_state/api_key/api_key_check";
-import useUserChatbot from "../../../../store/chat_bot_state/user_chatbot";
+import EmptyChatbotsDisplay from "../../../../components/mainComponent/chatbot/emptyChatbotDisplay";
+import ChatbotsDisplay from "../../../../components/mainComponent/chatbot/ChatbotsDisplay";
+import useKeysStore from "../../../../store/chatbot/useKeysStore";
+import useChatbotStore from "../../../../store/chatbot/useChatbotStore";
 
-function Page() {
+const Page = () => {
   const router = useRouter();
-  const { userChatBot, loading, error, chatbots } = useUserChatbot((state) => ({
-    userChatBot: state.userChatBot,
+  const { getUserChatBots, loading, chatbots } = useChatbotStore((state) => ({
+    getUserChatBots: state.getUserChatBots,
     loading: state.loading,
-    error: state.error,
     chatbots: state.chatbots,
   }));
-  const { userApiKeyCheck, key_loading, key_error, key_val } = useUserApiKey(
-    (state) => ({
-      userApiKeyCheck: state.userApiKeyCheck,
-      key_loading: state.loading,
-      key_error: state.error,
-      key_val: state.key_val,
-    })
-  );
+
+  const { checkKeys, loadingKeys } = useKeysStore((state) => ({
+    checkKeys: state.checkKeys,
+    loadingKeys: state.loading,
+    keysError: state.error,
+    hasKeys: state.hasKeys,
+  }));
 
   useEffect(() => {
-   userApiKeyCheck(() => {
-     if (!key_val) {
-       router.push("/account/add_keys");
-     }
-   });
-    userChatBot();
-  }, [key_val, router, userApiKeyCheck, userChatBot]);
+    checkKeys((hasKeys) => {
+      if (!hasKeys) {
+        router.push("/account/keys");
+      }
+    });
+    getUserChatBots();
+  }, [checkKeys, getUserChatBots, router]);
 
- 
+  if (loadingKeys || loading) {
+    return <Loading height="h-50px" width="w-50px" />;
+  }
+
+  if (!chatbots || chatbots.length === 0) {
+    return <EmptyChatbotsDisplay />;
+  }
+
   return (
-    <div>
-      {key_loading ||
-        (loading && <Loading height={"h-50px"} width={"w-50px"} />)}
-
-      <div>
-        {chatbots === null || chatbots.length === 0 ? (
-          <Empty_bot />
-        ) : chatbots ? (
-          <div className="mt-[80px] w-full">
-            <Main_bot chatbots={chatbots} />
-          </div>
-        ) : (
-          <Empty_bot />
-        )}
-      </div>
+    <div className="mt-[80px] w-full">
+      <ChatbotsDisplay chatbots={chatbots} />
     </div>
   );
-}
+};
 
 export default Page;

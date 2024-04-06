@@ -2,8 +2,8 @@
 import { toast } from "react-toastify";
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
-import useUserApiKey from "../chat_bot_state/api_key/api_key_check";
 import { useUserStore } from "./userState";
+import useKeysStore from "../chatbot/useKeysStore";
 
 const useLoginAuthStore = create(
   devtools((set) => ({
@@ -11,7 +11,6 @@ const useLoginAuthStore = create(
     error: null,
     loading: false,
     loginUser: async ({ email, password }, onSuccess, onFailure) => {
-      // console.log(`store hitted ${email}, ${password}`);
       set({ loading: true, error: null });
       try {
         const response = await fetch("/api/v1/auth/login", {
@@ -31,11 +30,9 @@ const useLoginAuthStore = create(
           isLoggedIn: true,
         });
         useUserStore.getState().setUser(data);
-        await useUserApiKey.getState().userApiKeyCheck();
+        await useKeysStore.getState().checkKeys();
 
-        await useUserApiKey.getState().userApiKeyCheck();
-
-        const { key_val } = useUserApiKey.getState();
+        const { hasKeys } = useKeysStore.getState();
 
         toast.success("Login successful!", {
           position: "top-right",
@@ -47,7 +44,7 @@ const useLoginAuthStore = create(
           progress: false,
         });
 
-        if (!key_val) {
+        if (!hasKeys) {
           onFailure();
         } else {
           onSuccess();

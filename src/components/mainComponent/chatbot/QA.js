@@ -1,5 +1,6 @@
 import { useState } from "react";
-import useFormDataStore from "../../../store/chat_bot_state/chat_bot_store";
+import useFormDataStore from "../../../store/chatbot/useChatbotSource";
+import Image from "next/image";
 
 export default function QA() {
   const [question, setQuestion] = useState("");
@@ -57,7 +58,7 @@ export default function QA() {
                   }
                   className="bg-transparent items-center gap-2 flex flex-row"
                 >
-                  <img src="/images/chatbox/trash.svg" />
+                  <Image width={20} height={20} alt="" src="/images/chatbox/trash.svg" />
                   <p className="text-red-500 text-xs font-bold font-manrope leading-snug">
                     Delete all
                   </p>
@@ -110,7 +111,7 @@ export default function QA() {
                             useFormDataStore.getState().deleteQuestion(index)
                           }
                         >
-                          <img
+                          <Image width={20} height={20}
                             src="/images/chatbox/trash.svg"
                             alt=""
                             classNAme="w-full h-auto"

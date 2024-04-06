@@ -5,13 +5,12 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start",
+    "start": "next start -p 80",
     "lint": "next lint",
     "worker": "node src/services/worker/worker.js"
   },
   "dependencies": {
     "@elasticemail/elasticemail-client": "^4.0.23",
-    "@faker-js/faker": "^8.4.1",
     "@headlessui/react": "^1.7.18",
     "@hookform/resolvers": "^3.3.4",
     "@pinecone-database/doc-splitter": "^0.0.1",

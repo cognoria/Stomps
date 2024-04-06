@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 function Support() {
   return (
     <div className="w-screen overflow-x-hidden mt-[80px] flex flex-col justify-center font-manrope items-center">
@@ -69,7 +71,7 @@ function Support() {
           <div className="flex px-[3%] flex-row items-center lg:items-end gap-4 justify-around lg:justify-end w-full mt-[50px] mb-[15px]">
             <button className="w-[161px] h-9 px-3.5 py-2 rounded-lg shadow border border-sky-700 justify-center items-center gap-2 inline-flex">
               <div className="w-5 h-5 justify-center items-center flex">
-                <img
+                <Image width={15} height={15}
                   src="/images/main/support/link.svg"
                   alt="/"
                   className="w-5 h-5 relative"
