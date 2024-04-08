@@ -53,6 +53,8 @@ async function getChatResponse(messages, chatbotId) {
             role: `system`,
             content: `${chatbot.chatBotCustomizeData.prompt}
             As an assistant, your responses will be based only on the given data.
+            Your answer must be short and concise.
+            Your answers must be in markdown.
             START CONTEXT BLOCK
             ${context}
             END OF CONTEXT BLOCK

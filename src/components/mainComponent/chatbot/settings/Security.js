@@ -20,18 +20,12 @@ function SecuritySettings({ botId }) {
   }, [botId, getChatbot]);
 
   //limit values
-  const [inputLimit, setInputLimit] = useState(
-    chatbot ? chatbot?.rateLimiting?.msg_count : ""
-  );
-  const [inputMessage, setInputMessage] = useState(
-    chatbot ? chatbot?.rateLimiting?.timeframe : ""
-  );
+  const [inputLimit, setInputLimit] = useState(chatbot?.rateLimiting?.msg_count);
+  const [inputMessage, setInputMessage] = useState(chatbot?.rateLimiting?.timeframe);
   // Limit values
 
   //iframe & widget toggle
-  const [toggleChecked, setToggleChecked] = useState(
-    chatbot ? chatbot?.chatBotCustomizeData?.allowPublicDomains : false
-  );
+  const [toggleChecked, setToggleChecked] = useState(chatbot?.chatBotCustomizeData?.allowPublicDomains);
   const handleToggleChange = () => {
     setToggleChecked(!toggleChecked);
   };
@@ -40,9 +34,7 @@ function SecuritySettings({ botId }) {
   //iframe & widget toggle
 
   // privacy selection
-  const [selectedPrivacy, setSelectedPrivacy] = useState(
-    chatbot ? chatbot?.visibility : ""
-  );
+  const [selectedPrivacy, setSelectedPrivacy] = useState(chatbot?.visibility);
   const handlePrivacyChange = (event) => {
     setSelectedPrivacy(event.target.value);
   };
@@ -51,9 +43,7 @@ function SecuritySettings({ botId }) {
   //privacy selection
 
   // exceed limit message
-  const [limitMessage, setLimitMessage] = useState(
-    chatbot ? chatbot?.rateLimiting?.limitMsg : ""
-  );
+  const [limitMessage, setLimitMessage] = useState(chatbot?.rateLimiting?.limitMsg);
   // console.log(limitMessage);
   // Exceed limit message
 
