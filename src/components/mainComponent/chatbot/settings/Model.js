@@ -25,7 +25,7 @@ function ModelSettings({ botId }) {
   }, [botId, getChatbot]);
 
   // model selection
-  const [selectedModel, setSelectedModel] = useState(chatModelEnum.GPT_3_5);
+  const [selectedModel, setSelectedModel] = useState(chatbot?.chatBotCustomizeData.model);
   const handleModelChange = (event) => {
     setSelectedModel(event.target.value);
   };
@@ -103,7 +103,7 @@ function ModelSettings({ botId }) {
                 Model
               </div>
               <select
-                value={chatbot?.chatBotCustomizeData.model}
+                value={selectedModel}
                 onChange={handleModelChange}
                 className="h-[50px] w-full -mt-2 border-[1px] border-gray-200 rounded-md"
               >

@@ -12,11 +12,17 @@ import {
   isTXTFile,
 } from "../../../../utils/extractDoc/file_extract";
 import Image from "next/image";
+import useKnowledgebase from "../../../../store/chatbot/useKnowledgebase";
 
 export default function DataSource() {
   const [selectedFile, setSelectedFile] = useState(null);
-  // const [files, setFiles] = useState([])
-  const files = useFormDataStore((state) => state.formData.files);
+
+  const { files, addFiles, deleteFile, deleteAllFiles } = useKnowledgebase((state) => ({
+    files: state.files,
+    addFiles: state.addFiles,
+    deleteFile: state.deleteFile,
+    deleteAllFiles: state.deleteAllFiles,
+  }))
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
@@ -44,18 +50,6 @@ export default function DataSource() {
     }
   };
 
-  async function deleteFile(index) {
-    return await useFormDataStore.getState().deleteFileFromContent(index);
-  }
-
-  async function deleteAllFile() {
-    if (files.length == 0) return;
-
-    for (const file of files) {
-      deleteFile(file.index);
-    }
-  }
-
   async function handleAddFile() {
     if (!selectedFile) return toast.error("Please select a file first");
     try {
@@ -69,18 +63,12 @@ export default function DataSource() {
       } else {
         return toast.error("unspported file selected"); //toast file not supported
       }
-      await useFormDataStore.getState().addDataToFiles(file);
-      await useFormDataStore.getState().addFileToContents(file);
+      await addFiles(file);
     } catch (e) {
       console.error("error adding file: ", e);
       toast.error("Failed to add file");
-      //toast
     }
   }
-
-  useEffect(() => {
-    console.log(files);
-  }, [files]);
 
   return (
     <div className="flex flex-col  items-center justify-center w-full">
@@ -93,15 +81,15 @@ export default function DataSource() {
             <div className="flex flex-col py-5 px-3 w-full h-full">
               <div
                 className="upload-container"
-                // onDragOver={handleDragOver}
-                // onDrop={handleDrop}
+                onDragOver={handleDragOver}
+                onDrop={handleDrop}
               >
                 <input
                   type="file"
                   id="file-input"
                   accept=".pdf,.doc,.txt,.docx"
                   style={{ display: "none" }}
-                  // onChange={handleFileChange}
+                  onChange={handleFileChange}
                 />
                 <label htmlFor="file-input" className="upload-label">
                   <Image width={15} height={15} src="/images/chatbox/folder-add.svg" alt="Upload icon" />
@@ -139,16 +127,16 @@ export default function DataSource() {
               <div className="flex flex-row  p-5 items-end lg:mt-0 mt-[70px] [mt-50px]  h-auto lg:h-[70%] justify-end">
                 <div className="flex flex-row items-center  gap-x-5 ">
                   <button
-                    // onClick={deleteAllFile}
+                    onClick={deleteAllFiles}
                     className="bg-transparent items-center gap-2 flex flex-row"
                   >
-                    <Image width={15} height={15} src="/images/chatbox/trash.svg" alt=""/>
+                    <Image width={15} height={15} src="/images/chatbox/trash.svg" alt="" />
                     <p className="text-red-500 text-xs font-bold font-manrope leading-snug">
                       Delete all
                     </p>
                   </button>
                   <button
-                    // onClick={handleAddFile}
+                    onClick={handleAddFile}
                     className=" px-5 py-3 text-[#1261AC] text-xs font-bold font-manrope leading-snug bg-[#EEF8FF] flex items-center justify-center flex-col  rounded-lg"
                   >
                     Add
@@ -168,9 +156,7 @@ export default function DataSource() {
                             {file.name}
                           </div>
                         </div>
-                        <button
-                        // onClick={() => deleteFile(index)}
-                        >
+                        <button onClick={() => deleteFile(index)}>
                           <Image width={15} height={15}
                             src="/images/chatbox/trash.svg"
                             alt=""

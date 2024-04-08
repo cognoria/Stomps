@@ -65,7 +65,7 @@ function InterfaceSettings() {
   // suggested text
   const [suggestedMessages, setSuggestedMessages] = useState([]);
   const divRef = useRef(null);
-
+  console.log(suggestedMessages);
   // suggested text
   //chat colour
   const [chatColour, setChatColour] = useState("");
@@ -412,12 +412,13 @@ function InterfaceSettings() {
         <div className="flex flex-row w-full items-start justify-start gap-x-3">
           {suggestedMessages &&
             suggestedMessages.map((msg, i) => {
+              console.log(msg)
               return (
                 <p
                   className="rounded-lg h-[15px] bg-sky-700 text-white"
                   key={i}
                 >
-                  {mgs}
+                  {msg}
                 </p>
               );
             })}

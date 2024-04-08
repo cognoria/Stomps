@@ -64,7 +64,7 @@ export default function GeneralSettings({ botId }) {
             </div>
 
             <div className="text-gray-900 text-sm font-bold font-manrope leading-snug">
-              30,465
+              {chatbot?.charCount}
             </div>
           </div>
 

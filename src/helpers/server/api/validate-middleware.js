@@ -12,6 +12,7 @@
     const { error, value } = schema.validate(body, options);
 
     if (error) {
+        console.log(error)
         throw `Validation error: ${error.details.map(x => x.message).join(', ')}`;
     }
 

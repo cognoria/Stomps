@@ -29,6 +29,7 @@ async function getWebLinksFromUrl(url) {
     const $ = cheerio.load(html);
     const baseUrl = new URL(url).origin
     const Urls = new Set();
+    Urls.add(url)
 
     // Find all anchor tags
     $('a').each((index, element) => {

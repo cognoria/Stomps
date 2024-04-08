@@ -1,24 +1,18 @@
 "use client";
 
-// import { useState } from "react";
-// import useFormDataStore from "../../../../store/chatbot/chat_bot_store";
+import useKnowledgebase from "../../../../store/chatbot/useKnowledgebase";
 
-function Source_Text() {
-  // const [textInput, setTextInput] = useState("");
+function Source_Text() {;
+  const { text, updateText} = useKnowledgebase((state) => ({
+    text: state.text,
+    updateText: state.updateText,
+  }))
 
-  // const handleInputChange = (event) => {
-  //   setTextInput(event.target.value);
-  //   useFormDataStore.getState().addText(event.target.value);
-  // };
+  const handleInputChange = (event) => {
+    event.preventDefault()
+    updateText(event.target.value);
+  };
 
-  // const text = useFormDataStore((state) => state.formData.text);
-
-  // const handleSubmit = async () => {
-  //   try {
-  //   } catch (error) {
-  //     console.error("Failed to create bot:", error.message);
-  //   }
-  // };
   return (
     <div className="flex flex-col  items-center justify-center w-full">
       <div className="flex mt-[60px] w-full flex-col lg:flex-row items-center lg:items-start gap-3  justify-center">
@@ -29,8 +23,8 @@ function Source_Text() {
           <div className="h-[85%] ">
             <div className="p-3 h-[80%]">
               <textarea
-                // value={text}
-                // onChange={handleInputChange}
+                value={text}
+                onChange={handleInputChange}
                 placeholder="paste text here"
                 className="h-full placeholder:text-gray-700 p-3 placeholder:text-xs placeholder:font-manrope w-full border-[1px] border-gray-200"
               ></textarea>

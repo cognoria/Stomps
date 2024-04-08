@@ -10,6 +10,8 @@ export default create((set) => ({
   updatingInterface: false,
   loading: false,
   error: null,
+  knowledgebase: null,
+  gettingKnowledgebase: false,
 
   updateModel: async ({ botData, botId }) => {
     set({ updatingModel: true, loading: true, error: null });
@@ -111,7 +113,7 @@ export default create((set) => ({
       });
       const data = await response.json();
       if (!response.ok) throw new Error(data.message || "An error occurred");
-      set({ creatingBot: false, loading: false });
+      set({ updatingKnowledgebase: false, loading: false });
       toast.success(data.message);
       return data;
     } catch (error) {

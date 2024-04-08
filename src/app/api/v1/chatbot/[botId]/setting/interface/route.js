@@ -18,7 +18,6 @@ updateChatInterface.schema = joi.object({
     initialMsg: joi.string().required(),
     suggestedMsgs: joi.array().items(joi.object({
         question: joi.string().required(),
-        label: joi.string().required()
     })).required(),
     msgPlaceholder: joi.string().required(),
     theme: joi.string().required(),

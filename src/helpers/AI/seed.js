@@ -27,8 +27,22 @@ async function seed(chatbotId) {
 
     const indexName = chatbot.pIndex;
     const pages = [...chatbot.crawlData.pagesContent, ...chatbot.knowledgebase.contents];
+
+    let charCount = 0;
+    for (const page of pages) {
+      if (page.content) {
+        charCount += page.content.length;
+      } else {
+        console.error(`Undefined content for page: ${page}`);
+      }
+    }
+
+    await Chatbot.updateOne(
+      { _id: chatbotId },
+      { $set: { 'crawlData.charCount': charCount } }
+    );
     
-    if(!indexName) throw 'chatbot Index not found.'
+    if (!indexName) throw 'chatbot Index not found.'
     // Choose the appropriate document splitter based on the splitting method
     const splitter =
       splittingMethod === "recursive"
