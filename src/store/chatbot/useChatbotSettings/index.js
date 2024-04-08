@@ -112,24 +112,4 @@ export default create((set) => ({
       throw error;
     }
   },
-  
-  getKnowledgebase: async ({botData, botId}) => {
-    set({ gettingKnowledgebase: true, loading: true, error: null });
-    try {
-      const response = await fetch(`/api/v1/chatbot/${botId}/source`, {
-        method: "GET",
-        headers: { "Content-Type": "application/json" },
-      });
-      const data = await response.json();
-      if (!response.ok) throw new Error(data.message || "An error occurred");
-      set({ gettingKnowledgebase: false, loading: false, knowledgebase: data });
-      toast.success(data.message);
-      return data;
-    } catch (error) {
-      set({ gettingKnowledgebase: false, loading: false, error: error.message });
-      toast.error(error.message);
-      console.error(error.message);
-      throw error;
-    }
-  },
 }));

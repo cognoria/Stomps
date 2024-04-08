@@ -8,7 +8,7 @@ import useBotMessagingStore from "../../../../store/chatbot/useChatbotMessaging"
 import { formatDate } from "../../../../utils/data_format/date";
 import Temprature_slider from "../../../customComponents/slider/temprature_slider";
 import useChatbotStore from "../../../../store/chatbot/useChatbotStore";
-
+import SkeletonLoader from "../../../skeleton";
 
 function ChatPage({ botId }) {
   const { getChatbot, loading, chatbot } = useChatbotStore((state) => ({
@@ -44,20 +44,13 @@ function ChatPage({ botId }) {
     }
   }
 
-  //temperture slider
-
-  // const [selectedTemperature, setSelectedTemperature] = useState();
-  // const handleTemperatureChange = (value) => {
-  //   setSelectedTemperature(value);
-  // };
-
   return (
     <div className="flex w-[95%] lg:w-[767px] rounded-md flex-col h-auto items-start  border-gray-200 justify-center border-[1px] ">
       <div className="text-gray-900 text-base font-bold font-manrope p-4 border-b-[1px] border-gray-200 w-full  leading-snug">
-        {chatbot?.name}
+        {(chatbot?._id != botId) || !chatbot ? <SkeletonLoader width={100} /> : <>{chatbot?.name}</>}
       </div>
       <div className="w-full py-6 px-2 items-start flex gap-y-3 flex-col lg:flex-row  justify-start ">
-        <div className="w-full lg:w-[45%] pl-2 h-auto lg:h-[588px]  flex flex-col items-start justify-start">
+        <div className="w-full lg:w-[50%] pl-2 h-auto lg:h-[588px]  flex flex-col items-start justify-start">
           <div className="flex w-full mt-10 flex-col gap-y-8 justify-start h-[90%]">
             <div className="flex flex-col w-full">
               <div className="text-gray-900 text-sm font-normal font-manrope leading-snug">
@@ -65,12 +58,12 @@ function ChatPage({ botId }) {
               </div>
               <div className="flex flex-row items-start gap-3">
                 <div className="text-gray-900 text-sm font-bold font-manrope leading-snug">
-                  {chatbot?._id}
+                  {(chatbot?._id != botId) || !chatbot ? <SkeletonLoader width={200} /> : <>{chatbot?._id}</>}
                 </div>
                 <img src="/images/chatbox/copy.svg" className="w-6 h-6" />
               </div>
             </div>
-            <div className=" flex flex-row w-full justify-between items-start">
+            <div className=" flex flex-row w-full justify-between gap-1 items-start">
               <div className="flex-1 w-full flex flex-col gap-y-2 items-start">
                 <div className="text-gray-900 w-full text-sm font-normal font-manrope leading-snug">
                   Status
@@ -78,14 +71,14 @@ function ChatPage({ botId }) {
                 <div className="flex flex-row w-full gap-1 items-center">
                   <div
                     className={`w-3 h-3 ${getStatusColor(chatbot?.status) === "green"
-                        ? "bg-emerald-500"
-                        : getStatusColor(chatbot?.status) === "red"
-                          ? "bg-red-500"
-                          : "bg-yellow-500"
+                      ? "bg-emerald-500"
+                      : getStatusColor(chatbot?.status) === "red"
+                        ? "bg-red-500"
+                        : "bg-yellow-500"
                       } rounded-full`}
                   />
                   <div className="text-gray-900 text-sm font-bold font-manrope leading-snug">
-                    {chatbot?.status}
+                    {(chatbot?._id != botId) || !chatbot ? <SkeletonLoader width={100} /> : <>{chatbot?.status}</>}
                   </div>
                 </div>
               </div>
@@ -95,20 +88,20 @@ function ChatPage({ botId }) {
                 </div>
                 <div>
                   <div className="text-gray-900 text-sm font-bold font-manrope leading-snug">
-                    {chatbot?.chatBotCustomizeData?.model}
+                    {(chatbot?._id != botId) || !chatbot ? <SkeletonLoader width={100} /> : <>{chatbot?.chatBotCustomizeData?.model}</>}
                   </div>
                 </div>
               </div>
               <div className="flex-1"></div>
             </div>
-            <div className=" flex flex-row w-full justify-between items-start">
+            <div className=" flex flex-row w-full justify-between gap-1 items-start">
               <div className="flex-1 w-full flex flex-col gap-y-2 items-start">
                 <div className="text-gray-900 text-sm font-normal font-manrope leading-snug">
                   Visibility
                 </div>
                 <div className="flex flex-row gap-3 items-center">
                   <div className="text-gray-900 text-sm font-bold font-manrope leading-snug">
-                    {chatbot?.visibility}
+                    {(chatbot?._id != botId) || !chatbot ? <SkeletonLoader width={100} /> : <>{chatbot?.visibility}</>}
                   </div>
                 </div>
               </div>
@@ -121,7 +114,7 @@ function ChatPage({ botId }) {
                 </div>
                 <div>
                   <div className="text-gray-900 text-sm font-bold font-manrope leading-snug">
-                    {chatbot?.charCount}
+                    {(chatbot?._id != botId) || !chatbot ? <SkeletonLoader width={100} /> : <>{chatbot?.charCount}</>}
                   </div>
                 </div>
               </div>
@@ -131,12 +124,12 @@ function ChatPage({ botId }) {
               <div className="text-gray-900 text-sm font-normal font-manrope leading-snug">
                 Temperature
               </div>
-              <div className="w-[70%] my-3">
+              {(chatbot?._id != botId) || !chatbot ? <SkeletonLoader width={100} /> : <div className="w-[70%] my-3">
                 <Temprature_slider
                   height={"h-2"}
-                  value={chatbot?.chatBotCustomizeData?.temparature}
+                  value={(chatbot?._id != botId) || !chatbot ? 0 : chatbot?.chatBotCustomizeData?.temparature}
                 />
-              </div>
+              </div>}
             </div>
           </div>
           <div className="lg:my-0 my-10">
@@ -144,7 +137,7 @@ function ChatPage({ botId }) {
               Last Trained:
             </div>
             <div className="text-gray-900 text-sm font-bold font-manrope leading-snug">
-              {formatDate(chatbot?.updatedAt)}
+              {(chatbot?._id != botId) || !chatbot ? <SkeletonLoader width={250} /> : <>{formatDate(chatbot?.updatedAt)}</>}
             </div>
           </div>
         </div>
@@ -196,7 +189,7 @@ function Chat({ id, status }) {
 
   // console.log(status);
   return (
-    <div className="border-[1px] w-full lg:w-[55%] h-[588px] border-gray-200  items-start flex-col ">
+    <div className="border-[1px] w-full lg:w-[53%] h-[588px] border-gray-200  items-start flex-col ">
       <div className="flex border-b-[1px] border-gray-200 flex-row  p-4 w-full flex-end items-end justify-end">
         <p className="mx-3 text-red-500 font-manrope font-normal text-sm">
           {error && error}
@@ -212,8 +205,8 @@ function Chat({ id, status }) {
           <div
             key={index}
             className={`w-full h-auto flex flex-col ${message?.role === "user"
-                ? "justify-end items-end "
-                : " justify-start"
+              ? "justify-end items-end "
+              : " justify-start"
               } `}
           >
             <div className="max-w-[70%] h-auto px-[15px] items-start py-[11px] bg-zinc-100 rounded-tl rounded-tr rounded-br border justify-center  flex-col flex">
@@ -239,13 +232,14 @@ function Chat({ id, status }) {
       >
         <input
           value={messageInput}
-          readOnly={chatting || status !== "READY"}
+          readOnly={status !== "READY"}
           onChange={(e) => setMessageInput(e.target.value)}
           placeholder="message... "
-          className="text-neutral-700 outline-gray-200 w-full h-full border  flex flex-col  active:outline-gray-300 pl-[15px] rounded-lg  pr-[50px]   decoration-none placeholder:text-neutral-300 text-sm font-normal font-manrope leading-snug"
+          className="text-neutral-700 read-only:cursor-help outline-gray-200 w-full h-full border flex flex-col  active:outline-gray-300 pl-[15px] rounded-lg  pr-[50px]   decoration-none placeholder:text-neutral-300 text-sm font-normal font-manrope leading-snug"
         />
         <button
-          className="w-[32px] h-[32px] absolute top-7 right-7"
+          disabled={chatting || status !== "READY"}
+          className="w-[32px] h-[32px] absolute top-7 right-7 disabled:cursor-not-allowed"
           type="submit"
         >
           <img

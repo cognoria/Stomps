@@ -67,7 +67,7 @@ export const chatBotCustomizeDataDefault = {
     collectEmailText: 'What is your email address?',
     welcomeMessage: 'Hello! How can I assist you today?',
     customCSS: '',
-    questionExamples: [{ question: 'How can I contact you?', label: 'Contact' }],
+    questionExamples: [{ question: 'How can I contact you?' }],
     welcomeMessages: ['Hello! How can I assist you today?'],
     launcherIcon: 'icon1',
     profileImage: 'icon1',
