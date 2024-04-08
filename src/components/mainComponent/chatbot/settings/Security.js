@@ -1,19 +1,20 @@
 import { useEffect, useState } from "react";
 import useChatbotSettings from "../../../../store/chatbot/useChatbotSettings";
-import Toggle from "../../../customComponents/slider/toggler";
 import useChatbotStore from "../../../../store/chatbot/useChatbotStore";
+import Toggle from "../../../customComponents/slider/toggler";
 
 function SecuritySettings({ botId }) {
   const { getChatbot, loading, chatbot } = useChatbotStore((state) => ({
     getChatbot: state.getChatbot,
     loading: state.loading,
     chatbot: state.chatbot,
-  }))
-  
-  const { updateSecuritySettings, updatingSecuritySettings } = useChatbotSettings((state) => ({
-    updateSecuritySettings: state.updateSecuritySettings,
-    updatingSecuritySettings: state.updatingSecuritySettings,
   }));
+
+  const { updateSecuritySettings, updatingSecuritySettings } =
+    useChatbotSettings((state) => ({
+      updateSecuritySettings: state.updateSecuritySettings,
+      updatingSecuritySettings: state.updatingSecuritySettings,
+    }));
 
   useEffect(() => {
     getChatbot(botId);
@@ -41,14 +42,15 @@ function SecuritySettings({ botId }) {
   //iframe & widget toggle
 
   // privacy selection
-  const [selectedPrivacy, setSelectedPrivacy] = useState(
-    chatbot ? chatbot?.chatBotCustomizeData?.visibility : ""
-  );
+  const defaultVisibility = chatbot
+    ? chatbot?.visibility
+    : "";
+  const [selectedPrivacy, setSelectedPrivacy] = useState(defaultVisibility);
   const handlePrivacyChange = (event) => {
     setSelectedPrivacy(event.target.value);
   };
 
-  // console.log(selectedPrivacy);
+  console.log(chatbot?.visibility);
   //privacy selection
 
   // exceed limit message
