@@ -19,16 +19,15 @@ function SecuritySettings({ botId }) {
     getChatbot(botId);
   }, [botId, getChatbot]);
 
-  //limimt values
+  //limit values
   const [inputLimit, setInputLimit] = useState(
-    chatbot ? chatbot?.chatBotCustomizeData?.msgCount : ""
+    chatbot ? chatbot?.rateLimiting?.msg_count : ""
   );
   const [inputMessage, setInputMessage] = useState(
-    chatbot ? chatbot?.chatBotCustomizeData?.inputMessage : ""
+    chatbot ? chatbot?.rateLimiting?.timeframe : ""
   );
   // Limit values
 
-  console.log(chatbot?.chatBotCustomizeData?.inputMessage);
   //iframe & widget toggle
   const [toggleChecked, setToggleChecked] = useState(
     chatbot ? chatbot?.chatBotCustomizeData?.allowPublicDomains : false
@@ -42,7 +41,7 @@ function SecuritySettings({ botId }) {
 
   // privacy selection
   const [selectedPrivacy, setSelectedPrivacy] = useState(
-    chatbot ? chatbot?.chatBotCustomizeData?.visibility : ""
+    chatbot ? chatbot?.visibility : ""
   );
   const handlePrivacyChange = (event) => {
     setSelectedPrivacy(event.target.value);
@@ -53,7 +52,7 @@ function SecuritySettings({ botId }) {
 
   // exceed limit message
   const [limitMessage, setLimitMessage] = useState(
-    chatbot ? chatbot?.chatBotCustomizeData?.limitMsg : ""
+    chatbot ? chatbot?.rateLimiting?.limitMsg : ""
   );
   // console.log(limitMessage);
   // Exceed limit message
@@ -87,7 +86,7 @@ function SecuritySettings({ botId }) {
         <div className="p-3 w-full ">
           <div className="flex-1 flex gap-y-4 w-full flex-col items-start p-3">
             <div className="text-zinc-800 text-[10px]  font-bold font-manrope leading-[14px] tracking-tight">
-              Model
+              Visibility
             </div>
             <select
               value={selectedPrivacy}
