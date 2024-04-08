@@ -9,6 +9,7 @@ const Chats = db.Chat;
 const Leads = db.Lead;
 
 export const chatRepo = {
+    saveLead,
     createSession,
     getChatsPerDay,
     getChatbotLeads,

@@ -18,16 +18,20 @@ export default function Sources() {
     include: formData.include,
     exclude: formData.exclude,
     contents: [
-      { url: "Q&A", content: `${questionsJSON}` },
-      { url: "TXT", content: `${formData.text}` },
+      ...(questionsJSON.length > 3
+        ? [{ url: "Q&A", content: `${questionsJSON}` }]
+        : []),
+      ...(formData.text.length > 3
+        ? [{ url: "TXT", content: `${formData.text}` }]
+        : []),
       ...formData.files.map((file) => ({
         url: file.name,
         content: file.content,
       })),
-    ],
+    ].filter(Boolean)
   };
 
-  const {createChatbot, creatingChatbot} = useChatbotStore((state) => ({
+  const { createChatbot, creatingChatbot } = useChatbotStore((state) => ({
     createChatbot: state.createChatbot,
     creatingChatbot: state.loading
   }))
@@ -80,9 +84,8 @@ export default function Sources() {
       <div className=" w-full  px-3  py-3 justify-center items-center gap-2 flex">
         <button
           onClick={createBot}
-          className={`text-white py-[16px] px-5 w-full text-sm font-bold font-manrope ${
-            creatingChatbot ? "bg-sky-700/20" : "bg-sky-700"
-          }  rounded-lg shadow border border-sky-700  text-center leading-snug`}
+          className={`text-white py-[16px] px-5 w-full text-sm font-bold font-manrope ${creatingChatbot ? "bg-sky-700/20" : "bg-sky-700"
+            }  rounded-lg shadow border border-sky-700  text-center leading-snug`}
         >
           {creatingChatbot ? "Creating Bot..." : "Create Chatbot"}
         </button>

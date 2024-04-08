@@ -121,7 +121,7 @@ function ChatPage({ botId }) {
                 </div>
                 <div>
                   <div className="text-gray-900 text-sm font-bold font-manrope leading-snug">
-                    30,465
+                    {chatbot?.charCount}
                   </div>
                 </div>
               </div>
@@ -135,7 +135,6 @@ function ChatPage({ botId }) {
                 <Temprature_slider
                   height={"h-2"}
                   value={chatbot?.chatBotCustomizeData?.temparature}
-                // onChange={() => {}}
                 />
               </div>
             </div>
