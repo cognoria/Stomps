@@ -18,20 +18,24 @@ export default function Retrain() {
     include: formData.include,
     exclude: formData.exclude,
     contents: [
-      { url: "Q&A", content: `${questionsJSON}` },
-      { url: "TXT", content: `${formData.text}` },
+      ...(questionsJSON.length > 3
+        ? [{ url: "Q&A", content: `${questionsJSON}` }]
+        : []),
+      ...(formData.text.length > 3
+        ? [{ url: "TXT", content: `${formData.text}` }]
+        : []),
       ...formData.files.map((file) => ({
         url: file.name,
         content: file.content,
       })),
-    ],
+    ].filter(Boolean)
   };
 
   const { updateKnowledgebase, updatingKnowledgebase } = useChatbotSettings((state) => ({
     updateLeadsSettings: state.updateKnowledgebase,
     updatingKnowledgebase: state.updatingKnowledgebase,
   }));
-  
+
   const router = useRouter();
 
   async function retrainBot(e) {
@@ -81,9 +85,8 @@ export default function Retrain() {
       <div className=" w-full  px-3  py-3 justify-center items-center gap-2 flex">
         <button
           // onClick={retrainBot}
-          className={`text-white py-[16px] px-5 w-full text-sm font-bold font-manrope ${
-            updatingKnowledgebase ? "bg-sky-700/20" : "bg-sky-700"
-          }  rounded-lg shadow border border-sky-700  text-center leading-snug`}
+          className={`text-white py-[16px] px-5 w-full text-sm font-bold font-manrope ${updatingKnowledgebase ? "bg-sky-700/20" : "bg-sky-700"
+            }  rounded-lg shadow border border-sky-700  text-center leading-snug`}
         >
           {updatingKnowledgebase ? "Retraining Bot..." : "Retrain Chatbot"}
         </button>
