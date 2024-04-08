@@ -1,7 +1,21 @@
 import { useRef, useState } from "react";
+import useChatbotSettings from "../../../../store/chatbot/useChatbotSettings";
+import useChatbotStore from "../../../../store/chatbot/useChatbotStore";
+import { convertImageToBase64 } from "../../../../utils/imageConverter/base64Image";
 import ColorPicker from "../../../customComponents/colorPicker/color";
 
-function InterfaceSettings() {
+function InterfaceSettings({ botId }) {
+  const { updatingInterface, updateInterface } = useChatbotSettings(
+    (state) => ({
+      updatingInterface: state.updatingInterface,
+      updateInterface: state.updateInterface,
+    })
+  );
+  const { getChatbot, loading, chatbot } = useChatbotStore((state) => ({
+    getChatbot: state.getChatbot,
+    loading: state.loading,
+    chatbot: state.chatbot,
+  }));
   const chatMessages = [
     {
       content: "👋 Hi!  How can I help",
@@ -13,6 +27,7 @@ function InterfaceSettings() {
   const [displayName, setDisplayName] = useState("");
   const [autoShowMsg, setAutoShowMsg] = useState("");
   const [msgPlaceholder, setMsgPlaceholder] = useState("");
+  const [chatColour, setChatColour] = useState("");
   // theme selection
   const [selectedTheme, setSelectedTheme] = useState("");
   const handleThemeChange = (event) => {
@@ -28,32 +43,49 @@ function InterfaceSettings() {
 
   // chat profile image
   const [profileImg, setProfileImg] = useState("");
-
-  const handleChatProfileImageChange = (event) => {
+  const [profileImgName, setProfileImgName] = useState("");
+  const [delProfileImg, setDelProfileImg] = useState(false);
+  const handleChatProfileImageChange = async (event) => {
     const file = event.target.files[0];
+    if (delProfileImg) return;
     if (file) {
-      console.log("Selected profile image file:", file);
-      setProfileImg(file);
+      try {
+        setProfileImgName(file.name);
+        const base64String = await convertImageToBase64(file);
+        setProfileImg(base64String);
+      } catch (error) {
+        console.error("Error converting image to base64:", error);
+      }
     }
   };
   //chat profile image
   // chat Icon
-  const [chatIcon, setChatIcon] = useState("");
-  const handleChatIconChange = (event) => {
+  const [usePlainColor, setUsePlainColor] = useState(false);
+  const [imageColour, setImageColour] = useState("");
+  const [chatIcon, setChatIcon] = useState(null);
+  const [chatIconName, setChatIconName] = useState("");
+  const handleChatIconChange = async (event) => {
     const file = event.target.files[0];
-    if (file) {
-      console.log("Selected chat icon file:", file);
-      setChatIcon(file);
+    if (usePlainColor) {
+      setChatIcon(imageColour);
+    } else {
+      if (file) {
+        try {
+          setChatIconName(file.name);
+          const base64String = await convertImageToBase64(file);
+
+          setChatIcon(base64String);
+        } catch (error) {
+          console.error("Error converting image to base64:", error);
+        }
+      }
     }
   };
-
   //chat Icon
-  const handleDivChange = () => {
-    const content = divRef.current.textContent;
-    setSuggestedMessages(content.split("\n")); // Update state with suggested messages content split by new line
-  };
 
   // Function to handle adding a new suggested message
+  const [suggestedMessages, setSuggestedMessages] = useState([]);
+  const divRef = useRef(null);
   const handleAddMessage = () => {
     const content = divRef.current.textContent;
     if (content.trim() !== "") {
@@ -61,71 +93,41 @@ function InterfaceSettings() {
       divRef.current.textContent = ""; // Clear the editable div after adding the message
     }
   };
-  // Chat Profile Image
   // suggested text
-  const [suggestedMessages, setSuggestedMessages] = useState([]);
-  const divRef = useRef(null);
-  console.log(suggestedMessages);
-  // suggested text
-  //chat colour
-  const [chatColour, setChatColour] = useState("");
-  const handleChatColorChange = (e) => {
-    setChatColour(e.target.value);
-  };
-  //chat colour
-  //chat colour
-  const [imageColour, setImageColour] = useState("");
-  const handlePlainColorChange = (e) => {
-    setImageColour(e.target.value);
-  };
-  //chat colour
 
-  // console.log(suggestedMessages);
+  //bot Data Submission
   const botData = {
     initialMsg: initialMsg,
-    // suggestedMsgs: [
-    //   {
-    //     question: "What is your name?",
-    //     label: "Introduction",
-    //   },
-    //   {
-    //     question: "What services do you offer?",
-    //     label: "Services",
-    //   },
-    // ],
-    suggestedMsgs: suggestedMessages,
+
+    suggestedMsgs: suggestedMessages.map((message) => ({
+      question: message,
+    })),
     msgPlaceholder: msgPlaceholder,
     theme: selectedTheme,
+    // chatColor: chatColour,
     displayName: displayName,
     chatIcon: chatIcon,
     alignChatButton: alignChat,
     autoShowMsg: autoShowMsg,
     profileImage: profileImg,
   };
-
-  const handleSubmitChatInterface = async () => {
-    console.log({
-      suggestedMsgs: suggestedMessages,
-      msgPlaceholder: msgPlaceholder,
-      theme: selectedTheme,
-      displayName: displayName,
-      chatIcon: chatIcon,
-      alignChatButton: alignChat,
-      autoShowMsg: autoShowMsg,
-      profileImage: profileImg,
+  const handleSubmitChatInterface = () => {
+    updateInterface({ botData, botId }, async () => {
+      await getChatbot(botId);
     });
   };
+  //bot Data Submission
 
   return (
-    <div className="w-full px-3 lg:p-[6%]  flex flex-col items-center justify-center ">
+    <div className="w-full px-3 lg:p-[6%]  flex flex-col overflow-x-hidden items-center justify-center ">
       <div className="flex w-full flex-col items-center  justify-center border-gray-200 border-[1px] gap-4 rounded-md ">
         <div className="text-gray-900 w-full text-base font-bold p-3  font-manrope leading-snug">
           Chat Interface
         </div>
       </div>
-      <div className="w-full flex flex-col gap-8 border-gray-200 border-[1px]">
-        <div className="w-full flex flex-col lg:flex-row items-start py-8  px-3 ">
-          <div className="flex flex-col w-full flex-1">
+      <div className="w-full flex overflow-x-hidden flex-col gap-8 border-gray-200 border-[1px]">
+        <div className="w-full overflow-x-hidden flex flex-col lg:flex-row items-start py-8  px-3 ">
+          <div className="flex overflow-x-hidden flex-col w-full flex-1">
             <div className="flex flex-col w-full items-end justify-end px-4">
               <button className="h-[31px] text-sky-700 text-xs font-bold font-manrope leading-snug rounded-lg  px-3.5 py-1 bg-sky-50 shadow border border-sky-50 justify-center items-center flex flex-row ">
                 Reset
@@ -155,7 +157,7 @@ function InterfaceSettings() {
 
               <div
                 ref={divRef}
-                className="max-h-[150px] lg:w-[400px] max-w-full overflow-auto p-2 border border-gray-200 rounded-md"
+                className="max-h-[150px] lg:w-full max-w-full overflow-auto p-2 border border-gray-200 rounded-md"
                 contentEditable="true"
                 placeholder={"example email.com"}
               ></div>
@@ -222,6 +224,7 @@ function InterfaceSettings() {
                   <input
                     type="file"
                     accept="image/*"
+                    disabled={delProfileImg}
                     id="file-input-profile"
                     style={{ display: "none" }}
                     onChange={handleChatProfileImageChange}
@@ -233,13 +236,19 @@ function InterfaceSettings() {
                       alt="Upload icon"
                     />
                     <div className="main-text text-sm">
-                      {profileImg ? profileImg.name : "no file choosen"}
+                      {profileImgName ? profileImgName : "no file choosen"}
                     </div>
                     <div className="sub-text mb-2">choose file</div>
                   </label>
                 </div>
                 <div className="flex-1 flex flex-row gap-4">
-                  <input type="checkbox" className="w-4 h-4 " />
+                  <input
+                    type="checkbox"
+                    className="w-4 h-4 "
+                    onChange={(e) => {
+                      setDelProfileImg(e.target.checked), setProfileImg("");
+                    }}
+                  />
                   <p className="text-zinc-800 text-[10px] font-normal font-['Manrope'] leading-[14px] tracking-tight">
                     Delete Chat Profile image
                   </p>
@@ -267,7 +276,7 @@ function InterfaceSettings() {
               </div>
               <ColorPicker
                 selectedColor={chatColour}
-                onColorChange={handleChatColorChange}
+                onColorChange={(e) => setChatColour(e.target.value)}
               />
             </div>
             <div className="flex gap-y-4 w-full flex-col items-start p-3">
@@ -278,12 +287,9 @@ function InterfaceSettings() {
                 </span>
               </div>
               <div className="flex gap-x-4 w-full flex-row items-center">
-                <div
-                  className="upload-container flex-1 p-4"
-                  // onDragOver={handleDragOver}
-                  // onDrop={handleDrop}
-                >
+                <div className="upload-container flex-1 p-4">
                   <input
+                    disabled={usePlainColor}
                     type="file"
                     accept="image/*"
                     id="file-input-chat"
@@ -297,22 +303,32 @@ function InterfaceSettings() {
                       alt="Upload icon"
                     />
                     <div className="main-text text-sm">
-                      {chatIcon ? chatIcon.name : "no file choosen"}
+                      {chatIconName ? chatIconName : "no file chosen"}
                     </div>
                     <div className="sub-text mb-2">choose file</div>
                   </label>
                 </div>
                 <div className="flex flex-col gap-y-5 items-start">
                   <div className="flex-1 flex flex-row gap-4">
-                    <input type="checkbox" className="w-4 h-4 " />
+                    <input
+                      type="checkbox"
+                      className="w-4 h-4"
+                      onChange={(e) => setUsePlainColor(e.target.checked)}
+                    />
                     <p className="text-zinc-800 text-[10px] font-normal font-['Manrope'] leading-[14px] tracking-tight">
                       Use a plain color instead
                     </p>
                   </div>
-                  <ColorPicker
-                    selectedColor={imageColour}
-                    onColorChange={handlePlainColorChange}
-                  />
+
+                  {usePlainColor && (
+                    <ColorPicker
+                      selectedColor={imageColour}
+                      onColorChange={(e) => {
+                        setImageColour(e.target.value),
+                          setChatIcon(e.target.value);
+                      }}
+                    />
+                  )}
                 </div>
               </div>
             </div>
@@ -351,7 +367,7 @@ function InterfaceSettings() {
               />
             </div>
           </div>
-          <div className="border-[1px] w-full lg:w-[50%] rounded-lg h-[588px] border-gray-200  items-start flex-col ">
+          <div className="border-[1px] w-full lg:w-[50%] overflow-x-hidden rounded-lg h-[588px] border-gray-200  items-start flex-col ">
             <div className="flex border-b-[1px] border-gray-200 flex-row  p-4 w-full flex-end items-end justify-end">
               <p className="mx-3 text-red-500 font-manrope font-normal text-sm">
                 {/* {error && error} */}
@@ -360,7 +376,7 @@ function InterfaceSettings() {
             </div>
             <div
               // style={{ scrollBehavior: "smooth" }}
-              className="w-full overflow-y-scroll h-[75%] flex flex-col gap-3 p-4"
+              className="w-full overflow-y-scroll h-[70%] flex flex-col gap-3 p-4"
             >
               {chatMessages.map((message, index) => (
                 <div
@@ -385,6 +401,21 @@ function InterfaceSettings() {
                 </div>
               ))}
             </div>
+
+            <div className="flex flex-row w-[100%] px-4 overflow--scroll h-[5%] items-start justify-start gap-x-3">
+              {suggestedMessages &&
+                suggestedMessages.map((msg, i) => {
+                  return (
+                    <p
+                      className="rounded-lg p-1 text-center w-auto h-full bg-sky-700 text-white"
+                      key={i}
+                    >
+                      {msg}
+                    </p>
+                  );
+                })}
+            </div>
+
             <div
               // onSubmit={sendMessage}
               className="w-full h-[15%] relative p-4 items-center flex-col  flex"
@@ -409,22 +440,10 @@ function InterfaceSettings() {
             </div>
           </div>
         </div>
-        <div className="flex flex-row w-full items-start justify-start gap-x-3">
-          {suggestedMessages &&
-            suggestedMessages.map((msg, i) => {
-              console.log(msg)
-              return (
-                <p
-                  className="rounded-lg h-[15px] bg-sky-700 text-white"
-                  key={i}
-                >
-                  {msg}
-                </p>
-              );
-            })}
-        </div>
+
         <div className="w-full p-3 mt-[30px] flex-end items-end flex flex-col">
           <button
+            disabled={updatingInterface}
             onClick={handleSubmitChatInterface}
             className="text-white h-11 disabled:bg-sky-300 rounded-lg justify-start items-start  px-5 py-3 bg-sky-700  shadow border border-sky-700  gap-2 "
           >

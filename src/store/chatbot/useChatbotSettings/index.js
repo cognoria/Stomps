@@ -129,7 +129,8 @@ export default create((set) => ({
   },
 
   updateInterface: async ({ botData, botId }) => {
-    set({ updateInterface: true, loading: true, error: null });
+    set({ updatingInterface: true, loading: true, error: null });
+    console.log({ botData, botId });
     try {
       const response = await fetch(
         `/api/v1/chatbot/${botId}/setting/interface`,
@@ -145,14 +146,14 @@ export default create((set) => ({
       toast.success(data.message);
       return data;
     } catch (error) {
-         set({
-           updateInterface: false,
-           loading: false,
-           error: error.message,
-         });
-         toast.error(error.message);
-         console.error(error.message);
-         throw error;
+      set({
+        updatingInterface: false,
+        loading: false,
+        error: error.message,
+      });
+      toast.error(error.message);
+      console.error(error.message);
+      throw error;
     }
   },
 }));
