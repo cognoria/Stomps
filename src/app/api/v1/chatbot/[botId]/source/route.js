@@ -18,6 +18,7 @@ async function updateSource(req) {
 //route GET api/v1/chatbot/[botId]/source
 async function getSource(req) {
     const { botId } = req.params;
+    console.log({botId })
     return await chatbotRepo.getChatbotSources(botId);
 }
 

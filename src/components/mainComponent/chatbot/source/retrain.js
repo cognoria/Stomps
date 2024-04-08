@@ -1,30 +1,25 @@
 "use client";
 
-import { useRouter } from "next/navigation";
-import useFormDataStore from "../../../../store/chatbot/useChatbotSource";
 import useChatbotSettings from "../../../../store/chatbot/useChatbotSettings";
+import useKnowledgebase from "../../../../store/chatbot/useKnowledgebase";
+import { useEffect } from "react";
 
-export default function Retrain() {
-  const formData = useFormDataStore((state) => state.formData);
-  const textLength = useFormDataStore((state) => state.getTextLength());
-  const includeCount = useFormDataStore((state) => state.getIncludeCount());
-  const questionCount = useFormDataStore((state) => state.getQuestionCount());
-  const filesCount = useFormDataStore((state) => state.getFilesCount());
-  const questionsJSON = JSON.stringify(formData.questions);
+export default function Retrain({chatbotId}) {
+  const { website, urls, include, exclude, files, text, questions, getKnowledgebase, getTextLength, getIncludeCount, getFilesCount } = useKnowledgebase()
 
   const dataToSend = {
-    website: formData.website,
-    urls: formData.urls,
-    include: formData.include,
-    exclude: formData.exclude,
+    website: website,
+    urls: urls,
+    include: include,
+    exclude: exclude,
     contents: [
-      ...(questionsJSON.length > 3
-        ? [{ url: "Q&A", content: `${questionsJSON}` }]
+      ...(questions.length > 0
+        ? [{ url: "Q&A", content: `${JSON.stringify(questions)}` }]
         : []),
-      ...(formData.text.length > 3
-        ? [{ url: "TXT", content: `${formData.text}` }]
+      ...(text.length > 1
+        ? [{ url: "TXT", content: `${text}` }]
         : []),
-      ...formData.files.map((file) => ({
+      ...files.map((file) => ({
         url: file.name,
         content: file.content,
       })),
@@ -36,19 +31,19 @@ export default function Retrain() {
     updatingKnowledgebase: state.updatingKnowledgebase,
   }));
 
-  const router = useRouter();
-
   async function retrainBot(e) {
     e.preventDefault();
     console.log(dataToSend);
     try {
-      const newBot = await updateKnowledgebase(dataToSend);
-      useFormDataStore.getState().clearFormData(newBot._id);
-      router.push(`/bot/${newBot._id}`);
+      await updateKnowledgebase({ botData: dataToSend, botId: chatbotId });
+      // router.push(`/bot/${newBot._id}`);
     } catch (error) {
       console.error("Failed to create bot:", error);
     }
   }
+  useEffect(() => {
+    if (chatbotId) getKnowledgebase(chatbotId)
+  }, [chatbotId, getKnowledgebase])
 
   return (
     <div className="w-[95%] lg:w-[275px]  mt-[60px] pb-3 h-auto  flex items-center justify-between flex-col rounded-lg border border-gray-200">
@@ -57,34 +52,34 @@ export default function Retrain() {
       </div>
 
       <ul className="flex justify-start p-6 flex-col gap-y-2 items-start w-full circular-list">
-        {filesCount >= 1 && (
+        {files.length > 0 && (
           <li className="text-neutral-400  text-xs font-normal font-manrope leading-none tracking-tight">
-            {filesCount} Document detected
+            {files.length} Document
           </li>
         )}
 
-        {textLength >= 1 && (
+        {text.length > 0 && (
           <li className="text-neutral-400  text-xs font-normal font-manrope leading-none tracking-tight">
-            {textLength} text input characters
+            {text.length} text input characters
           </li>
         )}
 
-        {includeCount >= 1 && (
+        {include.length > 0 && (
           <li className="text-neutral-400 text-xs font-normal font-manrope leading-none tracking-tight">
-            {includeCount} links detected
+            {include.length} links
           </li>
         )}
 
-        {questionCount >= 1 && (
+        {questions.length > 0 && (
           <li className="text-neutral-400 text-xs font-normal font-manrope leading-none tracking-tight">
-            {questionCount} Q & A detected
+            {questions.length} Q & A
           </li>
         )}
       </ul>
 
       <div className=" w-full  px-3  py-3 justify-center items-center gap-2 flex">
         <button
-          // onClick={retrainBot}
+          onClick={retrainBot}
           className={`text-white py-[16px] px-5 w-full text-sm font-bold font-manrope ${updatingKnowledgebase ? "bg-sky-700/20" : "bg-sky-700"
             }  rounded-lg shadow border border-sky-700  text-center leading-snug`}
         >

@@ -1,25 +1,23 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import useFormDataStore from "../../../../store/chatbot/useChatbotSource";
-import useLinksStore from "../../../../store/chatbot/useLinksStore";
 import Image from "next/image";
+import useKnowledgebase from "../../../../store/chatbot/useKnowledgebase";
 
 function WebsiteSource() {
   const [error, setError] = useState(null);
-  const [displayedLinks, setDisplayedLinks] = useState([]);
-  const [numDisplayedLinks, setNumDisplayedLinks] = useState(10);
-  
-  const {sitemap, website, include} = useFormDataStore((state) => ({
-    sitemap: state.formData.sitemap,
-    website: state.formData.website,
-    include: state.formData.include,
-  }))
 
-  const {fetchSitemapAndUpdateInclude, fetchLinksAndUpdateInclude, loading} = useLinksStore((state)  =>({
-    fetchSitemapAndUpdateInclude: state.fetchSitemapAndUpdateInclude,
-    fetchLinksAndUpdateInclude: state.fetchLinksAndUpdateInclude,
-    loading: state.loading
+  const { sitemap, website, include, loading, addLinksWithSitemap, deleteInclude, deleteAllInclude, addLinksWithWebsite, updateWebsite, updateSiteMap } = useKnowledgebase((state) => ({
+    sitemap: state.sitemap,
+    website: state.website,
+    include: state.include,
+    loading: state.fetching,
+    updateWebsite: state.updateWebsite,
+    updateSiteMap: state.updateSiteMap,
+    deleteInclude: state.deleteInclude,
+    deleteAllInclude: state.deleteAllInclude,
+    addLinksWithWebsite: state.addLinksWithWebsite,
+    addLinksWithSitemap: state.addLinksWithSitemap,
   }))
 
   useEffect(() => {
@@ -30,27 +28,26 @@ function WebsiteSource() {
     }
   }, [website]);
 
-  const handleSubmit = async (e) => {
+  const handleAddWebsite = async (e) => {
     e.preventDefault();
-    if (error) {
-      return; // Do not submit if there is an error
-    }
-    await fetchLinksAndUpdateInclude(website);
+    if (error) return;
+    await addLinksWithWebsite(website);
   };
 
-  const sitemapSubmit = async (e) => {
+  const handleAddSitemap = async (e) => {
     e.preventDefault();
-    await fetchSitemapAndUpdateInclude(sitemap);
+    if (error) return;
+    await addLinksWithSitemap(sitemap);
   };
 
   const handleWebsite = (e) => {
     const website = e.target.value;
-    useFormDataStore.getState().addWebsite(website);
+    updateWebsite(website);
   };
 
   const handleSitemap = (e) => {
     const sitemap = e.target.value;
-    useFormDataStore.getState().addSitemap(sitemap);
+    updateSiteMap(sitemap);
   };
   return (
     <div className="flex flex-col  items-center justify-center w-full">
@@ -67,13 +64,13 @@ function WebsiteSource() {
                 </div>
                 <div className="flex w-full flex-col lg:flex-row items-center justify-between gap-2">
                   <input
-                    // onChange={handleWebsite}
+                    onChange={handleWebsite}
                     type="text"
-                    // value={website}
+                    value={website}
                     className="w-full lg:w-[413px] h-[47px] px-3.5 py-2.5 bg-white rounded shadow border border-zinc-100 justify-start items-center gap-2 inline-flex"
                   />
                   <button
-                    // onClick={handleSubmit}
+                    onClick={handleAddWebsite}
                     className={`h-11 w-full lg:w-fit px-5 py-3    ${!loading ? "bg-sky-700" : "bg-sky-700/20"
                       } rounded-lg shadow border border-sky-700 justify-center items-center gap-2 flex`}
                   >
@@ -85,7 +82,7 @@ function WebsiteSource() {
 
                 {error && (
                   <p className="text-red-500 text-[10px] font-normal font-manrope leading-[10px] tracking-tight">
-                    {/* {error} */}
+                    {error}
                   </p>
                 )}
 
@@ -109,11 +106,11 @@ function WebsiteSource() {
                   <input
                     value={sitemap}
                     type="text"
-                    // onChange={handleSitemap}
+                    onChange={handleSitemap}
                     className="w-full lg:w-[383px] h-[47px] px-3.5 py-2.5 bg-white rounded shadow border border-zinc-100 justify-start items-center gap-2 inline-flex"
                   />
                   <button
-                    // onClick={sitemapSubmit}
+                    onClick={handleAddSitemap}
                     className={`h-11 w-full lg:w-fit px-5 py-3 ${loading ? "bg-sky-700/20" : "bg-sky-700"
                       }  rounded-lg shadow border border-sky-700 justify-center items-center gap-2 flex`}
                   >
@@ -139,9 +136,7 @@ function WebsiteSource() {
               <div className="flex flex-row  p-5 items-end lg:mt-0 mt-[70px] [mt-50px]  h-auto lg:h-[70%] justify-end">
                 <div className="flex flex-row items-center  gap-x-5 ">
                   <button
-                    // onClick={() =>
-                    //   useFormDataStore.getState().deleteAll(["include", "urls"])
-                    // }
+                    onClick={() => deleteAllInclude() }
                     className="bg-transparent items-center gap-2 flex flex-row"
                   >
                     <Image width={15} height={15} alt="" src="/images/chatbox/trash.svg" />
@@ -167,11 +162,7 @@ function WebsiteSource() {
                             {link}
                           </div>
                         </div>
-                        <button
-                        // onClick={() =>
-                        //   useFormDataStore.getState().deleteInclude(index)
-                        // }
-                        >
+                        <button onClick={() => deleteInclude(index)}>
                           <Image width={15} height={15}
                             src="/images/chatbox/trash.svg"
                             alt=""

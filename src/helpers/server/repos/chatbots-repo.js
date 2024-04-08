@@ -115,23 +115,22 @@ async function trainChatbot(chatbotId) {
 
 async function getById(id) {
     if (!id || id === 'undefined') throw 'Please provide a valid bot id';
-  
+
     const chatbot = await Chatbot.findById(id)
-      .select(
-        '+chatBotCustomizeData +owner +visibility +status +name +createdAt +updatedAt +rateLimiting +crawlData.charCount'
-      )
-      .lean();
-  
+        .select("+chatBotCustomizeData owner visibility status name createdAt updatedAt rateLimiting crawlData.charCount")
+        .lean();
+    //   .select(
+    //     '+chatBotCustomizeData +owner +visibility +status +name +createdAt +updatedAt +rateLimiting +crawlData.charCount'
+    //   )
+    //   .lean();
+
     if (!chatbot) throw `Chatbot with id "${id}" not found`;
-  
+
     const owner = headers().get('userId');
     if (chatbot.owner.toString() !== owner) throw 'You do not own this chatbot';
-  
-    return {
-      ...chatbot,
-      charCount: chatbot.crawlData.charCount,
-    };
-  }
+    console.log(chatbot)
+    return chatbot
+}
 
 async function getChatbotSources(id) {
     if (!id || id == 'undefined') throw 'Please provide a valid bot id'

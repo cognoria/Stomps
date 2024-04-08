@@ -25,7 +25,7 @@ const crawlData = new Schema({
 
 const questionExample = new Schema({
     question: { type: String, required: true },
-    label: { type: String, required: true }
+    // label: { type: String, required: true }
 }, { _id: false });
 
 const chatBotCustomizeData = new Schema({

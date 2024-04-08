@@ -10,6 +10,8 @@ export default create((set) => ({
   updatingKnowledgebase: false,
   loading: false,
   error: null,
+  knowledgebase: null,
+  gettingKnowledgebase: false,
 
   updateModel: async ({ botData, botId }) => {
     set({ updatingModel: true, loading: true, error: null });
@@ -100,11 +102,31 @@ export default create((set) => ({
       });
       const data = await response.json();
       if (!response.ok) throw new Error(data.message || "An error occurred");
-      set({ creatingBot: false, loading: false });
+      set({ updatingKnowledgebase: false, loading: false });
       toast.success(data.message);
       return data;
     } catch (error) {
       set({ updatingKnowledgebase: false, loading: false, error: error.message });
+      toast.error(error.message);
+      console.error(error.message);
+      throw error;
+    }
+  },
+  
+  getKnowledgebase: async ({botData, botId}) => {
+    set({ gettingKnowledgebase: true, loading: true, error: null });
+    try {
+      const response = await fetch(`/api/v1/chatbot/${botId}/source`, {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+      });
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.message || "An error occurred");
+      set({ gettingKnowledgebase: false, loading: false, knowledgebase: data });
+      toast.success(data.message);
+      return data;
+    } catch (error) {
+      set({ gettingKnowledgebase: false, loading: false, error: error.message });
       toast.error(error.message);
       console.error(error.message);
       throw error;
