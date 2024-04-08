@@ -114,7 +114,7 @@ function ChatPage({ botId }) {
                 </div>
                 <div>
                   <div className="text-gray-900 text-sm font-bold font-manrope leading-snug">
-                    {(chatbot?._id != botId) || !chatbot ? <SkeletonLoader width={100} /> : <>{chatbot?.charCount}</>}
+                    {(chatbot?._id != botId) || !chatbot ? <SkeletonLoader width={100} /> : <>{chatbot?.crawlData.charCount}</>}
                   </div>
                 </div>
               </div>

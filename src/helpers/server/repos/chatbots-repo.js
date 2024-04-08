@@ -124,7 +124,6 @@ async function getById(id) {
 
     const owner = headers().get('userId');
     if (chatbot.owner.toString() !== owner) throw 'You do not own this chatbot';
-    console.log(chatbot)
     return chatbot
 }
 
