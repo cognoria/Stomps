@@ -99,6 +99,7 @@ async function create(params) {
     await tokenRepo.create(user.id, verifyTokenHash)
 
     const origin = headers().get("origin")
+    console.log({origin})
     const url = new URL(origin);
 
     const verifyBaseUrl = `${url}verify`
@@ -182,10 +183,10 @@ async function resendVerificationEmail(email) {
     //TODO: change this to use app's root url
     // const verifyBaseUrl = 'https://stomp-ai-app-zkwp.vercel.app/verify'
     
-    const origin = headers().get("origin")
+    const origin = headers().get("host")
     const url = new URL(origin);
 
-    const verifyBaseUrl = `${url}verify`
+    const verifyBaseUrl = `http://${url}/verify`
     const text = getEmailText('verify');
     const link = `${verifyBaseUrl}/${verifyToken}/${email}`
     const title = "Stomps Email Verification"
@@ -235,13 +236,10 @@ async function forgetPassword(email) {
     const resetTokenHash = hashToken(resetToken)
     await tokenRepo.create(user._id, resetTokenHash)
 
-    //TODO: change this to use app's root url
-    // const resetBaseUrl = 'https://stomp-ai-app-zkwp.vercel.app/reset'
-    
-    const origin = headers().get("origin")
+    const origin = headers().get("host")
     const url = new URL(origin);
 
-    const resetBaseUrl = `${url}verify`
+    const resetBaseUrl = `http://${url}/verify`
     const text = getEmailText('reset');
     const link = `${resetBaseUrl}/${resetToken}`
     const title = "[Action Required]: Reset Password."
