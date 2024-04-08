@@ -9,7 +9,7 @@ const connection = new Redis({
   maxRetriesPerRequest: null
 });
 
-console.log({REDIS_URI})
+// console.log({REDIS_URI})
 
 // Create a queue instance
 const trainChatbotQueue = new Queue('trainChatbot', { connection });

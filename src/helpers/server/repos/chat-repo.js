@@ -23,15 +23,10 @@ async function createSession(chatbotId, params) {
 
 }
 
-
 async function saveLead(chatbotId, params) {
     //perform save lead action
 
 }
-
-//get Session messages
-//get All sessions (for analytics page)
-//
 
 async function getChatResponse(messages, chatbotId) {
     const chatbot = await Chatbot.findById(chatbotId)

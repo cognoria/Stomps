@@ -14,7 +14,7 @@ export default function Layout({ children }) {
   const getMe = useUserStore((state) => state.getMe);
 
   const router = useRouter();
-  console.log(authCookie)
+  // console.log(authCookie)
   React.useEffect(() => {
     getMe(() => router.push("/signin"))
   }, [router, getMe]);

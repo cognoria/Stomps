@@ -23,7 +23,7 @@ export function DeleteBot({ text, button_name, id }) {
       console.error("Failed to delete chatbot:", error);
     }
   };
-  console.log(id);
+  // console.log(id);
   return (
     <div className="w-[90%] lg:w-[365.63px] h-[319px] relative px-6 py-10 bg-white rounded-xl flex-col justify-center items-center gap-10 inline-flex">
       <div className="flex absolute top-3 right-3 justify-end items-end flex-end w-full">
