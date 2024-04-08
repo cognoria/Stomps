@@ -1,27 +1,31 @@
 "use client";
 import { useEffect, useState } from "react";
 import useChatbotSettings from "../../../../store/chatbot/useChatbotSettings";
-import Toggle from "../../../customComponents/slider/toggler";
 import useChatbotStore from "../../../../store/chatbot/useChatbotStore";
+import Toggle from "../../../customComponents/slider/toggler";
 
 function LeadsSettings({ botId }) {
   const { getChatbot, loading, chatbot } = useChatbotStore((state) => ({
     getChatbot: state.getChatbot,
     loading: state.loading,
     chatbot: state.chatbot,
-  }))
-
-  const { updateLeadsSettings, updatingLeadsSettings } = useChatbotSettings((state) => ({
-    updateLeadsSettings: state.updateLeadsSettings,
-    updatingLeadsSettings: state.updatingLeadsSettings,
   }));
+
+  const { updateLeadsSettings, updatingLeadsSettings } = useChatbotSettings(
+    (state) => ({
+      updateLeadsSettings: state.updateLeadsSettings,
+      updatingLeadsSettings: state.updatingLeadsSettings,
+    })
+  );
 
   useEffect(() => {
     getChatbot(botId);
   }, [botId, getChatbot]);
 
   //title value
-  const [title, setTitle] = useState("");
+  const [title, setTitle] = useState(
+    chatbot ? chatbot?.chatBotCustomizeData?.leadMsgDescription : ""
+  );
   //title value
 
   // name toggle
@@ -60,10 +64,11 @@ function LeadsSettings({ botId }) {
       collectEmail: emailToggle,
       collectPhone: phoneToggle,
     };
-    updateLeadsSettings({
-      botLeadsData,
-      botId,
-    },
+    updateLeadsSettings(
+      {
+        botLeadsData,
+        botId,
+      },
       async () => {
         await getChatbot(botId);
       }
