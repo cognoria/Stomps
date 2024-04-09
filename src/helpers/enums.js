@@ -55,7 +55,7 @@ export const chatBotCustomizeDataDefault = {
     description: "Ask me anything. I'll try to answer based on the data from this website.",
     fontColor: "#FFF",
     heading: "I am your AI assistant",
-    prompt: "You are a very enthusiastic chatbot who loves to help people! Your name is {{chatbotName}} and you are designed to respond only based on the given context, outputted in Markdown format.",
+    prompt: "You are a very enthusiastic chatbot who loves to help people! Your name is Stomps and you are designed to respond only based on the given context, outputted in Markdown format.",
     defaultAnswer: "I don't know how to answer that",
     placement: 'right',
     showReadMore: true,
@@ -67,7 +67,7 @@ export const chatBotCustomizeDataDefault = {
     collectEmailText: 'What is your email address?',
     welcomeMessage: 'Hello! How can I assist you today?',
     customCSS: '',
-    questionExamples: [{ question: 'How can I contact you?', label: 'Contact' }],
+    questionExamples: [{ question: 'How can I contact you?' }],
     welcomeMessages: ['Hello! How can I assist you today?'],
     launcherIcon: 'icon1',
     profileImage: 'icon1',
@@ -75,7 +75,7 @@ export const chatBotCustomizeDataDefault = {
     assistantTabHeader: 'AI assistant',
     readMoreText: 'Read more:',
     leadMsgDescription: "Let us know how to contact you.",
-    model: 'gpt-4-turbo-preview',
+    model: chatModelEnum.GPT_3_5,
     temparature: 0.7,
     widgetTheme: 'LIGHT',
     collectName: false,
@@ -84,25 +84,13 @@ export const chatBotCustomizeDataDefault = {
     allowPublicDomains: false
 };
 
-// /**
-//  * Regions available with the AWS cloud provider
-//  *
-//  */
-// export const AwsRegions = {
-//     East1: 'us-east-1',
-//     West1: 'us-west-1',
-//     West2: 'us-west-2'
-// };
+export const position = {
+    LEFT: "LEFT",
+    RIGHT: "RIGHT"
+}
 
-// /**
-//  * Regions available with the GCP cloud provider
-//  *
-//  */
-// export const GcpRegions = {
-//     UsWest1: 'us-west1',
-//     UsWest2: 'us-west2',
-//     EuWest4: 'eu-west4',
-//     NorthamericaNortheast1: 'northamerica-northeast1',
-//     AsiaNortheast1: 'asia-northeast1',
-//     AsiaSoutheast1C: 'asia-southeast1C'
-// };
+export const widgetThemes = {
+    LIGHT: "LIGHT",
+    DARK: "DARK",
+    SYSTEM: "SYSTEM",
+}

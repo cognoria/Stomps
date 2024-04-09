@@ -9,7 +9,6 @@ import SourceNav from "../../../../../../../components/navigation/SourceNav";
 import useSourceNav from "../../../../../../../store/chatbot/useSourceNav";
 
 function Page({ params: { bot } }) {
-  // console.log(bot);
   const currentPage = useSourceNav((state) => state.currentPage);
 
   const renderContent = () => {

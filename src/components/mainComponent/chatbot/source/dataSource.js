@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
-import useFormDataStore from "../../../../store/chatbot/useChatbotSource";
 import {
   extractTextFromDoc,
   extractTextFromPDF,

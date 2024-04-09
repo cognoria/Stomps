@@ -20,20 +20,13 @@ function SecuritySettings({ botId }) {
     getChatbot(botId);
   }, [botId, getChatbot]);
 
-  //limimt values
-  const [inputLimit, setInputLimit] = useState(
-    chatbot ? chatbot?.chatBotCustomizeData?.msgCount : ""
-  );
-  const [inputMessage, setInputMessage] = useState(
-    chatbot ? chatbot?.chatBotCustomizeData?.inputMessage : ""
-  );
+  //limit values
+  const [inputLimit, setInputLimit] = useState(chatbot?.rateLimiting?.msg_count);
+  const [inputMessage, setInputMessage] = useState(chatbot?.rateLimiting?.timeframe);
   // Limit values
 
-  console.log(chatbot?.chatBotCustomizeData?.inputMessage);
   //iframe & widget toggle
-  const [toggleChecked, setToggleChecked] = useState(
-    chatbot ? chatbot?.chatBotCustomizeData?.allowPublicDomains : false
-  );
+  const [toggleChecked, setToggleChecked] = useState(chatbot?.chatBotCustomizeData?.allowPublicDomains);
   const handleToggleChange = () => {
     setToggleChecked(!toggleChecked);
   };
@@ -42,10 +35,7 @@ function SecuritySettings({ botId }) {
   //iframe & widget toggle
 
   // privacy selection
-  const defaultVisibility = chatbot
-    ? chatbot?.visibility
-    : "";
-  const [selectedPrivacy, setSelectedPrivacy] = useState(defaultVisibility);
+  const [selectedPrivacy, setSelectedPrivacy] = useState(chatbot?.visibility);
   const handlePrivacyChange = (event) => {
     setSelectedPrivacy(event.target.value);
   };
@@ -54,9 +44,7 @@ function SecuritySettings({ botId }) {
   //privacy selection
 
   // exceed limit message
-  const [limitMessage, setLimitMessage] = useState(
-    chatbot ? chatbot?.chatBotCustomizeData?.limitMsg : ""
-  );
+  const [limitMessage, setLimitMessage] = useState(chatbot?.rateLimiting?.limitMsg);
   // console.log(limitMessage);
   // Exceed limit message
 
@@ -89,7 +77,7 @@ function SecuritySettings({ botId }) {
         <div className="p-3 w-full ">
           <div className="flex-1 flex gap-y-4 w-full flex-col items-start p-3">
             <div className="text-zinc-800 text-[10px]  font-bold font-manrope leading-[14px] tracking-tight">
-              Model
+              Visibility
             </div>
             <select
               value={selectedPrivacy}
