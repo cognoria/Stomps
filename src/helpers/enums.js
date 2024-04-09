@@ -83,3 +83,14 @@ export const chatBotCustomizeDataDefault = {
     collectPhone: false,
     allowPublicDomains: false
 };
+
+export const position = {
+    LEFT: "LEFT",
+    RIGHT: "RIGHT"
+}
+
+export const widgetThemes = {
+    LIGHT: "LIGHT",
+    DARK: "DARK",
+    SYSTEM: "SYSTEM",
+}
