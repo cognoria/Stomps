@@ -4,12 +4,12 @@ import { useEffect, useRef, useState } from "react";
 
 import { remark } from "remark";
 import remarkHTML from "remark-html";
-import useBotMessagingStore from "../../../../store/chatbot/useChatbotMessaging";
-import useChatbotStore from "../../../../store/chatbot/useChatbotStore";
-import { formatDate } from "../../../../utils/data_format/date";
-import Temprature_slider from "../../../customComponents/slider/temprature_slider";
+import useBotMessagingStore from "../../../store/chatbot/useChatbotMessaging";
+import useChatbotStore from "../../../store/chatbot/useChatbotStore";
+import { formatDate } from "../../../utils/data_format/date";
+import Temprature_slider from "../../customComponents/slider/temprature_slider";
 
-function ChatPage({ botId }) {
+export default function Widget({ botId }) {
   const { getChatbot, loading, chatbot } = useChatbotStore((state) => ({
     getChatbot: state.getChatbot,
     loading: state.loading,
@@ -153,8 +153,6 @@ function ChatPage({ botId }) {
     </div>
   );
 }
-
-export default ChatPage;
 
 function Chat({ id, status }) {
   const [messageInput, setMessageInput] = useState("");

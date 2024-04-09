@@ -151,7 +151,7 @@ export default create((set) => ({
         loading: false,
         error: error.message,
       });
-      toast.error(error.message);
+      toast.error(error.message);Console.log("");
       console.error(error.message);
       throw error;
     }
