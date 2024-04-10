@@ -96,7 +96,7 @@ async function getChatResponse(messages, chatbotId) {
     const lastMessage = messages[messages.length - 1]
 
     // Get the context from the last message
-    const context = await getContext(lastMessage.content, chatbot.pIndex, '')
+    const context = await getContext(lastMessage.content, chatbot.pIndex, chatbot.owner, '')
     const prompt = [
         {
             role: `system`,
