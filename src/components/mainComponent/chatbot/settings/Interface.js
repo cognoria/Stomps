@@ -197,13 +197,13 @@ function InterfaceSettings({ botId }) {
                 className="h-[50px] w-full -mt-2 border-[1px] border-gray-200 rounded-md"
               >
                 <option
-                  value={"light"}
+                  value={"LIGHT"}
                   className="text-gray-900 text-xs font-medium font-manrope leading-none tracking-tight"
                 >
                   Light
                 </option>
                 <option
-                  value={"dark"}
+                  value={"DARK"}
                   className="text-gray-900 text-xs font-medium font-manrope leading-none tracking-tight"
                 >
                   Dark
@@ -342,13 +342,13 @@ function InterfaceSettings({ botId }) {
                 className="h-[50px] w-full -mt-2 border-[1px] border-gray-200 rounded-md"
               >
                 <option
-                  value={"left"}
+                  value={"LEFT"}
                   className="text-gray-900 text-xs font-medium font-manrope leading-none tracking-tight"
                 >
                   Left
                 </option>
                 <option
-                  value={"right"}
+                  value={"RIGHT"}
                   className="text-gray-900 text-xs font-medium font-manrope leading-none tracking-tight"
                 >
                   Right

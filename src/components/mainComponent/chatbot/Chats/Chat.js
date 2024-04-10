@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import { remark } from "remark";
 import remarkHTML from "remark-html";
 import useBotMessagingStore from "../../../../store/chatbot/useChatbotMessaging";
+import useChatbotStore from "../../../../store/chatbot/useChatbotStore";
 import { formatDate } from "../../../../utils/data_format/date";
 import Temprature_slider from "../../../customComponents/slider/temprature_slider";
 import useChatbotStore from "../../../../store/chatbot/useChatbotStore";
@@ -15,7 +16,7 @@ function ChatPage({ botId }) {
     getChatbot: state.getChatbot,
     loading: state.loading,
     chatbot: state.chatbot,
-  }))
+  }));
 
   useEffect(() => {
     const interval = setInterval(async () => {
@@ -45,7 +46,7 @@ function ChatPage({ botId }) {
   }
 
   return (
-    <div className="flex w-[95%] lg:w-[767px] rounded-md flex-col h-auto items-start  border-gray-200 justify-center border-[1px] ">
+    <div className="flex w-[95%]  lg:w-[767px] h-auto rounded-md flex-col items-start  border-gray-200 justify-center border-[1px] ">
       <div className="text-gray-900 text-base font-bold font-manrope p-4 border-b-[1px] border-gray-200 w-full  leading-snug">
         {(chatbot?._id != botId) || !chatbot ? <SkeletonLoader width={100} /> : <>{chatbot?.name}</>}
       </div>
@@ -141,7 +142,7 @@ function ChatPage({ botId }) {
             </div>
           </div>
         </div>
-        <Chat id={botId} status={chatbot?.status} />
+        <Chat className="h-full" id={botId} status={chatbot?.status} />
       </div>
     </div>
   );
@@ -156,6 +157,7 @@ function Chat({ id, status }) {
   const loading = useBotMessagingStore((state) => state.loading);
   const error = useBotMessagingStore((state) => state.error);
   const chatting = useBotMessagingStore((state) => state.chatting);
+  const messageInputRef = useRef(null);
   // Function to convert Markdown to HTML
   const markdownToHtml = (markdown) => {
     return remark().use(remarkHTML).processSync(markdown).toString();
@@ -171,6 +173,7 @@ function Chat({ id, status }) {
     e.preventDefault();
 
     if (!messageInput.trim()) return; // Prevent sending empty messages
+    messageInputRef.current.textContent = ""; // clear input field
     try {
       const data = {
         role: "user",
@@ -183,6 +186,7 @@ function Chat({ id, status }) {
       console.log("Failed to send message:", error);
     }
   }
+
   useEffect(() => {
     chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
   }, [chatMessages]);
@@ -226,21 +230,20 @@ function Chat({ id, status }) {
         ))}
       </div>
 
-      <form
-        onSubmit={sendMessage}
-        className="w-full h-[15%] relative p-4 items-center flex-col  flex"
-      >
-        <input
-          value={messageInput}
-          readOnly={status !== "READY"}
-          onChange={(e) => setMessageInput(e.target.value)}
+      <div className=" relative p-4 h-[17%] overflow-y-scroll items-center flex-col  flex">
+        <div
+          contentEditable={true}
+          onInput={(e) => setMessageInput(e.target.textContent)}
           placeholder="message... "
-          className="text-neutral-700 read-only:cursor-help outline-gray-200 w-full h-full border flex flex-col  active:outline-gray-300 pl-[15px] rounded-lg  pr-[50px]   decoration-none placeholder:text-neutral-300 text-sm font-normal font-manrope leading-snug"
+          ref={messageInputRef}
+          readOnly={status !== "READY"}
+          style={{ overflowAnchor: "none" }}
+          className="text-neutral-700 max-h-full  w-full  border p-3 read-only:cursor-help  overflow-y-scroll   flex flex-col   pl-[15px] rounded-lg  pr-[50px]   decoration-none placeholder:text-neutral-300 text-sm font-normal font-manrope leading-snug"
         />
         <button
+          onClick={sendMessage}
           disabled={chatting || status !== "READY"}
-          className="w-[32px] h-[32px] absolute top-7 right-7 disabled:cursor-not-allowed"
-          type="submit"
+          className="w-[32px] h-[32px] absolute top-[24px] right-7  disabled:cursor-not-allowed"
         >
           <img
             src="/images/chatbox/send.svg"
@@ -248,7 +251,7 @@ function Chat({ id, status }) {
             className="w-full h-full "
           />
         </button>
-      </form>
+      </div>
     </div>
   );
 }
