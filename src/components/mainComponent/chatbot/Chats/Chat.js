@@ -226,8 +226,6 @@ function Chat({ id, status }) {
   useEffect(() => {
     chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
   }, [chatMessages]);
-
-  // console.log(status);
   return (
     <div className="border-[1px] w-full lg:w-[53%] h-[588px] border-gray-200  items-start flex-col ">
       <div className="flex border-b-[1px] border-gray-200 flex-row  p-4 w-full flex-end items-end justify-end">
@@ -263,33 +261,36 @@ function Chat({ id, status }) {
                 )}
               </div>
             </div>
+            {index === chatMessages.length - 1 && chatting && (
+              <div className="flex flex-col mt-[10px] items-start w-full justify-start">
+                <SkeletonLoader width={200} />
+              </div>
+            )}
           </div>
         ))}
       </div>
 
-      <form
-        onSubmit={sendMessage}
-        className="w-full h-[15%] relative p-4 items-center flex-col  flex"
-      >
-        <input
-          value={messageInput}
-          readOnly={status !== "READY"}
-          onChange={(e) => setMessageInput(e.target.value)}
+      <div className=" relative p-4 h-[17%] overflow-y-scroll items-center flex-col  flex">
+        <div
+          contentEditable={true}
+          onInput={(e) => setMessageInput(e.target.textContent)}
           placeholder="message... "
-          className="text-neutral-700 read-only:cursor-help outline-gray-200 w-full h-full border flex flex-col  active:outline-gray-300 pl-[15px] rounded-lg  pr-[50px]   decoration-none placeholder:text-neutral-300 text-sm font-normal font-manrope leading-snug"
+          ref={messageInputRef}
+          style={{ overflowAnchor: "none" }}
+          className="text-neutral-700 max-h-full  w-full  border p-3  overflow-y-scroll   flex flex-col   pl-[15px] rounded-lg  pr-[50px]   decoration-none placeholder:text-neutral-300 text-sm font-normal font-manrope leading-snug"
         />
         <button
           disabled={chatting || status !== "READY"}
-          className="w-[32px] h-[32px] absolute top-7 right-7 disabled:cursor-not-allowed"
-          type="submit"
+          onClick={sendMessage}
+          className="w-[32px] h-[32px]  absolute top-[24px] right-7"
         >
           <img
             src="/images/chatbox/send.svg"
             alt=""
-            className="w-full h-full "
+            className={`w-full h-full ${chatting ? "animate-pulse" : ""}`}
           />
         </button>
-      </form>
+      </div>
     </div>
   );
 }
