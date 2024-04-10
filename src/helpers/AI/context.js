@@ -13,7 +13,7 @@ export const getContext = async (message, pineconeIndex, owner, namespace, maxTo
 
   // Filter out the matches that have a score lower than the minimum score
   const qualifyingDocs = matches.filter(m => m.score && m.score > minScore);
-  console.log(qualifyingDocs)
+  // console.log(qualifyingDocs)
   if (!getOnlyText) {
     // Use a map to deduplicate matches by URL
     return qualifyingDocs
