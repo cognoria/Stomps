@@ -167,7 +167,7 @@ async function embedChatbaseChatbot() {
 
   // Fetch the chatbot configuration and initial messages
   const fetchChatbotData = async () => {
-    const response = await fetch(`${origin}/api/get-chatbot-styles/${botId}`, {
+    const response = await fetch(`${origin}/api/v1/embed/${botId}/widget-styles`, {
       method: 'GET',
       headers: { 'Content-Type': 'application/json' },
     });

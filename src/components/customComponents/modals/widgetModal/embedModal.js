@@ -33,7 +33,7 @@ function EmbbedModal({ botId }) {
         </button>
       </div>
       <div className="flex flex-col w-full gap-3 items-center justify-center ">
-        <img src="/images/chatbox/stompIcon_&_logo.svg" />
+        <img src="/images/landing/logo.svg" />
         <div className="w-full text-center text-neutral-900 text-sm font-normal font-['Manrope'] leading-snug">
           To add the chatbot to anywhere on your site, add this iframe to your
           HTML code.
@@ -47,7 +47,7 @@ function EmbbedModal({ botId }) {
           <p className="text-sky-700 text-xs font-bold font-manrope leading-snug">
             Copy Iframe
           </p>
-          <img src="/images/chatbot/copy2.svg" />
+          <img src="/images/chatbox/copy.svg" />
         </button>
       </div>
       <div className="flex items-center justify-center flex-col w-full gap-3">
@@ -65,7 +65,7 @@ function EmbbedModal({ botId }) {
           <p className="text-sky-700 text-xs font-bold font-manrope leading-snug">
             Copy Script
           </p>
-          <img src="/images/chatbox/copy2.svg" />
+          <img src="/images/chatbox/copy.svg" />
         </button>
       </div>
     </div>

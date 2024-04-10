@@ -1,100 +1,6 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
-// const useWidgetStore = create(
-//   persist(
-//     (set, get) => ({
-//       chatting: false,
-//       loading: false,
-//       error: null,
-//       userData: null,
-//       messages: [],
-//       chatbotStyle: null,
-
-//       chat: async ({ botId, data }) => {
-//         set((state) => ({ messages: [...state.messages, data] }));
-//         set({ chatting: true, loading: true, error: null });
-
-//         try {
-//           const { messages, userData } = get();
-//           const response = await fetch(`/api/v1/embed/${botId}/chat`, {
-//             method: "POST",
-//             headers: { "Content-Type": "application/json" },
-//             body: JSON.stringify({ messages, userData }),
-//           });
-
-//           if (!response.ok) {
-//             throw new Error(data.message || "An error occurred");
-//           }
-
-//           const updatedMessage = await response.json();
-//           set((state) => ({
-//             chatting: false,
-//             loading: false,
-//             error: null,
-//             messages: [...state.messages, updatedMessage],
-//           }));
-
-//           return updatedMessage;
-//         } catch (error) {
-//           set({ chatting: false, loading: false, error: error.message });
-//           console.error("Failed to send message:", error);
-//           throw error;
-//         }
-//       },
-
-//       setUserData: async () => {
-//         const { userData } = get();
-//         if (userData && userData.ip) return
-//         try {
-//           const ipRes = await fetch("/api/v1/data/ip");
-//           if (!ipRes.ok) {
-//             throw new Error("Failed to fetch IP data");
-//           }
-
-//           const ipData = await ipRes.json();
-//           const ipDetailsRes = await fetch(`http://ip-api.com/json/${ipData.ip}`);
-//           if (!ipDetailsRes.ok) {
-//             throw new Error("Failed to fetch IP details");
-//           }
-
-//           const ipDetailsData = await ipDetailsRes.json();
-//           const { query, ...rest } = ipDetailsData;
-//           const ipDetails = { ip: query, ...rest };
-//           delete ipDetails.status;
-
-//           set({ userData: ipDetails });
-//         } catch (error) {
-//           console.error("Error:", error);
-//         }
-//       },
-//       setIntialMsg: async (msg) => {
-//         set((state) => ({ messages: [...state.messages, { role: "assistant", content: msg }] }));
-//       },
-//       getChatStyle: async (botId) => {
-//         set({ loading: true, error: null });
-//         try {
-//           const response = await fetch(`/api/v1/embed/${botId}/widget-style`, {
-//             method: "GET",
-//           });
-
-//           if (!response.ok) {
-//             throw new Error(data.message || "An error occurred");
-//           }
-//           const data = await response.json()
-
-//           set({ loading: false, chatbotStyle: data });
-//         } catch (error) {
-//           set({ chatting: false, loading: false, error: error.message });
-//           console.error("Failed to send message:", error);
-//           throw error;
-//         }
-//       }
-//     }),
-//     { name: "wgt-chat-store" }
-//   )
-// );
-
 const useWidgetStore = create(
   persist(
     (set, get) => ({
@@ -175,11 +81,11 @@ const useWidgetStore = create(
             method: "GET",
           });
 
+          const data = await response.json();
           if (!response.ok) {
-            throw new Error("Failed to fetch chat style");
+            throw new Error(data.message || "Failed to fetch chat style");
           }
 
-          const data = await response.json();
           get().updateChatbotState(botId, { loading: false, chatbotStyle: data });
         } catch (error) {
           get().updateChatbotState(botId, { loading: false, error: error.message });
@@ -237,11 +143,11 @@ const useWidgetStore = create(
             body: JSON.stringify({ messages, userData }),
           });
 
+          const updatedMessage = await response.json();
           if (!response.ok) {
-            throw new Error("Failed to send message");
+            throw new Error(updatedMessage.message || "Failed to send message");
           }
 
-          const updatedMessage = await response.json();
           get().updateChatbotState(botId, {
             chatting: false,
             loading: false,

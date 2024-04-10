@@ -17,6 +17,7 @@ export const chatbotRepo = {
     create,
     getById,
     getByName,
+    setPublic,
     updateName,
     getAllNewBot,
     trainChatbot,
@@ -174,6 +175,17 @@ async function _delete(id) {
     }
 }
 
+
+async function setPublic(id) {
+    if (!id || id == 'undefined') throw 'Please provide a valid bot id'
+
+    const ownerId = headers().get('userId');
+    const chatbot = await Chatbot.findOneAndUpdate({ owner: ownerId, _id: id }, { visibility: 'PUBLIC' })
+    if (!chatbot) throw `chatbot not found`;
+
+    return { message: "Chatbot now public" }
+}
+
 async function updateName(chatbotId, name) {
     if (!chatbotId || chatbotId == 'undefined') throw 'Please provide a valid bot id'
 
@@ -292,11 +304,11 @@ async function updateKnowledgebase(chatbotId, params) {
     return { message: "successfully updated chatbot knowledgebase" };
 }
 
-async function getChatbotInterface(chatbotId){
+async function getChatbotInterface(chatbotId) {
     if (!chatbotId || chatbotId == 'undefined') throw 'Please provide a valid bot id'
     const chatbot = await Chatbot.findById(chatbotId).select("+chatBotCustomizeData visibility status").lean()
-    if(!chatbot || chatbot.visibility == "PRIVATE") throw "chatbot not found"
-    if(chatbot.status != KnowledgebaseStatus.READY) throw "chatbot not ready"
+    if (!chatbot || chatbot.visibility == "PRIVATE") throw "chatbot not found"
+    if (chatbot.status != KnowledgebaseStatus.READY) throw "chatbot not ready"
 
-    return { ...chatbot.chatBotCustomizeData}
+    return { ...chatbot.chatBotCustomizeData }
 }
