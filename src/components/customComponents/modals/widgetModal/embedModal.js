@@ -13,7 +13,6 @@ function EmbbedModal({ botId }) {
     title="Chatbot"
     width="100%"
     style="height: 100%; min-height: 700px"
-    frameborder="0"
     ></iframe>
 `;
 
