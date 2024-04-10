@@ -30,7 +30,7 @@ export function AccountModal({ text, button_name, action }) {
         </div>
         <div className="self-stretch rounded-lg justify-start items-start inline-flex">
           <div className="grow shrink basis-0 h-10 px-4 py-2.5 rounded-lg shadow border border-red-600 justify-center items-center gap-2 flex">
-            <div onClick={action} className="grow shrink basis-0 text-center text-red-600 text-sm font-bold font-['Manrope'] leading-snug">
+            <div onClick={() =>action()} className="grow shrink basis-0 text-center text-red-600 text-sm font-bold font-['Manrope'] leading-snug">
               {button_name}
             </div>
           </div>
