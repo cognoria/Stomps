@@ -10,10 +10,10 @@ export const getPineconeClient = async (apikey) => {
 }
 
 // The function `getMatchesFromEmbeddings` is used to retrieve matches for the given embeddings
-export async function getMatchesFromEmbeddings(embeddings, topK, pinconeIndex, namespace) {
+export async function getMatchesFromEmbeddings(embeddings, topK, pinconeIndex, owner, namespace) {
     // Obtain a client for Pinecone 
     // ///TODO: pass apikey
-    const apiKey = await globalRepo.getServiceKey(AppServiceProviders.PINECONE)
+    const apiKey = await globalRepo.getServiceKey(AppServiceProviders.PINECONE, owner)
     const pinecone = await getPineconeClient(apiKey);
 
     // Retrieve the list of indexes

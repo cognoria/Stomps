@@ -9,7 +9,7 @@ export const getContext = async (message, pineconeIndex, owner, namespace, maxTo
   const embedding = await getEmbeddings(message, owner);
 
   // Retrieve the matches for the embeddings from the specified namespace
-  const matches = await getMatchesFromEmbeddings(embedding, 10, pineconeIndex, namespace);
+  const matches = await getMatchesFromEmbeddings(embedding, 10, pineconeIndex, owner, namespace);
 
   // Filter out the matches that have a score lower than the minimum score
   const qualifyingDocs = matches.filter(m => m.score && m.score > minScore);
