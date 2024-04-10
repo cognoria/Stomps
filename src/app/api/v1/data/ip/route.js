@@ -6,8 +6,7 @@ module.exports = apiHandler({
 
 // http://ip-api.com/json/{userIp}
 // {
-//     "query": "24.48.0.1",
-//     "status": "success",
+//     "ip": "24.48.0.1",
 //     "country": "Canada",
 //     "countryCode": "CA",
 //     "region": "QC",

@@ -14,7 +14,7 @@ async function chatResponse(req) {
 }
 
 chatResponse.schema = joi.object({
-    message: joi.string().required(),
+    messages: joi.array().required(),
     userData: joi.object().optional(),
 });
 

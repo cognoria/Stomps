@@ -1,14 +1,12 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-
 import { remark } from "remark";
 import remarkHTML from "remark-html";
 import useBotMessagingStore from "../../../../store/chatbot/useChatbotMessaging";
 import useChatbotStore from "../../../../store/chatbot/useChatbotStore";
 import { formatDate } from "../../../../utils/data_format/date";
 import Temprature_slider from "../../../customComponents/slider/temprature_slider";
-import useChatbotStore from "../../../../store/chatbot/useChatbotStore";
 import SkeletonLoader from "../../../skeleton";
 
 function ChatPage({ botId }) {

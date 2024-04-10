@@ -41,11 +41,11 @@ async function widgetChatResponse(chatbotId, params) {
 
     if (chatbot.visibility != "PUBLIC") throw 'chatbot is private'
 
-    userChatSession.messages.push({ role: "user", content: params.message })
-    const lastMessage = params.message;
+    const lastMessage = params.messages[params.messages.length - 1];
+    userChatSession.messages.push(lastMessage)
     
     // Get the context from the last message
-    const context = await getContext(lastMessage, chatbot.pIndex, '')
+    const context = await getContext(lastMessage.content, chatbot.pIndex, '')
     const prompt = [
         {
             role: `system`,
@@ -62,7 +62,7 @@ async function widgetChatResponse(chatbotId, params) {
         }
     ]
 
-    const message = [...prompt, ...userChatSession.messages.filter((msg) => msg.role === 'user')]
+    const message = [...prompt, ...params.messages.filter((msg) => msg.role === 'user')]
     const response = await getChatCompletion(message, chatbot.chatBotCustomizeData.model, chatbot.owner)
     
     userChatSession.messages.push(response)

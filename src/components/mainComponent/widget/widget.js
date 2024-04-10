@@ -7,8 +7,13 @@ import remarkHTML from "remark-html";
 import useBotMessagingStore from "../../../store/chatbot/useChatbotMessaging";
 import useChatbotStore from "../../../store/chatbot/useChatbotStore";
 
-export default function Widget({ botId }) {
-  const { getChatbot, loading, chatbot } = useChatbotStore((state) => ({
+export default function Widget({ botId, cookies }) {
+  const [userData, setUserData] = useState()
+  const [messages, setMessages] = useState([])
+  const [loading, setLoading] = useState(false)
+  const [messageInput, setMessageInput] = useState("");
+
+  const { getChatbot, chatbot } = useChatbotStore((state) => ({
     getChatbot: state.getChatbot,
     loading: state.loading,
     chatbot: state.chatbot,
@@ -29,26 +34,37 @@ export default function Widget({ botId }) {
     return () => clearInterval(interval);
   }, [botId, getChatbot]);
 
-  function getStatusColor(status) {
-    switch (status) {
-      case "READY":
-        return "green";
-      case "EMBEDDING_ERROR":
-      case "CRAWL_ERROR":
-        return "red";
-      default:
-        return "yellow";
+  useEffect(() => {
+    if (!cookies) {
+      async function fetchData() {
+        try {
+          const ipRes = await fetch("/api/v1/data/ip");
+          if (!ipRes.ok) {
+            throw new Error("Failed to fetch IP data");
+          }
+          const ipData = await ipRes.json();
+
+          const ipDetailsRes = await fetch(`http://ip-api.com/json/${ipData.ip}`);
+          if (!ipDetailsRes.ok) {
+            throw new Error("Failed to fetch IP details");
+          }
+          const ipDetailsData = await ipDetailsRes.json();
+
+          const { query, ...rest } = ipDetailsData;
+          const ipDetails = { ip: query, ...rest };
+          delete ipDetails.status;
+
+          setUserData(ipDetails);
+        } catch (error) {
+          console.error("Error:", error);
+        }
+      }
+
+      fetchData();
     }
-  }
+  }, [cookies])
 
-  //temperture slider
 
-  // const [selectedTemperature, setSelectedTemperature] = useState();
-  // const handleTemperatureChange = (value) => {
-  //   setSelectedTemperature(value);
-  // };
-
-  const [messageInput, setMessageInput] = useState("");
   const chatContainerRef = useRef(null);
   const chatMessages = useBotMessagingStore((state) => state.chatMessages);
   //   const loading = useBotMessagingStore((state) => state.loading);
@@ -66,10 +82,30 @@ export default function Widget({ botId }) {
     }
   }, [chatting]);
 
-  async function sendMessage(e) {
+  async function getChatWidgetResponse() {
     e.preventDefault();
+    if (!messageInput.trim()) return;
+    setMessages((prevMsg) => [...prevMsg, { role: "user", content: messageInput }])
+    setLoading(true)
+    try {
+      const msgRes = await fetch(`/api/v1/embed/${botId}/chat`, {
+        method: 'POST',
+        body: JSON.stringify({
+          messages: messages,
+          userData: userData,
+        })
+      })
+      if (!msgRes.ok) throw new Error("chat response failed")
+      const newMsg = await msgRes.json()
+      setLoading(false)
+      setMessages((prevMsg) => [...prevMsg, newMsg])
+    } catch (e) {
+      console.error("Error:", e);
+    }
+  }
 
-    if (!messageInput.trim()) return; // Prevent sending empty messages
+  async function sendMessage(e) {
+    // Prevent sending empty messages
     messageInputRef.current.textContent = ""; // clear input field
     try {
       const data = {
@@ -104,11 +140,10 @@ export default function Widget({ botId }) {
           {chatMessages.map((message, index) => (
             <div
               key={index}
-              className={`w-full h-auto flex flex-col ${
-                message?.role === "user"
-                  ? "justify-end items-end "
-                  : " justify-start"
-              } `}
+              className={`w-full h-auto flex flex-col ${message?.role === "user"
+                ? "justify-end items-end "
+                : " justify-start"
+                } `}
             >
               <div className="max-w-[70%] h-auto px-[15px] items-start py-[11px] bg-zinc-100 rounded-tl rounded-tr rounded-br border justify-center  flex-col flex">
                 <div className="text-stone-900 text-start text-sm font-normal font-manrope leading-snug">
