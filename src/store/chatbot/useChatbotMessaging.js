@@ -93,6 +93,7 @@ const useBotMessagingStore = create(
         set((state) => {
           const newBots = { ...state.bots };
           delete newBots[id];
+          // console.log("New bots state after removal:", newBots);
           return { bots: newBots };
         });
       },

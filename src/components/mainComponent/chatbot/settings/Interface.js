@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import useChatbotSettings from "../../../../store/chatbot/useChatbotSettings";
 import useChatbotStore from "../../../../store/chatbot/useChatbotStore";
 import { convertImageToBase64 } from "../../../../utils/imageConverter/base64Image";
@@ -16,6 +16,10 @@ function InterfaceSettings({ botId }) {
     loading: state.loading,
     chatbot: state.chatbot,
   }));
+
+  useEffect(() => {
+    getChatbot(botId);
+  }, []);
   const chatMessages = [
     {
       content: "👋 Hi!  How can I help",
@@ -23,26 +27,38 @@ function InterfaceSettings({ botId }) {
     },
     { role: "user", content: "Hi" },
   ];
-  const [initialMsg, setInitialMsg] = useState("");
+  const [initialMsg, setInitialMsg] = useState(
+    chatbot?.chatBotCustomizeData.welcomeMessage
+  );
   const [displayName, setDisplayName] = useState("");
-  const [autoShowMsg, setAutoShowMsg] = useState("");
-  const [msgPlaceholder, setMsgPlaceholder] = useState("");
+  const [autoShowMsg, setAutoShowMsg] = useState(
+    chatbot?.chatBotCustomizeData.popupDelay
+  );
+  const [msgPlaceholder, setMsgPlaceholder] = useState(
+    chatbot?.chatBotCustomizeData.chatInputPlaceholderText
+  );
   const [chatColour, setChatColour] = useState("");
   // theme selection
-  const [selectedTheme, setSelectedTheme] = useState("");
+  const [selectedTheme, setSelectedTheme] = useState(
+    chatbot?.chatBotCustomizeData.widgetTheme
+  );
   const handleThemeChange = (event) => {
     setSelectedTheme(event.target.value);
   };
   // Theme selection
   //chat alignment
-  const [alignChat, setAlignChat] = useState("");
+  const [alignChat, setAlignChat] = useState(
+    chatbot?.chatBotCustomizeData.placement
+  );
   const handleAlignChat = (event) => {
     setAlignChat(event.target.value);
   };
   //chat alignment
 
   // chat profile image
-  const [profileImg, setProfileImg] = useState("");
+  const [profileImg, setProfileImg] = useState(
+    chatbot?.chatBotCustomizeData.profileImage
+  );
   const [profileImgName, setProfileImgName] = useState("");
   const [delProfileImg, setDelProfileImg] = useState(false);
   const handleChatProfileImageChange = async (event) => {
@@ -62,7 +78,9 @@ function InterfaceSettings({ botId }) {
   // chat Icon
   const [usePlainColor, setUsePlainColor] = useState(false);
   const [imageColour, setImageColour] = useState("");
-  const [chatIcon, setChatIcon] = useState(null);
+  const [chatIcon, setChatIcon] = useState(
+    chatbot?.chatBotCustomizeData.launcherIcon
+  );
   const [chatIconName, setChatIconName] = useState("");
   const handleChatIconChange = async (event) => {
     const file = event.target.files[0];
@@ -84,7 +102,14 @@ function InterfaceSettings({ botId }) {
   //chat Icon
 
   // Function to handle adding a new suggested message
-  const [suggestedMessages, setSuggestedMessages] = useState([]);
+  const suggestedMsgValue =
+    chatbot?.chatBotCustomizeData?.questionExamples || [];
+  const defaultSuggestedMessages = suggestedMsgValue.map(
+    (question) => question.question
+  );
+  const [suggestedMessages, setSuggestedMessages] = useState(
+    defaultSuggestedMessages
+  );
   const divRef = useRef(null);
   const handleAddMessage = () => {
     const content = divRef.current.textContent;
@@ -99,7 +124,7 @@ function InterfaceSettings({ botId }) {
   const botData = {
     initialMsg: initialMsg,
 
-    suggestedMsgs: suggestedMessages.map((message) => ({
+    suggestedMsgs: suggestedMessages?.map((message) => ({
       question: message,
     })),
     msgPlaceholder: msgPlaceholder,
@@ -117,7 +142,7 @@ function InterfaceSettings({ botId }) {
     });
   };
   //bot Data Submission
-
+  console.log(chatbot);
   return (
     <div className="w-full px-3 lg:p-[6%]  flex flex-col overflow-x-hidden items-center justify-center ">
       <div className="flex w-full flex-col items-center  justify-center border-gray-200 border-[1px] gap-4 rounded-md ">
@@ -138,6 +163,7 @@ function InterfaceSettings({ botId }) {
                 Initial Message
               </div>
               <input
+                value={initialMsg}
                 onChange={(e) => setInitialMsg(e.target.value)}
                 placeholder="👋 Hi!  How can I help"
                 className="h-[50px] p-2 w-full -mt-2 border-[1px] text-xs font-manrope border-gray-200 rounded-md"
@@ -182,6 +208,7 @@ function InterfaceSettings({ botId }) {
                 Message Placeholder
               </div>
               <input
+                value={msgPlaceholder}
                 onChange={(e) => setMsgPlaceholder(e.target.value)}
                 placeholder="Message..."
                 className="h-[50px] p-2 w-full -mt-2 border-[1px] text-xs font-manrope border-gray-200 rounded-md"
@@ -232,7 +259,9 @@ function InterfaceSettings({ botId }) {
                   <label htmlFor="file-input-profile" className="upload-label">
                     <img
                       className="w-[50px] h-[50px]"
-                      src="/images/chatbox/gallery.svg"
+                      src={
+                        profileImg ? profileImg : `/images/chatbox/gallery.svg`
+                      }
                       alt="Upload icon"
                     />
                     <div className="main-text text-sm">
@@ -299,7 +328,7 @@ function InterfaceSettings({ botId }) {
                   <label htmlFor="file-input-chat" className="upload-label">
                     <img
                       className="w-[50px] h-[50px]"
-                      src="/images/chatbox/gallery.svg"
+                      src={chatIcon ? chatIcon : `/images/chatbox/gallery.svg`}
                       alt="Upload icon"
                     />
                     <div className="main-text text-sm">
@@ -361,6 +390,7 @@ function InterfaceSettings({ botId }) {
               </div>
               <input
                 type="number"
+                value={autoShowMsg}
                 onChange={(e) => setAutoShowMsg(e.target.value)}
                 placeholder="5"
                 className="h-[50px] p-2 w-full -mt-2 border-[1px] text-xs font-manrope border-gray-200 rounded-md"
@@ -374,11 +404,8 @@ function InterfaceSettings({ botId }) {
               </p>{" "}
               <img src="/images/chatbox/refresh.svg" alt="" />
             </div>
-            <div
-              // style={{ scrollBehavior: "smooth" }}
-              className="w-full overflow-y-scroll h-[70%] flex flex-col gap-3 p-4"
-            >
-              {chatMessages.map((message, index) => (
+            <div className="w-full overflow-y-scroll h-[70%] flex flex-col gap-3 p-4">
+              {chatMessages?.map((message, index) => (
                 <div
                   key={index}
                   className={`w-full h-auto flex flex-col ${
@@ -404,7 +431,7 @@ function InterfaceSettings({ botId }) {
 
             <div className="flex flex-row w-[100%] px-4 overflow--scroll h-[5%] items-start justify-start gap-x-3">
               {suggestedMessages &&
-                suggestedMessages.map((msg, i) => {
+                suggestedMessages?.map((msg, i) => {
                   return (
                     <p
                       className="rounded-lg p-1 text-center w-auto h-full bg-sky-700 text-white"
