@@ -13,8 +13,9 @@ const Widget = ({ botId, cookies }) => {
   const messageInputRef = useRef(null);
   const [messageInput, setMessageInput] = useState("");
 
-  const { getChatbotState, getChatStyle, chat, setUserData, setInitialMsg } = useWidgetStore(state => ({
+  const { getChatbotState, getChatStyle, chat, setUserData, setInitialMsg, userData } = useWidgetStore(state => ({
     chat: state.chat,
+    userData: state.userData,
     setUserData: state.setUserData,
     getChatStyle: state.getChatStyle,
     setInitialMsg: state.setInitialMsg,
@@ -28,8 +29,8 @@ const Widget = ({ botId, cookies }) => {
   }, [getChatStyle, chatbotStyle, botId]);
 
   useEffect(() => {
-    if (!cookies) setUserData();
-  }, [cookies, setUserData]);
+    if (!cookies || userData) setUserData();
+  }, [cookies, setUserData, userData]);
 
   useEffect(() => {
     if (chatbotStyle && messages?.length < 1) {
