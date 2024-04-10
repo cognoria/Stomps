@@ -19,7 +19,7 @@ export const chatRepo = {
 }
 
 async function widgetChatResponse(chatbotId, params) {
-    const sessionId = cookies().get(`chat-session-${chatbotId}`).value;
+    const sessionId = cookies().get(`chat-session-${chatbotId}`)?.value;
 
     let userChatSession = Chats.findById(sessionId)
 
