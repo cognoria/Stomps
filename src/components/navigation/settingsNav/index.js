@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useParams } from "next/navigation";
 import useModalStore from "../../../store/modal/modalState";
 import EmbbedModal from "../../customComponents/modals/widgetModal/embedModal";
 
@@ -9,7 +9,9 @@ function ChatbotNav() {
   const pathname = usePathname();
   const lastSegment = pathname.split("/").pop();
   const segments = pathname.split("/");
-  const id = segments[2];
+  console.log(pathname)
+  // const id = segments[2];
+  const { bot: id } = useParams();
   const navItems = [
     { name: "chatbot", link: `/bot/${id}`, tag: "chatbot" },
     { name: "settings", link: `/bot/${id}/settings`, tag: "settings" },
@@ -20,7 +22,7 @@ function ChatbotNav() {
   // console.log(lastSegment);
   const handleEmbedButtonClick = () => {
     // Show the modal when the "embed on site" button is clicked
-    useModalStore.getState().showModal(<EmbbedModal />);
+    useModalStore.getState().showModal(<EmbbedModal botId={id} />);
   };
   return (
     <div className="flex flex-col items-center mt-[130px]  justify-between w-full lg:w-[767px]">
