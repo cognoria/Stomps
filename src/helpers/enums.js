@@ -49,6 +49,16 @@ export const DataStoreStatus = {
     TRAINED: 'TRAINED',
 }
 
+export const position = {
+    LEFT: "LEFT",
+    RIGHT: "RIGHT"
+}
+
+export const widgetThemes = {
+    LIGHT: "LIGHT",
+    DARK: "DARK",
+    SYSTEM: "SYSTEM",
+}
 export const chatBotCustomizeDataDefault = {
     backgroundColor: "#000",
     borderRadius: "12px",
@@ -83,14 +93,3 @@ export const chatBotCustomizeDataDefault = {
     collectPhone: false,
     allowPublicDomains: false
 };
-
-export const position = {
-    LEFT: "LEFT",
-    RIGHT: "RIGHT"
-}
-
-export const widgetThemes = {
-    LIGHT: "LIGHT",
-    DARK: "DARK",
-    SYSTEM: "SYSTEM",
-}
