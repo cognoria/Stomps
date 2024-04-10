@@ -21,7 +21,7 @@ export const chatRepo = {
 async function widgetChatResponse(chatbotId, params) {
     const sessionId = cookies().get(`chat-session-${chatbotId}`)?.value;
 
-    let userChatSession = Chats.findById(sessionId)
+    let userChatSession = await Chats.findById(sessionId)
 
     if (!sessionId || !userChatSession) {
         if (!chatbotId || chatbotId === 'undefined') throw "chatbotId is requeired to create a session"
