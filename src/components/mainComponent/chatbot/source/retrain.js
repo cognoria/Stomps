@@ -27,7 +27,7 @@ export default function Retrain({chatbotId}) {
   };
 
   const { updateKnowledgebase, updatingKnowledgebase } = useChatbotSettings((state) => ({
-    updateLeadsSettings: state.updateKnowledgebase,
+    updateKnowledgebase: state.updateKnowledgebase,
     updatingKnowledgebase: state.updatingKnowledgebase,
   }));
 

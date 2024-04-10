@@ -7,14 +7,17 @@ import EmptyChatbotsDisplay from "../../../../components/mainComponent/chatbot/e
 import ChatbotsDisplay from "../../../../components/mainComponent/chatbot/ChatbotsDisplay";
 import useKeysStore from "../../../../store/chatbot/useKeysStore";
 import useChatbotStore from "../../../../store/chatbot/useChatbotStore";
+import { useUserStore } from "../../../../store/auth/userState";
 
 const Page = () => {
   const router = useRouter();
+  const user = useUserStore((state) => state.user);
   const { getUserChatBots, loading, chatbots } = useChatbotStore((state) => ({
     getUserChatBots: state.getUserChatBots,
     loading: state.loading,
     chatbots: state.chatbots,
   }));
+
 
   const { checkKeys, loadingKeys } = useKeysStore((state) => ({
     checkKeys: state.checkKeys,
@@ -24,17 +27,19 @@ const Page = () => {
   }));
 
   useEffect(() => {
-    checkKeys((hasKeys) => {
-      if (!hasKeys) {
-        router.push("/account/keys");
-      }
-    });
-    getUserChatBots();
+    if (user) {
+      checkKeys((hasKeys) => {
+        if (!hasKeys) {
+          router.push("/account/keys");
+        }
+      });
+      getUserChatBots()
+    }
   }, [checkKeys, getUserChatBots, router]);
 
-  if (loadingKeys || loading) {
-    return <Loading height="h-50px" width="w-50px" />;
-  }
+  // if (loadingKeys || loading) {
+  //   return <Loading height="h-50px" width="w-50px" />;
+  // }
 
   if (!chatbots || chatbots.length === 0) {
     return <EmptyChatbotsDisplay />;

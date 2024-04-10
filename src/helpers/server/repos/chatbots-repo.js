@@ -119,16 +119,11 @@ async function getById(id) {
     const chatbot = await Chatbot.findById(id)
         .select("+chatBotCustomizeData owner visibility status name createdAt updatedAt rateLimiting crawlData.charCount")
         .lean();
-    //   .select(
-    //     '+chatBotCustomizeData +owner +visibility +status +name +createdAt +updatedAt +rateLimiting +crawlData.charCount'
-    //   )
-    //   .lean();
 
     if (!chatbot) throw `Chatbot with id "${id}" not found`;
 
     const owner = headers().get('userId');
     if (chatbot.owner.toString() !== owner) throw 'You do not own this chatbot';
-    console.log(chatbot)
     return chatbot
 }
 
@@ -283,16 +278,6 @@ async function updateKnowledgebase(chatbotId, params) {
     chatbot.knowledgebase.include = mergeAndRemoveDuplicates(chatbot.knowledgebase.include, params.include);
     chatbot.knowledgebase.exclude = mergeAndRemoveDuplicates(chatbot.knowledgebase.exclude, params.exclude);
     chatbot.knowledgebase.urls = mergeAndRemoveDuplicates(chatbot.knowledgebase.urls, params.urls);
-
-    // params.contents.forEach(content => {
-    //     const existingContentIndex = chatbot.knowledgebase.contents.findIndex(c => c.url === content.url);
-    //     if (existingContentIndex === -1) {
-    //         chatbot.knowledgebase.contents.push(content);
-    //     } else {
-    //         // Replace existing content with new content
-    //         chatbot.knowledgebase.contents[existingContentIndex] = content;
-    //     }
-    // });
 
     params.contents.forEach(content => {
         const existingContent = chatbot.knowledgebase.contents.find(c => c.content === content.content);

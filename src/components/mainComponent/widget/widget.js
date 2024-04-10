@@ -4,8 +4,9 @@ import { useEffect, useRef, useState } from "react";
 
 import { remark } from "remark";
 import remarkHTML from "remark-html";
-import useBotMessagingStore from "../../../store/chatbot/useChatbotMessaging";
+
 import useChatbotStore from "../../../store/chatbot/useChatbotStore";
+import useWidgetMessagingStore from "../../../store/widget";
 
 export default function Widget({ botId }) {
   const { getChatbot, loading, chatbot } = useChatbotStore((state) => ({
@@ -14,46 +15,16 @@ export default function Widget({ botId }) {
     chatbot: state.chatbot,
   }));
 
-  useEffect(() => {
-    const interval = setInterval(async () => {
-      try {
-        const data = await getChatbot(botId);
-        if (data.chatbot.status === "READY") {
-          clearInterval(interval);
-        }
-      } catch (error) {
-        console.error("Error fetching status:", error);
-      }
-    }, 10000);
-
-    return () => clearInterval(interval);
-  }, [botId, getChatbot]);
-
-  function getStatusColor(status) {
-    switch (status) {
-      case "READY":
-        return "green";
-      case "EMBEDDING_ERROR":
-      case "CRAWL_ERROR":
-        return "red";
-      default:
-        return "yellow";
-    }
-  }
-
-  //temperture slider
-
-  // const [selectedTemperature, setSelectedTemperature] = useState();
-  // const handleTemperatureChange = (value) => {
-  //   setSelectedTemperature(value);
-  // };
-
   const [messageInput, setMessageInput] = useState("");
   const chatContainerRef = useRef(null);
-  const chatMessages = useBotMessagingStore((state) => state.chatMessages);
-  //   const loading = useBotMessagingStore((state) => state.loading);
-  const error = useBotMessagingStore((state) => state.error);
-  const chatting = useBotMessagingStore((state) => state.chatting);
+  const chatMessages = useWidgetMessagingStore(
+    (state) => state.widgetChatMessages
+  );
+
+  console.log(messageInput);
+  //   const loading = useWidgetMessagingStore((state) => state.loading);
+  const error = useWidgetMessagingStore((state) => state.error);
+  const chatting = useWidgetMessagingStore((state) => state.chatting);
   const messageInputRef = useRef(null);
   // Function to convert Markdown to HTML
   const markdownToHtml = (markdown) => {
@@ -76,7 +47,7 @@ export default function Widget({ botId }) {
         role: "user",
         content: messageInput,
       };
-      await useBotMessagingStore.getState().chat({ id, data });
+      await useWidgetMessagingStore.getState().chat({ botId, data });
       setMessageInput("");
     } catch (error) {
       setMessageInput("");
@@ -110,7 +81,7 @@ export default function Widget({ botId }) {
                   : " justify-start"
               } `}
             >
-              <div className="max-w-[70%] h-auto px-[15px] items-start py-[11px] bg-zinc-100 rounded-tl rounded-tr rounded-br border justify-center  flex-col flex">
+              <div className="max-w-[80%] h-auto px-[15px] items-start py-[11px] bg-zinc-100 rounded-tl rounded-tr rounded-br border justify-center  flex-col flex">
                 <div className="text-stone-900 text-start text-sm font-normal font-manrope leading-snug">
                   {message?.role === "user" ? (
                     message?.content
@@ -133,18 +104,18 @@ export default function Widget({ botId }) {
             onInput={(e) => setMessageInput(e.target.textContent)}
             placeholder="message... "
             ref={messageInputRef}
-            readOnly={chatting || status !== "READY"}
             style={{ overflowAnchor: "none" }}
             className="text-neutral-700 max-h-full  w-full  border p-3  overflow-y-scroll   flex flex-col   pl-[15px] rounded-lg  pr-[50px]   decoration-none placeholder:text-neutral-300 text-sm font-normal font-manrope leading-snug"
           />
           <button
+            disabled={chatting}
             onClick={sendMessage}
-            className="w-[32px] h-[32px] absolute top-[24px] right-7"
+            className="w-[32px] h-[32px]  absolute top-[24px] right-7"
           >
             <img
               src="/images/chatbox/send.svg"
               alt=""
-              className="w-full h-full "
+              className={`w-full h-full ${chatting ? "animate-spin" : ""}`}
             />
           </button>
         </div>
