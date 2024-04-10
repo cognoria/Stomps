@@ -31,32 +31,21 @@ function ModelSettings({ botId }) {
   };
   // model selection
 
-  // open ai and picone key
-  const [openAiKey, setOpenAiKey] = useState("");
-  const [pineconeKey, setPineconeKey] = useState("");
-
-  // open ai and picone key
-
   //chatbot temprature
-  const [selectedTemperature, setSelectedTemperature] = useState(0.1);
+  const [selectedTemperature, setSelectedTemperature] = useState(chatbot?.chatBotCustomizeData.temparature);
   const handleTemperatureChange = (value) => {
     setSelectedTemperature(value);
   };
-
-  // console.log(selectedTemperature);
   //chatbot temprature
 
   //model prompt
-  const [modelText, setModelText] = useState(
-    chatbot ? chatbot?.model?.text : text
-  );
+  const [modelText, setModelText] = useState(chatbot?.chatBotCustomizeData.prompt);
   const handleTextChange = (event) => {
     setModelText(event.target.value);
   };
   //model prompt
 
   // submit handler
-
   const handleSubmitBotModel = (e) => {
     e.preventDefault();
     const botData = {
@@ -67,8 +56,8 @@ function ModelSettings({ botId }) {
 
     updateModel({ botData, botId });
   };
-
   // submit handler
+  
   return (
     <div className="w-full px-3 lg:p-[6%]  flex flex-col items-center justify-center ">
       <div className="flex w-full flex-col items-center  justify-center border-gray-200 border-[1px] gap-4 rounded-md ">
@@ -87,7 +76,7 @@ function ModelSettings({ botId }) {
             </div>
 
             <textarea
-              value={chatbot?.chatBotCustomizeData.prompt}
+              value={modelText}
               onChange={handleTextChange}
               className="flex flex-col items-start p-3 h-[150px] active:border-gray-300  border-[1px]  border-gray-200 shadow-md w-full"
             ></textarea>
@@ -161,7 +150,7 @@ function ModelSettings({ botId }) {
             <div className="w-full">
               <Temprature_slider
                 height={"h-3"}
-                value={chatbot?.chatBotCustomizeData.temparature}
+                value={selectedTemperature}
                 onChange={handleTemperatureChange}
               />
             </div>

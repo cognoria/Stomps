@@ -17,15 +17,17 @@ function isPublicPath(req) {
     // public routes that don't require authentication
     const publicPaths = [
         'GET:/api/ping',
+        `GET:/api/v1/data/ip`,
         'POST:/api/v1/auth/login',
         'POST:/api/v1/auth/logout',
         'POST:/api/v1/auth/google',
         'POST:/api/v1/auth/register',
         'GET:/api/v1/auth/verify/:token',
+        `GET:/api/v1/embed/:botId/:action`,
+        `POST:/api/v1/embed/:botId/:action`,
         'GET:/api/v1/auth/verify/resend/:email',
         'POST:/api/v1/auth/password/reset/:token',
         'GET:/api/v1/auth/password/forget/:email',
-        // 'GET:/api/v1/data/links'
     ];
     
     const isPublic = publicPaths.some(path => matchPath(normalizedPath, path));

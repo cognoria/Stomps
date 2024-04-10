@@ -49,6 +49,16 @@ export const DataStoreStatus = {
     TRAINED: 'TRAINED',
 }
 
+export const position = {
+    LEFT: "LEFT",
+    RIGHT: "RIGHT"
+}
+
+export const widgetThemes = {
+    LIGHT: "LIGHT",
+    DARK: "DARK",
+    SYSTEM: "SYSTEM",
+}
 export const chatBotCustomizeDataDefault = {
     backgroundColor: "#000",
     borderRadius: "12px",
@@ -57,7 +67,7 @@ export const chatBotCustomizeDataDefault = {
     heading: "I am your AI assistant",
     prompt: "You are a very enthusiastic chatbot who loves to help people! Your name is Stomps and you are designed to respond only based on the given context, outputted in Markdown format.",
     defaultAnswer: "I don't know how to answer that",
-    placement: 'right',
+    placement: position.RIGHT,
     showReadMore: true,
     showAsPopup: false,
     popupDelay: 3000,
@@ -77,20 +87,9 @@ export const chatBotCustomizeDataDefault = {
     leadMsgDescription: "Let us know how to contact you.",
     model: chatModelEnum.GPT_3_5,
     temparature: 0.7,
-    widgetTheme: 'LIGHT',
+    widgetTheme: widgetThemes.LIGHT,
     collectName: false,
     collectEmail: false,
     collectPhone: false,
     allowPublicDomains: false
 };
-
-export const position = {
-    LEFT: "LEFT",
-    RIGHT: "RIGHT"
-}
-
-export const widgetThemes = {
-    LIGHT: "LIGHT",
-    DARK: "DARK",
-    SYSTEM: "SYSTEM",
-}

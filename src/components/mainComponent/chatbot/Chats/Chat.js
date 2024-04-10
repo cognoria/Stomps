@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-
 import { remark } from "remark";
 import remarkHTML from "remark-html";
 import useBotMessagingStore from "../../../../store/chatbot/useChatbotMessaging";
@@ -291,12 +290,12 @@ function Chat({ id, status }) {
           placeholder="message... "
           ref={messageInputRef}
           style={{ overflowAnchor: "none" }}
-          className="text-neutral-700 max-h-full  w-full  border p-3  overflow-y-scroll   flex flex-col   pl-[15px] rounded-lg  pr-[50px]   decoration-none placeholder:text-neutral-300 text-sm font-normal font-manrope leading-snug"
+          className="text-neutral-700 max-h-full  w-full  border p-3 read-only:cursor-help  overflow-y-scroll   flex flex-col   pl-[15px] rounded-lg  pr-[50px]   decoration-none placeholder:text-neutral-300 text-sm font-normal font-manrope leading-snug"
         />
         <button
           disabled={chatting || status !== "READY"}
           onClick={sendMessage}
-          className="w-[32px] h-[32px]  absolute top-[24px] right-7"
+          className="w-[32px] h-[32px] absolute top-[24px] right-7  disabled:cursor-not-allowed"
         >
           <img
             src="/images/chatbox/send.svg"

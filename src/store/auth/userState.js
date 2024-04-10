@@ -29,7 +29,6 @@ export const useUserStore = create(
     }),
     {
       name: "user-storage",
-      getStorage: () => localStorage, // specify storage type
     }
   )
 );

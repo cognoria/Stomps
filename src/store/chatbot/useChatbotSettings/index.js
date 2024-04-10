@@ -21,8 +21,8 @@ export default create((set) => ({
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(botData),
       });
-      if (!response.ok) throw new Error("Failed to update model");
       const data = await response.json();
+      if (!response.ok) throw new Error(data.message || "An error occurred");
       set({ updatingModel: false, loading: false });
       toast.success(data.message);
       return data;
@@ -44,8 +44,8 @@ export default create((set) => ({
           body: JSON.stringify(botSecurityData),
         }
       );
-      if (!response.ok) throw new Error("Failed to update settings");
       const data = await response.json();
+      if (!response.ok) throw new Error(data.message || "An error occurred");
       set({ updatingSecuritySettings: false, loading: false });
       toast.success(data.message);
       return data;
@@ -67,8 +67,8 @@ export default create((set) => ({
         method: "POST",
         body: JSON.stringify(botLeadsData),
       });
-      if (!response.ok) throw new Error("Failed to update Lead");
       const data = await response.json();
+      if (!response.ok) throw new Error(data.message || "An error occurred" );
       set({ updatingLeadsSettings: false, loading: false });
       toast.success(data.message);
       return data;
@@ -91,8 +91,8 @@ export default create((set) => ({
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(botName),
       });
-      if (!response.ok) throw new Error("Failed to update Lead");
       const data = await response.json();
+      if (!response.ok) throw new Error(data.message || "An error occurred");
       set({ updatingBotName: false, loading: false });
       toast.success(data.message);
       return data;
