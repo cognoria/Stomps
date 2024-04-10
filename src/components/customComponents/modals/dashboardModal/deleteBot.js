@@ -1,22 +1,23 @@
-
-import useModalStore from "../../../../store/modal/modalState";
 import useChatbotStore from "../../../../store/chatbot/useChatbotStore";
+import useModalStore from "../../../../store/modal/modalState";
 
 export function DeleteBot({ text, button_name, id }) {
   const hideModal = useModalStore((state) => state.hideModal);
 
-  const { deleteChatBot, deletingChatbot, getUserChatBots } = useChatbotStore((state) => ({
-    getUserChatBots: state.getUserChatBots,
-    deleteChatBot: state.deleteChatBot,
-    deletingChatbot: state.loading
-  }))
-
+  const { deleteChatBot, deletingChatbot, getUserChatBots } = useChatbotStore(
+    (state) => ({
+      getUserChatBots: state.getUserChatBots,
+      deleteChatBot: state.deleteChatBot,
+      deletingChatbot: state.loading,
+    })
+  );
 
   const delete_bot = async (id) => {
     try {
       await deleteChatBot(id, async () => {
         await hideModal();
         await getUserChatBots();
+        await useBotMessagingStore.getState().removeBot(id);
       });
     } catch (error) {
       await hideModal();
@@ -55,8 +56,9 @@ export function DeleteBot({ text, button_name, id }) {
             <button
               disabled={deletingChatbot}
               onClick={() => delete_bot(id)}
-              className={`grow shrink basis-0 text-center ${deletingChatbot ? "" : ""
-                }  text-red-600 text-sm font-bold font-['Manrope'] leading-snug`}
+              className={`grow shrink basis-0 text-center ${
+                deletingChatbot ? "" : ""
+              }  text-red-600 text-sm font-bold font-['Manrope'] leading-snug`}
             >
               {deletingChatbot ? "deleting" : button_name}
             </button>

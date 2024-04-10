@@ -189,10 +189,16 @@ export default ChatPage;
 function Chat({ id, status }) {
   const [messageInput, setMessageInput] = useState("");
   const chatContainerRef = useRef(null);
-  const chatMessages = useBotMessagingStore((state) => state.chatMessages);
-  const loading = useBotMessagingStore((state) => state.loading);
-  const error = useBotMessagingStore((state) => state.error);
-  const chatting = useBotMessagingStore((state) => state.chatting);
+  const chatMessages = useBotMessagingStore(
+    (state) => state.bots[id]?.chatMessages || []
+  ); // Access chat messages for the specific bot
+  const loading = useBotMessagingStore(
+    (state) => state.bots[id]?.loading || false
+  ); // Access loading state for the specific bot
+  const error = useBotMessagingStore((state) => state.bots[id]?.error || null); // Access error state for the specific bot
+  const chatting = useBotMessagingStore(
+    (state) => state.bots[id]?.chatting || false
+  ); // Access chatting state for the specific bot
   const messageInputRef = useRef(null);
   // Function to convert Markdown to HTML
   const markdownToHtml = (markdown) => {
@@ -226,6 +232,14 @@ function Chat({ id, status }) {
   useEffect(() => {
     chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
   }, [chatMessages]);
+
+  const bots = useBotMessagingStore((state) => state.bots);
+
+  // Log the bots object when the component mounts
+  useEffect(() => {
+    console.log("Bots:", bots);
+  }, []);
+
   return (
     <div className="border-[1px] w-full lg:w-[53%] h-[588px] border-gray-200  items-start flex-col ">
       <div className="flex border-b-[1px] border-gray-200 flex-row  p-4 w-full flex-end items-end justify-end">
