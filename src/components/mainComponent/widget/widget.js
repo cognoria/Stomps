@@ -29,7 +29,7 @@ const Widget = ({ botId, cookies }) => {
   }, [getChatStyle, chatbotStyle, botId]);
 
   useEffect(() => {
-    if (!cookies || userData) setUserData();
+    if (!cookies || userData == null) setUserData();
   }, [cookies, setUserData, userData]);
 
   useEffect(() => {
