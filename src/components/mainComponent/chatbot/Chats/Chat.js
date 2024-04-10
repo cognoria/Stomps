@@ -46,7 +46,11 @@ function ChatPage({ botId }) {
   return (
     <div className="flex w-[95%]  lg:w-[767px] h-auto rounded-md flex-col items-start  border-gray-200 justify-center border-[1px] ">
       <div className="text-gray-900 text-base font-bold font-manrope p-4 border-b-[1px] border-gray-200 w-full  leading-snug">
-        {(chatbot?._id != botId) || !chatbot ? <SkeletonLoader width={100} /> : <>{chatbot?.name}</>}
+        {chatbot?._id != botId || !chatbot ? (
+          <SkeletonLoader width={100} />
+        ) : (
+          <>{chatbot?.name}</>
+        )}
       </div>
       <div className="w-full py-6 px-2 items-start flex gap-y-3 flex-col lg:flex-row  justify-start ">
         <div className="w-full lg:w-[50%] pl-2 h-auto lg:h-[588px]  flex flex-col items-start justify-start">
@@ -57,7 +61,11 @@ function ChatPage({ botId }) {
               </div>
               <div className="flex flex-row items-start gap-3">
                 <div className="text-gray-900 text-sm font-bold font-manrope leading-snug">
-                  {(chatbot?._id != botId) || !chatbot ? <SkeletonLoader width={200} /> : <>{chatbot?._id}</>}
+                  {chatbot?._id != botId || !chatbot ? (
+                    <SkeletonLoader width={200} />
+                  ) : (
+                    <>{chatbot?._id}</>
+                  )}
                 </div>
                 <img src="/images/chatbox/copy.svg" className="w-6 h-6" />
               </div>
@@ -69,15 +77,20 @@ function ChatPage({ botId }) {
                 </div>
                 <div className="flex flex-row w-full gap-1 items-center">
                   <div
-                    className={`w-3 h-3 ${getStatusColor(chatbot?.status) === "green"
-                      ? "bg-emerald-500"
-                      : getStatusColor(chatbot?.status) === "red"
+                    className={`w-3 h-3 ${
+                      getStatusColor(chatbot?.status) === "green"
+                        ? "bg-emerald-500"
+                        : getStatusColor(chatbot?.status) === "red"
                         ? "bg-red-500"
                         : "bg-yellow-500"
-                      } rounded-full`}
+                    } rounded-full`}
                   />
                   <div className="text-gray-900 text-sm font-bold font-manrope leading-snug">
-                    {(chatbot?._id != botId) || !chatbot ? <SkeletonLoader width={100} /> : <>{chatbot?.status}</>}
+                    {chatbot?._id != botId || !chatbot ? (
+                      <SkeletonLoader width={100} />
+                    ) : (
+                      <>{chatbot?.status}</>
+                    )}
                   </div>
                 </div>
               </div>
@@ -87,7 +100,11 @@ function ChatPage({ botId }) {
                 </div>
                 <div>
                   <div className="text-gray-900 text-sm font-bold font-manrope leading-snug">
-                    {(chatbot?._id != botId) || !chatbot ? <SkeletonLoader width={100} /> : <>{chatbot?.chatBotCustomizeData?.model}</>}
+                    {chatbot?._id != botId || !chatbot ? (
+                      <SkeletonLoader width={100} />
+                    ) : (
+                      <>{chatbot?.chatBotCustomizeData?.model}</>
+                    )}
                   </div>
                 </div>
               </div>
@@ -100,7 +117,11 @@ function ChatPage({ botId }) {
                 </div>
                 <div className="flex flex-row gap-3 items-center">
                   <div className="text-gray-900 text-sm font-bold font-manrope leading-snug">
-                    {(chatbot?._id != botId) || !chatbot ? <SkeletonLoader width={100} /> : <>{chatbot?.visibility}</>}
+                    {chatbot?._id != botId || !chatbot ? (
+                      <SkeletonLoader width={100} />
+                    ) : (
+                      <>{chatbot?.visibility}</>
+                    )}
                   </div>
                 </div>
               </div>
@@ -113,7 +134,11 @@ function ChatPage({ botId }) {
                 </div>
                 <div>
                   <div className="text-gray-900 text-sm font-bold font-manrope leading-snug">
-                    {(chatbot?._id != botId) || !chatbot ? <SkeletonLoader width={100} /> : <>{chatbot?.crawlData.charCount}</>}
+                    {chatbot?._id != botId || !chatbot ? (
+                      <SkeletonLoader width={100} />
+                    ) : (
+                      <>{chatbot?.crawlData.charCount}</>
+                    )}
                   </div>
                 </div>
               </div>
@@ -123,12 +148,20 @@ function ChatPage({ botId }) {
               <div className="text-gray-900 text-sm font-normal font-manrope leading-snug">
                 Temperature
               </div>
-              {(chatbot?._id != botId) || !chatbot ? <SkeletonLoader width={100} /> : <div className="w-[70%] my-3">
-                <Temprature_slider
-                  height={"h-2"}
-                  value={(chatbot?._id != botId) || !chatbot ? 0 : chatbot?.chatBotCustomizeData?.temparature}
-                />
-              </div>}
+              {chatbot?._id != botId || !chatbot ? (
+                <SkeletonLoader width={100} />
+              ) : (
+                <div className="w-[70%] my-3">
+                  <Temprature_slider
+                    height={"h-2"}
+                    value={
+                      chatbot?._id != botId || !chatbot
+                        ? 0
+                        : chatbot?.chatBotCustomizeData?.temparature
+                    }
+                  />
+                </div>
+              )}
             </div>
           </div>
           <div className="lg:my-0 my-10">
@@ -136,7 +169,11 @@ function ChatPage({ botId }) {
               Last Trained:
             </div>
             <div className="text-gray-900 text-sm font-bold font-manrope leading-snug">
-              {(chatbot?._id != botId) || !chatbot ? <SkeletonLoader width={250} /> : <>{formatDate(chatbot?.updatedAt)}</>}
+              {chatbot?._id != botId || !chatbot ? (
+                <SkeletonLoader width={250} />
+              ) : (
+                <>{formatDate(chatbot?.updatedAt)}</>
+              )}
             </div>
           </div>
         </div>
@@ -188,8 +225,6 @@ function Chat({ id, status }) {
   useEffect(() => {
     chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
   }, [chatMessages]);
-
-  // console.log(status);
   return (
     <div className="border-[1px] w-full lg:w-[53%] h-[588px] border-gray-200  items-start flex-col ">
       <div className="flex border-b-[1px] border-gray-200 flex-row  p-4 w-full flex-end items-end justify-end">
@@ -206,10 +241,11 @@ function Chat({ id, status }) {
         {chatMessages.map((message, index) => (
           <div
             key={index}
-            className={`w-full h-auto flex flex-col ${message?.role === "user"
-              ? "justify-end items-end "
-              : " justify-start"
-              } `}
+            className={`w-full h-auto flex flex-col ${
+              message?.role === "user"
+                ? "justify-end items-end "
+                : " justify-start"
+            } `}
           >
             <div className="max-w-[70%] h-auto px-[15px] items-start py-[11px] bg-zinc-100 rounded-tl rounded-tr rounded-br border justify-center  flex-col flex">
               <div className="text-stone-900 text-start text-sm font-normal font-manrope leading-snug">
@@ -224,6 +260,11 @@ function Chat({ id, status }) {
                 )}
               </div>
             </div>
+            {index === chatMessages.length - 1 && chatting && (
+              <div className="flex flex-col mt-[10px] items-start w-full justify-start">
+                <SkeletonLoader width={200} />
+              </div>
+            )}
           </div>
         ))}
       </div>
@@ -234,19 +275,18 @@ function Chat({ id, status }) {
           onInput={(e) => setMessageInput(e.target.textContent)}
           placeholder="message... "
           ref={messageInputRef}
-          readOnly={status !== "READY"}
           style={{ overflowAnchor: "none" }}
           className="text-neutral-700 max-h-full  w-full  border p-3 read-only:cursor-help  overflow-y-scroll   flex flex-col   pl-[15px] rounded-lg  pr-[50px]   decoration-none placeholder:text-neutral-300 text-sm font-normal font-manrope leading-snug"
         />
         <button
-          onClick={sendMessage}
           disabled={chatting || status !== "READY"}
+          onClick={sendMessage}
           className="w-[32px] h-[32px] absolute top-[24px] right-7  disabled:cursor-not-allowed"
         >
           <img
             src="/images/chatbox/send.svg"
             alt=""
-            className="w-full h-full "
+            className={`w-full h-full ${chatting ? "animate-pulse" : ""}`}
           />
         </button>
       </div>
