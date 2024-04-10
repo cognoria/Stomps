@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import useModalStore from "../../../../store/modal/modalState";
 import { toast } from "react-toastify";
+import copy from "copy-to-clipboard";
 
 
 function EmbbedModal({ botId }) {
@@ -42,7 +43,7 @@ function EmbbedModal({ botId }) {
             <CodeDisplay code={embedIframe} />
           </div>
         </div>
-        <button onClick={() =>copyCode(embedIframe)} className="px-3.5 mt-3 py-2 bg-sky-50 rounded-lg shadow border border-sky-50 justify-center items-center gap-2 flex flex-row">
+        <button onClick={() => copyCode(embedIframe)} className="px-3.5 mt-3 py-2 bg-sky-50 rounded-lg shadow border border-sky-50 justify-center items-center gap-2 flex flex-row">
           <p className="text-sky-700 text-xs font-bold font-manrope leading-snug">
             Copy Iframe
           </p>
