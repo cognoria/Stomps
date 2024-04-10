@@ -63,6 +63,7 @@ export default function DataSource() {
         return toast.error("unspported file selected"); //toast file not supported
       }
       await addFiles(file);
+      setSelectedFile(null)
     } catch (e) {
       console.error("error adding file: ", e);
       toast.error("Failed to add file");

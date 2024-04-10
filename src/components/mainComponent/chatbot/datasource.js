@@ -73,6 +73,7 @@ export default function Datasource() {
       if(file){
         await useFormDataStore.getState().addDataToFiles(file);
         await useFormDataStore.getState().addFileToContents(file);
+        setSelectedFile(null)
       }
     } catch (e) {
       console.error("error adding file: ", e);

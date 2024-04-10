@@ -23,33 +23,25 @@ function LeadsSettings({ botId }) {
   }, [botId, getChatbot]);
 
   //title value
-  const [title, setTitle] = useState(
-    chatbot ? chatbot?.chatBotCustomizeData?.leadMsgDescription : ""
-  );
+  const [title, setTitle] = useState(chatbot?.chatBotCustomizeData?.leadMsgDescription);
   //title value
 
   // name toggle
-  const [nameToggle, setNameToggle] = useState(
-    chatbot ? chatbot?.chatBotCustomizeData?.collectName : false
-  );
+  const [nameToggle, setNameToggle] = useState(chatbot?.chatBotCustomizeData?.collectName);
   const handleNameToggleChange = () => {
     setNameToggle(!nameToggle);
   };
   // name toggle
 
   //email toggle
-  const [emailToggle, setEmailToggle] = useState(
-    chatbot ? chatbot?.chatBotCustomizeData?.collectEmail : false
-  );
+  const [emailToggle, setEmailToggle] = useState(chatbot?.chatBotCustomizeData?.collectEmail);
   const handleEmailToggleChange = () => {
     setEmailToggle(!emailToggle);
   };
   //email toggle
 
   //phone number
-  const [phoneToggle, setPhoneToggle] = useState(
-    chatbot ? chatbot?.chatBotCustomizeData?.collectPhone : false
-  );
+  const [phoneToggle, setPhoneToggle] = useState(chatbot?.chatBotCustomizeData?.collectPhone);
   const handlePhoneToggleChange = () => {
     setPhoneToggle(!phoneToggle);
   };
