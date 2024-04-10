@@ -1,26 +1,27 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import Image from "next/image";
+import { useEffect, useState } from "react";
 import useFormDataStore from "../../../store/chatbot/useChatbotSource";
 import useLinksStore from "../../../store/chatbot/useLinksStore";
-import Image from "next/image";
 
 function Website() {
   const [error, setError] = useState(null);
   const [displayedLinks, setDisplayedLinks] = useState([]);
   const [numDisplayedLinks, setNumDisplayedLinks] = useState(10);
 
-  const {sitemap, website, include} = useFormDataStore((state) => ({
+  const { sitemap, website, include } = useFormDataStore((state) => ({
     sitemap: state.formData.sitemap,
     website: state.formData.website,
     include: state.formData.include,
-  }))
+  }));
 
-  const {fetchSitemapAndUpdateInclude, fetchLinksAndUpdateInclude, loading} = useLinksStore((state)  =>({
-    fetchSitemapAndUpdateInclude: state.fetchSitemapAndUpdateInclude,
-    fetchLinksAndUpdateInclude: state.fetchLinksAndUpdateInclude,
-    loading: state.loading
-  }))
+  const { fetchSitemapAndUpdateInclude, fetchLinksAndUpdateInclude, loading } =
+    useLinksStore((state) => ({
+      fetchSitemapAndUpdateInclude: state.fetchSitemapAndUpdateInclude,
+      fetchLinksAndUpdateInclude: state.fetchLinksAndUpdateInclude,
+      loading: state.loading,
+    }));
 
   useEffect(() => {
     if (!website.startsWith("http://") && !website.startsWith("https://")) {
@@ -146,7 +147,12 @@ function Website() {
                     }
                     className="bg-transparent items-center gap-2 flex flex-row"
                   >
-                    <Image width={20} height={20} alt='' src="/images/chatbox/trash.svg" />
+                    <Image
+                      width={20}
+                      height={20}
+                      alt=""
+                      src="/images/chatbox/trash.svg"
+                    />
                     <p className="text-red-500 text-xs font-bold font-manrope leading-snug">
                       Delete all
                     </p>
@@ -157,9 +163,9 @@ function Website() {
                 </div>
               </div>
               {include && (
-                <div className="w-full px-2 mt-[40px]">
+                <div className="w-full px-2 mt-[40px]  max-h-[420px] overflow-y-scroll">
                   <ul className="w-full flex-col gap-1 flex">
-                    {include.slice(0, 10).map((link, index) => (
+                    {include.map((link, index) => (
                       <li
                         key={index}
                         className="w-full flex flex-row items-center gap-2 justify-between "
@@ -174,7 +180,9 @@ function Website() {
                             useFormDataStore.getState().deleteInclude(index)
                           }
                         >
-                          <Image width={20} height={20}
+                          <Image
+                            width={20}
+                            height={20}
                             src="/images/chatbox/trash.svg"
                             alt=""
                             classNAme="w-full h-auto"

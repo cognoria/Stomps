@@ -1,13 +1,24 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import Image from "next/image";
+import { useEffect, useState } from "react";
 import useKnowledgebase from "../../../../store/chatbot/useKnowledgebase";
 
 function WebsiteSource() {
   const [error, setError] = useState(null);
 
-  const { sitemap, website, include, loading, addLinksWithSitemap, deleteInclude, deleteAllInclude, addLinksWithWebsite, updateWebsite, updateSiteMap } = useKnowledgebase((state) => ({
+  const {
+    sitemap,
+    website,
+    include,
+    loading,
+    addLinksWithSitemap,
+    deleteInclude,
+    deleteAllInclude,
+    addLinksWithWebsite,
+    updateWebsite,
+    updateSiteMap,
+  } = useKnowledgebase((state) => ({
     sitemap: state.sitemap,
     website: state.website,
     include: state.include,
@@ -18,7 +29,7 @@ function WebsiteSource() {
     deleteAllInclude: state.deleteAllInclude,
     addLinksWithWebsite: state.addLinksWithWebsite,
     addLinksWithSitemap: state.addLinksWithSitemap,
-  }))
+  }));
 
   useEffect(() => {
     if (!website.startsWith("http://") && !website.startsWith("https://")) {
@@ -71,8 +82,9 @@ function WebsiteSource() {
                   />
                   <button
                     onClick={handleAddWebsite}
-                    className={`h-11 w-full lg:w-fit px-5 py-3    ${!loading ? "bg-sky-700" : "bg-sky-700/20"
-                      } rounded-lg shadow border border-sky-700 justify-center items-center gap-2 flex`}
+                    className={`h-11 w-full lg:w-fit px-5 py-3    ${
+                      !loading ? "bg-sky-700" : "bg-sky-700/20"
+                    } rounded-lg shadow border border-sky-700 justify-center items-center gap-2 flex`}
                   >
                     <p className="text-white text-sm font-bold font-manrope leading-snug">
                       {loading ? "fetching..." : " Fetch link"}
@@ -111,8 +123,9 @@ function WebsiteSource() {
                   />
                   <button
                     onClick={handleAddSitemap}
-                    className={`h-11 w-full lg:w-fit px-5 py-3 ${loading ? "bg-sky-700/20" : "bg-sky-700"
-                      }  rounded-lg shadow border border-sky-700 justify-center items-center gap-2 flex`}
+                    className={`h-11 w-full lg:w-fit px-5 py-3 ${
+                      loading ? "bg-sky-700/20" : "bg-sky-700"
+                    }  rounded-lg shadow border border-sky-700 justify-center items-center gap-2 flex`}
                   >
                     <p className="text-white text-sm font-bold font-manrope leading-snug">
                       {loading ? "Loading Sitemap..." : "Load Sitemap"}
@@ -136,10 +149,15 @@ function WebsiteSource() {
               <div className="flex flex-row  p-5 items-end lg:mt-0 mt-[70px] [mt-50px]  h-auto lg:h-[70%] justify-end">
                 <div className="flex flex-row items-center  gap-x-5 ">
                   <button
-                    onClick={() => deleteAllInclude() }
+                    onClick={() => deleteAllInclude()}
                     className="bg-transparent items-center gap-2 flex flex-row"
                   >
-                    <Image width={15} height={15} alt="" src="/images/chatbox/trash.svg" />
+                    <Image
+                      width={15}
+                      height={15}
+                      alt=""
+                      src="/images/chatbox/trash.svg"
+                    />
                     <p className="text-red-500 text-xs font-bold font-manrope leading-snug">
                       Delete all
                     </p>
@@ -150,9 +168,9 @@ function WebsiteSource() {
                 </div>
               </div>
               {include && (
-                <div className="w-full px-2 mt-[40px]">
+                <div className="w-full px-2 mt-[40px] max-h-[420px] overflow-y-scroll">
                   <ul className="w-full flex-col gap-1 flex">
-                    {include.slice(0, 10).map((link, index) => (
+                    {include.map((link, index) => (
                       <li
                         key={index}
                         className="w-full flex flex-row items-center gap-2 justify-between "
@@ -163,7 +181,9 @@ function WebsiteSource() {
                           </div>
                         </div>
                         <button onClick={() => deleteInclude(index)}>
-                          <Image width={15} height={15}
+                          <Image
+                            width={15}
+                            height={15}
                             src="/images/chatbox/trash.svg"
                             alt=""
                             classNAme="w-full h-auto"

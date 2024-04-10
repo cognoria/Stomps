@@ -248,7 +248,7 @@ function Chat({ id, status }) {
                 : " justify-start"
             } `}
           >
-            <div className="max-w-[70%] h-auto px-[15px] items-start py-[11px] bg-zinc-100 rounded-tl rounded-tr rounded-br border justify-center  flex-col flex">
+            <div className="max-w-[80%] h-auto px-[15px] items-start py-[11px] bg-zinc-100 rounded-tl rounded-tr rounded-br border justify-center  flex-col flex">
               <div className="text-stone-900 text-start text-sm font-normal font-manrope leading-snug">
                 {message?.role === "user" ? (
                   message?.content
