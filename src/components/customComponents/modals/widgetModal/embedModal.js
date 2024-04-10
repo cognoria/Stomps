@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import useModalStore from "../../../../store/modal/modalState";
 import { toast } from "react-toastify";
 import copy from "copy-to-clipboard";
+import Image from "next/image";
 
 
 function EmbbedModal({ botId }) {
@@ -9,19 +10,33 @@ function EmbbedModal({ botId }) {
   const embedIframe = `
   <iframe
     src="${window.origin}/widget/${botId}"
-  title="Chatbot"
-  width="100%"
-  style="height: 100%; min-height: 700px"
-  frameborder="0"
-  ></iframe>
+    title="Chatbot"
+    width="100%"
+    style="height: 100%; min-height: 700px"
+    frameborder="0"
+    ></iframe>
 `;
+
+  const widgetCode = `
+<script>
+  window.embeddedChatbotConfig = {
+  chatbotId: "${botId}",
+  domain: "${window.origin}"
+  }
+</script>
+<script src="/embed.js"
+  chatbotId="${botId}"
+  domain="${window.origin}"
+  defer>
+</script>
+`
 
   const hideModal = useModalStore((state) => state.hideModal);
 
   function copyCode(code) {
     copy(code)
     toast.success("Copied")
-}
+  }
   return (
     <div className="flex gap-3  flex-col p-3 z-40 items-center w-full justify-center">
       <div className="flex absolute top-3 right-3 justify-end items-end flex-end w-full">
@@ -47,7 +62,7 @@ function EmbbedModal({ botId }) {
           <p className="text-sky-700 text-xs font-bold font-manrope leading-snug">
             Copy Iframe
           </p>
-          <img src="/images/chatbox/copy.svg" />
+          <Image width={20} height={20} alt="copy" src="/images/chatbox/copy.svg" />
         </button>
       </div>
       <div className="flex items-center justify-center flex-col w-full gap-3">
@@ -55,17 +70,20 @@ function EmbbedModal({ botId }) {
           To add a chat bubble to the bottom right of your site, add this script
           tag to your HTML code.
         </div>
-        <div className="w-full h-[241px] px-6 py-2.5 bg-zinc-100 rounded-lg justify-center items-center gap-2.5 inline-flex">
+        <div className="w-full px-6 py-2.5 bg-zinc-100 rounded-lg justify-center items-center gap-2.5 inline-flex">
           <div className="grow shrink basis-0 text-black text-[11px] font-normal font-['Manrope'] leading-[3.70px]">
             {/* Placeholder for the chatbot */}
+            <div className="text-black text-[14px] font-normal font-['Manrope'] ">
+              <CodeDisplay code={widgetCode} />
+            </div>
           </div>
         </div>
 
-        <button className="px-3.5  mt-3 py-2 bg-sky-50 rounded-lg shadow border border-sky-50 justify-center items-center gap-2 flex flex-row">
+        <button onClick={() => copyCode(widgetCode)} className="px-3.5  mt-3 py-2 bg-sky-50 rounded-lg shadow border border-sky-50 justify-center items-center gap-2 flex flex-row">
           <p className="text-sky-700 text-xs font-bold font-manrope leading-snug">
             Copy Script
           </p>
-          <img src="/images/chatbox/copy.svg" />
+          <Image width={20} height={20} src="/images/chatbox/copy.svg" alt="copy" />
         </button>
       </div>
     </div>

@@ -11,8 +11,7 @@ import { toast } from "react-toastify";
 function ChatbotNav() {
   const pathname = usePathname();
   const lastSegment = pathname.split("/").pop();
-  const segments = pathname.split("/");
-  console.log(pathname)
+  
   const chatbot = useChatbotStore((state) => state.chatbot)
   const { bot: id } = useParams();
   const navItems = [
@@ -22,7 +21,7 @@ function ChatbotNav() {
     { name: "sources", link: `/bot/${id}/source`, tag: "source" },
     { name: "embed on site", link: "/", tag: "embed" },
   ];
-  // console.log(lastSegment);
+  
   const handleEmbedButtonClick = () => {
     // Show the modal when the "embed on site" button is clicked
     console.log(chatbot)
@@ -58,7 +57,7 @@ function ChatbotNav() {
             {items.tag === "embed" ? ( // Check if the current item is the "embed on site" button
               <button
                 onClick={handleEmbedButtonClick}
-                className="p-3 border-none capitalize border-[1px] "
+                className=" px-3 py-1.5 border-none capitalize border-[1px] "
               >
                 {items.name}
               </button>

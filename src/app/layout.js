@@ -17,6 +17,11 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <Head>
+        {/* <script>
+          {window?.embeddedChatbotConfig={chatbotId: "660eacb8642adae92cff46ed", domain: "http://localhost:3000/"}}
+        </script> */}
+        <script src="/embed.js" strategy="afterInteractive" defer/>
+        <script src="/embed.js" strategy="afterInteractive" chatbotId="660eacb8642adae92cff46ed" domain="http://localhost:3000/" defer> </script>
         <link rel="icon" href="/favicon.ico" sizes="any" />
         <link
           rel="icon"
