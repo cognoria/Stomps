@@ -1,6 +1,6 @@
 function Leeds() {
-  const bot = false;
-  
+  const bot = true;
+
   //TODO: call the analytics endpoint.
   return (
     <div className="w-full flex flex-col">
@@ -54,8 +54,8 @@ const Filled_bot_state = () => {
       <div class="py-12 bg-white sm:py-16 font-manrope lg:py-20">
         <div class="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
           <div>
-            <table class="min-w-full lg:divide-y lg:divide-gray-200">
-              <thead class="hidden  bg-slate-50 lg:table-header-group">
+            <table class="min-w-full h-[20px] overflow-scroll  lg:divide-y lg:divide-gray-200">
+              <thead class="hidden  bg-[#F6F9FF] lg:table-header-group">
                 <tr>
                   <td class="px-6 py-4 text-sm font-medium text-gray-400 whitespace-normal">
                     Name

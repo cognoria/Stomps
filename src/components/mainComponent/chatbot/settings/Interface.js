@@ -1,8 +1,10 @@
+/* eslint-disable @next/next/no-img-element */
 import { useEffect, useRef, useState } from "react";
 import useChatbotSettings from "../../../../store/chatbot/useChatbotSettings";
 import useChatbotStore from "../../../../store/chatbot/useChatbotStore";
 import { convertImageToBase64 } from "../../../../utils/imageConverter/base64Image";
 import ColorPicker from "../../../customComponents/colorPicker/color";
+import SkeletonLoader from "../../../skeleton";
 
 function InterfaceSettings({ botId }) {
   const { updatingInterface, updateInterface } = useChatbotSettings(
@@ -20,17 +22,14 @@ function InterfaceSettings({ botId }) {
   useEffect(() => {
     getChatbot(botId);
   }, []);
-  const chatMessages = [
-    {
-      content: "👋 Hi!  How can I help",
-      role: "client",
-    },
-    { role: "user", content: "Hi" },
-  ];
+
   const [initialMsg, setInitialMsg] = useState(
     chatbot?.chatBotCustomizeData.welcomeMessage
   );
-  const [displayName, setDisplayName] = useState("");
+  console.log(initialMsg);
+  const [displayName, setDisplayName] = useState(
+    chatbot?.chatBotCustomizeData.assistantTabHeader
+  );
   const [autoShowMsg, setAutoShowMsg] = useState(
     chatbot?.chatBotCustomizeData.popupDelay
   );
@@ -141,11 +140,11 @@ function InterfaceSettings({ botId }) {
       await getChatbot(botId);
     });
   };
-  //bot Data Submission
+
   console.log(chatbot);
   return (
     <div className="w-full px-3 lg:p-[6%]  flex flex-col overflow-x-hidden items-center justify-center ">
-      <div className="flex w-full flex-col items-center  justify-center border-gray-200 border-[1px] gap-4 rounded-md ">
+      <div className="flex w-full flex-col items-center  justify-center border-gray-200 border-[1px] gap-4 rounded-t-md ">
         <div className="text-gray-900 w-full text-base font-bold p-3  font-manrope leading-snug">
           Chat Interface
         </div>
@@ -290,6 +289,7 @@ function InterfaceSettings({ botId }) {
                 Display name
               </div>
               <input
+                value={displayName}
                 onChange={(e) => setDisplayName(e.target.value)}
                 placeholder="Example"
                 className="h-[50px] p-2 w-full -mt-2 border-[1px] text-xs font-manrope border-gray-200 rounded-md"
@@ -397,75 +397,105 @@ function InterfaceSettings({ botId }) {
               />
             </div>
           </div>
-          <div className="border-[1px] w-full lg:w-[50%] overflow-x-hidden rounded-lg h-[588px] border-gray-200  items-start flex-col ">
-            <div className="flex border-b-[1px] border-gray-200 flex-row  p-4 w-full flex-end items-end justify-end">
-              <p className="mx-3 text-red-500 font-manrope font-normal text-sm">
-                {/* {error && error} */}
-              </p>{" "}
-              <img src="/images/chatbox/refresh.svg" alt="" />
-            </div>
-            <div className="w-full overflow-y-scroll h-[70%] flex flex-col gap-3 p-4">
-              {chatMessages?.map((message, index) => (
-                <div
-                  key={index}
-                  className={`w-full h-auto flex flex-col ${
-                    message?.role === "user"
-                      ? "justify-end  items-end"
-                      : " justify-start"
-                  } `}
-                >
+
+          {loading ? (
+            <SkeletonLoader width={"50%"} height={"638px"} />
+          ) : (
+            <div
+              className={`border-[1px] w-full lg:w-[50%] overflow-hidden rounded-lg h-[638px] border-gray-200  items-start flex-col ${
+                selectedTheme === "DARK" ? "bg-black" : ""
+              } `}
+            >
+              <div className="flex border-b-[1px] h-[8%] border-gray-200 flex-row  px-4 py-2 w-full flex-start items-start justify-between">
+                <div className="flex flex-row items-center justify-start gap-x-4">
+                  {profileImg && (
+                    <img
+                      className="w-[40px] h-[40px]"
+                      src={profileImg}
+                      alt="profile image"
+                    />
+                  )}
+                  {displayName && (
+                    <p
+                      className={`font - bold text-sm ${
+                        selectedTheme === "DARK" ? "text-zinc-100" : ""
+                      }`}
+                    >
+                      {displayName}
+                    </p>
+                  )}
+                </div>
+                <div>
+                  <p className="mx-3 text-red-500 font-manrope font-normal text-sm">
+                    {/* {error && error} */}
+                  </p>{" "}
+                  <img src="/images/chatbox/refresh.svg" alt="" />
+                </div>
+              </div>
+              <div className="w-full overflow-y-scroll h-[72%] flex flex-col gap-3 p-4">
+                {initialMsg && (
                   <div
-                    className={`max-w-[70%] h-auto px-[15px] items-start py-[11px] ${
-                      message?.role === "user"
-                        ? "bg-[#0C4173] text-white"
-                        : "bg-zinc-100 text-stone-900 "
-                    }  rounded-tl rounded-tr rounded-br border justify-center  flex-col flex`}
+                    className={`max-w-[70%] w-fit  px-[15px] py-[11px] items-start ${
+                      selectedTheme === "DARK"
+                        ? "bg-gray-800 text-zinc-100"
+                        : "bg-zinc-100 text-stone-900"
+                    }    rounded-tl rounded-tr rounded-br border justify-center  flex-col flex`}
                   >
                     <div className=" text-start text-sm font-normal font-manrope leading-snug">
-                      {message?.content}
+                      {initialMsg}
+                    </div>
+                  </div>
+                )}
+
+                <div className=" bg-transparent justify-end  w-full items-end flex-col flex">
+                  <div className="max-w-[70%] h-auto px-[15px] py-[11px] items-start  bg-[#0C4173]  text-zinc-100    rounded-tl rounded-tr rounded-br border justify-center  flex-col flex">
+                    <div className=" text-start text-sm font-normal font-manrope leading-snug">
+                      hi
                     </div>
                   </div>
                 </div>
-              ))}
-            </div>
+              </div>
 
-            <div className="flex flex-row w-[100%] px-4 overflow--scroll h-[5%] items-start justify-start gap-x-3">
-              {suggestedMessages &&
-                suggestedMessages?.map((msg, i) => {
-                  return (
-                    <p
-                      className="rounded-lg p-1 text-center w-auto h-full bg-sky-700 text-white"
-                      key={i}
-                    >
-                      {msg}
-                    </p>
-                  );
-                })}
-            </div>
+              <div className="flex flex-row w-full px-4 overflow-x-scroll h-[7%] items-start justify-start gap-x-3">
+                {suggestedMessages &&
+                  suggestedMessages?.map((msg, i) => {
+                    return (
+                      <p
+                        className={`rounded-lg p-1 text-sm text-center whitespace-nowrap ${
+                          selectedTheme === "DARK"
+                            ? "bg-gray-800 hover:bg-gray-600 text-zinc-100"
+                            : "bg-sky-700 text-white"
+                        } `}
+                        key={i}
+                      >
+                        {msg}
+                      </p>
+                    );
+                  })}
+              </div>
 
-            <div
-              // onSubmit={sendMessage}
-              className="w-full h-[15%] relative p-4 items-center flex-col  flex"
-            >
-              <input
-                // value={messageInput}
-                // readOnly={chatting || status !== "READY"}
-                // onChange={(e) => setMessageInput(e.target.value)}
-                placeholder="message... "
-                className="text-neutral-700 outline-gray-200 w-full h-full border  flex flex-col  active:outline-gray-300 pl-[15px] rounded-lg  pr-[50px]   decoration-none placeholder:text-neutral-300 text-sm font-normal font-manrope leading-snug"
-              />
-              <button
-                className="w-[32px] h-[32px] absolute top-7 right-7"
-                type="click"
-              >
-                <img
-                  src="/images/chatbox/send.svg"
-                  alt=""
-                  className="w-full h-full "
+              <div className="w-full h-[12%] relative p-2 items-center flex-col  flex">
+                <input
+                  placeholder={msgPlaceholder}
+                  className={`text-neutral-700 ${
+                    selectedTheme === "DARK"
+                      ? "bg-transparent text-zinc-100 placeholder:text-neutral-300"
+                      : "bg-transparent text-white placeholder:text-neutral-300"
+                  } outline-gray-200 w-full h-full border  flex flex-col  active:outline-none pl-[15px] rounded-lg  pr-[50px]   decoration-none  text-sm font-normal font-manrope leading-snug`}
                 />
-              </button>
+                <button
+                  className="w-[32px] h-[32px] absolute top-6 right-7"
+                  type="click"
+                >
+                  <img
+                    src="/images/chatbox/send.svg"
+                    alt=""
+                    className="w-full h-full "
+                  />
+                </button>
+              </div>
             </div>
-          </div>
+          )}
         </div>
 
         <div className="w-full p-3 mt-[30px] flex-end items-end flex flex-col">
