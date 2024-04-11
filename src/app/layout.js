@@ -17,18 +17,10 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <Head>
-        {/* <script>
-          {window?.embeddedChatbotConfig={chatbotId: "660eacb8642adae92cff46ed", domain: "http://localhost:3000/"}}
-        </script> */}
-        <script src="/embed.js" strategy="afterInteractive" defer/>
-        <script src="/embed.js" strategy="afterInteractive" chatbotId="660eacb8642adae92cff46ed" domain="http://localhost:3000/" defer> </script>
+        <link rel="preload" href="/embed.js" fetchPriority="high" chatbotId="660eacb8642adae92cff46ed" domain="http://localhost:3000/" as="script" />
+        {/* <script src="/embed.js" strategy="afterInteractive" chatbotId="660eacb8642adae92cff46ed" domain="http://localhost:3000/" defer> </script> */}
         <link rel="icon" href="/favicon.ico" sizes="any" />
-        <link
-          rel="icon"
-          href="/images/landing/logopng.png"
-          type="image/png"
-          sizes="32x32"
-        />
+        <link rel="icon" href="/images/landing/logopng.png" type="image/png" sizes="32x32" />
         <link
           rel="apple-touch-icon"
           href="/images/landing/logopng.png"

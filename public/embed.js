@@ -1,5 +1,6 @@
 // Function to embed the stomps chatbot
 async function embedStompsChatbot() {
+  console.log("Ln 3: Started Embedding")
   // Check if the chatbot has already been successfully embedded
   if (window.stompsConfig?.embedSuccess) return;
 
@@ -22,6 +23,7 @@ async function embedStompsChatbot() {
     console.error(error);
   }
   let isChatWindowOpen = false;
+
   // Get the chatbot ID and domain from the script tags or the embedded configuration
   const botId =
     document.currentScript.getAttribute('chatbotId') ||
@@ -105,10 +107,26 @@ async function embedStompsChatbot() {
     buttonElement.style.transform = 'scale(1)';
   });
 
+  // Toggle the chatbot window on button click
+  buttonElement.addEventListener('click', () => {
+    console.log("Ln 112: Clicked widget", !isChatWindowOpen)
+    isChatWindowOpen = !isChatWindowOpen;
+    if (chatWindowContainer.style.display === 'none') {
+      chatWindowContainer.style.display = 'flex';
+      iconElement.style.display = 'none';
+      chatWindowContainer.innerHTML = getOpenChatHTML('#0077b6');
+      window.parent.postMessage({ openChat: true }, '*');
+    } else {
+      chatWindowContainer.style.display = 'none';
+      chatWindowContainer.innerHTML = getClosedChatHTML('#0077b6');
+      window.parent.postMessage({ closeChat: true }, '*');
+    }
+  });
+
   // Add a container for the chatbot window
   const chatWindowContainer = document.createElement('div');
   chatWindowContainer.setAttribute('id', 'stomps-bubble-window');
-  chatWindowContainer.style.display = 'none';
+  chatWindowContainer.style.display = 'flex';
   chatWindowContainer.style.position = 'fixed';
   chatWindowContainer.style.justifyContent = 'center';
   chatWindowContainer.style.alignItems = 'center';
@@ -119,6 +137,7 @@ async function embedStompsChatbot() {
 
   // Handle window resize events
   window.addEventListener('resize', () => {
+    console.log("Ln 123: Resizing widget")
     // Adjust the button and window position based on screen size
     if (window.innerWidth < 840) {
       // Mobile layout
@@ -150,6 +169,7 @@ async function embedStompsChatbot() {
       iframe.contentWindow.postMessage({ windowInnerWidth: window.innerWidth }, '*');
     }, 50);
   });
+  console.log("Ln 156: about to fetch chatbot data")
 
   // Fetch the chatbot configuration and initial messages
   const fetchChatbotData = async () => {
@@ -159,6 +179,7 @@ async function embedStompsChatbot() {
     }).catch(error => console.error('Error fetching chatbot data:', error));
 
     const data = await response.json();
+    console.log("Ln 166: Data: ", data)
     // const { styles, initialMessages } = await response.json();
 
     // Apply the chatbot styles
@@ -170,20 +191,21 @@ async function embedStompsChatbot() {
     iconElement.style.color = buttonColor;
     closeElement.style.color = buttonColor;
 
-    // Toggle the chatbot window on button click
-    buttonElement.addEventListener('click', () => {
-      isChatWindowOpen = !isChatWindowOpen;
-      if (chatWindowContainer.style.display === 'none') {
-        chatWindowContainer.style.display = 'flex';
-        iconElement.style.display = 'none';
-        chatWindowContainer.innerHTML = getOpenChatHTML(buttonColor);
-        window.parent.postMessage({ openChat: true }, '*');
-      } else {
-        chatWindowContainer.style.display = 'none';
-        chatWindowContainer.innerHTML = getClosedChatHTML(buttonColor);
-        window.parent.postMessage({ closeChat: true }, '*');
-      }
-    });
+    // // Toggle the chatbot window on button click
+    // buttonElement.addEventListener('click', () => {
+    //   console.log("Ln 177: Clicked widget")
+    //   isChatWindowOpen = !isChatWindowOpen;
+    //   if (chatWindowContainer.style.display === 'none') {
+    //     chatWindowContainer.style.display = 'flex';
+    //     iconElement.style.display = 'none';
+    //     chatWindowContainer.innerHTML = getOpenChatHTML(buttonColor);
+    //     window.parent.postMessage({ openChat: true }, '*');
+    //   } else {
+    //     chatWindowContainer.style.display = 'none';
+    //     chatWindowContainer.innerHTML = getClosedChatHTML(buttonColor);
+    //     window.parent.postMessage({ closeChat: true }, '*');
+    //   }
+    // });
 
     // Adjust the button and window positions based on the alignment setting
     if (data?.placement.toLowerCase() === 'left') {
@@ -274,15 +296,14 @@ async function embedStompsChatbot() {
     });
   };
 
-  // Create the iframe to host the chatbot
+
   const iframe = document.createElement('iframe');
   iframe.setAttribute('id', 'stomps-bubble-iframe');
   iframe.style.display = 'none';
   setTimeout(() => {
     iframe.style.display = 'block';
   }, 3000);
-  iframe.src = `${domain}/widget/${botId}`;
-  iframe.setAttribute('id', 'stomps-bubble-iframe');
+  iframe.src = `${domain}/widget/${botId}`;;
   iframe.style.position = 'fixed';
   iframe.style.zIndex = '2147483646';
   iframe.style.width = window.innerWidth < 840 ? '100%' : '448px';
@@ -377,9 +398,11 @@ function loadScript(url) {
 if (window.embeddedChatbotConfig) {
   // Set the stompsConfig embedSuccess flag
   if (window.stompsConfig) {
+    console.log("Ln 457: embeded success")
     window.stompsConfig.embedSuccess = true;
   }
 } else {
+  console.log("Ln 461: loading script")
   // Load the stomps embed script
   loadScript('/embed.js')
     .then(() => {
