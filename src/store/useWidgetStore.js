@@ -93,6 +93,13 @@ const useWidgetStore = create(
         }
       },
 
+      refreshChat: async (botId) => {
+        const { messages } = get().getChatbotState(botId)
+        get().updateChatbotState(botId, {
+          messages: messages.length >= 1 ? messages.slice(0, 1) : [],
+        })
+      },
+
       // Function to set user data
       setUserData: async () => {
         const currentState = get()
@@ -138,7 +145,7 @@ const useWidgetStore = create(
         try {
           const { messages } = get().getChatbotState(botId);
           const userData = get().userData;
-          
+
           const response = await fetch(`/api/v1/embed/${botId}/chat`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
