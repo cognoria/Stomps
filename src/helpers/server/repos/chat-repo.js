@@ -43,7 +43,7 @@ async function widgetChatResponse(chatbotId, params) {
 
     const lastMessage = params.messages[params.messages.length - 1];
     userChatSession.messages.push(lastMessage)
-    
+
     // Get the context from the last message
     const context = await getContext(lastMessage.content, chatbot.pIndex, chatbot.owner, '')
     const prompt = [
@@ -64,10 +64,10 @@ async function widgetChatResponse(chatbotId, params) {
 
     const message = [...prompt, ...params.messages.filter((msg) => msg.role === 'user')]
     const response = await getChatCompletion(message, chatbot.chatBotCustomizeData.model, chatbot.owner)
-    
+
     userChatSession.messages.push(response)
     await userChatSession.save()
-    
+
     return response
 }
 
