@@ -63,9 +63,8 @@ const Widget = ({ botId, cookies }) => {
   const profileImg = "/images/chatbox/profile.svg";
   return (
     <div
-      className={`flex w-full h-screen font-manrope rounded-md flex-col  items-start  ${
-        theme === "DARK" ? "bg-black" : "bg-transparent"
-      } border-gray-200 justify-center border-[1px] `}
+      className={`flex w-full h-screen font-manrope rounded-md flex-col  items-start  ${theme === "DARK" ? "bg-black" : "bg-transparent"
+        } border-gray-200 justify-center border-[1px] `}
     >
       <div className="border-[1px] w-full h-full border-gray-200  items-start flex-col">
         <div className="flex border-b-[1px] h-[8%] border-gray-200 flex-row  px-4 py-2 w-full flex-start items-start justify-between">
@@ -79,9 +78,8 @@ const Widget = ({ botId, cookies }) => {
             )}
             {displayName && (
               <p
-                className={`font - bold text-sm ${
-                  theme === "DARK" ? "text-zinc-100" : ""
-                }`}
+                className={`font - bold text-sm ${theme === "DARK" ? "text-zinc-100" : ""
+                  }`}
               >
                 {displayName}
               </p>
@@ -120,11 +118,10 @@ const Widget = ({ botId, cookies }) => {
             placeholder="message..."
             ref={messageInputRef}
             style={{ overflowAnchor: "none" }}
-            className={`text-neutral-700 max-h-full  w-full ${
-                    theme === "DARK"
-                      ? "bg-transparent text-zinc-100 placeholder:text-neutral-300"
-                      : "bg-transparent text-white placeholder:text-neutral-300"
-                  }  border p-3  overflow-y-scroll   flex flex-col   pl-[15px] rounded-lg  pr-[50px]   decoration-none text-sm font-normal font-manrope leading-snug`}
+            className={`text-neutral-700 max-h-full  w-full ${theme === "DARK"
+                ? "bg-transparent text-zinc-100 placeholder:text-neutral-300"
+                : "bg-transparent text-white placeholder:text-neutral-300"
+              }  border p-3  overflow-y-scroll   flex flex-col   pl-[15px] rounded-lg  pr-[50px]   decoration-none text-sm font-normal font-manrope leading-snug`}
           />
           <button
             disabled={chatting}
@@ -149,18 +146,15 @@ const markdownToHtml = (markdown) =>
   remark().use(remarkHTML).processSync(markdown).toString();
 const ChatMessage = memo(({ message, isUser, theme }) => (
   <div
-    className={`w-full h-auto font-manrope text-[16px] items-start justify-center flex-col flex  ${
-      isUser ? "justify-end items-end " : "justify-start"
-    }`}
+    className={`w-full h-auto font-manrope text-[16px] items-start justify-center flex-col flex  ${isUser ? "justify-end items-end " : "justify-start"
+      }`}
   >
     <div
-      className={`max-w-[85%] p-[10px] ${
-        theme === "DARK"
+      className={`max-w-[85%] p-[10px] ${theme === "DARK"
           ? "bg-gray-800 text-zinc-100"
           : "bg-zinc-100 text-stone-900"
-      } ${
-        isUser ? "bg-[#0C4173]  text-zinc-100 " : ""
-      }  text-stone-900  rounded-tl rounded-tr rounded-br border text-start text-sm font-normal leading-snug `}
+        } ${isUser ? "bg-[#0C4173]  text-zinc-100 " : ""
+        }  text-stone-900  rounded-tl rounded-tr rounded-br border text-start text-sm font-normal leading-snug `}
     >
       {isUser ? (
         message.content
