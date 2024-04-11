@@ -2,7 +2,7 @@
 "use client";
 
 function Chat_logs() {
-  const bot = true;
+  const bot = false;
 
   //TODO: call the endpoint.
   return (

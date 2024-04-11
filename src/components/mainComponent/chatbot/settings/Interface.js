@@ -289,6 +289,7 @@ function InterfaceSettings({ botId }) {
                 Display name
               </div>
               <input
+                value={displayName}
                 onChange={(e) => setDisplayName(e.target.value)}
                 placeholder="Example"
                 className="h-[50px] p-2 w-full -mt-2 border-[1px] text-xs font-manrope border-gray-200 rounded-md"
