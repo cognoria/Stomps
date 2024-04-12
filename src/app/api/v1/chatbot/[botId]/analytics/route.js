@@ -11,6 +11,6 @@ async function analytics(req) {
   const { botId } = req.params;
   const chatsPerDay = await chatRepo.getChatsPerDay(botId)
   const chatsPerCountry = await chatRepo.getChatsPerCountry(botId)
-  return {chatsPerDay, chatsPerCountry}
+  return { chatsPerDay, chatsPerCountry }
 }
 

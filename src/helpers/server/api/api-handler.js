@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-
+import nextCors from 'next-cors';
 import { errorHandler, jwtMiddleware, validateMiddleware } from './';
 import { Upload } from './uploads';
 
@@ -8,7 +8,7 @@ export { apiHandler };
 function apiHandler(handler) {
     // console.log
     const wrappedHandler = {};
-    const httpMethods = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'];
+    const httpMethods = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'];
 
     // wrap handler methods to add middleware and global error handler
     httpMethods.forEach(method => {
@@ -34,38 +34,36 @@ function apiHandler(handler) {
                     req.json = () => Promise.resolve(json);
                 }
             } catch { /* Ignore JSON parsing errors */ }
-            
-            try{
+
+            try {
                 if (req.headers.get('content-type')?.startsWith('multipart/form-data')) {
-                    const  upload = await Upload(req,"files",['pdf'])
+                    const upload = await Upload(req, "files", ['pdf'])
                     req.fileDir = upload
                 }
-            } catch(e){
+            } catch (e) {
                 console.log(e)
-                throw 'error uploading doc: '+e
+                throw 'error uploading doc: ' + e
             }
 
             try {
+                // await nextCors(req, ...args, {
+                //     methods: httpMethods,
+                //     origin: '*',
+                //  });
+                // Handle OPTIONS requests
+                if (req.method.toUpperCase() === 'OPTIONS') {
+                    return NextResponse.json({});
+                }
+
                 // global middleware
                 await jwtMiddleware(req);
-
-                // Handle file uploads for POST, PUT, PATCH methods
-                // if (['POST', 'PUT', 'PATCH'].includes(req.method.toUpperCase()) && req.headers.get('content-type')?.startsWith('multipart/form-data')) {
-                //     await uploadMiddleware(req);
-                // }
 
                 //validate form inputs
                 await validateMiddleware(req, handler[method].schema);
 
                 // route handler
                 const responseBody = await handler[method](req, ...args);
-                // return NextResponse.json(responseBody || {});
                 return NextResponse.json(responseBody ?? {})
-                // if (responseBody === false) {
-                //     return NextResponse.json(responseBody);
-                //   } else {
-                //     return NextResponse.json(responseBody || {});
-                //   }
             } catch (err) {
                 // global error handler
                 return errorHandler(err);
