@@ -1,43 +1,25 @@
-// // components/Map.js
-// import L from "leaflet";
-// import "leaflet/dist/leaflet.css";
-// import { useEffect, useRef } from "react";
+import "mapbox-gl/dist/mapbox-gl.css";
+import ReactMapboxGl, { Feature, Layer } from "react-mapbox-gl";
 
-// function Map({ markers }) {
-//   const mapRef = useRef(null);
-//   const mapInstance = useRef(null);
+const Map = ReactMapboxGl({
+  accessToken:
+    "pk.eyJ1IjoidHJhdmVyc3kiLCJhIjoiY2w3czRoYnJmMGFqazN3cXJnY3l6MDdnNCJ9.oLZjDcfoAWLkKPpzrO_U3A",
+});
 
-//   useEffect(() => {
-//     if (!mapInstance.current) {
-//       mapInstance.current = L.map(mapRef.current).setView([51.505, -0.09], 13);
-//       L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-//         attribution:
-//           '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-//       }).addTo(mapInstance.current);
-//     }
+function CustomMap() {
+  return (
+    <Map
+      style="mapbox://styles/mapbox/streets-v9"
+      containerStyle={{
+        height: "100vh",
+        width: "100vw",
+      }}
+    >
+      <Layer type="symbol" id="marker" layout={{ "icon-image": "marker-15" }}>
+        <Feature coordinates={[-0.481747846041145, 51.3233379650232]} />
+      </Layer>
+    </Map>
+  );
+}
 
-//     const map = mapInstance.current;
-
-//     // Clear existing markers
-//     map.eachLayer((layer) => {
-//       if (layer instanceof L.Marker) {
-//         map.removeLayer(layer);
-//       }
-//     });
-
-//     // Add markers for each location
-//     markers?.forEach((marker) => {
-//       L.marker([marker.lat, marker.lng]).addTo(map);
-//     });
-
-//     return () => {
-//       // Clean up the map instance when component unmounts
-//       mapInstance.current.remove();
-//       mapInstance.current = null; // Reset map instance to null
-//     };
-//   }, [markers]);
-
-//   return <div ref={mapRef} style={{ height: "400px" }} />;
-// }
-
-// export default Map;
+export default CustomMap;

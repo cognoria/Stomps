@@ -1,24 +1,49 @@
 "use client";
 
+import { useEffect } from "react";
 import Analytics from "../../../../../../../components/mainComponent/chatbot/dashboard/analytics";
 import Chat_logs from "../../../../../../../components/mainComponent/chatbot/dashboard/chatLogs";
 import Leeds from "../../../../../../../components/mainComponent/chatbot/dashboard/leeds";
 
 import SourceNav from "../../../../../../../components/navigation/SourceNav";
+import useChatbotStore from "../../../../../../../store/chatbot/useChatbotStore";
 import useSourceNav from "../../../../../../../store/chatbot/useSourceNav";
 
 function Page({ params: { bot } }) {
   // console.log(bot);
   const currentPage = useSourceNav((state) => state.currentPage);
+  // const {
+  //   analytics,
+  //   chats,
+  //   leads,
+  //   getChatbotAnalytics,
+  //   getChatbotLead,
+  //   getChatbotChats,
+  // } = useChatbotStore((state) => ({
+  //   getChatbotAnalytics: state.getChatbotAnalytics,
+  //   getChatbotLead: state.getChatbotLead,
+  //   getChatbotChats: state.getChatbotChats,
+  //   analytics: state.analytics,
+  //   leads: state.leads,
+  //   chats: state.chats,
+  //   loading: state.loading,
+  //   error: state.error,
+  // }));
+
+  // useEffect(() => {
+  //   getChatbotAnalytics(bot);
+  //   getChatbotLead(bot);
+  // }, [analytics, bot, leads]);
+
 
   const renderContent = () => {
     switch (currentPage) {
       case "Leads":
-        return <Leeds botId={bot} />;
+        return <Leeds botId={bot}  />;
       case "Analytics":
-        return <Analytics botId={bot}/>;
+        return <Analytics botId={bot}  />;
       case "Chat logs":
-        return <Chat_logs botId={bot}/>;
+        return <Chat_logs botId={bot} />;
 
       default:
         return <Chat_logs botId={bot}/>;

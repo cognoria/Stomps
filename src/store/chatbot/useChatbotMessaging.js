@@ -39,7 +39,7 @@ const useBotMessagingStore = create(
         try {
           // Access chatMessages after the state update
           const msg = useBotMessagingStore.getState().bots[id].chatMessages;
-
+          // console.log(msg);
           // Send message to the server
           const response = await fetch(`/api/v1/chatbot/${id}/chat`, {
             method: "POST",

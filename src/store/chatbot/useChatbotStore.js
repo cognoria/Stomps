@@ -9,6 +9,9 @@ export default create(
     error: null,
     chatbot: null,
     chatbots: null,
+    analytics: null,
+    leads: null,
+    chats: null,
 
     createChatbot: async (botData) => {
       set({ creatingBot: true, loading: true, error: null });
@@ -80,6 +83,70 @@ export default create(
         if (!response.ok) throw new Error(data.message || "An error occurred");
         if (onSuccess) onSuccess(data);
         set({ loading: false, chatbots: data });
+        return data;
+      } catch (error) {
+        set({ error: error.message, loading: false });
+        toast.error(error.message || "Failed to fetch!");
+        console.error("fetch failed:", error);
+        throw error;
+      }
+    },
+
+    getChatbotAnalytics: async (id, onSuccess) => {
+      set({ loading: true, error: null });
+      try {
+        const response = await fetch(`/api/v1/chatbot/${id}/analytics`, {
+          method: "GET",
+        });
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.message || "An error occurred");
+        if (onSuccess) onSuccess(data);
+        set({ loading: false, analytics: data });
+        return data;
+      } catch (error) {
+        set({ error: error.message, loading: false });
+        toast.error(error.message || "Failed to fetch!");
+        console.error("fetch failed:", error);
+        throw error;
+      }
+    },
+
+    getChatbotLead: async (id, onSuccess) => {
+      set({
+        loading: true,
+        error: null,
+      });
+      try {
+        const response = await fetch(`/api/v1/chatbot/${id}/analytics/leads`, {
+          method: "GET",
+        });
+        const data = await response.json();
+        console.log(data);
+        if (!response.ok) throw new Error(data.message || "An error occurred");
+        if (onSuccess) onSuccess(data);
+        set({ loading: false, leads: data });
+
+        return data;
+      } catch (error) {
+        set({ error: error.message, loading: false });
+        toast.error(error.message || "Failed to fetch!");
+        console.error("fetch failed:", error);
+        throw error;
+      }
+    },
+    getChatbotChats: async (id, onSuccess) => {
+      set({
+        loading: true,
+        error: null,
+      });
+      try {
+        const response = await fetch(`/api/v1/chatbot/${id}/analytics/chats`, {
+          method: "GET",
+        });
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.message || "An error occurred");
+        if (onSuccess) onSuccess(data);
+        set({ loading: false, chats: data });
         return data;
       } catch (error) {
         set({ error: error.message, loading: false });

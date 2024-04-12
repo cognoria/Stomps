@@ -1,40 +1,43 @@
 "use client";
 
 import { useEffect } from "react";
+import useChatbotStore from "../../../../store/chatbot/useChatbotStore";
 import { Chart_page } from "../../../customComponents/chart/chart";
+import EmptyDashboard from "./emptyDashboard";
 
 function Analytics({ botId }) {
-  const analytics = false;
+  const { getChatbotAnalytics, loading, analytics, error } = useChatbotStore(
+    (state) => ({
+      getChatbotAnalytics: state.getChatbotAnalytics,
+      loading: state.loading,
+      analytics: state.analytics,
+    })
+  );
 
-  //TODO: call the analytics endpoint.
+  useEffect(() => {
+    getChatbotAnalytics(botId);
+  }, [botId, getChatbotAnalytics]);
+
+  const dataValue = analytics?.chatsPerDay?.map((item) => item.count);
+  const label = analytics?.chatsPerDay?.map((item) => item.date);
+  const chartData = {
+    labels: label,
+    datasets: [
+      {
+        fill: true,
+        label: "",
+        data: dataValue,
+        borderColor: "rgb(53, 162, 235)",
+        backgroundColor: "rgba(53, 162, 235, 0.5)",
+      },
+    ],
+  };
+
   return (
     <div className="flex flex-col w-full items-center overflow-hidden">
-      {analytics ? <Chart_page /> : <Empty_state />}
-
-      {/* <Empty_state /> */}
+      {analytics ? <Chart_page data={chartData} /> : <EmptyDashboard />}
     </div>
   );
 }
 
 export default Analytics;
-
-const Empty_state = () => {
-  return (
-    <div className="w-full items-center flex-col gap-5 mb-5 p-2 border-[2px] border-gray-200">
-      <div className="text-gray-900 w-full text-base font-bold p-3 border-gray-200 border-b-[2px] font-manrope leading-snug">
-        Chat logs
-      </div>
-      <div className="flex flex-row gap-6 w-full p-3 ">
-        <div class="relative">
-          <input
-            type="date"
-            class=" custom-date-input "
-            placeholder="Select a date"
-          />
-        </div>
-      </div>
-      <img src="/images/chatbox/chat_frame.svg" />
-      <img src="/images/chatbox/map_frame.svg" />
-    </div>
-  );
-};
