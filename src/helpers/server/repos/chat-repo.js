@@ -3,6 +3,7 @@ import { getContext } from "../../AI/context";
 import { getChatCompletion } from "../../AI/openai";
 import { KnowledgebaseStatus } from "../../enums";
 import { headers, cookies } from "next/headers";
+import mongoose from "mongoose";
 
 const Chatbot = db.Chatbot;
 const Chats = db.Chat;
