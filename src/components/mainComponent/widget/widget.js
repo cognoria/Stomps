@@ -105,7 +105,7 @@ const Widget = ({ botId, cookies }) => {
         } justify-center`}
     >
       <div className="w-full h-full items-start flex-col">
-        <div className="flex fixed border-b-[1px] h-[8%] border-gray-200 flex-row  px-4 py-2 w-full flex-start items-start justify-between">
+        <div className={`flex ${widgetTheme === "DARK" ? "bg-black" : "bg-white"} fixed border-b-[1px] h-[8%] border-gray-200 flex-row  px-4 py-2 w-full flex-start items-start justify-between`}>
           <div className="flex flex-row items-center h-full gap-x-4">
             {chatbotStyle?.profileImage && (
               <Image

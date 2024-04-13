@@ -51,7 +51,7 @@ async function embedChatbaseChatbot() {
     chatWindow.style.maxWidth = '400px';
     chatWindow.style.height = '85vh';
     chatWindow.style.border = 'none';
-    chatWindow.style.backgroundColor = 'white';
+    chatWindow.style.backgroundColor = 'black';
     chatWindow.style.display = 'none';
     chatWindow.style.borderRadius = '30px';
 
