@@ -111,7 +111,7 @@ const useWidgetStore = create(
           }
 
           const ipData = await ipRes.json();
-          const ipDetailsRes = await fetch(`http://ip-api.com/json/${ipData.ip}`);
+          const ipDetailsRes = await fetch(`https://ip-api.com/json/${ipData.ip}`);
           if (!ipDetailsRes.ok) {
             throw new Error("Failed to fetch IP details");
           }
