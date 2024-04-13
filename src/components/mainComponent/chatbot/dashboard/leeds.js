@@ -1,60 +1,82 @@
-function Leeds() {
-  const bot = true;
+import { useEffect } from "react";
+import useChatbotStore from "../../../../store/chatbot/useChatbotStore";
+import EmptyDashboard from "./emptyDashboard";
+import BarHeader from "./header";
+
+function Leeds({ botId }) {
+  console.log(botId);
+  const { getChatbotLead, loading, leads, error } = useChatbotStore(
+    (state) => ({
+      getChatbotLead: state.getChatbotLead,
+      loading: state.loading,
+      leads: state.leads,
+    })
+  );
+  const bot = false;
+  useEffect(() => {
+    getChatbotLead(botId);
+  }, [botId, getChatbotLead]);
 
   //TODO: call the analytics endpoint.
   return (
     <div className="w-full flex flex-col">
-      {bot ? <Filled_bot_state /> : <Empty_bot />}
+      {leads ? <Filled_bot_state leads={leads} /> : <EmptyDashboard />}
     </div>
   );
 }
 
 export default Leeds;
-const Filled_bot_state = () => {
-  const dummy_data = [
-    {
-      name: "Ikem",
-      phone_no: "+1234567890",
-      email: "dev@Ikem",
-      date: "12-23-45",
-    },
-    {
-      name: "Ikem",
-      phone_no: "+1234567890",
-      email: "dev@Ikem",
-      date: "12-23-45",
-    },
-    {
-      name: "Ikem",
-      phone_no: "+1234567890",
-      email: "dev@Ikem",
-      date: "12-23-45",
-    },
-    {
-      name: "Ikem",
-      phone_no: "+1234567890",
-      email: "dev@Ikem",
-      date: "12-23-45",
-    },
-    {
-      name: "Ikem",
-      phone_no: "+1234567890",
-      email: "dev@Ikem",
-      date: "12-23-45",
-    },
-    {
-      name: "Ikem",
-      phone_no: "+1234567890",
-      email: "dev@Ikem",
-      date: "12-23-45",
-    },
-  ];
+const Filled_bot_state = ({ leads }) => {
+  // const dummy_data = [
+  //   {
+  //     name: "Ikem",
+  //     phone_no: "+1234567890",
+  //     email: "dev@Ikem",
+  //     date: "12-23-45",
+  //   },
+  //   {
+  //     name: "Ikem",
+  //     phone_no: "+1234567890",
+  //     email: "dev@Ikem",
+  //     date: "12-23-45",
+  //   },
+  //   {
+  //     name: "Ikem",
+  //     phone_no: "+1234567890",
+  //     email: "dev@Ikem",
+  //     date: "12-23-45",
+  //   },
+  //   {
+  //     name: "Ikem",
+  //     phone_no: "+1234567890",
+  //     email: "dev@Ikem",
+  //     date: "12-23-45",
+  //   },
+  //   {
+  //     name: "Ikem",
+  //     phone_no: "+1234567890",
+  //     email: "dev@Ikem",
+  //     date: "12-23-45",
+  //   },
+  //   {
+  //     name: "Ikem",
+  //     phone_no: "+1234567890",
+  //     email: "dev@Ikem",
+  //     date: "12-23-45",
+  //   },
+  // ];
   return (
-    <div>
-      <div class="py-12 bg-white sm:py-16 font-manrope lg:py-20">
-        <div class="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
-          <div>
-            <table class="min-w-full h-[20px] overflow-scroll  lg:divide-y lg:divide-gray-200">
+    <div className="lg:w-full w-[98%]  lg:p-[6%]  flex flex-col justify-center items-center  ">
+      <div className="flex flex-col items-start justify-center w-full border-gray-200 border-[1px] gap-4 rounded-md ">
+        <div className="text-gray-900 w-full text-base font-bold p-3 border-gray-200 border-b-[2px] font-manrope leading-snug">
+          Leeds
+        </div>
+
+        <BarHeader date={true} exportData={true} confidence={false} />
+
+        <div class="p-3 bg-white w-full sm:py-16 font-manrope flex flex-col ">
+
+            <table class="min-w-full h-[40px] overflow-scroll  lg:divide-y lg:divide-gray-200">
               <thead class="hidden  bg-[#F6F9FF] lg:table-header-group">
                 <tr>
                   <td class="px-6 py-4 text-sm font-medium text-gray-400 whitespace-normal">
@@ -76,7 +98,7 @@ const Filled_bot_state = () => {
               </thead>
 
               <tbody class="divide-y divide-gray-200">
-                {dummy_data.map((list, i) => {
+                {leads?.map((list, i) => {
                   return (
                     <tr key={i}>
                       <td class="px-6 py-4 text-sm font-bold text-gray-900 whitespace-nowrap">
@@ -105,50 +127,7 @@ const Filled_bot_state = () => {
                 })}
               </tbody>
             </table>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-};
 
-const Empty_bot = () => {
-  return (
-    <div>
-      {" "}
-      <div className="w-full px-3 lg:p-[6%]  flex flex-col items-center justify-center ">
-        <div className="flex w-full flex-col items-center  justify-center border-gray-200 border-[1px] gap-4 rounded-md ">
-          <div className="text-gray-900 w-full text-base font-bold p-3 border-gray-200 border-b-[2px] font-manrope leading-snug">
-            Chat logs
-          </div>
-          <div className="flex flex-row gap-6 w-full p-3 ">
-            <div class="relative">
-              <input
-                type="date"
-                class="appearance-none py-[20px] border border-gray-300 font-manrope rounded  px-4 w-[150px] leading-tight focus:outline-none focus:border-blue-500"
-                placeholder="Select a date"
-              />
-
-              <img
-                src="/images/chatbox/calendar.svg"
-                alt="Calendar Icon"
-                class="absolute right-0 top-0 mt-2 mr-3 h-6 w-6 pointer-events-none"
-              />
-            </div>
-          </div>
-          <div className="w-full gap-4 h-[541px] flex flex-col items-center justify-center">
-            <img src="/images/chatbox/chatbox.svg" alt="" className="" />
-
-            <div className="text-zinc-500 text-sm font-medium font-['Manrope'] leading-tight tracking-tight">
-              No Conversations yet.
-            </div>
-            <div className="flex flex-row gap-2  items-center justify-center w-full ">
-              <div className="text-sky-700 text-sm font-bold font-manrope  leading-snug">
-                Refresh
-              </div>
-              <img src="/images/chatbox/refres.svg" />
-            </div>
-          </div>
         </div>
       </div>
     </div>

@@ -1,63 +1,47 @@
-// // pages/index.js
-// import { useEffect, useState } from "react";
-// import Map from "../map/map";
+import {
+  CategoryScale,
+  Chart as ChartJS,
+  Filler,
+  Legend,
+  LineElement,
+  LinearScale,
+  PointElement,
+  Title,
+  Tooltip,
+} from "chart.js";
+import { Line } from "react-chartjs-2";
+import CustomMap from "../map/map";
 
-// function Chart_page() {
-//   const [chartData, setChartData] = useState({});
-//   const [mapData, setMapData] = useState([]);
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Filler,
+  Legend
+);
 
-//   useEffect(() => {
-//     fetch("https://api.example.com/chat-data")
-//       .then((res) => res.json())
-//       .then((data) => {
-//         const chartLabels = Object.keys(data);
-//         const chartValues = Object.values(data);
-//         const chartDataset = {
-//           label: "Chat Activity",
-//           data: chartValues,
-//           backgroundColor: "rgba(255, 99, 132, 0.2)",
-//           borderColor: "rgba(255, 99, 132, 1)",
-//           borderWidth: 1,
-//         };
-//         const chartConfig = {
-//           type: "bar",
-//           data: {
-//             labels: chartLabels,
-//             datasets: [chartDataset],
-//           },
-//           options: {
-//             scales: {
-//               y: {
-//                 beginAtZero: true,
-//               },
-//             },
-//           },
-//         };
-//         setChartData(chartConfig);
+const options = {
+  responsive: true,
+  plugins: {
+    legend: {
+      position: "top",
+    },
+    title: {
+      display: true,
+      text: "Chat Analytics Data",
+    },
+  },
+};
 
-//         // Process map data (adjust according to your data structure)
-//         const mapMarkers = data.map(({ country, value }) => ({
-//           lat: getLocationData(country).latitude,
-//           lng: getLocationData(country).longitude,
-//           value,
-//         }));
-//         setMapData(mapMarkers);
-//       });
-//   }, []);
-
-//   return (
-//     <div className="flex flex-col w-full items-center overflow-hidden">
-//       {/* <Chart data={chartData} /> */}
-//       <Map markers={mapData} />
-//     </div>
-//   );
-// }
-
-// export default Chart_page;
-
-
-
-
-// const dummy_chart = [
-
-// ]
+export function Chart_page({ data }) {
+  console.log(data);
+  return (
+    <div className="w-[90%] flex flex-col overflow-hidden">
+      <Line options={options} data={data} />
+      <CustomMap />
+    </div>
+  );
+}

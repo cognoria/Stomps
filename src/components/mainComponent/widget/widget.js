@@ -28,6 +28,8 @@ const Widget = ({ botId, cookies }) => {
     getChatbotState: state.getChatbotState,
   }));
 
+  console.log(chat);
+
   const { messages, chatting, error, loading, chatbotStyle } =
     getChatbotState(botId);
 
