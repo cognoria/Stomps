@@ -181,7 +181,7 @@ const Widget = ({ botId, cookies }) => {
             style={{ overflowAnchor: "none" }}
             className={`text-neutral-700 max-h-full  w-full ${widgetTheme === "DARK"
               ? "bg-transparent text-zinc-100 placeholder:text-neutral-300"
-              : "bg-transparent text-white placeholder:text-neutral-300"
+              : "bg-transparent text-zinc-700 placeholder:text-neutral-400"
               }  border p-3 overflow-y-scroll flex flex-col pl-[15px] rounded-lg pr-[50px] decoration-none text-sm font-normal font-manrope leading-snug`}
           />
           <button
