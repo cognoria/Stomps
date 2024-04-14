@@ -149,7 +149,7 @@ const useWidgetStore = create(
           const response = await fetch(`/api/v1/embed/${botId}/chat`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ messages, userData }),
+            body: JSON.stringify({ messages }),
           });
 
           const updatedMessage = await response.json();
