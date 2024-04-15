@@ -25,6 +25,7 @@ function isPublicPath(req) {
         'GET:/api/v1/auth/verify/:token',
         `GET:/api/v1/embed/:botId/:action`,
         `POST:/api/v1/embed/:botId/:action`,
+        `OPTIONS:/api/v1/embed/:botId/:action`,
         'GET:/api/v1/auth/verify/resend/:email',
         'POST:/api/v1/auth/password/reset/:token',
         'GET:/api/v1/auth/password/forget/:email',

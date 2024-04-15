@@ -46,6 +46,11 @@ function apiHandler(handler) {
             }
 
             try {
+                // Handle OPTIONS requests
+                if (req.method.toUpperCase() === 'OPTIONS') {
+                    return NextResponse.json({});
+                }
+
                 // global middleware
                 await jwtMiddleware(req);
 
