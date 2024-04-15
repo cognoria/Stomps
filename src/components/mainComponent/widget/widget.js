@@ -28,8 +28,6 @@ const Widget = ({ botId, cookies }) => {
     getChatbotState: state.getChatbotState,
   }));
 
-  console.log(chat);
-
   const { messages, chatting, error, loading, chatbotStyle } =
     getChatbotState(botId);
 
@@ -39,10 +37,6 @@ const Widget = ({ botId, cookies }) => {
       setWidgetTheme(chatbotStyle?.widgetTheme)
     }
   }, [getChatStyle, chatbotStyle, botId]);
-
-  // useEffect(() => {
-  //   if (!cookies || userData == null) setUserData();
-  // }, [cookies, setUserData, userData]);
 
   useEffect(() => {
     if (chatbotStyle && messages?.length < 1) {
@@ -57,6 +51,7 @@ const Widget = ({ botId, cookies }) => {
 
   useEffect(() => {
     const handleMessage = (event) => {
+      console.log({ eventOrigin: event.origin, host })
       if (event.origin === host) {
         if (event.data.openChat) {
           setOpenWidget(true)
@@ -154,6 +149,11 @@ const Widget = ({ botId, cookies }) => {
               <SkeletonLoader width={200} />
             </div>
           )}
+          {!chatting && messages.filter((msg) => msg.role === 'user').length > 1 && (chatbotStyle?.collectEmail || chatbotStyle?.collectName || chatbotStyle?.collectPhone) && (
+            <div className="flex flex-col mt-[10px] items-start w-full justify-start">
+              <LeadCollector title={chatbotStyle?.leadMsgDescription} collectEmail={chatbotStyle?.collectEmail} collectName={chatbotStyle?.collectName} collectPhone={chatbotStyle?.collectPhone} />
+            </div>
+          )}
         </div>
 
         <div className="flex flex-row w-full px-4 overflow-x-scroll h-[7%] items-start justify-start gap-x-3">
@@ -215,8 +215,8 @@ const ChatMessage = memo(({ message, isUser, theme }) => (
       className={`max-w-[85%] p-[10px] ${theme === "DARK"
         ? "bg-gray-800 text-zinc-100"
         : "bg-zinc-100 text-stone-900"
-        } ${isUser ? "bg-[#0C4173] " : ""
-        }  rounded-tl rounded-tr rounded-br border text-start text-sm font-normal leading-snug `}
+        } ${isUser ? "bg-[#0C4173] rounded-l rounded-tr" : "rounded-tl rounded-r"
+        } text-start text-smleading-snug `}
     >
       {isUser ? (
         message.content
@@ -230,4 +230,38 @@ const ChatMessage = memo(({ message, isUser, theme }) => (
 ));
 
 ChatMessage.displayName = "ChatMessage";
+
+function LeadCollector({ title, collectEmail, collectName, collectPhone }) {
+  return <div className={`max-w-[85%] p-[10px] ${theme === "DARK"
+    ? "bg-gray-800 text-zinc-100"
+    : "bg-zinc-100 text-stone-900"} flex flex-col gap-2 rounded-tl-[8px] rounded-r-[8px] text-start text-sm leading-snug `}>
+    {title && <p className="font-bold text-lg">{title}</p>}
+    {collectName && <div>
+      <input
+        value={inputValue}
+        onChange={onInputChange}
+        type={type}
+        className="h-10 w-full p-2 pl-10 bg-transparent border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+        placeholder="what is your name? e.g John Deo"
+      />
+
+    </div>}
+    {collectEmail && <div>
+      <input
+        value={inputValue}
+        onChange={onInputChange}
+        type={type}
+        className="h-10 w-full p-2 pl-10 bg-transparent border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+        placeholder="what is your name? e.g johndoe@gmail.com"
+      /></div>}
+    {collectPhone && <p>
+      <input
+        value={inputValue}
+        onChange={onInputChange}
+        type={type}
+        className="h-10 w-full p-2 pl-10 bg-transparent border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+        placeholder="what is your phone number? e.g +1 0234 56789"
+      /></p>}
+  </div>
+}
 export default memo(Widget);

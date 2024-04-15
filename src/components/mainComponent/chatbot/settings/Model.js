@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { chatModelEnum } from "../../../../helpers/enums";
-import { formatDate } from "../../../../utils/data_format/date";
+import { formatDate } from "../../../../utils/dataFormat/date";
 import Temprature_slider from "../../../customComponents/slider/temprature_slider";
 import useChatbotSettings from "../../../../store/chatbot/useChatbotSettings"
 import useChatbotStore from "../../../../store/chatbot/useChatbotStore";

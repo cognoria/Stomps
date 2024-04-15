@@ -3,7 +3,7 @@
 
 import { useEffect } from "react";
 import useChatbotStore from "../../../../store/chatbot/useChatbotStore";
-import { convertDateToRelative } from "../../../../utils/data_format/date";
+import { convertDateToRelative } from "../../../../utils/dataFormat/date";
 import { truncateMessage } from "../../../../utils/truncateMsg";
 import EmptyDashboard from "./emptyDashboard";
 import BarHeader from "./header";
