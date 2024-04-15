@@ -46,15 +46,6 @@ function apiHandler(handler) {
             }
 
             try {
-                // await nextCors(req, ...args, {
-                //     methods: httpMethods,
-                //     origin: '*',
-                //  });
-                // Handle OPTIONS requests
-                if (req.method.toUpperCase() === 'OPTIONS') {
-                    return NextResponse.json({});
-                }
-
                 // global middleware
                 await jwtMiddleware(req);
 
