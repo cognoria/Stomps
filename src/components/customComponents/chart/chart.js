@@ -10,7 +10,7 @@ import {
   Tooltip,
 } from "chart.js";
 import { Line } from "react-chartjs-2";
-import CustomMap from "../map/map";
+import Map2 from "../map/map2";
 
 ChartJS.register(
   CategoryScale,
@@ -36,12 +36,12 @@ const options = {
   },
 };
 
-export function Chart_page({ data }) {
+export function Chart_page({ data, count, country }) {
   console.log(data);
   return (
     <div className="w-[90%] flex flex-col overflow-hidden">
       <Line options={options} data={data} />
-      <CustomMap />
+      <Map2 count={count} country={country} />
     </div>
   );
 }

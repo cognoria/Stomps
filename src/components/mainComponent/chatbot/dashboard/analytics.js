@@ -20,6 +20,9 @@ function Analytics({ botId }) {
 
   const dataValue = analytics?.chatsPerDay?.map((item) => item.count);
   const label = analytics?.chatsPerDay?.map((item) => item.date);
+  const country = analytics?.chatsPerCountry?.map((item) => item.country);
+  const count = analytics?.chatsPerCountry?.map((item) => item.count);
+
   const chartData = {
     labels: label,
     datasets: [
@@ -33,9 +36,17 @@ function Analytics({ botId }) {
     ],
   };
 
+  console.log(analytics);
+
+  // map data Structure
+
   return (
     <div className="flex flex-col w-full items-center overflow-hidden">
-      {analytics ? <Chart_page data={chartData} /> : <EmptyDashboard />}
+      {analytics ? (
+        <Chart_page data={chartData} count={count} country={country} />
+      ) : (
+        <EmptyDashboard />
+      )}
     </div>
   );
 }

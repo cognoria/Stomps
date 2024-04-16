@@ -26,7 +26,7 @@ function InterfaceSettings({ botId }) {
   const [initialMsg, setInitialMsg] = useState(
     chatbot?.chatBotCustomizeData.welcomeMessage
   );
-  console.log(initialMsg);
+
   const [displayName, setDisplayName] = useState(
     chatbot?.chatBotCustomizeData.assistantTabHeader
   );
@@ -107,8 +107,9 @@ function InterfaceSettings({ botId }) {
     (question) => question.question
   );
   const [suggestedMessages, setSuggestedMessages] = useState(
-    defaultSuggestedMessages
+    defaultSuggestedMessages || []
   );
+  console.log(suggestedMessages);
   const divRef = useRef(null);
   const handleAddMessage = () => {
     const content = divRef.current.textContent;
@@ -118,6 +119,29 @@ function InterfaceSettings({ botId }) {
     }
   };
   // suggested text
+
+  // auto update msg
+
+  const handleKeyPress = (event) => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      const content = divRef.current.textContent.trim();
+      if (content !== "") {
+        setSuggestedMessages((prevMessages) => [...prevMessages, content]);
+        // Do not clear the input field after adding the message
+      }
+    }
+  };
+
+  const handleInput = () => {
+    // Update suggested messages based on the current content of the div
+    const newContent = divRef.current.textContent.trim();
+    const newMessages = newContent
+      .split("\n")
+      .filter((message) => message.trim() !== "");
+    setSuggestedMessages(newMessages);
+  };
+  /// end of auto update msg
 
   //bot Data Submission
   const botData = {
@@ -185,14 +209,13 @@ function InterfaceSettings({ botId }) {
                 className="max-h-[150px] lg:w-full max-w-full overflow-auto p-2 border border-gray-200 rounded-md"
                 contentEditable="true"
                 placeholder={"example email.com"}
-              ></div>
-              <div className="flex flex-col w-full items-end justify-end px-4">
-                <button
-                  className="h-[31px] text-sky-700 text-xs font-bold font-manrope leading-snug rounded-lg px-3.5 py-1 bg-sky-50 shadow border border-sky-50 justify-center items-center flex flex-row "
-                  onClick={handleAddMessage}
-                >
-                  Add
-                </button>
+                onKeyPress={handleKeyPress}
+                onInput={handleInput}
+              >
+                {" "}
+                {suggestedMessages.map((message, index) => (
+                  <div key={index}>{message}</div>
+                ))}
               </div>
 
               <p className="text-gray-600 text-[10px] font-normal font-manrope leading-[14px] tracking-tight">
