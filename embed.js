@@ -84,7 +84,7 @@ function createChatWindow(widgetStyle, origin, stompsSrc, chatbotId) {
 
 function createBubbleContainer(widgetStyle) {
   const bubbleContainer = document.createElement('div');
-  bubbleContainer.setAttribute('id', 'stomps-bubble-window');
+  bubbleContainer.setAttribute('id', 'stomps-bubble-container');
   bubbleContainer.style.minWidth = 'fit-content';
   // Add more styles to the bubble container
   bubbleContainer.style.display = 'block';
