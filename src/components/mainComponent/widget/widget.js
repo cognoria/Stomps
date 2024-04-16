@@ -115,7 +115,7 @@ const Widget = ({ botId, cookies }) => {
             )}
             {chatbotStyle?.assistantTabHeader && (
               <p
-                className={`font-bold text-xl ${widgetTheme === "DARK" ? "text-zinc-100" : ""
+                className={`font-bold text-lg ${widgetTheme === "DARK" ? "text-zinc-100" : ""
                   }`}
               >
                 {chatbotStyle?.assistantTabHeader}
