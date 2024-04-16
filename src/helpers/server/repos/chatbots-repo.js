@@ -228,7 +228,7 @@ async function updateChatInterface(chatbotId, interfaceData) {
     chatbot.chatBotCustomizeData.widgetTheme = interfaceData.theme
     chatbot.chatBotCustomizeData.assistantTabHeader = interfaceData.displayName
     chatbot.chatBotCustomizeData.launcherIcon = interfaceData.chatIcon
-    chatbot.chatBotCustomizeData.placement = interfaceData.alignChatButton
+    chatbot.chatBotCustomizeData.placement = interfaceData.alignChatButton.toUpperCase()
     chatbot.chatBotCustomizeData.popupDelay = interfaceData.autoShowMsg
     chatbot.chatBotCustomizeData.profileImage = interfaceData.profileImage
     await chatbot.save()

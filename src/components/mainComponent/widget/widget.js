@@ -51,7 +51,7 @@ const Widget = ({ botId, cookies }) => {
 
   useEffect(() => {
     const handleMessage = (event) => {
-      console.log({ eventOrigin: event.origin, host })
+      console.log({ eventOrigin: event.origin, host, event })
       if (event.origin === host) {
         if (event.data.openChat) {
           setOpenWidget(true)

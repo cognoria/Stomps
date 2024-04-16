@@ -26,7 +26,6 @@ function InterfaceSettings({ botId }) {
   const [initialMsg, setInitialMsg] = useState(
     chatbot?.chatBotCustomizeData.welcomeMessage
   );
-  console.log(initialMsg);
   const [displayName, setDisplayName] = useState(
     chatbot?.chatBotCustomizeData.assistantTabHeader
   );
@@ -119,10 +118,23 @@ function InterfaceSettings({ botId }) {
   };
   // suggested text
 
+  useEffect(() =>{
+    if(chatbot){
+      setAlignChat(chatbot.chatBotCustomizeData.placement)
+      setAutoShowMsg(chatbot.chatBotCustomizeData.popupDelay)
+      setChatIcon(chatbot.chatBotCustomizeData.launcherIcon)
+      setProfileImg(chatbot.chatBotCustomizeData.profileImage)
+      // setSuggestedMessages()
+      setDisplayName(chatbot.chatBotCustomizeData.assistantTabHeader)
+      setSelectedTheme(chatbot.chatBotCustomizeData.widgetTheme)
+      setMsgPlaceholder(chatbot.chatBotCustomizeData.chatInputPlaceholderText)
+      setInitialMsg(chatbot.chatBotCustomizeData.welcomeMessage)
+    }
+  },[chatbot])
+
   //bot Data Submission
   const botData = {
     initialMsg: initialMsg,
-
     suggestedMsgs: suggestedMessages?.map((message) => ({
       question: message,
     })),
@@ -141,7 +153,7 @@ function InterfaceSettings({ botId }) {
     });
   };
 
-  console.log(chatbot);
+  // console.log(chatbot);
   return (
     <div className="w-full px-3 lg:p-[6%]  flex flex-col overflow-x-hidden items-center justify-center ">
       <div className="flex w-full flex-col items-center  justify-center border-gray-200 border-[1px] gap-4 rounded-t-md ">
