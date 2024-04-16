@@ -12,7 +12,7 @@ const Widget = ({ botId, cookies }) => {
   const chatContainerRef = useRef(null);
   const messageInputRef = useRef(null);
   const [messageInput, setMessageInput] = useState("");
-  const [openWidget, setOpenWidget] = useState(null)
+  const [isWidget, setIsWidget] = useState(false)
   const [widgetTheme, setWidgetTheme] = useState('LIGHT')
 
   const searchParams = useSearchParams();
@@ -51,13 +51,8 @@ const Widget = ({ botId, cookies }) => {
 
   useEffect(() => {
     const handleMessage = (event) => {
-      console.log({ eventOrigin: event.origin, host, openChat: event.data.openChat, closeChat: event.data.closeChat })
       if (event.origin === host) {
-        if (event.data.openChat) {
-          setOpenWidget(true)
-        } else if (event.data.closeChat) {
-          setOpenWidget(false)
-        }
+        setIsWidget(true)
       }
     };
 
@@ -127,7 +122,7 @@ const Widget = ({ botId, cookies }) => {
               {error && error}
             </p>{" "}
             <Image width={20} height={20} onClick={() => refreshChat(botId)} className="hover:-rotate-90 cursor-pointer self-center" src="/images/chatbox/refresh.svg" alt="" />
-            {typeof openWidget == "boolean" && <Image onClick={handleCloseWidget} width={30} height={30} className="hover:-rotate-90 self-center" src="/images/auth/close_button.svg" alt="" />}
+            {isWidget && <Image onClick={handleCloseWidget} width={30} height={30} className="hover:-rotate-90 self-center" src="/images/auth/close_button.svg" alt="" />}
           </div>
         </div>
         <div

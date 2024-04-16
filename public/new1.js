@@ -76,7 +76,7 @@ function createChatWindow(widgetStyle, origin, stompsSrc, chatbotId) {
   chatWindow.style.maxWidth = '400px';
   chatWindow.style.height = '85vh';
   chatWindow.style.border = 'none';
-  chatWindow.style.backgroundColor = widgetStyle.widgetTheme.toLowerCase() == "light" ? "white" : 'black';
+  chatWindow.style.backgroundColor = widgetStyle.widgetTheme.toLowerCase() == "dark" ? '#333' : '#fff';
   chatWindow.style.display = 'none';
   chatWindow.style.borderRadius = '30px';
   return chatWindow;
