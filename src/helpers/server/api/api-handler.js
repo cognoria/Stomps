@@ -12,8 +12,21 @@ function apiHandler(handler) {
 
     // wrap handler methods to add middleware and global error handler
     httpMethods.forEach(method => {
-        if (typeof handler[method] !== 'function')
+        if (typeof handler[method] !== 'function') {
+            if (method === 'OPTIONS') {
+                wrappedHandler[method] = async (req) => {
+                    return NextResponse.json({}, {
+                        status: 200,
+                        headers: {
+                            'Access-Control-Allow-Origin': '*',
+                            'Access-Control-Allow-Methods': 'GET,POST,OPTIONS',
+                            'Access-Control-Allow-Headers': 'content-type',
+                        },
+                    });
+                };
+            }
             return;
+        }
 
         wrappedHandler[method] = async (req, ...args) => {
 
@@ -46,15 +59,6 @@ function apiHandler(handler) {
             }
 
             try {
-                // await nextCors(req, ...args, {
-                //     methods: httpMethods,
-                //     origin: '*',
-                //  });
-                // Handle OPTIONS requests
-                if (req.method.toUpperCase() === 'OPTIONS') {
-                    return NextResponse.json({});
-                }
-
                 // global middleware
                 await jwtMiddleware(req);
 

@@ -1,15 +1,30 @@
-import { exportToJSON } from "../../../../utils/extractDoc/exportData";
+import { useState } from "react";
+import {
+  exportToCSV,
+  exportToJSON,
+} from "../../../../utils/extractDoc/exportData";
 
-function BarHeader({ date, exportData, exportDataTitle, onDateSelect, exportDataFile }) {
+function BarHeader({
+  date,
+  exportData,
+  exportDataTitle,
+  onDateSelect,
+  exportDataFile,
+}) {
   const handleDateChange = (event) => {
     const selectedDate = event.target.value;
     onDateSelect(selectedDate);
   };
 
-  const exportFile = async () => {
-    exportToJSON( exportDataFile, exportDataTitle );
+  const exportFileJson = async () => {
+    setShowExportFormat(!showExportFormat);
+    exportToJSON(exportDataFile, exportDataTitle);
   };
-
+  const exportFileCSV = async () => {
+    setShowExportFormat(!showExportFormat);
+    exportToCSV(exportDataFile, exportDataTitle);
+  };
+  const [showExportFormat, setShowExportFormat] = useState(false);
   return (
     <div className="flex w-full items-start justify-between  flex-col lg:flex-row gap-6 p-3 ">
       <div className="flex flex-[60%] gap-4 items-start ">
@@ -51,15 +66,28 @@ function BarHeader({ date, exportData, exportDataTitle, onDateSelect, exportData
           </div>
         )} */}
       </div>
-      <div className="flex flex-[40%] items-end justify-end">
+      <div className="flex relative flex-[40%] flex-col items-end justify-end">
         {exportData && (
           <button
-            onClick={exportFile}
+            onClick={() => setShowExportFormat(!showExportFormat)}
             className="flex flex-row rounded-lg items-center font-manrope w-fit p-4 text-white font-[700] gap-4  bg-[#1261AC]"
           >
             <p>Export</p>
             <img src="/images/chatbox/downloadIcon.png" />
           </button>
+        )}
+
+        {showExportFormat && (
+          <div className="flex absolute top-[100%] right-0 flex-col gap-2 bg-[#1261AC] text-white p-3 items-center justify-center">
+            <button
+              className="border-b-[1px] border-gray-200"
+              onClick={exportFileJson}
+            >
+              JSON
+            </button>
+
+            <button onClick={exportFileCSV}>CSV</button>
+          </div>
         )}
       </div>
     </div>

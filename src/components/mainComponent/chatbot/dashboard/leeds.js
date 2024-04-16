@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import useChatbotStore from "../../../../store/chatbot/useChatbotStore";
-import { sortDate } from "../../../../utils/data_format/date";
+import { sortDate } from "../../../../utils/dataFormat/date";
 import EmptyDashboard from "./emptyDashboard";
 import BarHeader from "./header";
 
@@ -87,35 +87,38 @@ const Filled_bot_state = ({ leads, handleDateSelect }) => {
             </thead>
 
             <tbody class="divide-y divide-gray-200">
-              {leads?.map((list, i) => {
-                return (
-                  <tr key={i}>
-                    <td class="px-6 py-4 text-sm font-bold text-gray-900 whitespace-nowrap">
-                      {list.Name}
-                      <div class="mt-1 lg:hidden">
-                        <p class="font-medium text-gray-500">{list.Email}</p>
-                      </div>
-                    </td>
+              {leads
+                ?.slice()
+                .reverse()
+                .map((list, i) => {
+                  return (
+                    <tr key={i}>
+                      <td class="px-6 py-4 text-sm font-bold text-gray-900 whitespace-nowrap">
+                        {list.Name}
+                        <div class="mt-1 lg:hidden">
+                          <p class="font-medium text-gray-500">{list.Email}</p>
+                        </div>
+                      </td>
 
-                    <td class="hidden px-6 py-4 text-sm font-medium text-gray-900 lg:table-cell whitespace-nowrap">
-                      {list.Email}
-                    </td>
+                      <td class="hidden px-6 py-4 text-sm font-medium text-gray-900 lg:table-cell whitespace-nowrap">
+                        {list.Email}
+                      </td>
 
-                    <td class="px-6 py-4 text-sm font-bold text-right text-gray-900 lg:text-left whitespace-nowrap">
-                      {list.Phone}
-                      <div class="flex items-center justify-end mt-1 font-medium lg:hidden">
-                        {sortDate(list.createdAt)}
-                      </div>
-                    </td>
+                      <td class="px-6 py-4 text-sm font-bold text-right text-gray-900 lg:text-left whitespace-nowrap">
+                        {list.Phone}
+                        <div class="flex items-center justify-end mt-1 font-medium lg:hidden">
+                          {sortDate(list.createdAt)}
+                        </div>
+                      </td>
 
-                    <td class="hidden px-6 py-4 text-sm font-medium text-gray-900 lg:table-cell whitespace-nowrap">
-                      <div class="inline-flex items-center">
-                        {sortDate(list.createdAt)}
-                      </div>
-                    </td>
-                  </tr>
-                );
-              })}
+                      <td class="hidden px-6 py-4 text-sm font-medium text-gray-900 lg:table-cell whitespace-nowrap">
+                        <div class="inline-flex items-center">
+                          {sortDate(list.createdAt)}
+                        </div>
+                      </td>
+                    </tr>
+                  );
+                })}
             </tbody>
           </table>
         </div>

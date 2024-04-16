@@ -26,7 +26,6 @@ function InterfaceSettings({ botId }) {
   const [initialMsg, setInitialMsg] = useState(
     chatbot?.chatBotCustomizeData.welcomeMessage
   );
-
   const [displayName, setDisplayName] = useState(
     chatbot?.chatBotCustomizeData.assistantTabHeader
   );
@@ -101,16 +100,17 @@ function InterfaceSettings({ botId }) {
   //chat Icon
 
   // Function to handle adding a new suggested message
-  const suggestedMsgValue =
-    chatbot?.chatBotCustomizeData?.questionExamples || [];
-  const defaultSuggestedMessages = suggestedMsgValue.map(
-    (question) => question.question
-  );
-  const [suggestedMessages, setSuggestedMessages] = useState(
-    defaultSuggestedMessages || []
-  );
-  console.log(suggestedMessages);
+  // const suggestedMsgValue =
+  //   chatbot?.chatBotCustomizeData?.questionExamples || [];
+  // const defaultSuggestedMessages = suggestedMsgValue.map(
+  //   (question) => question.question
+  // );
+  const [suggestedMessages, setSuggestedMessages] = useState();
+  // defaultSuggestedMessages || []
+  const [suggestDisplay, setSuggestDisplay] = useState();
+
   const divRef = useRef(null);
+
   const handleAddMessage = () => {
     const content = divRef.current.textContent;
     if (content.trim() !== "") {
@@ -122,31 +122,50 @@ function InterfaceSettings({ botId }) {
 
   // auto update msg
 
-  const handleKeyPress = (event) => {
-    if (event.key === "Enter") {
-      event.preventDefault();
-      const content = divRef.current.textContent.trim();
-      if (content !== "") {
-        setSuggestedMessages((prevMessages) => [...prevMessages, content]);
-        // Do not clear the input field after adding the message
-      }
-    }
-  };
+  // const handleKeyPress = (event) => {
+  //   if (event.key === "Enter") {
+  //     event.preventDefault();
+  //     const content = divRef.current.textContent.trim();
+  //     if (content !== "") {
+  //       setSuggestedMessages((prevMessages) => [...prevMessages, content]);
+  //       // Do not clear the input field after adding the message
+  //     }
+  //   }
+  // };
 
-  const handleInput = () => {
+  const handleInput = (e) => {
+    e.preventDefault();
     // Update suggested messages based on the current content of the div
     const newContent = divRef.current.textContent.trim();
     const newMessages = newContent
       .split("\n")
       .filter((message) => message.trim() !== "");
+
     setSuggestedMessages(newMessages);
   };
+
   /// end of auto update msg
+  useEffect(() => {
+    if (chatbot) {
+      setAlignChat(chatbot.chatBotCustomizeData.placement);
+      setAutoShowMsg(chatbot.chatBotCustomizeData.popupDelay);
+      setChatIcon(chatbot.chatBotCustomizeData.launcherIcon);
+      setProfileImg(chatbot.chatBotCustomizeData.profileImage);
+      setSuggestedMessages(chatbot.chatBotCustomizeData.questionExamples);
+      setDisplayName(chatbot.chatBotCustomizeData.assistantTabHeader);
+      setSelectedTheme(chatbot.chatBotCustomizeData.widgetTheme);
+      setMsgPlaceholder(chatbot.chatBotCustomizeData.chatInputPlaceholderText);
+      setInitialMsg(chatbot.chatBotCustomizeData.welcomeMessage);
+
+      const msgs = chatbot.chatBotCustomizeData.questionExamples
+        .map((question) => question.question)
+        .join("\n");
+    }
+  }, [chatbot]);
 
   //bot Data Submission
   const botData = {
     initialMsg: initialMsg,
-
     suggestedMsgs: suggestedMessages?.map((message) => ({
       question: message,
     })),
@@ -165,7 +184,7 @@ function InterfaceSettings({ botId }) {
     });
   };
 
-  console.log(chatbot);
+  // console.log(chatbot);
   return (
     <div className="w-full px-3 lg:p-[6%]  flex flex-col overflow-x-hidden items-center justify-center ">
       <div className="flex w-full flex-col items-center  justify-center border-gray-200 border-[1px] gap-4 rounded-t-md ">
@@ -204,19 +223,12 @@ function InterfaceSettings({ botId }) {
                 Suggested Messages
               </div>
 
-              <div
-                ref={divRef}
+              <textarea
+                value={suggestedMessages}
+                onChange={() => setSuggestedMessages(e.target.value)}
                 className="max-h-[150px] lg:w-full max-w-full overflow-auto p-2 border border-gray-200 rounded-md"
-                contentEditable="true"
                 placeholder={"example email.com"}
-                onKeyPress={handleKeyPress}
-                onInput={handleInput}
-              >
-                {" "}
-                {suggestedMessages.map((message, index) => (
-                  <div key={index}>{message}</div>
-                ))}
-              </div>
+              ></textarea>
 
               <p className="text-gray-600 text-[10px] font-normal font-manrope leading-[14px] tracking-tight">
                 <span className="text-gray-600 text-[10px] font-bold font-manrope leading-[14px] tracking-tight">
@@ -491,7 +503,7 @@ function InterfaceSettings({ botId }) {
                         } `}
                         key={i}
                       >
-                        {msg}
+                        {msg.question}
                       </p>
                     );
                   })}

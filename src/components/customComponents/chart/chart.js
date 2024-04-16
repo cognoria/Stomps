@@ -26,12 +26,17 @@ ChartJS.register(
 const options = {
   responsive: true,
   plugins: {
-    legend: {
-      position: "top",
-    },
+    // legend: {
+    //   position: "top",
+    // },
     title: {
       display: true,
       text: "Chat Analytics Data",
+    },
+  },
+  scale: {
+    ticks: {
+      precision: 0,
     },
   },
 };

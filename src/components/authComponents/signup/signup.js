@@ -187,7 +187,7 @@ function Signup_form() {
           <Link href="/signin"> Sign in</Link>
         </span>
       </div>
-      <div className="mt-[20px] w-full md:w-[481px] h-5 justify-center items-center gap-4 inline-flex">
+      {/* <div className="mt-[20px] w-full md:w-[481px] h-5 justify-center items-center gap-4 inline-flex">
         <hr className="text-center w-[40%] mt-[2px] h-[3px] text-zinc-500 text-sm font-medium font-manrope leading-tight tracking-tight" />
         Or
         <hr className="text-center w-[40%] h-[3px] mt-[2px] text-zinc-500 text-sm font-medium font-manrope leading-tight tracking-tight" />
@@ -198,7 +198,7 @@ function Signup_form() {
         <div className="text-center w-full text-zinc-800 text-xs md:text-sm font-medium font-manrope leading-none md:leading-tight tracking-tight">
           Sign up with Google
         </div>
-      </div>
+      </div> */}
     </div>
   );
 }

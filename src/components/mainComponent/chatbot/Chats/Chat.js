@@ -5,7 +5,7 @@ import { remark } from "remark";
 import remarkHTML from "remark-html";
 import useBotMessagingStore from "../../../../store/chatbot/useChatbotMessaging";
 import useChatbotStore from "../../../../store/chatbot/useChatbotStore";
-import { formatDate } from "../../../../utils/data_format/date";
+import { formatDate } from "../../../../utils/dataFormat/date";
 import Temprature_slider from "../../../customComponents/slider/temprature_slider";
 import SkeletonLoader from "../../../skeleton";
 
@@ -198,7 +198,7 @@ function Chat({ id, status }) {
   const chatting = useBotMessagingStore(
     (state) => state.bots[id]?.chatting || false
   ); // Access chatting state for the specific bot
-  const messageInputRef = useRef(null);
+
   // Function to convert Markdown to HTML
   const markdownToHtml = (markdown) => {
     return remark().use(remarkHTML).processSync(markdown).toString();
@@ -214,16 +214,15 @@ function Chat({ id, status }) {
     e.preventDefault();
 
     if (!messageInput.trim()) return; // Prevent sending empty messages
-    messageInputRef.current.textContent = ""; // clear input field
+    setMessageInput("");
+
     try {
       const data = {
         role: "user",
         content: messageInput,
       };
       await useBotMessagingStore.getState().chat({ id, data });
-      setMessageInput("");
     } catch (error) {
-      setMessageInput("");
       console.log("Failed to send message:", error);
     }
   }
@@ -284,14 +283,12 @@ function Chat({ id, status }) {
       </div>
 
       <div className=" relative p-4 h-[17%] overflow-y-scroll items-center flex-col  flex">
-        <div
-          contentEditable={true}
-          onInput={(e) => setMessageInput(e.target.textContent)}
+        <textarea
+          value={messageInput}
+          onChange={(e) => setMessageInput(e.target.value)}
           placeholder="message... "
-          ref={messageInputRef}
-          style={{ overflowAnchor: "none" }}
-          className="text-neutral-700 max-h-full  w-full  border p-3 read-only:cursor-help  overflow-y-scroll   flex flex-col   pl-[15px] rounded-lg  pr-[50px]   decoration-none placeholder:text-neutral-300 text-sm font-normal font-manrope leading-snug"
-        />
+          className="text-neutral-700 h-auto max-h-full  w-full  border p-3 read-only:cursor-help  overflow-y-scroll   flex flex-col   pl-[15px] rounded-lg  pr-[50px]   decoration-none placeholder:text-neutral-300 text-sm font-normal font-manrope leading-snug"
+        ></textarea>
         <button
           disabled={chatting || status !== "READY"}
           onClick={sendMessage}

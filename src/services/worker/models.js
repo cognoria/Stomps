@@ -185,7 +185,7 @@ const UserModel = mongoose.models.User || mongoose.model('User', Userschema);
 //Global schema
 const globalSchema = new Schema({
     jwt_secret: hashed,
-    embedModel: {type: String, enum: Object.values(EmbeddingModels), default: EmbeddingModels.TEXT_3_SMALL},
+    embedModel: { type: String, enum: Object.values(EmbeddingModels), default: EmbeddingModels.TEXT_3_SMALL },
     services: [service],
 }, {
     timestamps: true
@@ -193,9 +193,23 @@ const globalSchema = new Schema({
 
 const GlobalModel = mongoose.models.Global || mongoose.model('Global', globalSchema);
 
+const LeadsSchema = new Schema({
+    chatbot: { type: mongoose.Schema.Types.ObjectId, ref: 'Chatbot', required: true, },
+    Name: { type: String },
+    Email: {
+        type: String, validate: {
+            validator: email => /^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/.test(email),
+            message: props => `${props.value} is not a valid email address!`
+        }
+    },
+    Phone: { type: String },
+}, { timestamps: true });
+
+const LeadsModel = mongoose.models.Leads || mongoose.model('Leads', LeadsSchema);
 
 module.exports = {
     UserModel,
+    LeadsModel,
     GlobalModel,
     ChatbotModel,
     KnowledgebaseStatus,

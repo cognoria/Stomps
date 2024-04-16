@@ -6,7 +6,7 @@ import useChatbotStore from "../../../../store/chatbot/useChatbotStore";
 import {
   convertDateToRelative,
   sortDate,
-} from "../../../../utils/data_format/date";
+} from "../../../../utils/dataFormat/date";
 import { truncateMessage } from "../../../../utils/truncateMsg";
 import EmptyDashboard from "./emptyDashboard";
 import BarHeader from "./header";
@@ -38,6 +38,7 @@ function Chat_logs({ botId }) {
       setFilteredChats(chats);
     }
   }, [selectedDate, chats]);
+
   const handleDateSelect = (date) => {
     setSelectedDate(date);
   };
@@ -63,7 +64,10 @@ const Filled_bot_state = ({ chatData, handleDateSelect }) => {
     setIndex(id);
   };
 
-  console.log(chatIndex);
+  const arrangedData = chatData?.sort(
+    (a, b) => new Date(b.updatedAt) - new Date(a.updatedAt)
+  );
+
   return (
     <div className="w-full px-3 lg:p-[6%]  flex flex-col items-center justify-center ">
       <div className="flex w-full flex-col items-center  justify-center border-gray-200 border-[1px] gap-4 rounded-md ">
@@ -80,11 +84,10 @@ const Filled_bot_state = ({ chatData, handleDateSelect }) => {
 
         <div className="flex gap-3 p-3 w-full flex-row items-start justify-start">
           <div className="flex border-none h-[400px] items-start overflow-y-scroll gap-2  flex-col w-[40%]">
-            {chatData?.map((item, i) => {
-              const lastUserMessage = item.messages
-                .slice()
-                .reverse()
-                .find((message) => message.role === "user");
+            {arrangedData?.map((item, i) => {
+              const lastUserMessage = item.messages.find(
+                (message) => message.role === "user"
+              );
 
               // Find the last message from the assistant
 
@@ -102,7 +105,7 @@ const Filled_bot_state = ({ chatData, handleDateSelect }) => {
                         : ""}
                     </div>
                     <div className="w-auto text-right text-zinc-500 text-xs font-normal font-manrope leading-none tracking-tight">
-                      {convertDateToRelative(item.createdAt)}
+                      {convertDateToRelative(item.updatedAt)}
                     </div>
                   </div>
                   <div className="w-full text-start text-stone-900 text-xs font-normal font-manrope leading-[20px] tracking-tight">
@@ -123,7 +126,7 @@ const Filled_bot_state = ({ chatData, handleDateSelect }) => {
               style={{ scrollBehavior: "smooth" }}
               className="w-full overflow-y-scroll h-[500px] flex flex-col gap-3 p-4"
             >
-              {chatData?.[chatIndex]?.messages.map((message, index) => (
+              {arrangedData?.[chatIndex]?.messages.map((message, index) => (
                 <div
                   key={index}
                   className={`w-full h-auto flex flex-col ${

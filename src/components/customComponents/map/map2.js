@@ -30,7 +30,7 @@ function Map2({ country, count }) {
           marker: {
             line: {
               color: "rgb(180,180,180)",
-              width: 0.5,
+              width: 1,
             },
           },
 

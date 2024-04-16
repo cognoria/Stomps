@@ -40,7 +40,6 @@ function SecuritySettings({ botId }) {
     setSelectedPrivacy(event.target.value);
   };
 
-  console.log(chatbot?.visibility);
   //privacy selection
 
   // exceed limit message
@@ -49,6 +48,16 @@ function SecuritySettings({ botId }) {
   // Exceed limit message
 
   // security submission
+
+  useEffect(() => {
+    if (chatbot) {
+      setSelectedPrivacy(chatbot.visibility)
+      setLimitMessage(chatbot.rateLimiting.limitMsg)
+      setToggleChecked(chatbot.chatBotCustomizeData.allowPublicDomains)
+      setInputMessage(chatbot.rateLimiting.timeframe)
+      setInputLimit(chatbot.rateLimiting.msg_count)
+    }
+  }, [chatbot])
 
   const handleSubmitBotSecurity = (e) => {
     e.preventDefault();
@@ -136,6 +145,7 @@ function SecuritySettings({ botId }) {
               <input
                 onChange={(e) => setInputLimit(e.target.value)}
                 style={{ width: `${inputLimit?.length * 8 + 55}px` }}
+                value={inputLimit}
                 type="number"
                 className="w-[75px] h-[30px] lg:h-[37px] px-3.5 py-2.5 bg-white rounded shadow border border-zinc-100 justify-start items-center"
               />
@@ -148,6 +158,7 @@ function SecuritySettings({ botId }) {
               <input
                 onChange={(e) => setInputMessage(e.target.value)}
                 type="number"
+                value={inputMessage}
                 style={{ width: `${inputMessage?.length * 8 + 55}px` }}
                 className="w-[75px] max-w-auto h-[30px] lg:h-[37px] px-3.5 py-2.5 bg-white rounded shadow border border-zinc-100 justify-start items-center"
               />
@@ -162,6 +173,7 @@ function SecuritySettings({ botId }) {
             </div>
             <input
               onChange={(e) => setLimitMessage(e.target.value)}
+              value={limitMessage}
               placeholder="Too many messages in a row"
               className="h-[50px] p-2 w-full -mt-2 border-[1px] text-xs font-manrope border-gray-200 rounded-md"
             />
