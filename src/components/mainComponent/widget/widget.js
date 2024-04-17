@@ -7,6 +7,7 @@ import remarkHTML from "remark-html";
 import useWidgetStore from "../../../store/useWidgetStore";
 import SkeletonLoader from "../../skeleton";
 import { useSearchParams } from "next/navigation";
+import { toast } from "react-toastify";
 
 const Widget = ({ botId }) => {
   const chatContainerRef = useRef(null);
@@ -257,11 +258,34 @@ const ChatMessage = memo(({ message, isUser, theme }) => (
 
 ChatMessage.displayName = "ChatMessage";
 
-function LeadCollector({ title, collectEmail, collectName, collectPhone, setDisplay, theme }) {
+function LeadCollector({ title, collectEmail, collectName, collectPhone, setDisplay, theme, botId }) {
+  const [email, setEmail] = useState()
+  const [phone, setPhone] = useState()
+  const [name, setName] = useState()
+  const [loading, setLoading] = useState(false)
   const handleCancel = () => {
     setDisplay(false);
   };
-  console.log("Lead Form in View")
+
+  async function handleSubmitLead() {
+    setLoading(true)
+    const data = { name, email, phone }
+    const res = await fetch(`/api/v1/embed/${botId}/lead`, {
+      method: 'POST',
+      body: JSON.stringify(body)
+    })
+
+    const result = await res.json()
+    if (!res.ok) {
+      console.log(result)
+      setLoading(false)
+      return toast.error(result.message)
+    }
+
+    toast.error(result.message)
+    setLoading(false)
+    return handleCancel()
+  }
 
   return (
     <div className={`max-w-[85%] p-[10px] relative ${theme === "DARK" ? "bg-gray-800 text-zinc-100" : "bg-zinc-100 text-stone-900"} rounded-tl-[8px] rounded-r-[8px] text-start text-sm leading-snug `}>
@@ -274,9 +298,10 @@ function LeadCollector({ title, collectEmail, collectName, collectPhone, setDisp
       {collectName && (
         <div>
           <input
-            value={inputValue}
-            onChange={onInputChange}
-            type={type}
+            required={collectName}
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            type='text'
             className="h-10 w-full p-2 pl-10 bg-transparent border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             placeholder="What is your name? e.g John Deo"
           />
@@ -285,9 +310,10 @@ function LeadCollector({ title, collectEmail, collectName, collectPhone, setDisp
       {collectEmail && (
         <div>
           <input
-            value={inputValue}
-            onChange={onInputChange}
-            type={type}
+            required={collectEmail}
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            type="email"
             className="h-10 w-full p-2 pl-10 bg-transparent border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             placeholder="What is your email? e.g johndoe@gmail.com"
           />
@@ -296,14 +322,16 @@ function LeadCollector({ title, collectEmail, collectName, collectPhone, setDisp
       {collectPhone && (
         <div>
           <input
-            value={inputValue}
-            onChange={onInputChange}
-            type={type}
+            value={phone}
+            required={collectPhone}
+            onChange={(e) => setPhone(e.target.value)}
+            type='text'
             className="h-10 w-full p-2 pl-10 bg-transparent border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             placeholder="What is your phone number? e.g +1 0234 56789"
           />
         </div>
       )}
+      {(collectEmail || collectPhone || collectName) && <button disabled={loading} className="bg-[#74B4F1] disabled:cursor-not-allowed w-full flex flex-col item-center justify-center px-2 py-2" onClick={handleSubmitLead}>  Submit </button>}
     </div>
   );
 }
