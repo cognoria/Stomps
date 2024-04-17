@@ -99,8 +99,7 @@ const useBotMessagingStore = create(
       },
     }),
     {
-      name: "bot-messaging-store", // Name of the item in the storage (must be unique)
-      getStorage: () => sessionStorage, // Specify the storage mechanism (sessionStorage or localStorage)
+      name: "bot-messaging-store", 
     }
   )
 );
