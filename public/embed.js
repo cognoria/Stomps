@@ -75,6 +75,22 @@ async function embedChatbaseChatbot() {
     chatWindow.style.display = 'none';
     chatWindow.style.borderRadius = '30px';
 
+
+    // Add a container for the chatbot window
+    const bubbleContainer = document.createElement('div');
+    bubbleContainer.setAttribute('id', 'stomps-bubble-window');
+    bubbleContainer.style.display = 'block';
+    bubbleContainer.style.position = 'fixed';
+    bubbleContainer.style.zIndex = '2147483646';
+    bubbleContainer.style.bottom = window.innerWidth < 440 ? '60px' : '80px'
+    bubbleContainer.style.minWidth = 'fit-content';
+    if (widgetStyle?.placement.toLowerCase() === 'left') {
+        bubbleContainer.style.left = '16px';
+    } else {
+        bubbleContainer.style.right = '16px';
+    }
+    chatButton.appendChild(bubbleContainer);
+
     console.log({ origin })
     // Set the source URL for the chat window iframe
     chatWindow.src = `${stompsSrc}/widget/${chatbotId}?host=${origin}`;
@@ -103,9 +119,11 @@ async function embedChatbaseChatbot() {
     // Add event listeners for button hover
     chatButton.addEventListener('mouseenter', () => {
         chatButton.style.transform = 'scale(1.08)';
+        bubbleContainer.style.transform = 'scale(1)';
     });
     chatButton.addEventListener('mouseleave', () => {
         chatButton.style.transform = 'scale(1)';
+        bubbleContainer.style.transform = 'scale(1)';
     });
 
     function sendMessageIframe(message) {
@@ -146,11 +164,9 @@ async function embedChatbaseChatbot() {
     });
 
     // Append the initial chat messages
-    widgetStyle?.welcomeMessages.forEach((message, index) => {
+    widgetStyle?.welcomeMessages.reverse().forEach((message, index) => {
         const messageContainer = document.createElement('div');
         messageContainer.style.display = 'flex';
-        messageContainer.style.bottom = '60px'
-        messageContainer.style.zIndex = '99999999999'
         messageContainer.style.justifyContent =
             widgetStyle?.placement.toLowerCase() === 'left' ? 'flex-start' : 'flex-end';
 
@@ -167,12 +183,12 @@ async function embedChatbaseChatbot() {
         messageElement.style.opacity = '0';
         messageElement.style.transform = 'scale(0.8)';
         messageElement.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+        messageElement.style.minWidth = 'fit-content';
 
         messageElement.textContent = message;
-        console.log(message)
 
         messageContainer.appendChild(messageElement);
-        chatWindow.appendChild(messageContainer);
+        bubbleContainer.appendChild(messageContainer);
 
         // Show the initial messages after a delay
         if (widgetStyle?.popupDelay >= 0) {

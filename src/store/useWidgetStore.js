@@ -19,6 +19,7 @@ const useWidgetStore = create(
                 error: null,
                 messages: [],
                 chatbotStyle: null,
+                lastMsgTime: null,
               },
             },
           }));
@@ -53,9 +54,9 @@ const useWidgetStore = create(
               chatting: false,
               loading: false,
               error: null,
-              userData: null,
               messages: [],
               chatbotStyle: null,
+              lastMsgTime: null,
             },
           },
         }));
@@ -73,6 +74,11 @@ const useWidgetStore = create(
         get().updateChatbotState(botId, { chatting: false, ...currentState });
       },
 
+      resetError: (botId) => {
+        const currentState = get().getChatbotState(botId);
+        get().updateChatbotState(botId, { error: null, ...currentState });
+      },
+      
       // Function to get chat style for a specific chatbot ID
       getChatStyle: async (botId) => {
         get().updateChatbotState(botId, { loading: true, error: null });
@@ -93,37 +99,20 @@ const useWidgetStore = create(
         }
       },
 
-      refreshChat: async (botId) => {
-        const { messages } = get().getChatbotState(botId)
-        get().updateChatbotState(botId, {
-          messages: messages.length >= 1 ? messages.slice(0, 1) : [],
-        })
-      },
+      refreshChat: async (botId, automatic) => {
+        const { messages, lastMsgTime } = get().getChatbotState(botId)
+        const currentTime = new Date().getTime();
 
-      // Function to set user data
-      setUserData: async () => {
-        const currentState = get()
-        if (currentState.userData && currentState.userData.ip) return;
-        try {
-          const ipRes = await fetch("/api/v1/data/ip");
-          if (!ipRes.ok) {
-            throw new Error("Failed to fetch IP data");
+        if (automatic) {
+          get().updateChatbotState(botId, {
+            messages: messages.length >= 1 ? messages.slice(0, 1) : [],
+          })
+        } else {
+          if (lastMsgTime != null && currentTime > lastMsgTime + (2 * 60 * 60 * 1000)) {
+            get().updateChatbotState(botId, {
+              messages: [],
+            });
           }
-
-          const ipData = await ipRes.json();
-          const ipDetailsRes = await fetch(`https://ip-api.com/json/${ipData.ip}`);
-          if (!ipDetailsRes.ok) {
-            throw new Error("Failed to fetch IP details");
-          }
-
-          const ipDetailsData = await ipDetailsRes.json();
-          const { query, ...rest } = ipDetailsData;
-          const ipDetails = { ip: query, ...rest };
-          delete ipDetails.status;
-
-          set({ userData: ipDetails });
-        } catch (error) {
-          console.error("Error setting user data:", error);
         }
       },
 
@@ -140,11 +129,10 @@ const useWidgetStore = create(
         const currentState = get().getChatbotState(botId);
         get().updateChatbotState(botId, { messages: [...currentState.messages, data] });
 
-        get().updateChatbotState(botId, { loading: true, chatting: true, error: null });
+        get().updateChatbotState(botId, { loading: true, chatting: true, error: null, lastMsgTime: new Date().getTime() });
         get().startChatting(botId)
         try {
           const { messages } = get().getChatbotState(botId);
-          const userData = get().userData;
 
           const response = await fetch(`/api/v1/embed/${botId}/chat`, {
             method: "POST",
@@ -177,105 +165,3 @@ const useWidgetStore = create(
 );
 
 export default useWidgetStore;
-
-// const useWidgetStore_ = (chatbotId) =>
-//   create(
-//     persist(
-//       (set, get) => ({
-//         chatting: false,
-//         loading: false,
-//         error: null,
-//         userData: null,
-//         messages: [],
-//         chatbotStyle: null,
-
-//         chat: async ({ data }) => {
-//           set((state) => ({ messages: [...state.messages, data] }));
-//           set({ chatting: true, loading: true, error: null });
-
-//           try {
-//             const { messages, userData } = get();
-//             const response = await fetch(`/api/v1/embed/${chatbotId}/chat`, {
-//               method: "POST",
-//               headers: {
-//                 "Content-Type": "application/json",
-//               },
-//               body: JSON.stringify({ messages, userData }),
-//             });
-
-//             if (!response.ok) {
-//               throw new Error(data.message || "An error occurred");
-//             }
-
-//             const updatedMessage = await response.json();
-//             set((state) => ({
-//               chatting: false,
-//               loading: false,
-//               error: null,
-//               messages: [...state.messages, updatedMessage],
-//             }));
-
-//             return updatedMessage;
-//           } catch (error) {
-//             set({ chatting: false, loading: false, error: error.message });
-//             console.error("Failed to send message:", error);
-//             throw error;
-//           }
-//         },
-
-//         setUserData: async () => {
-//           const { userData } = get();
-//           if (userData && userData.ip) return;
-
-//           try {
-//             const ipRes = await fetch("/api/v1/data/ip");
-//             if (!ipRes.ok) {
-//               throw new Error("Failed to fetch IP data");
-//             }
-
-//             const ipData = await ipRes.json();
-//             const ipDetailsRes = await fetch(`http://ip-api.com/json/${ipData.ip}`);
-//             if (!ipDetailsRes.ok) {
-//               throw new Error("Failed to fetch IP details");
-//             }
-
-//             const ipDetailsData = await ipDetailsRes.json();
-//             const { query, ...rest } = ipDetailsData;
-//             const ipDetails = { ip: query, ...rest };
-//             delete ipDetails.status;
-//             set({ userData: ipDetails });
-//           } catch (error) {
-//             console.error("Error:", error);
-//           }
-//         },
-
-//         setIntialMsg: async (msg) => {
-//           set((state) => ({
-//             messages: [...state.messages, { role: "assistant", content: msg }],
-//           }));
-//         },
-
-//         getChatStyle: async () => {
-//           set({ loading: true, error: null });
-
-//           try {
-//             const response = await fetch(`/api/v1/embed/${chatbotId}/widget-style`, {
-//               method: "GET",
-//             });
-
-//             if (!response.ok) {
-//               throw new Error(data.message || "An error occurred");
-//             }
-
-//             const data = await response.json();
-//             set({ loading: false, chatbotStyle: data });
-//           } catch (error) {
-//             set({ chatting: false, loading: false, error: error.message });
-//             console.error("Failed to send message:", error);
-//             throw error;
-//           }
-//         },
-//       }),
-//       { name: `wgt-chat-store-${chatbotId}` }
-//     )
-//   );
