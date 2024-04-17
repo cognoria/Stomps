@@ -74,7 +74,7 @@ const Widget = ({ botId }) => {
   }, [error, botId, resetError])
 
   useEffect(() => {
-    if (lastMsgTime == undefined) resetChatbotState(botId)
+    // if (lastMsgTime == undefined) resetChatbotState(botId)
 
     const intervalId = setInterval(() => {
       refreshChat(botId);
