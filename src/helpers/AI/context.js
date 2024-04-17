@@ -25,7 +25,7 @@ export const getContext = async (message, pineconeIndex, owner, namespace, maxTo
   let docs = matches ? sortedMatches.map(match => (match.metadata).chunk) : [];
   // let docs = matches ? qualifyingDocs.map(match => (match.metadata).chunk) : [];
 
-  console.log({ docs })
+  // console.log({ docs })
   // Join all the chunks of text together, truncate to the maximum number of tokens, and return the result
   return docs.join("\n").substring(0, maxTokens)
 }

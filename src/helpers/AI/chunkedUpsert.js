@@ -2,6 +2,7 @@
 import { globalRepo } from "../server/repos/global-repo";
 import { getPineconeClient } from "./pinecone";
 import { AppServiceProviders } from "../enums";
+import PQueue from "p-queue"
 
 const sliceIntoChunks = (arr, chunkSize) => {
   return Array.from({ length: Math.ceil(arr.length / chunkSize) }, (_, i) =>
@@ -15,7 +16,7 @@ export const chunkedUpsert = async (index, vectors, chunkSize = 10, owner) => {
 
   if (!index) throw 'Cannot upsert without Index'
 
-  while(!(await checkIndexReady(pinecone, index))){
+  while (!(await checkIndexReady(pinecone, index))) {
     console.log(`Index '${index}' not ready. Retrying in 15 seconds...`);
     await new Promise(resolve => setTimeout(resolve, 15000));
   }
@@ -25,13 +26,13 @@ export const chunkedUpsert = async (index, vectors, chunkSize = 10, owner) => {
 
   // Split the vectors into chunks
   const chunks = sliceIntoChunks(vectors, chunkSize);
-
+  const queue = new PQueue({ concurrency: 20 });
   try {
     // Upsert each chunk of vectors into the index
     await Promise.allSettled(
       chunks.map(async (chunk) => {
         try {
-          await Index.upsert(chunk);
+          queue.add(await Index.upsert(chunk))
         } catch (e) {
           console.log('Error upserting chunk', e);
           throw new Error(e.message)

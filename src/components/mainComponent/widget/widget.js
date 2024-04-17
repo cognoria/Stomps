@@ -19,7 +19,7 @@ const Widget = ({ botId }) => {
   const searchParams = useSearchParams();
   const host = searchParams.get('host');
 
-  const { getChatbotState, getChatStyle, chat, refreshChat, setInitialMsg, resetChatbotState, resetError } = useWidgetStore(state => ({
+  const { getChatbotState, getChatStyle, chat, refreshChat, setInitialMsg, resetError } = useWidgetStore(state => ({
     chat: state.chat,
     userData: state.userData,
     resetError: state.resetError,
@@ -27,7 +27,6 @@ const Widget = ({ botId }) => {
     getChatStyle: state.getChatStyle,
     setInitialMsg: state.setInitialMsg,
     getChatbotState: state.getChatbotState,
-    resetChatbotState: state.resetChatbotState,
   }));
 
   const { messages, chatting, error, loading, chatbotStyle, lastMsgTime } =
@@ -81,7 +80,7 @@ const Widget = ({ botId }) => {
     return () => {
       clearInterval(intervalId);
     };
-  }, [refreshChat, botId, lastMsgTime, resetChatbotState])
+  }, [refreshChat, botId, lastMsgTime])
 
   useEffect(() => {
     chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
@@ -110,16 +109,17 @@ const Widget = ({ botId }) => {
   function handleCloseWidget() {
     window.parent.postMessage({ closeWidget: true }, '*');
   }
-  useEffect(() => {
 
+  useEffect(() => {
     if (chatbotStyle) {
       setShowLeadForm(chatbotStyle.collectEmail || chatbotStyle.collectName || chatbotStyle.collectPhone)
     }
   }, [chatbotStyle])
 
   useEffect(() => {
-    console.log(chatbotStyle, showLeadForm, chatbotStyle.collectEmail, chatbotStyle.collectName, chatbotStyle.collectPhone)
+    if(chatbotStyle)console.log(chatbotStyle, showLeadForm, chatbotStyle.collectEmail, chatbotStyle.collectName, chatbotStyle.collectPhone)
   }, [showLeadForm, chatbotStyle])
+
   return (
     <div
       className={`flex w-screen h-screen font-manrope flex-col items-start bg-transparent justify-center`}
