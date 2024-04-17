@@ -8,27 +8,29 @@ import useWidgetStore from "../../../store/useWidgetStore";
 import SkeletonLoader from "../../skeleton";
 import { useSearchParams } from "next/navigation";
 
-const Widget = ({ botId, cookies }) => {
+const Widget = ({ botId }) => {
   const chatContainerRef = useRef(null);
   const messageInputRef = useRef(null);
   const [messageInput, setMessageInput] = useState("");
   const [isWidget, setIsWidget] = useState(false)
   const [widgetTheme, setWidgetTheme] = useState('LIGHT')
+  const [showLeadForm, setShowLeadForm] = useState(false)
 
   const searchParams = useSearchParams();
   const host = searchParams.get('host');
 
-  const { getChatbotState, getChatStyle, chat, refreshChat, setUserData, setInitialMsg, userData } = useWidgetStore(state => ({
+  const { getChatbotState, getChatStyle, chat, refreshChat, setInitialMsg, resetChatbotState, resetError } = useWidgetStore(state => ({
     chat: state.chat,
     userData: state.userData,
+    resetError: state.resetError,
     refreshChat: state.refreshChat,
-    setUserData: state.setUserData,
     getChatStyle: state.getChatStyle,
     setInitialMsg: state.setInitialMsg,
     getChatbotState: state.getChatbotState,
+    resetChatbotState: state.resetChatbotState,
   }));
 
-  const { messages, chatting, error, loading, chatbotStyle } =
+  const { messages, chatting, error, loading, chatbotStyle, lastMsgTime } =
     getChatbotState(botId);
 
   useEffect(() => {
@@ -47,6 +49,9 @@ const Widget = ({ botId, cookies }) => {
         );
       });
     }
+    if (chatbotStyle) {
+      setShowLeadForm(chatbotStyle.collectEmail || chatbotStyle.collectName || chatbotStyle.collectPhone)
+    }
   }, [chatbotStyle, setInitialMsg, messages, botId]);
 
   useEffect(() => {
@@ -57,11 +62,30 @@ const Widget = ({ botId, cookies }) => {
     };
 
     window.addEventListener('message', handleMessage);
-
     return () => {
       window.removeEventListener('message', handleMessage);
     };
   }, [host]);
+
+  useEffect(() => {
+    if (error) {
+      setTimeout(() => resetError(botId), 5000)
+    }
+  }, [error, botId, resetError])
+
+  useEffect(() => {
+    if (lastMsgTime == undefined) resetChatbotState(botId)
+
+    const intervalId = setInterval(() => {
+      refreshChat(botId);
+    }, 10000);
+
+    return () => {
+      clearInterval(intervalId);
+    };
+  }, [refreshChat, botId, lastMsgTime, resetChatbotState])
+
+  // ///TODO: chathistory, collectLead
 
   useEffect(() => {
     chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
@@ -121,8 +145,8 @@ const Widget = ({ botId, cookies }) => {
             <p className="mx-3 text-red-500 font-manrope font-normal text-sm">
               {error && error}
             </p>{" "}
-            <Image width={20} height={20} onClick={() => refreshChat(botId)} className="hover:-rotate-90 cursor-pointer self-center" src="/images/chatbox/refresh.svg" alt="" />
-            {isWidget && <Image onClick={handleCloseWidget} width={30} height={30} className="hover:-rotate-90 self-center" src="/images/auth/close_button.svg" alt="" />}
+            <Image width={20} height={20} onClick={() => refreshChat(botId, true)} className="hover:-rotate-90 cursor-pointer self-center" src="/images/chatbox/refresh.svg" alt="" />
+            {isWidget && <Image onClick={handleCloseWidget} width={30} height={30} className="hover:-rotate-90 cursor-pointer self-center" src="/images/auth/close_button.svg" alt="" />}
           </div>
         </div>
         <div
@@ -144,9 +168,9 @@ const Widget = ({ botId, cookies }) => {
               <SkeletonLoader width={200} />
             </div>
           )}
-          {!chatting && messages.filter((msg) => msg.role === 'user').length > 1 && (chatbotStyle?.collectEmail || chatbotStyle?.collectName || chatbotStyle?.collectPhone) && (
+          {!chatting && showLeadForm && messages.filter((msg) => msg.role === 'user').length > 1 && (
             <div className="flex flex-col mt-[10px] items-start w-full justify-start">
-              <LeadCollector title={chatbotStyle?.leadMsgDescription} collectEmail={chatbotStyle?.collectEmail} collectName={chatbotStyle?.collectName} collectPhone={chatbotStyle?.collectPhone} />
+              <LeadCollector title={chatbotStyle?.leadMsgDescription} collectEmail={chatbotStyle?.collectEmail} collectName={chatbotStyle?.collectName} collectPhone={chatbotStyle?.collectPhone} setDisplay={setShowLeadForm} />
             </div>
           )}
         </div>
@@ -226,37 +250,88 @@ const ChatMessage = memo(({ message, isUser, theme }) => (
 
 ChatMessage.displayName = "ChatMessage";
 
-function LeadCollector({ title, collectEmail, collectName, collectPhone }) {
-  return <div className={`max-w-[85%] p-[10px] ${theme === "DARK"
-    ? "bg-gray-800 text-zinc-100"
-    : "bg-zinc-100 text-stone-900"} flex flex-col gap-2 rounded-tl-[8px] rounded-r-[8px] text-start text-sm leading-snug `}>
-    {title && <p className="font-bold text-lg">{title}</p>}
-    {collectName && <div>
-      <input
-        value={inputValue}
-        onChange={onInputChange}
-        type={type}
-        className="h-10 w-full p-2 pl-10 bg-transparent border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-        placeholder="what is your name? e.g John Deo"
-      />
+function LeadCollector({ title, collectEmail, collectName, collectPhone, setDisplay }) {
+  const handleCancel = () => {
+    setDisplay(false);
+  };
 
-    </div>}
-    {collectEmail && <div>
-      <input
-        value={inputValue}
-        onChange={onInputChange}
-        type={type}
-        className="h-10 w-full p-2 pl-10 bg-transparent border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-        placeholder="what is your name? e.g johndoe@gmail.com"
-      /></div>}
-    {collectPhone && <p>
-      <input
-        value={inputValue}
-        onChange={onInputChange}
-        type={type}
-        className="h-10 w-full p-2 pl-10 bg-transparent border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-        placeholder="what is your phone number? e.g +1 0234 56789"
-      /></p>}
-  </div>
+  return (
+    <div className={`max-w-[85%] p-[10px] relative ${theme === "DARK" ? "bg-gray-800 text-zinc-100" : "bg-zinc-100 text-stone-900"} rounded-tl-[8px] rounded-r-[8px] text-start text-sm leading-snug `}>
+      <button onClick={handleCancel} className="absolute top-2 right-2 text-gray-500 focus:outline-none">
+        <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+          <path fillRule="evenodd" d="M5.293 5.293a1 1 0 011.414 0L10 8.586l3.293-3.293a1 1 0 111.414 1.414L11.414 10l3.293 3.293a1 1 0 01-1.414 1.414L10 11.414l-3.293 3.293a1 1 0 01-1.414-1.414L8.586 10 5.293 6.707a1 1 0 010-1.414z" clipRule="evenodd" />
+        </svg>
+      </button>
+      {title && <p className="font-bold text-lg">{title}</p>}
+      {collectName && (
+        <div>
+          <input
+            value={inputValue}
+            onChange={onInputChange}
+            type={type}
+            className="h-10 w-full p-2 pl-10 bg-transparent border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            placeholder="What is your name? e.g John Deo"
+          />
+        </div>
+      )}
+      {collectEmail && (
+        <div>
+          <input
+            value={inputValue}
+            onChange={onInputChange}
+            type={type}
+            className="h-10 w-full p-2 pl-10 bg-transparent border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            placeholder="What is your email? e.g johndoe@gmail.com"
+          />
+        </div>
+      )}
+      {collectPhone && (
+        <div>
+          <input
+            value={inputValue}
+            onChange={onInputChange}
+            type={type}
+            className="h-10 w-full p-2 pl-10 bg-transparent border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            placeholder="What is your phone number? e.g +1 0234 56789"
+          />
+        </div>
+      )}
+    </div>
+  );
 }
+
+
+// function LeadCollector({ title, collectEmail, collectName, collectPhone, setDisplay }) {
+//   return <div className={`max-w-[85%] p-[10px] ${theme === "DARK"
+//     ? "bg-gray-800 text-zinc-100"
+//     : "bg-zinc-100 text-stone-900"} flex flex-col gap-2 rounded-tl-[8px] rounded-r-[8px] text-start text-sm leading-snug `}>
+//     {title && <p className="font-bold text-lg">{title}</p>}
+//     {collectName && <div>
+//       <input
+//         value={inputValue}
+//         onChange={onInputChange}
+//         type={type}
+//         className="h-10 w-full p-2 pl-10 bg-transparent border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+//         placeholder="what is your name? e.g John Deo"
+//       />
+
+//     </div>}
+//     {collectEmail && <div>
+//       <input
+//         value={inputValue}
+//         onChange={onInputChange}
+//         type={type}
+//         className="h-10 w-full p-2 pl-10 bg-transparent border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+//         placeholder="what is your name? e.g johndoe@gmail.com"
+//       /></div>}
+//     {collectPhone && <p>
+//       <input
+//         value={inputValue}
+//         onChange={onInputChange}
+//         type={type}
+//         className="h-10 w-full p-2 pl-10 bg-transparent border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+//         placeholder="what is your phone number? e.g +1 0234 56789"
+//       /></p>}
+//   </div>
+// }
 export default memo(Widget);

@@ -226,7 +226,14 @@ function generatePrompt(prompt, context, defaultAnswer) {
     return [
         {
             role: `system`,
-            content: `${prompt} As an assistant, your responses will be based only on the given data. Your answer must be short and concise. Your answers must be in markdown. START CONTEXT BLOCK ${context} END OF CONTEXT BLOCK Remember to not provide any additional information or answer from outside the given data. If you can't answer from the given data reply with predefined message "${defaultAnswer}"`
+            content: `${prompt} As an assistant, your responses will be based only on the given data. 
+            Your answer must be short and concise.
+            Your answers must be in markdown. \n
+            START CONTEXT BLOCK  \n
+            ${context}  \n
+            END OF CONTEXT BLOCK  \n
+            Remember to not provide any additional information or answer from outside the given data. 
+            If you can't answer from the given data reply with predefined message "${defaultAnswer}"`
         }
     ];
 }

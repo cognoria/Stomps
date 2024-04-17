@@ -21,6 +21,14 @@ async function embedChatbaseChatbot() {
   document.body.appendChild(bubbleContainer);
   document.body.appendChild(chatWindow);
 
+  window.addEventListener('message', function (event) {
+    if (event.origin !== stompsSrc) return;
+
+    if (event.data.closeWidget) {
+      toggleChatWindow(chatWindow, chatButton, bubbleContainer, widgetStyle)
+    }
+  });
+  
   window.embeddedChatbotConfig.embedded = true;
 }
 

@@ -21,6 +21,14 @@ async function embedChatbaseChatbot() {
   document.body.appendChild(bubbleContainer);
   document.body.appendChild(chatWindow);
 
+  window.addEventListener('message', function (event) {
+    if (event.origin !== stompsSrc) return;
+
+    if (event.data.closeWidget) {
+      toggleChatWindow(chatWindow, chatButton, bubbleContainer, widgetStyle)
+    }
+  });
+  
   window.embeddedChatbotConfig.embedded = true;
 }
 
@@ -41,6 +49,7 @@ function createChatButton(widgetStyle) {
   chatButton.style.alignItems = 'center';
   chatButton.style.justifyContent = 'center';
   chatButton.style.borderRadius = '50%';
+  chatButton.style.zIndex = '9999999999';
 
   if (widgetStyle.launcherIcon.startsWith("#")) {
     chatButton.style.backgroundColor = widgetStyle.launcherIcon;
@@ -76,6 +85,7 @@ function createChatWindow(widgetStyle, origin, stompsSrc, chatbotId) {
   chatWindow.style.maxWidth = '400px';
   chatWindow.style.height = '85vh';
   chatWindow.style.border = 'none';
+  chatWindow.style.zIndex = '9999999999';
   chatWindow.style.backgroundColor = widgetStyle.widgetTheme.toLowerCase() == "light" ? "white" : 'black';
   chatWindow.style.display = 'none';
   chatWindow.style.borderRadius = '30px';
