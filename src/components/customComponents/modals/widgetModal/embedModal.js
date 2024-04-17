@@ -23,7 +23,7 @@ function EmbbedModal({ botId }) {
   domain: "${window.origin}"
   }
 </script>
-<script src="/embed.js"
+<script src=""${window.origin}/embed.min.js"
   chatbotId="${botId}"
   domain="${window.origin}"
   defer>
@@ -69,12 +69,9 @@ function EmbbedModal({ botId }) {
           To add a chat bubble to the bottom right of your site, add this script
           tag to your HTML code.
         </div>
-        <div className="w-full px-6 py-2.5 bg-zinc-100 rounded-lg justify-center items-center gap-2.5 inline-flex">
-          <div className="grow shrink basis-0 text-black text-[11px] font-normal font-['Manrope'] leading-[3.70px]">
-            {/* Placeholder for the chatbot */}
-            <div className="text-black text-[14px] font-normal font-['Manrope'] ">
-              <CodeDisplay code={widgetCode} />
-            </div>
+        <div className="w-full py-2.5 bg-zinc-100 rounded-lg justify-center items-center gap-2.5 inline-flex">
+          <div className="text-black text-[14px] font-normal font-['Manrope'] ">
+            <CodeDisplay code={widgetCode} />
           </div>
         </div>
 

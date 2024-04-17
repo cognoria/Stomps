@@ -44,7 +44,9 @@ async function embedChatbaseChatbot() {
     }
   });
 
-  window.embeddedChatbotConfig.embedded = true;
+  if (window.embeddedChatbotConfig) {
+    window.embeddedChatbotConfig.embedded = true;
+  }
 }
 
 function createChatButton(widgetStyle) {
@@ -122,7 +124,7 @@ function createBubbleContainer(widgetStyle) {
   }
 
   // Add cancel icon
-  if (sessionStorage.getItem('message_bubbles_have_been_shown') != 'yes') {
+  if (!hasMessageBubblesBeenShown()) {
     const cancelIcon = document.createElement('div');
     cancelIcon.style.position = 'absolute';
     cancelIcon.style.top = '-12px';
@@ -238,12 +240,12 @@ function appendInitialMessages(bubbleContainer, widgetStyle, action) {
     if (widgetStyle?.popupDelay >= 0) {
       setTimeout(() => {
         if (window.innerWidth < 640) return;
-        if (sessionStorage.getItem('message_bubbles_have_been_shown') === 'yes') return;
+        if (hasMessageBubblesBeenShown()) return;
         messageElement.style.opacity = '1';
         messageElement.style.transform = 'scale(1)';
         messageElement.addEventListener('click', () => action());
         if (index === widgetStyle.welcomeMessages.length - 1) {
-          sessionStorage.setItem('message_bubbles_have_been_shown', 'yes');
+          setMessageBubblesShown();
         }
       }, widgetStyle?.popupDelay + index * 100);
     }
@@ -271,6 +273,13 @@ function getClosedChatHTML(buttonColor) {
   `;
 }
 
+function hasMessageBubblesBeenShown() {
+  return window.sessionStorage.getItem('message_bubbles_have_been_shown') === 'yes';
+}
+
+function setMessageBubblesShown() {
+  window.sessionStorage.setItem('message_bubbles_have_been_shown', 'yes');
+}
 function sendMessageIframe(message) {
   const iframe = document.getElementById('stomps-bubble-window');
   const childWindow = iframe.contentWindow;

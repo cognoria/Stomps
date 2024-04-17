@@ -172,11 +172,16 @@ function toggleChatWindow(chatWindow, chatButton, bubbleContainer, widgetStyle) 
     sendMessageIframe({ openChat: true });
   } else {
     chatButton.innerHTML = "";
-    const launcherIcon = document.createElement("img");
-    launcherIcon.src = widgetStyle.launcherIcon;
-    launcherIcon.style.width = window.innerWidth < 440 ? '40px' : '50px';
-    launcherIcon.style.height = window.innerWidth < 440 ? '40px' : '50px';
-    chatButton.appendChild(launcherIcon);
+    if (widgetStyle.launcherIcon.startsWith("#")) {
+      chatButton.style.backgroundColor = widgetStyle.launcherIcon;
+      chatButton.style.color = 'white';
+    } else {
+      const launcherIcon = document.createElement("img");
+      launcherIcon.src = widgetStyle.launcherIcon;
+      launcherIcon.style.width = window.innerWidth < 440 ? '40px' : '50px';
+      launcherIcon.style.height = window.innerWidth < 440 ? '40px' : '50px';
+      chatButton.appendChild(launcherIcon);
+    }
     chatWindow.style.opacity = '1';
     chatWindow.style.transform = 'translateY(0)';
     chatWindow.style.transition = 'opacity 0.3s ease, transform 0.3s ease';

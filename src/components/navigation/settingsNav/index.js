@@ -37,7 +37,7 @@ function ChatbotNav() {
   };
 
   async function makePublic() {
-    if (chatbot.visibility == 'PRIVATE') return;
+    if (chatbot.visibility == 'PUBLIC') return;
     const res = await fetch(`api/v1/chatbot/${id}/setting/set-public`)
     const data = await res.json();
     if (!res.ok) {
