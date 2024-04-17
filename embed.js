@@ -29,13 +29,27 @@ async function embedChatbaseChatbot() {
     }
   });
   
+  // Handle window resize events
+  window.addEventListener('resize', () => {
+    if (window.innerWidth < 440) {
+      chatWindow.style.right = '5%';
+      chatWindow.style.bottom = '60px'
+      chatButton.style.width = '50px';
+      chatButton.style.height = '50px';
+    } else {
+      chatWindow.style.right = '50px';
+      chatWindow.style.bottom = '80px'
+      chatButton.style.width = '60px';
+      chatButton.style.height = '60px';
+    }
+  });
+
   window.embeddedChatbotConfig.embedded = true;
 }
 
 function createChatButton(widgetStyle) {
   const chatButton = document.createElement('div');
   chatButton.setAttribute('id', 'stomps-bubble-button');
-  // Styling for the chat button
   chatButton.style.position = 'fixed';
   chatButton.style.bottom = '16px';
   if (widgetStyle?.placement.toLowerCase() === 'left') {
@@ -86,7 +100,7 @@ function createChatWindow(widgetStyle, origin, stompsSrc, chatbotId) {
   chatWindow.style.height = '85vh';
   chatWindow.style.border = 'none';
   chatWindow.style.zIndex = '9999999999';
-  chatWindow.style.backgroundColor = widgetStyle.widgetTheme.toLowerCase() == "light" ? "white" : 'black';
+  chatWindow.style.backgroundColor = widgetStyle.widgetTheme.toLowerCase() === 'dark' ? '#333' : '#fff';
   chatWindow.style.display = 'none';
   chatWindow.style.borderRadius = '30px';
   return chatWindow;
@@ -96,7 +110,7 @@ function createBubbleContainer(widgetStyle) {
   const bubbleContainer = document.createElement('div');
   bubbleContainer.setAttribute('id', 'stomps-bubble-container');
   bubbleContainer.style.minWidth = 'fit-content';
-  // Add more styles to the bubble container
+
   bubbleContainer.style.display = 'block';
   bubbleContainer.style.position = 'fixed';
   bubbleContainer.style.zIndex = '2147483646';
@@ -107,8 +121,8 @@ function createBubbleContainer(widgetStyle) {
     bubbleContainer.style.right = '16px';
   }
 
+  // Add cancel icon
   if (sessionStorage.getItem('message_bubbles_have_been_shown') != 'yes') {
-    // Add cancel icon
     const cancelIcon = document.createElement('div');
     cancelIcon.style.position = 'absolute';
     cancelIcon.style.top = '-12px';

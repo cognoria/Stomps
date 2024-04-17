@@ -28,14 +28,28 @@ async function embedChatbaseChatbot() {
       toggleChatWindow(chatWindow, chatButton, bubbleContainer, widgetStyle)
     }
   });
-  
+    
+  // Handle window resize events
+  window.addEventListener('resize', () => {
+    if (window.innerWidth < 440) {
+      chatWindow.style.right = '5%';
+      chatWindow.style.bottom = '60px'
+      chatButton.style.width = '50px';
+      chatButton.style.height = '50px';
+    } else {
+      chatWindow.style.right = '50px';
+      chatWindow.style.bottom = '80px'
+      chatButton.style.width = '60px';
+      chatButton.style.height = '60px';
+    }
+  });
+
   window.embeddedChatbotConfig.embedded = true;
 }
 
 function createChatButton(widgetStyle) {
   const chatButton = document.createElement('div');
   chatButton.setAttribute('id', 'stomps-bubble-button');
-  // Styling for the chat button
   chatButton.style.position = 'fixed';
   chatButton.style.bottom = '16px';
   if (widgetStyle?.placement.toLowerCase() === 'left') {
