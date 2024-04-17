@@ -34,6 +34,20 @@ const options = {
       text: "Chat Analytics Data",
     },
   },
+  scales: {
+    x: {
+      title: {
+        display: true,
+        text: "Chatbot data collection date", // Add your descriptive label for the x-axis here
+      },
+    },
+    y: {
+      title: {
+        display: true,
+        text: "Chatbot data collection count", // Add your descriptive label for the y-axis here
+      },
+    },
+  },
   scale: {
     ticks: {
       precision: 0,
