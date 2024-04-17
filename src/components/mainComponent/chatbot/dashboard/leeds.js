@@ -18,7 +18,7 @@ function Leeds({ botId }) {
     getChatbotLead(botId);
   }, [botId, getChatbotLead]);
   const [filteredLeads, setFilteredLeads] = useState(leads);
-  console.log(filteredLeads);
+
   useEffect(() => {
     // Filter chats based on selected date
     if (selectedDate) {

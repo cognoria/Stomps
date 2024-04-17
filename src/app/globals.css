@@ -87,6 +87,7 @@ html {
   display: none; /* Hide the default arrow */
 }
 
+
 /* Input Text */
 .custom-date-input::after {
   margin-left: 0.625rem;

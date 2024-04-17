@@ -21,12 +21,9 @@ function Chat_logs({ botId }) {
   const [selectedDate, setSelectedDate] = useState(null);
   const [FilteredChats, setFilteredChats] = useState(chats);
 
-  console.log(selectedDate);
-
   useEffect(() => {
     getChatbotChats(botId);
   }, [botId, getChatbotChats]);
-  console.log(chats);
 
   useEffect(() => {
     if (selectedDate) {
