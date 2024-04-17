@@ -74,8 +74,6 @@ const Widget = ({ botId }) => {
   }, [error, botId, resetError])
 
   useEffect(() => {
-    // if (lastMsgTime == undefined) resetChatbotState(botId)
-
     const intervalId = setInterval(() => {
       refreshChat(botId);
     }, 10000);
@@ -84,8 +82,6 @@ const Widget = ({ botId }) => {
       clearInterval(intervalId);
     };
   }, [refreshChat, botId, lastMsgTime, resetChatbotState])
-
-  // ///TODO: chathistory, collectLead
 
   useEffect(() => {
     chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
@@ -117,11 +113,10 @@ const Widget = ({ botId }) => {
 
   return (
     <div
-      className={`flex w-screen h-screen font-manrope flex-col items-start  ${widgetTheme === "DARK" ? "bg-black" : "bg-transparent"
-        } justify-center`}
+      className={`flex w-screen h-screen font-manrope flex-col items-start bg-transparent justify-center`}
     >
       <div className="w-full h-full items-start flex-col">
-        <div className={`flex ${widgetTheme === "DARK" ? "bg-black" : "bg-white"} fixed border-b-[1px] h-[8%] border-gray-200 flex-row  px-4 py-2 w-full flex-start items-start justify-between`}>
+        <div className={`flex ${widgetTheme === "DARK" ? "bg-[#333]" : "bg-[#fff]"} fixed border-b-[1px] h-[8%] border-gray-200 flex-row  px-4 py-2 w-full flex-start items-start justify-between`}>
           <div className="flex flex-row items-center h-full gap-x-4">
             {chatbotStyle?.profileImage && (
               <Image
@@ -168,7 +163,7 @@ const Widget = ({ botId }) => {
               <SkeletonLoader width={200} />
             </div>
           )}
-          {!chatting && showLeadForm && messages.filter((msg) => msg.role === 'user').length > 1 && (
+          {!chatting && showLeadForm && (
             <div className="flex flex-col mt-[10px] items-start w-full justify-start">
               <LeadCollector title={chatbotStyle?.leadMsgDescription} collectEmail={chatbotStyle?.collectEmail} collectName={chatbotStyle?.collectName} collectPhone={chatbotStyle?.collectPhone} setDisplay={setShowLeadForm} />
             </div>
@@ -254,6 +249,7 @@ function LeadCollector({ title, collectEmail, collectName, collectPhone, setDisp
   const handleCancel = () => {
     setDisplay(false);
   };
+  console.log("Lead Form in View")
 
   return (
     <div className={`max-w-[85%] p-[10px] relative ${theme === "DARK" ? "bg-gray-800 text-zinc-100" : "bg-zinc-100 text-stone-900"} rounded-tl-[8px] rounded-r-[8px] text-start text-sm leading-snug `}>

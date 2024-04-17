@@ -28,7 +28,7 @@ async function embedChatbaseChatbot() {
       toggleChatWindow(chatWindow, chatButton, bubbleContainer, widgetStyle)
     }
   });
-  
+
   // Handle window resize events
   window.addEventListener('resize', () => {
     if (window.innerWidth < 440) {
