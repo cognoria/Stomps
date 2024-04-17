@@ -7,7 +7,7 @@ export const websiteRepo = {
 }
 
 async function getUrls(type, url) {
-    if(!type || !url) throw 'url type and url are required';
+    if (!type || !url) throw 'url type and url are required';
     // console.log(await deletePincone())
     switch (type) {
         case 'sitemap':
@@ -31,18 +31,18 @@ async function getWebLinksFromUrl(url) {
     const Urls = new Set();
     Urls.add(url)
 
-    // Find all anchor tags
-    $('a').each((index, element) => {
-      const href = $(element).attr('href');
-
-      // Check if the href is a relative URL
-      if (href && !/^(https?:\/\/|\/\/|#|.*\.(png|jpg|jpeg|gif|svg))$/i.test(href) && !href.includes("#")) {
-        const completeUrl = new URL(href, baseUrl).href;
-        Urls.add(completeUrl);
-      }
+    $('a[target="_blank"], a').each((_, element) => {
+        const href = $(element).attr('href');
+        if (href && !/^(https?:\/\/|\/\/|#|.*\.(png|jpg|jpeg|gif|svg))$/i.test(href)) {
+            // Check if the URL has a query parameter or a hash fragment
+            if (!href.includes('?') && !href.includes('#')) {
+                const completeUrl = new URL(href, baseUrl).href;
+                Urls.add(completeUrl);
+            }
+        }
     });
-    
-    return Array.from(Urls); 
+
+    return Array.from(Urls);
 }
 
 async function getWebLinksFromSiteMap(url) {

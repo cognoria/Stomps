@@ -120,18 +120,18 @@ export class Crawler {
     _extractUrls(html, baseUrl) {
         const $ = cheerio.load(html);
         const uniqueUrls = new Set();
-      
+
         $('a[target="_blank"], a').each((_, element) => {
-          const href = $(element).attr('href');
-          if (href && !/^(https?:\/\/|\/\/|#|.*\.(png|jpg|jpeg|gif|svg))$/i.test(href)) {
-            // Check if the URL has a query parameter or a hash fragment
-            if (!href.includes('?') && !href.includes('#')) {
-              const completeUrl = new URL(href, baseUrl).href;
-              uniqueUrls.add(completeUrl);
+            const href = $(element).attr('href');
+            if (href && !/^(https?:\/\/|\/\/|#|.*\.(png|jpg|jpeg|gif|svg))$/i.test(href)) {
+                // Check if the URL has a query parameter or a hash fragment
+                if (!href.includes('?') && !href.includes('#')) {
+                    const completeUrl = new URL(href, baseUrl).href;
+                    uniqueUrls.add(completeUrl);
+                }
             }
-          }
         });
-      
+
         return Array.from(uniqueUrls);
-      }
+    }
 }
