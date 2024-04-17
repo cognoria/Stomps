@@ -23,7 +23,6 @@ function Analytics({ botId }) {
   const country = analytics?.chatsPerCountry?.map((item) => item.country);
   const count = analytics?.chatsPerCountry?.map((item) => item.count);
 
-  console.log(dataValue);
 
   const chartData = {
     labels: label,
@@ -38,7 +37,7 @@ function Analytics({ botId }) {
     ],
   };
 
-  console.log(analytics);
+
 
   // map data Structure
 

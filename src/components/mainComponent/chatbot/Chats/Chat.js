@@ -212,10 +212,8 @@ function Chat({ id, status }) {
 
   async function sendMessage(e) {
     e.preventDefault();
-
     if (!messageInput.trim()) return; // Prevent sending empty messages
     setMessageInput("");
-
     try {
       const data = {
         role: "user",
@@ -233,17 +231,12 @@ function Chat({ id, status }) {
 
   const bots = useBotMessagingStore((state) => state.bots);
 
-  // Log the bots object when the component mounts
-  useEffect(() => {
-    console.log("Bots:", bots);
-  }, []);
-
   return (
     <div className="border-[1px] w-full lg:w-[53%] h-[588px] border-gray-200  items-start flex-col ">
       <div className="flex border-b-[1px] border-gray-200 flex-row  p-4 w-full flex-end items-end justify-end">
         <p className="mx-3 text-red-500 font-manrope font-normal text-sm">
           {error && error}
-        </p>{" "}
+        </p>
         <img src="/images/chatbox/refresh.svg" alt="" />
       </div>
       <div

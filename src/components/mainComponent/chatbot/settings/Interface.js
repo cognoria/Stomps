@@ -80,111 +80,91 @@ function InterfaceSettings({ botId }) {
     chatbot?.chatBotCustomizeData.launcherIcon
   );
   const [chatIconName, setChatIconName] = useState("");
+  const [imgFile, setImgFile] = useState(null);
   const handleChatIconChange = async (event) => {
     const file = event.target.files[0];
-    if (usePlainColor) {
-      setChatIcon(imageColour);
-    } else {
-      if (file) {
-        try {
-          setChatIconName(file.name);
-          const base64String = await convertImageToBase64(file);
+    if (file) {
+      try {
+        setChatIconName(file.name);
+        const base64String = await convertImageToBase64(file);
 
-          setChatIcon(base64String);
-        } catch (error) {
-          console.error("Error converting image to base64:", error);
-        }
+        setImgFile(base64String);
+      } catch (error) {
+        console.error("Error converting image to base64:", error);
       }
     }
   };
+
+  useEffect(() => {
+    if (usePlainColor) {
+      setChatIcon(imageColour);
+    } else if (!usePlainColor && !imgFile) {
+      setChatIcon(chatbot ? chatbot?.chatBotCustomizeData.launcherIcon : "");
+    } else {
+      setChatIcon(imgFile);
+    }
+  }, [chatbot, imageColour, imgFile, usePlainColor]);
   //chat Icon
 
-  // Function to handle adding a new suggested message
-  // const suggestedMsgValue =
-  //   chatbot?.chatBotCustomizeData?.questionExamples || [];
-  // const defaultSuggestedMessages = suggestedMsgValue.map(
-  //   (question) => question.question
-  // );
   const [suggestedMessages, setSuggestedMessages] = useState();
-  // defaultSuggestedMessages || []
-  const [suggestDisplay, setSuggestDisplay] = useState();
+  const [suggestMsgArr, setSuggestMsgArr] = useState();
 
-  const divRef = useRef(null);
-
-  const handleAddMessage = () => {
-    const content = divRef.current.textContent;
-    if (content.trim() !== "") {
-      setSuggestedMessages((prevMessages) => [...prevMessages, content]);
-      divRef.current.textContent = ""; // Clear the editable div after adding the message
-    }
-  };
-  // suggested text
-
-  // auto update msg
-
-  // const handleKeyPress = (event) => {
-  //   if (event.key === "Enter") {
-  //     event.preventDefault();
-  //     const content = divRef.current.textContent.trim();
-  //     if (content !== "") {
-  //       setSuggestedMessages((prevMessages) => [...prevMessages, content]);
-  //       // Do not clear the input field after adding the message
-  //     }
-  //   }
-  // };
-
-  const handleInput = (e) => {
-    e.preventDefault();
-    // Update suggested messages based on the current content of the div
-    const newContent = divRef.current.textContent.trim();
-    const newMessages = newContent
-      .split("\n")
-      .filter((message) => message.trim() !== "");
-
-    setSuggestedMessages(newMessages);
-  };
-
-  /// end of auto update msg
   useEffect(() => {
     if (chatbot) {
       setAlignChat(chatbot.chatBotCustomizeData.placement);
       setAutoShowMsg(chatbot.chatBotCustomizeData.popupDelay);
       setChatIcon(chatbot.chatBotCustomizeData.launcherIcon);
       setProfileImg(chatbot.chatBotCustomizeData.profileImage);
-      setSuggestedMessages(chatbot.chatBotCustomizeData.questionExamples);
+      setSuggestMsgArr(chatbot.chatBotCustomizeData.questionExamples);
+      const dbMsgStringArr = chatbot.chatBotCustomizeData.questionExamples.map(
+        (message) => message.question
+      );
+      setSuggestedMessages(dbMsgStringArr.join("\n"));
       setDisplayName(chatbot.chatBotCustomizeData.assistantTabHeader);
       setSelectedTheme(chatbot.chatBotCustomizeData.widgetTheme);
       setMsgPlaceholder(chatbot.chatBotCustomizeData.chatInputPlaceholderText);
       setInitialMsg(chatbot.chatBotCustomizeData.welcomeMessage);
-
-      const msgs = chatbot.chatBotCustomizeData.questionExamples
-        .map((question) => question.question)
-        .join("\n");
     }
   }, [chatbot]);
 
-  //bot Data Submission
-  const botData = {
-    initialMsg: initialMsg,
-    suggestedMsgs: suggestedMessages?.map((message) => ({
-      question: message,
-    })),
-    msgPlaceholder: msgPlaceholder,
-    theme: selectedTheme,
-    // chatColor: chatColour,
-    displayName: displayName,
-    chatIcon: chatIcon,
-    alignChatButton: alignChat,
-    autoShowMsg: autoShowMsg,
-    profileImage: profileImg,
-  };
+  useEffect(() => {
+    if (suggestedMessages) {
+      const msgArr = suggestedMessages?.split("\n")?.map((message) => ({
+        question: message,
+      }));
+      setSuggestMsgArr(msgArr);
+    }
+  }, [suggestedMessages]);
+
   const handleSubmitChatInterface = () => {
+    const botData = {
+      initialMsg: initialMsg,
+      suggestedMsgs: suggestMsgArr,
+      msgPlaceholder: msgPlaceholder,
+      theme: selectedTheme,
+      displayName: displayName,
+      chatIcon: chatIcon,
+      alignChatButton: alignChat,
+      autoShowMsg: autoShowMsg,
+      profileImage: profileImg,
+    };
+
+    // console.log(botData);
+
     updateInterface({ botData, botId }, async () => {
       await getChatbot(botId);
     });
   };
 
-  // console.log(chatbot);
+  const containerRef = useRef(null);
+  const [showScrollArrow, setShowScrollArrow] = useState(false);
+
+  useEffect(() => {
+    const container = containerRef.current;
+    if (container) {
+      setShowScrollArrow(container.scrollWidth > container.clientWidth);
+    }
+  }, []);
   return (
     <div className="w-full px-3 lg:p-[6%]  flex flex-col overflow-x-hidden items-center justify-center ">
       <div className="flex w-full flex-col items-center  justify-center border-gray-200 border-[1px] gap-4 rounded-t-md ">
@@ -225,7 +205,7 @@ function InterfaceSettings({ botId }) {
 
               <textarea
                 value={suggestedMessages}
-                onChange={() => setSuggestedMessages(e.target.value)}
+                onChange={(e) => setSuggestedMessages(e.target.value)}
                 className="max-h-[150px] lg:w-full max-w-full overflow-auto p-2 border border-gray-200 rounded-md"
                 placeholder={"example email.com"}
               ></textarea>
@@ -330,7 +310,7 @@ function InterfaceSettings({ botId }) {
                 className="h-[50px] p-2 w-full -mt-2 border-[1px] text-xs font-manrope border-gray-200 rounded-md"
               />
             </div>
-            <div className="flex gap-y-4 w-full flex-col items-start p-3">
+            {/* <div className="flex gap-y-4 w-full flex-col items-start p-3">
               <div className="text-zinc-800 flex flex-row  items-center gap-4 text-[10px]  font-bold font-manrope leading-[14px] tracking-tight">
                 <p>User Chat color</p>
 
@@ -342,7 +322,7 @@ function InterfaceSettings({ botId }) {
                 selectedColor={chatColour}
                 onColorChange={(e) => setChatColour(e.target.value)}
               />
-            </div>
+            </div> */}
             <div className="flex gap-y-4 w-full flex-col items-start p-3">
               <div className="text-zinc-800 text-[10px]  font-bold font-manrope leading-[14px] tracking-tight">
                 Upload Chat icon
@@ -491,22 +471,40 @@ function InterfaceSettings({ botId }) {
                 </div>
               </div>
 
-              <div className="flex flex-row w-full px-4 overflow-x-scroll h-[7%] items-start justify-start gap-x-3">
-                {suggestedMessages &&
-                  suggestedMessages?.map((msg, i) => {
-                    return (
-                      <p
-                        className={`rounded-lg p-1 text-sm text-center whitespace-nowrap ${
-                          selectedTheme === "DARK"
-                            ? "bg-gray-800 hover:bg-gray-600 text-zinc-100"
-                            : "bg-sky-700 text-white"
-                        } `}
-                        key={i}
-                      >
-                        {msg.question}
-                      </p>
-                    );
-                  })}
+              <div className="w-full flex flex-row items-center">
+                <div
+                  ref={containerRef}
+                  className="flex flex-row w-full px-4 overflow-x-scroll h-[7%] items-start justify-start gap-x-3"
+                >
+                  {suggestMsgArr &&
+                    suggestMsgArr?.map((msg, i) => {
+                      return (
+                        <p
+                          className={`rounded-lg p-1 text-sm text-center whitespace-nowrap ${
+                            selectedTheme === "DARK"
+                              ? "bg-gray-800 hover:bg-gray-600 text-zinc-100"
+                              : "bg-sky-700 text-white"
+                          } `}
+                          key={i}
+                        >
+                          {msg.question}
+                        </p>
+                      );
+                    })}
+                </div>
+                {showScrollArrow && (
+                  <button
+                    className="bg-transparent text-gray-400 w-auto px-2 "
+                    onClick={() =>
+                      containerRef.current.scrollBy({
+                        left: 100,
+                        behavior: "smooth",
+                      })
+                    }
+                  >
+                    &rarr;
+                  </button>
+                )}
               </div>
 
               <div className="w-full h-[12%] relative p-2 items-center flex-col  flex">

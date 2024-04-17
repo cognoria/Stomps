@@ -5,7 +5,6 @@ const useBotMessagingStore = create(
   persist(
     (set) => ({
       bots: {}, // Object to store chat data for each bot
-
       chat: async ({ id, data }) => {
         // Ensure bots[id] exists, initialize it if not
         if (!useBotMessagingStore.getState().bots[id]) {
@@ -21,7 +20,6 @@ const useBotMessagingStore = create(
             },
           }));
         }
-
         // Update chatMessages and set loading and chatting to true
         set((state) => ({
           bots: {
@@ -35,12 +33,9 @@ const useBotMessagingStore = create(
             },
           },
         }));
-
         try {
           // Access chatMessages after the state update
           const msg = useBotMessagingStore.getState().bots[id].chatMessages;
-          // console.log(msg);
-          // Send message to the server
           const response = await fetch(`/api/v1/chatbot/${id}/chat`, {
             method: "POST",
             headers: {
@@ -50,7 +45,7 @@ const useBotMessagingStore = create(
           });
 
           if (!response.ok) {
-            throw new Error("Failed to send message");
+            throw new Error(data.message || "An error occurred");
           }
 
           const updatedMessage = await response.json();
@@ -84,7 +79,6 @@ const useBotMessagingStore = create(
             },
           }));
 
-          console.error("Failed to send message:", error);
           throw error;
         }
       },
@@ -93,7 +87,6 @@ const useBotMessagingStore = create(
         set((state) => {
           const newBots = { ...state.bots };
           delete newBots[id];
-          // console.log("New bots state after removal:", newBots);
           return { bots: newBots };
         });
       },

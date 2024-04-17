@@ -42,7 +42,6 @@ const options = {
 };
 
 export function Chart_page({ data, count, country }) {
-  console.log(data);
   return (
     <div className="w-[90%] flex flex-col overflow-hidden">
       <Line options={options} data={data} />
