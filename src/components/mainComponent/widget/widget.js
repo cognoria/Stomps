@@ -176,7 +176,7 @@ const Widget = ({ botId }) => {
               <SkeletonLoader width={200} />
             </div>
           )}
-          {showLeadForm && !chatting && messages?.filter((msg) => msg.role === 'user').length > 1 && (
+          {showLeadForm && !chatting && messages?.filter((msg) => msg.role === 'user').length > 0 && (
             <div className="flex flex-col mt-[10px] items-start w-full justify-start">
               <LeadCollector theme={widgetTheme} botId={botId} title={chatbotStyle?.leadMsgDescription} collectEmail={chatbotStyle?.collectEmail} collectName={chatbotStyle?.collectName} collectPhone={chatbotStyle?.collectPhone} setDisplay={setShowLeadForm} />
             </div>
@@ -282,7 +282,7 @@ function LeadCollector({ title, collectEmail, collectName, collectPhone, setDisp
       return toast.error(result.message)
     }
 
-    toast.error(result.message)
+    toast.success(result.message)
     setLoading(false)
     return handleCancel()
   }
