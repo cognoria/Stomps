@@ -307,8 +307,8 @@ async function updateKnowledgebase(chatbotId, params) {
 async function getChatbotInterface(chatbotId) {
     if (!chatbotId || chatbotId == 'undefined') throw 'Please provide a valid bot id'
     const chatbot = await Chatbot.findById(chatbotId).select("+chatBotCustomizeData visibility status").lean()
-    // if (!chatbot || chatbot.visibility == "PRIVATE") throw "chatbot not found"
-    // if (chatbot.status != KnowledgebaseStatus.READY) throw "chatbot not ready"
-
+    if (!chatbot || chatbot.visibility == "PRIVATE") throw "chatbot not found"
+    if (chatbot.status != KnowledgebaseStatus.READY) throw "chatbot not ready"
+    console.log("chatbot style", chatbot.chatBotCustomizeData)
     return { ...chatbot.chatBotCustomizeData }
 }
