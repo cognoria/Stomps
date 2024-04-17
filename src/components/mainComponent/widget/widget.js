@@ -117,7 +117,7 @@ const Widget = ({ botId }) => {
   }, [chatbotStyle])
 
   useEffect(() => {
-    if(chatbotStyle)console.log(chatbotStyle, showLeadForm, chatbotStyle.collectEmail, chatbotStyle.collectName, chatbotStyle.collectPhone)
+    if (chatbotStyle) console.log(chatbotStyle, showLeadForm, chatbotStyle.collectEmail, chatbotStyle.collectName, chatbotStyle.collectPhone)
   }, [showLeadForm, chatbotStyle])
 
   return (
@@ -127,7 +127,10 @@ const Widget = ({ botId }) => {
       <div className="w-full h-full items-start flex-col">
         <div className={`flex ${widgetTheme === "DARK" ? "bg-[#333]" : "bg-[#fff]"} fixed border-b-[1px] h-[8%] border-gray-200 flex-row  px-4 py-2 w-full flex-start items-start justify-between`}>
           <div className="flex flex-row items-center h-full gap-x-4">
-            {chatbotStyle?.profileImage && (
+            {chatbotStyle?.profileImage.startsWith("#") && (
+              <div className={`h-12 w-12 rounded-full bg-[${chatbotStyle.profileImage}]`} />
+            )}
+            {chatbotStyle?.profileImage.startsWith("data:image") && (
               <Image
                 width={30}
                 height={30}

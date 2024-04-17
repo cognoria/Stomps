@@ -108,7 +108,7 @@ const useWidgetStore = create(
             messages: messages.length >= 1 ? messages.slice(0, 1) : [],
           })
         } else {
-          if (currentTime > lastMsgTime + (2 * 60 * 60 * 1000)) {
+          if (lastMsgTime != null && currentTime > lastMsgTime + (2 * 60 * 60 * 1000)) {
             get().updateChatbotState(botId, {
               messages: [],
             });
