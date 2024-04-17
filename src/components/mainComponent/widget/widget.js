@@ -272,7 +272,7 @@ function LeadCollector({ title, collectEmail, collectName, collectPhone, setDisp
     const data = { name, email, phone }
     const res = await fetch(`/api/v1/embed/${botId}/lead`, {
       method: 'POST',
-      body: JSON.stringify(body)
+      body: JSON.stringify(data)
     })
 
     const result = await res.json()
@@ -331,7 +331,7 @@ function LeadCollector({ title, collectEmail, collectName, collectPhone, setDisp
           />
         </div>
       )}
-      {(collectEmail || collectPhone || collectName) && <button disabled={loading} className="bg-[#74B4F1] disabled:cursor-not-allowed w-full flex flex-col item-center justify-center px-2 py-2" onClick={handleSubmitLead}>  Submit </button>}
+      {(collectEmail || collectPhone || collectName) && <button disabled={loading} className="bg-[#74B4F1] disabled:cursor-not-allowed w-full flex flex-col item-center justify-center px-2 py-2" onClick={handleSubmitLead}> Submit </button>}
     </div>
   );
 }
