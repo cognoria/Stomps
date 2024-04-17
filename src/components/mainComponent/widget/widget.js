@@ -175,7 +175,7 @@ const Widget = ({ botId }) => {
               <SkeletonLoader width={200} />
             </div>
           )}
-          {showLeadForm && !chatting && (
+          {showLeadForm && !chatting && messages?.filter((msg) => msg.role === 'user').length > 1 && (
             <div className="flex flex-col mt-[10px] items-start w-full justify-start">
               <LeadCollector theme={widgetTheme} title={chatbotStyle?.leadMsgDescription} collectEmail={chatbotStyle?.collectEmail} collectName={chatbotStyle?.collectName} collectPhone={chatbotStyle?.collectPhone} setDisplay={setShowLeadForm} />
             </div>
