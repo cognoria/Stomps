@@ -118,7 +118,7 @@ const Widget = ({ botId }) => {
   }, [chatbotStyle])
 
   useEffect(() => {
-    console.log(showLeadForm, chatbotStyle.collectEmail, chatbotStyle.collectName, chatbotStyle.collectPhone)
+    console.log(chatbotStyle, showLeadForm, chatbotStyle.collectEmail, chatbotStyle.collectName, chatbotStyle.collectPhone)
   }, [showLeadForm, chatbotStyle])
   return (
     <div
