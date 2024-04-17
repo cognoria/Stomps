@@ -110,7 +110,16 @@ const Widget = ({ botId }) => {
   function handleCloseWidget() {
     window.parent.postMessage({ closeWidget: true }, '*');
   }
+  useEffect(() => {
 
+    if (chatbotStyle) {
+      setShowLeadForm(chatbotStyle.collectEmail || chatbotStyle.collectName || chatbotStyle.collectPhone)
+    }
+  }, [chatbotStyle])
+
+  useEffect(() => {
+    console.log(showLeadForm, chatbotStyle.collectEmail, chatbotStyle.collectName, chatbotStyle.collectPhone)
+  }, [showLeadForm, chatbotStyle])
   return (
     <div
       className={`flex w-screen h-screen font-manrope flex-col items-start bg-transparent justify-center`}
@@ -163,7 +172,7 @@ const Widget = ({ botId }) => {
               <SkeletonLoader width={200} />
             </div>
           )}
-          {!chatting && showLeadForm && (
+          {showLeadForm && !chatting && (
             <div className="flex flex-col mt-[10px] items-start w-full justify-start">
               <LeadCollector title={chatbotStyle?.leadMsgDescription} collectEmail={chatbotStyle?.collectEmail} collectName={chatbotStyle?.collectName} collectPhone={chatbotStyle?.collectPhone} setDisplay={setShowLeadForm} />
             </div>
