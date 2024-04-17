@@ -55,7 +55,7 @@ const Widget = ({ botId }) => {
 
   useEffect(() => {
     const handleMessage = (event) => {
-      if (event.origin === host) {
+      if (event?.origin === host) {
         setIsWidget(true)
       }
     };
@@ -177,7 +177,7 @@ const Widget = ({ botId }) => {
           )}
           {showLeadForm && !chatting && (
             <div className="flex flex-col mt-[10px] items-start w-full justify-start">
-              <LeadCollector title={chatbotStyle?.leadMsgDescription} collectEmail={chatbotStyle?.collectEmail} collectName={chatbotStyle?.collectName} collectPhone={chatbotStyle?.collectPhone} setDisplay={setShowLeadForm} />
+              <LeadCollector theme={widgetTheme} title={chatbotStyle?.leadMsgDescription} collectEmail={chatbotStyle?.collectEmail} collectName={chatbotStyle?.collectName} collectPhone={chatbotStyle?.collectPhone} setDisplay={setShowLeadForm} />
             </div>
           )}
         </div>
@@ -257,7 +257,7 @@ const ChatMessage = memo(({ message, isUser, theme }) => (
 
 ChatMessage.displayName = "ChatMessage";
 
-function LeadCollector({ title, collectEmail, collectName, collectPhone, setDisplay }) {
+function LeadCollector({ title, collectEmail, collectName, collectPhone, setDisplay, theme }) {
   const handleCancel = () => {
     setDisplay(false);
   };
