@@ -68,7 +68,7 @@ export function Chart_page({ data, mapData, country, count }) {
   ];
   const colorScale = d3
     .scaleThreshold()
-    .domain([0, 16, 51, 501])
+    .domain([0, 50, 100, 200])
     .range(d3.range(0, 1.1, 0.25).map(d3.interpolateBlues));
 
   return (
@@ -89,7 +89,7 @@ export function Chart_page({ data, mapData, country, count }) {
               </tr>
             </thead>
 
-            <tbody class="divide-y  justify-start overflow-y-scroll h-[400px] divide-gray-200">
+            <tbody class="divide-y  justify-start overflow-y-scroll max-h-[380px] divide-gray-200">
               <tr>
                 <td class="hidden px-6 py-4 text-sm font-medium text-gray-900 lg:table-cell whitespace-nowrap">
                   {country.map((country, i) => (
