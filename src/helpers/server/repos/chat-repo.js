@@ -107,9 +107,9 @@ async function widgetChatResponse(chatbotId, params) {
 async function saveLead(chatbotId, params) {
     //perform save lead action
     if (!chatbotId || chatbotId === 'undefined') throw 'invalid chatbot Id';
-    const chatbot = await Chatbot.findById(id).lean();
+    const chatbot = await Chatbot.findById(chatbotId).lean();
 
-    if (!chatbot) throw `Chatbot with id "${id}" not found`;
+    if (!chatbot) throw `Chatbot with id "${chatbotId}" not found`;
     await Leads.create({ chatbot: chatbotId, Name: params.name, Email: params.email, Phone: params.phone })
 
     return { message: "your response has been stored. we'd reach out to you" }
