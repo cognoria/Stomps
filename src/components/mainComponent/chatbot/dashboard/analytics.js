@@ -23,7 +23,6 @@ function Analytics({ botId }) {
   const country = analytics?.chatsPerCountry?.map((item) => item.country);
   const count = analytics?.chatsPerCountry?.map((item) => item.count);
 
-
   const chartData = {
     labels: label,
     datasets: [
@@ -37,14 +36,17 @@ function Analytics({ botId }) {
     ],
   };
 
-
-
   // map data Structure
 
   return (
     <div className="flex flex-col w-full items-center overflow-hidden">
       {analytics ? (
-        <Chart_page data={chartData} count={count} country={country} />
+        <Chart_page
+          country={country}
+          count={count}
+          data={chartData}
+          mapData={analytics?.chatsPerCountry}
+        />
       ) : (
         <EmptyDashboard />
       )}

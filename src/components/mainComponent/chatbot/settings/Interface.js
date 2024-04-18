@@ -157,7 +157,7 @@ function InterfaceSettings({ botId }) {
   };
 
   const containerRef = useRef(null);
-  const [showScrollArrow, setShowScrollArrow] = useState(false);
+  const [showScrollArrow, setShowScrollArrow] = useState(true);
 
   useEffect(() => {
     const container = containerRef.current;
