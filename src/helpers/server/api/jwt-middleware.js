@@ -17,7 +17,7 @@ function isPublicPath(req) {
     // public routes that don't require authentication
     const publicPaths = [
         'GET:/api/ping',
-        `GET:/api/v1/data/ip`,
+        `POST:/api/v1/data/ip`,
         'POST:/api/v1/auth/login',
         'POST:/api/v1/auth/logout',
         'POST:/api/v1/auth/google',

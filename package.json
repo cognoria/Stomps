@@ -28,6 +28,7 @@
     "fs": "^0.0.1-security",
     "google-auth-library": "^9.6.3",
     "ioredis": "^5.3.2",
+    "ipdata": "^2.2.4",
     "joi": "^17.12.2",
     "js-cookie": "^3.0.5",
     "jsonwebtoken": "^9.0.2",

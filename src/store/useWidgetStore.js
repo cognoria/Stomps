@@ -78,6 +78,20 @@ const useWidgetStore = create(
         const currentState = get().getChatbotState(botId);
         get().updateChatbotState(botId, { error: null, ...currentState });
       },
+
+      setUserData: async () =>{
+        const userData = get().userData;
+        if (userData !== null || userData !== undefined) return
+        const ip = await fetch("/api/v1/data/ip", {method: "POST"}).then(r => r.json())
+        const data = await fetch('https://qwo6ei9p45.execute-api.us-east-1.amazonaws.com/dev', {
+          method: 'POST',
+          mode: 'cors',
+          body: ip.ip
+        }).then(res => res.json());
+        const country = data.done.json.WhoisRecord.registryData.registrant.country;
+        const countryCode = data.done.json.WhoisRecord.registryData.registrant.countryCode
+        set({ userData: {...ip, country, countryCode}})
+      },
       
       // Function to get chat style for a specific chatbot ID
       getChatStyle: async (botId) => {
@@ -133,11 +147,17 @@ const useWidgetStore = create(
         get().startChatting(botId)
         try {
           const { messages } = get().getChatbotState(botId);
+          const { userData } = get()
 
+          if(userData == null || userData == undefined){
+            await get().setUserData();
+            userData = get().userData;
+          }
+          
           const response = await fetch(`/api/v1/embed/${botId}/chat`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ messages }),
+            body: JSON.stringify({ messages, user: userData&&userData }),
           });
 
           const updatedMessage = await response.json();

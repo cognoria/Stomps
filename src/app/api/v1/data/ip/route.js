@@ -2,7 +2,7 @@ import { headers } from "next/headers";
 import { apiHandler } from "../../../../../helpers/server/api";
 
 module.exports = apiHandler({
-    GET: getIP,
+    POST: getIP,
 });
 
 //route GET api/v1/data/ip

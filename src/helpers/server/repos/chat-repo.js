@@ -182,22 +182,22 @@ async function getChatSession(chatbotId, params) {
 
 async function createChatSession(chatbotId, params) {
     if (!chatbotId || chatbotId === 'undefined') throw "chatbotId is required to create a session";
-    const userIp = headers().get('X-Forwarded-For');
-    const IPINFO_TOKEN = process.env.IPINFO_TOKEN;
-    let userData;
-    if (IPINFO_TOKEN) {
-        const res = await fetch(`https://ipinfo.io/${userIp}?token=${IPINFO_TOKEN}`);
-        if (res.ok) {
-            const data = await res.json();
-            console.log("user session data: ", data)
-            userData = { ...data };
-        } else {
-            userData = { ip: userIp };
-        }
-    } else {
-        userData = { ip: userIp };
-    }
-    const userChatSession = await Chats.create({ chatbot: chatbotId, userData });
+    // const userIp = headers().get('X-Forwarded-For');
+    // const IPINFO_TOKEN = process.env.IPINFO_TOKEN;
+    // let userData;
+    // if (IPINFO_TOKEN) {
+    //     const res = await fetch(`https://ipinfo.io/${userIp}?token=${IPINFO_TOKEN}`);
+    //     if (res.ok) {
+    //         const data = await res.json();
+    //         console.log("user session data: ", data)
+    //         userData = { ...data };
+    //     } else {
+    //         userData = { ip: userIp };
+    //     }
+    // } else {
+    //     userData = { ip: userIp };
+    // }
+    const userChatSession = await Chats.create({ chatbot: chatbotId, userData: params.user });
     cookies().set(`chat-session-${chatbotId}`, userChatSession.id);
     return userChatSession;
 }

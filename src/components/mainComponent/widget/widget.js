@@ -27,11 +27,14 @@ const Widget = ({ botId }) => {
     refreshChat,
     setInitialMsg,
     resetError,
+    userData,
+    setUserData,
   } = useWidgetStore((state) => ({
     chat: state.chat,
     userData: state.userData,
     resetError: state.resetError,
     refreshChat: state.refreshChat,
+    setUserData: state.setUserData,
     getChatStyle: state.getChatStyle,
     setInitialMsg: state.setInitialMsg,
     getChatbotState: state.getChatbotState,
@@ -97,6 +100,10 @@ const Widget = ({ botId }) => {
   useEffect(() => {
     chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
   }, [messages]);
+
+  useEffect(() => {
+    if(userData == null || userData == undefined) setUserData();
+  }, [userData, setUserData]);
 
   const sendMessage = async (e) => {
     messageInputRef.current.textContent = "";
