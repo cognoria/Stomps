@@ -104,7 +104,7 @@ const Widget = ({ botId }) => {
   useEffect(() => {
     setUserData();
     console.log({userDate, setUserData})
-  }, [userData, setUserData]);
+  }, []);
 
   const sendMessage = async (e) => {
     messageInputRef.current.textContent = "";
