@@ -78,19 +78,29 @@ const useWidgetStore = create(
         const currentState = get().getChatbotState(botId);
         get().updateChatbotState(botId, { error: null, ...currentState });
       },
-
-      setUserData: async () =>{
+      
+      setUserData: async () => {
         const userData = get().userData;
-        if (userData !== null || userData !== undefined) return
-        const ip = await fetch("/api/v1/data/ip", {method: "POST"}).then(r => r.json())
-        const data = await fetch('https://qwo6ei9p45.execute-api.us-east-1.amazonaws.com/dev', {
-          method: 'POST',
-          mode: 'cors',
-          body: ip.ip
-        }).then(res => res.json());
-        const country = data.done.json.WhoisRecord.registryData.registrant.country;
-        const countryCode = data.done.json.WhoisRecord.registryData.registrant.countryCode
-        set({ userData: {...ip, country, countryCode}})
+        if (userData !== null && userData !== undefined) return;
+      
+        try {
+          const ipResponse = await fetch("/api/v1/data/ip", { method: "POST" });
+          const ip = await ipResponse.json();
+      
+          const dataResponse = await fetch('https://qwo6ei9p45.execute-api.us-east-1.amazonaws.com/dev', {
+            method: 'POST',
+            mode: 'cors',
+            body: ip.ip
+          });
+          const data = await dataResponse.json();
+      
+          const country = data.done.json.WhoisRecord.registryData.registrant.country;
+          const countryCode = data.done.json.WhoisRecord.registryData.registrant.countryCode;
+      
+          set({ userData: { ...ip, country, countryCode } });
+        } catch (error) {
+          console.error("Failed to set user data:", error);
+        }
       },
       
       // Function to get chat style for a specific chatbot ID
