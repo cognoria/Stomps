@@ -103,7 +103,7 @@ const Widget = ({ botId }) => {
 
   useEffect(() => {
     setUserData();
-    console.log({userDate, setUserData})
+    console.log({userData, setUserData})
   }, []);
 
   const sendMessage = async (e) => {
