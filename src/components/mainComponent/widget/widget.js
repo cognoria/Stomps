@@ -102,7 +102,8 @@ const Widget = ({ botId }) => {
   }, [messages]);
 
   useEffect(() => {
-    if(userData == null || userData == undefined) setUserData();
+    setUserData();
+    console.log({userDate, setUserData})
   }, [userData, setUserData]);
 
   const sendMessage = async (e) => {
@@ -138,17 +139,6 @@ const Widget = ({ botId }) => {
       );
     }
   }, [chatbotStyle]);
-
-  useEffect(() => {
-    if (chatbotStyle)
-      console.log(
-        chatbotStyle,
-        showLeadForm,
-        chatbotStyle.collectEmail,
-        chatbotStyle.collectName,
-        chatbotStyle.collectPhone
-      );
-  }, [showLeadForm, chatbotStyle]);
 
   return (
     <div
