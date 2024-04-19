@@ -147,13 +147,13 @@ const useWidgetStore = create(
         get().startChatting(botId)
         try {
           const { messages } = get().getChatbotState(botId);
-          const { userData } = get()
+          let { userData } = get()
 
           if(userData == null || userData == undefined){
             await get().setUserData();
             userData = get().userData;
           }
-          
+
           const response = await fetch(`/api/v1/embed/${botId}/chat`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
