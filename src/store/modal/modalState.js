@@ -6,6 +6,8 @@ const useModalStore = create((set) => ({
   modalContent: "",
   showModal: (content) => set({ isModalShown: true, modalContent: content }),
   hideModal: () => set({ isModalShown: false }),
+  
+
 }));
 
 export default useModalStore;

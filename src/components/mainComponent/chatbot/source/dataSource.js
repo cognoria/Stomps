@@ -26,7 +26,7 @@ export default function DataSource() {
   const handleFileChange = (event) => {
     const file = event.target.files[0];
     if (file) {
-      console.log("Selected file:", file);
+      // console.log("Selected file:", file);
       setSelectedFile(file);
     }
   };
@@ -39,7 +39,7 @@ export default function DataSource() {
     event.preventDefault();
     const file = event.dataTransfer.files[0];
     if (file) {
-      console.log("Dropped file:", file);
+      // console.log("Dropped file:", file);
       if (!isTXTFile(file) && !isPDFFile(file) && !isDOCFile(file)) {
         return; //toaste file not supported
       } else {

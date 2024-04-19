@@ -68,7 +68,7 @@ export default create((set) => ({
         body: JSON.stringify(botLeadsData),
       });
       const data = await response.json();
-      if (!response.ok) throw new Error(data.message || "An error occurred" );
+      if (!response.ok) throw new Error(data.message || "An error occurred");
       set({ updatingLeadsSettings: false, loading: false });
       toast.success(data.message);
       return data;
@@ -130,7 +130,7 @@ export default create((set) => ({
 
   updateInterface: async ({ botData, botId }) => {
     set({ updatingInterface: true, loading: true, error: null });
-    console.log({ botData, botId });
+    // console.log({ botData, botId });
     try {
       const response = await fetch(
         `/api/v1/chatbot/${botId}/setting/interface`,
@@ -151,8 +151,8 @@ export default create((set) => ({
         loading: false,
         error: error.message,
       });
-      toast.error(error.message);Console.log("");
-      console.error(error.message);
+      toast.error(error.message);
+      // console.error(error.message);
       throw error;
     }
   },

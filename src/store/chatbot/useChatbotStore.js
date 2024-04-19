@@ -121,7 +121,7 @@ export default create(
           method: "GET",
         });
         const data = await response.json();
-        console.log(data);
+        // console.log(data);
         if (!response.ok) throw new Error(data.message || "An error occurred");
         if (onSuccess) onSuccess(data);
         set({ loading: false, leads: data });

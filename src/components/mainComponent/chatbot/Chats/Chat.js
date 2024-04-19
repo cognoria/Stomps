@@ -221,7 +221,7 @@ function Chat({ id, status }) {
       };
       await useBotMessagingStore.getState().chat({ id, data });
     } catch (error) {
-      console.log("Failed to send message:", error);
+      // console.log("Failed to send message:", error);
     }
   }
 

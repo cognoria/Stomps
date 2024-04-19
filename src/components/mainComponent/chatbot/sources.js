@@ -39,7 +39,7 @@ export default function Sources() {
   const router = useRouter();
   async function createBot(e) {
     e.preventDefault();
-    console.log(dataToSend);
+    // console.log(dataToSend);
     try {
       const newBot = await createChatbot(dataToSend);
       router.push(`/bot/${newBot._id}`);

@@ -16,7 +16,7 @@ function Signin_form() {
     error: state.error,
   }));
   const onFailure = () => {
-    router.push("/account/add_keys");
+    router.push("/account/keys");
   };
   const onSuccess = () => {
     router.push("/");

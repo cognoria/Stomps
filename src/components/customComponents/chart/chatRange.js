@@ -1,0 +1,93 @@
+import { useState } from "react";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import {
+  exportToCSV,
+  exportToJSON,
+} from "../../../utils/extractDoc/exportData";
+
+function ChatRange({
+  startDate,
+  endDate,
+  onDateRangeSelect,
+  exportData,
+  exportDataTitle,
+  exportDataFile,
+}) {
+  const [showExportFormat, setShowExportFormat] = useState(false);
+
+  const handleStartDateChange = (date) => {
+    onDateRangeSelect({ startDate: date, endDate });
+  };
+
+  const handleEndDateChange = (date) => {
+    onDateRangeSelect({ startDate, endDate: date });
+  };
+
+  const exportFileJson = async () => {
+    setShowExportFormat(false);
+    exportToJSON(exportDataFile, exportDataTitle);
+  };
+
+  const exportFileCSV = async () => {
+    setShowExportFormat(false);
+    exportToCSV(exportDataFile, exportDataTitle);
+  };
+
+  return (
+    <div className="flex w-full items-start justify-between  flex-col lg:flex-row gap-6 p-3 ">
+      <div className="flex flex-[60%] gap-4 items-start ">
+        <div className="flex gap-4 items-center">
+          <div className="w-[50px] flex flex-col">
+            <p>Start</p>
+            <DatePicker
+              selected={startDate}
+              onChange={handleStartDateChange}
+              selectsStart
+              startDate={startDate}
+              endDate={endDate}
+              className="border border-gray-300 rounded px-4 py-2 focus:outline-none focus:border-blue-500"
+            />
+          </div>
+
+          <div className="w-[50px] flex flex-col">
+            <p>End</p>
+            <DatePicker
+              selected={endDate}
+              onChange={handleEndDateChange}
+              selectsEnd
+              startDate={startDate}
+              endDate={endDate}
+              minDate={startDate}
+              className="border border-gray-300 rounded px-4 py-2 focus:outline-none focus:border-blue-500"
+            />
+          </div>
+        </div>
+      </div>
+      <div className="flex relative flex-[40%] flex-col items-end justify-end">
+        <button
+          onClick={() => setShowExportFormat(!showExportFormat)}
+          className="flex flex-row rounded-lg items-center font-manrope w-fit p-4 text-white font-[700] gap-4  bg-[#1261AC]"
+        >
+          <p>Export</p>
+          <img src="/images/chatbox/downloadIcon.png" alt="Download Icon" />
+        </button>
+
+        {showExportFormat && (
+          <div className="flex absolute top-[100%] right-0 flex-col gap-2 bg-[#1261AC] text-white p-3 items-center justify-center">
+            <button
+              className="border-b-[1px] border-gray-200"
+              onClick={exportFileJson}
+            >
+              JSON
+            </button>
+
+            <button onClick={exportFileCSV}>CSV</button>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+export default ChatRange;

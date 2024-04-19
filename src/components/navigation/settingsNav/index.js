@@ -1,18 +1,18 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname, useParams } from "next/navigation";
-import useModalStore from "../../../store/modal/modalState";
-import EmbbedModal from "../../customComponents/modals/widgetModal/embedModal";
-import useChatbotStore from "../../../store/chatbot/useChatbotStore";
-import { AccountModal } from "../../customComponents/modals/dashboardModal/accountModal";
+import { useParams, usePathname } from "next/navigation";
 import { toast } from "react-toastify";
+import useChatbotStore from "../../../store/chatbot/useChatbotStore";
+import useModalStore from "../../../store/modal/modalState";
+import { AccountModal } from "../../customComponents/modals/dashboardModal/accountModal";
+import EmbbedModal from "../../customComponents/modals/widgetModal/embedModal";
 
 function ChatbotNav() {
   const pathname = usePathname();
   const lastSegment = pathname.split("/").pop();
-  
-  const chatbot = useChatbotStore((state) => state.chatbot)
+
+  const chatbot = useChatbotStore((state) => state.chatbot);
   const { bot: id } = useParams();
   const navItems = [
     { name: "chatbot", link: `/bot/${id}`, tag: "chatbot" },
@@ -21,32 +21,37 @@ function ChatbotNav() {
     { name: "sources", link: `/bot/${id}/source`, tag: "source" },
     { name: "embed on site", link: "/", tag: "embed" },
   ];
-  
+
   const handleEmbedButtonClick = () => {
     // Show the modal when the "embed on site" button is clicked
-    console.log(chatbot)
-    if (chatbot.visibility == 'PRIVATE') {
-      useModalStore.getState().showModal(<AccountModal
-        text={"By continuing your chatbot will become public"}
-        button_name="Make Public"
-        action={makePublic}
-      />)
+    // console.log(chatbot);
+    if (chatbot.visibility == "PRIVATE") {
+      useModalStore
+        .getState()
+        .showModal(
+          <AccountModal
+            text={"By continuing your chatbot will become public"}
+            button_name="Make Public"
+            action={makePublic}
+          />
+        );
     } else {
       useModalStore.getState().showModal(<EmbbedModal botId={id} />);
     }
   };
 
   async function makePublic() {
-    if (chatbot.visibility == 'PUBLIC') return;
-    const res = await fetch(`api/v1/chatbot/${id}/setting/set-public`)
+    if (chatbot.visibility == "PUBLIC") return;
+    const res = await fetch(`/api/v1/chatbot/${id}/setting/set-public`);
     const data = await res.json();
+    // console.log(res);
     if (!res.ok) {
-      console.log(data)
-      return toast.error(data.message)
+      // console.log(data);
+      return toast.error(data.message);
     }
 
-    toast.success(data.message || "your chatbot has been made public")
-    useModalStore.getState().showModal(<EmbbedModal botId={id} />)
+    toast.success(data.message || "your chatbot has been made public");
+    useModalStore.getState().showModal(<EmbbedModal botId={id} />);
   }
 
   return (
@@ -65,7 +70,7 @@ function ChatbotNav() {
               <Link
                 className={
                   lastSegment === items.tag ||
-                    (i === 0 && items.tag === "chatbot" && lastSegment === id)
+                  (i === 0 && items.tag === "chatbot" && lastSegment === id)
                     ? "p-3 border-[#1261AC] capitalize border-[1px] px-3 py-1.5 bg-sky-50 rounded-[300px]"
                     : " capitalize"
                 }

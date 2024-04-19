@@ -1,4 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
+"use client";
+import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import useChatbotSettings from "../../../../store/chatbot/useChatbotSettings";
 import useChatbotStore from "../../../../store/chatbot/useChatbotStore";
@@ -271,13 +273,20 @@ function InterfaceSettings({ botId }) {
                     onChange={handleChatProfileImageChange}
                   />
                   <label htmlFor="file-input-profile" className="upload-label">
-                    <img
-                      className="w-[50px] h-[50px]"
-                      src={
-                        profileImg ? profileImg : `/images/chatbox/gallery.svg`
-                      }
-                      alt="Upload icon"
-                    />
+                    {profileImg.startsWith("#") && (
+                      <div
+                        className={`h-12 w-12 rounded-full bg-[${profileImg}]`}
+                      />
+                    )}
+                    {profileImg.startsWith("data:image") && (
+                      <Image
+                        width={30}
+                        height={30}
+                        className="w-[50px] h-[50px] rounded-full"
+                        src={profileImg}
+                        alt={""}
+                      />
+                    )}
                     <div className="main-text text-sm">
                       {profileImgName ? profileImgName : "no file choosen"}
                     </div>
@@ -341,11 +350,20 @@ function InterfaceSettings({ botId }) {
                     onChange={handleChatIconChange}
                   />
                   <label htmlFor="file-input-chat" className="upload-label">
-                    <img
-                      className="w-[50px] h-[50px]"
-                      src={chatIcon ? chatIcon : `/images/chatbox/gallery.svg`}
-                      alt="Upload icon"
-                    />
+                    {chatIcon.startsWith("#") && (
+                      <div
+                        className={`h-12 w-12 rounded-full bg-[${chatIcon}]`}
+                      />
+                    )}
+                    {chatIcon.startsWith("data:image") && (
+                      <Image
+                        width={30}
+                        height={30}
+                        className="w-[50px] h-[50px] rounded-full"
+                        src={chatIcon}
+                        alt={""}
+                      />
+                    )}
                     <div className="main-text text-sm">
                       {chatIconName ? chatIconName : "no file chosen"}
                     </div>

@@ -1,12 +1,9 @@
-import { useEffect } from "react";
-import useModalStore from "../../../../store/modal/modalState";
-import { toast } from "react-toastify";
 import copy from "copy-to-clipboard";
 import Image from "next/image";
-
+import { toast } from "react-toastify";
+import useModalStore from "../../../../store/modal/modalState";
 
 function EmbbedModal({ botId }) {
-
   const embedIframe = `
   <iframe
     src="${window.origin}/widget/${botId}"
@@ -28,13 +25,13 @@ function EmbbedModal({ botId }) {
   domain="${window.origin}"
   defer>
 </script>
-`
+`;
 
   const hideModal = useModalStore((state) => state.hideModal);
 
   function copyCode(code) {
-    copy(code)
-    toast.success("Copied")
+    copy(code);
+    toast.success("Copied");
   }
   return (
     <div className="flex gap-3  flex-col p-3 z-40 items-center w-full justify-center">
@@ -57,11 +54,19 @@ function EmbbedModal({ botId }) {
             <CodeDisplay code={embedIframe} />
           </div>
         </div>
-        <button onClick={() => copyCode(embedIframe)} className="px-3.5 mt-3 py-2 bg-sky-50 rounded-lg shadow border border-sky-50 justify-center items-center gap-2 flex flex-row">
+        <button
+          onClick={() => copyCode(embedIframe)}
+          className="px-3.5 mt-3 py-2 bg-sky-50 rounded-lg shadow border border-sky-50 justify-center items-center gap-2 flex flex-row"
+        >
           <p className="text-sky-700 text-xs font-bold font-manrope leading-snug">
             Copy Iframe
           </p>
-          <Image width={20} height={20} alt="copy" src="/images/chatbox/copy.svg" />
+          <Image
+            width={20}
+            height={20}
+            alt="copy"
+            src="/images/chatbox/copy.svg"
+          />
         </button>
       </div>
       <div className="flex items-center justify-center flex-col w-full gap-3">
@@ -75,11 +80,19 @@ function EmbbedModal({ botId }) {
           </div>
         </div>
 
-        <button onClick={() => copyCode(widgetCode)} className="px-3.5  mt-3 py-2 bg-sky-50 rounded-lg shadow border border-sky-50 justify-center items-center gap-2 flex flex-row">
+        <button
+          onClick={() => copyCode(widgetCode)}
+          className="px-3.5  mt-3 py-2 bg-sky-50 rounded-lg shadow border border-sky-50 justify-center items-center gap-2 flex flex-row"
+        >
           <p className="text-sky-700 text-xs font-bold font-manrope leading-snug">
             Copy Script
           </p>
-          <Image width={20} height={20} src="/images/chatbox/copy.svg" alt="copy" />
+          <Image
+            width={20}
+            height={20}
+            src="/images/chatbox/copy.svg"
+            alt="copy"
+          />
         </button>
       </div>
     </div>

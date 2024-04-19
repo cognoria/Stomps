@@ -33,7 +33,7 @@ export default function Retrain({chatbotId}) {
 
   async function retrainBot(e) {
     e.preventDefault();
-    console.log(dataToSend);
+    // console.log(dataToSend);
     try {
       await updateKnowledgebase({ botData: dataToSend, botId: chatbotId });
       // router.push(`/bot/${newBot._id}`);

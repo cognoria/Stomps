@@ -13,6 +13,7 @@ import * as d3 from "d3";
 import { Line } from "react-chartjs-2";
 import ChoroplethMap from "../map/map";
 import MapLegend from "../map/mapLegend";
+import ChatRange from "./chatRange";
 
 ChartJS.register(
   CategoryScale,
@@ -40,13 +41,13 @@ const options = {
     x: {
       title: {
         display: true,
-        text: "Chatbot data collection date", // Add your descriptive label for the x-axis here
+        text: "Date",
       },
     },
     y: {
       title: {
         display: true,
-        text: "Chatbot data collection count", // Add your descriptive label for the y-axis here
+        text: "Chat Sessions",
       },
     },
   },
@@ -58,7 +59,7 @@ const options = {
 };
 
 export function Chart_page({ data, mapData, country, count }) {
-  console.log(mapData);
+  // console.log(mapData);
   const dataDemo = [
     { country: "CA", count: 78, id: "124" },
     { country: "NG", count: 305, id: "566" },
@@ -73,6 +74,7 @@ export function Chart_page({ data, mapData, country, count }) {
 
   return (
     <div className="w-[90%] flex flex-col overflow-hidden">
+      <ChatRange />
       <Line options={options} data={data} />
       <div className="w-full h-full p-4 flex flex-row items-start gap-4">
         <ChoroplethMap data={dataDemo} />

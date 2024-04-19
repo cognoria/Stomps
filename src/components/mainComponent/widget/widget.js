@@ -105,7 +105,7 @@ const Widget = ({ botId }) => {
       setMessageInput("");
     } catch (error) {
       setMessageInput("");
-      console.log("Failed to send message:", error);
+      // console.log("Failed to send message:", error);
     }
   };
 
@@ -114,7 +114,7 @@ const Widget = ({ botId }) => {
     try {
       await chat(botId, { role: "user", content: e });
     } catch (error) {
-      console.log("Failed to send message:", error);
+      // console.log("Failed to send message:", error);
     }
   };
 
@@ -131,17 +131,6 @@ const Widget = ({ botId }) => {
       );
     }
   }, [chatbotStyle]);
-
-  useEffect(() => {
-    if (chatbotStyle)
-      console.log(
-        chatbotStyle,
-        showLeadForm,
-        chatbotStyle.collectEmail,
-        chatbotStyle.collectName,
-        chatbotStyle.collectPhone
-      );
-  }, [showLeadForm, chatbotStyle]);
 
   return (
     <div
@@ -346,7 +335,7 @@ function LeadCollector({
 
     const result = await res.json();
     if (!res.ok) {
-      console.log(result);
+      // console.log(result);
       setLoading(false);
       return toast.error(result.message);
     }
@@ -358,7 +347,7 @@ function LeadCollector({
 
   return (
     <div
-      className={`max-w-[85%] p-[10px] relative ${
+      className={`max-w-[85%] p-[10px] relative gap-1 ${
         theme === "DARK"
           ? "bg-gray-800 text-zinc-100"
           : "bg-zinc-100 text-stone-900"

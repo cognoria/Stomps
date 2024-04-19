@@ -22,7 +22,7 @@ export const useUserStore = create(
           }
           set({ user: data })
         } catch (e) {
-          console.log(e)
+          // console.log(e)
           toast.error(e.message)
         }
       }
