@@ -351,7 +351,7 @@ function LeadCollector({
       return toast.error(result.message);
     }
 
-    toast.success(result.message);
+    toast.success("sent");
     setLoading(false);
     return handleCancel();
   }

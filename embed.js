@@ -96,7 +96,14 @@ function createChatWindow(widgetStyle, origin, stompsSrc, chatbotId) {
   // Add styles to the chat window
   chatWindow.style.position = 'fixed';
   chatWindow.style.bottom = window.innerWidth < 440 ? '60px' : '80px';
-  chatWindow.style.right = window.innerWidth < 440 ? '5%' : '50px';
+  if (widgetStyle?.placement.toLowerCase() === 'left') {
+    chatWindow.style.justifyContent = 'flex-start';
+
+    chatWindow.style.left = window.innerWidth < 440 ? '5%' : '50px';
+  } else {
+    chatWindow.style.right = window.innerWidth < 440 ? '5%' : '50px';
+    chatWindow.style.justifyContent = 'flex-end'
+  }
   chatWindow.style.width = '90%';
   chatWindow.style.maxWidth = '400px';
   chatWindow.style.height = '85vh';

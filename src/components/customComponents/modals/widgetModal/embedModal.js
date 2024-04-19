@@ -17,13 +17,7 @@ function EmbbedModal({ botId }) {
 `;
 
   const widgetCode = `
-<script>
-  window.embeddedChatbotConfig = {
-  chatbotId: "${botId}",
-  domain: "${window.origin}"
-  }
-</script>
-<script src=""${window.origin}/embed.min.js"
+<script src="${window.origin}/embed.js"
   chatbotId="${botId}"
   domain="${window.origin}"
   defer>
