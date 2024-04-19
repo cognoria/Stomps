@@ -32,7 +32,7 @@ export const chunkedUpsert = async (index, vectors, chunkSize = 10, owner) => {
     await Promise.allSettled(
       chunks.map(async (chunk) => {
         try {
-          queue.add(await Index.upsert(chunk))
+          queue.add(async () => await Index.upsert(chunk))
         } catch (e) {
           console.log('Error upserting chunk', e);
           throw new Error(e.message)
