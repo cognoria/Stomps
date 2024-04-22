@@ -182,9 +182,11 @@ async function getChatSession(chatbotId, params) {
 
 async function createChatSession(chatbotId, params) {
     if (!chatbotId || chatbotId === 'undefined') throw "chatbotId is required to create a session";
+   
     const userIp = headers().get('X-Forwarded-For');
     const IPINFO_TOKEN = process.env.IPINFO_TOKEN;
-    let userData;
+    let userData = params?.user;
+    if(!userData) {
     if (IPINFO_TOKEN) {
         const res = await fetch(`https://ipinfo.io/${userIp}?token=${IPINFO_TOKEN}`);
         if (res.ok) {
@@ -196,6 +198,8 @@ async function createChatSession(chatbotId, params) {
         }
     } else {
         userData = { ip: userIp };
+    }
+
     }
     const userChatSession = await Chats.create({ chatbot: chatbotId, userData });
     cookies().set(`chat-session-${chatbotId}`, userChatSession.id);

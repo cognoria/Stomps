@@ -61,19 +61,38 @@ async function getWebLinksFromSiteMap(url) {
     return await result.urlset.url.map((url) => url.loc[0]);
 }
 
-async function fetchWithRetry(url) {
-    try {
-        const response = await fetch(url);
-        return response;
-    } catch (error) {
-        // Retry logic if fetch fails
-        if (!url.startsWith("http://www.") && !url.startsWith("https://www.")) {
-            // Retry with URL having www prefix
-            const retryUrl = url.replace(/^https?:\/\//, "https://www.");
-            return fetch(retryUrl);
-        } else {
-            // Re-throw the error if retry also fails
-            throw error;
+// async function fetchWithRetry(url) {
+//     try {
+//         const response = await fetch(url);
+//         return response;
+//     } catch (error) {
+//         // Retry logic if fetch fails
+//         if (!url.startsWith("http://www.") && !url.startsWith("https://www.")) {
+//             // Retry with URL having www prefix
+//             const retryUrl = url.replace(/^https?:\/\//, "https://www.");
+//             return fetchWithRetry(retryUrl);
+//         } else {
+//             // Re-throw the error if retry also fails
+//             throw error;
+//         }
+//     }
+// }
+
+async function fetchWithRetry(url, options = {}, maxRetries = 3, delay = 100) {
+    let retries = 0;
+    while (retries < maxRetries) {
+        try {
+            const response = await fetch(url, options);
+            if (response.ok) {
+                return response;
+            }
+            throw new Error(`Fetch failed with status ${response.status}`);
+        } catch (error) {
+            console.error(`Fetch attempt ${retries + 1} failed:`, error.message);
+            retries++;
+            await new Promise(resolve => setTimeout(resolve, delay * Math.pow(2, retries)));
         }
     }
+    throw new Error(`Max retries (${maxRetries}) exceeded for fetch operation`);
 }
+
