@@ -59,6 +59,13 @@ export const widgetThemes = {
     DARK: "DARK",
     SYSTEM: "SYSTEM",
 }
+
+export const rateLimits = {
+    limitMsg: 'Too many messages in a row',
+    msg_count: 0,
+    timeframe: 0
+}
+
 export const chatBotCustomizeDataDefault = {
     backgroundColor: "#000",
     borderRadius: "12px",
