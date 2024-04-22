@@ -213,7 +213,7 @@ function Chat({ id, status }) {
   async function sendMessage(e) {
     e.preventDefault();
     if (!messageInput.trim()) return; // Prevent sending empty messages
-    setMessageInput("");
+    // setMessageInput("");
     try {
       const data = {
         role: "user",

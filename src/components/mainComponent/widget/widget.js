@@ -11,7 +11,6 @@ import SkeletonLoader from "../../skeleton";
 
 const Widget = ({ botId }) => {
   const chatContainerRef = useRef(null);
-  const messageInputRef = useRef(null);
   const [messageInput, setMessageInput] = useState("");
   const [isWidget, setIsWidget] = useState(false);
   const [widgetTheme, setWidgetTheme] = useState("LIGHT");
@@ -106,24 +105,29 @@ const Widget = ({ botId }) => {
     console.log({ userData, setUserData });
   }, []);
 
+  useEffect(() => {
+    if (chatting) {
+      setMessageInput("");
+    }
+  }, [chatting]);
+
   const sendMessage = async (e) => {
-    messageInputRef.current.textContent = "";
+    e.preventDefault();
+    if(chatting) return;
+    if (!messageInput.trim()) return;
     try {
       await chat(botId, { role: "user", content: messageInput });
-      setMessageInput("");
     } catch (error) {
-      setMessageInput("");
-      // console.log("Failed to send message:", error);
+      console.log("Failed to send message:", error);
     }
   };
 
   const sendSuggestedMessage = async (e) => {
     if(chatting) return;
-    messageInputRef.current.textContent = "";
     try {
       await chat(botId, { role: "user", content: e });
     } catch (error) {
-      // console.log("Failed to send message:", error);
+      console.log("Failed to send message:", error);
     }
   };
 
