@@ -103,7 +103,7 @@ const Widget = ({ botId }) => {
 
   useEffect(() => {
     setUserData();
-    console.log({userData, setUserData})
+    console.log({ userData, setUserData });
   }, []);
 
   const sendMessage = async (e) => {
@@ -118,6 +118,7 @@ const Widget = ({ botId }) => {
   };
 
   const sendSuggestedMessage = async (e) => {
+    if(chatting) return;
     messageInputRef.current.textContent = "";
     try {
       await chat(botId, { role: "user", content: e });
@@ -254,13 +255,11 @@ const Widget = ({ botId }) => {
             })}
         </div>
         <div className="relative p-4 h-[17%] bottom-2 font-manrope overflow-y-scroll items-center flex-col  flex">
-          <div
-            contentEditable
-            onInput={(e) => setMessageInput(e.target.textContent)}
-            placeholder="message..."
-            ref={messageInputRef}
-            style={{ overflowAnchor: "none" }}
-            className={`text-neutral-700 max-h-full  w-full ${
+          <textarea
+            value={messageInput}
+            onChange={(e) => setMessageInput(e.target.value)}
+            placeholder={chatbotStyle?.chatInputPlaceholderText}
+            className={`text-neutral-700 max-h-full h-auto w-full ${
               widgetTheme === "DARK"
                 ? "bg-transparent text-zinc-100 placeholder:text-neutral-300"
                 : "bg-transparent text-zinc-700 placeholder:text-neutral-400"

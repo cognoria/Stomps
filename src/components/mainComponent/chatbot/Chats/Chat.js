@@ -280,7 +280,7 @@ function Chat({ id, status }) {
           value={messageInput}
           onChange={(e) => setMessageInput(e.target.value)}
           placeholder="message... "
-          className="text-neutral-700 h-auto max-h-full font-manrope fon  w-full  border p-3 read-only:cursor-help  overflow-y-scroll   flex flex-col   pl-[15px] rounded-lg  pr-[50px]   decoration-none placeholder:text-neutral-300 text-sm font-normal font-manrope leading-snug"
+          className="text-neutral-700 h-auto max-h-full font-manrope fon  w-full  border p-3 read-only:cursor-help  overflow-y-scroll   flex flex-col   pl-[15px] rounded-lg  pr-[50px]   decoration-none placeholder:text-neutral-300 text-sm font-normal leading-snug"
         ></textarea>
         <button
           disabled={chatting || status !== "READY"}

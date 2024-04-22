@@ -12,12 +12,12 @@ import { useUserStore } from "../../../../store/auth/userState";
 const Page = () => {
   const router = useRouter();
   const user = useUserStore((state) => state.user);
+
   const { getUserChatBots, loading, chatbots } = useChatbotStore((state) => ({
     getUserChatBots: state.getUserChatBots,
     loading: state.loading,
     chatbots: state.chatbots,
   }));
-
 
   const { checkKeys, loadingKeys } = useKeysStore((state) => ({
     checkKeys: state.checkKeys,
@@ -33,13 +33,13 @@ const Page = () => {
           router.push("/account/keys");
         }
       });
-      getUserChatBots()
     }
-  }, [checkKeys, getUserChatBots, router]);
+  }, [user]);
 
-  // if (loadingKeys || loading) {
-  //   return <Loading height="h-50px" width="w-50px" />;
-  // }
+  useEffect(() => {
+    getUserChatBots();
+  }, [])
+  
 
   if (!chatbots || chatbots.length === 0) {
     return <EmptyChatbotsDisplay />;
