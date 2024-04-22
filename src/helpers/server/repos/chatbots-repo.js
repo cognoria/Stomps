@@ -69,8 +69,11 @@ async function create(params) {
     //generate random index name
     const indexName = `${chatbotName}-${generateRandomString(6)}-index`
 
+    const count = await Chatbot.countDocuments({ owner: ownerId });
+    const indexType = count === 0 ? 'starter' : 'serverless';
+    
     //create pinecone index
-    await createPinconeIndex(indexName, 'starter', ownerId)
+    await createPinconeIndex(indexName, indexType, ownerId)
 
     const newChatbotDetails = {
         name: chatbotName,
@@ -222,7 +225,7 @@ async function updateChatInterface(chatbotId, interfaceData) {
     const chatbot = await Chatbot.findOne({ owner: ownerId, _id: chatbotId }).select("+chatBotCustomizeData ")
     if (!chatbot) throw 'Your Chatbot with id "' + chatbotId + '" not found';
 
-    chatbot.chatBotCustomizeData.welcomeMessage = interfaceData.initialMsg
+    chatbot.chatBotCustomizeData.welcomeMessages = interfaceData.initialMsgs
     chatbot.chatBotCustomizeData.questionExamples = interfaceData.suggestedMsgs
     chatbot.chatBotCustomizeData.chatInputPlaceholderText = interfaceData.msgPlaceholder
     chatbot.chatBotCustomizeData.widgetTheme = interfaceData.theme

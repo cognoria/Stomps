@@ -24,11 +24,10 @@ function InterfaceSettings({ botId }) {
 
   useEffect(() => {
     getChatbot(botId);
-  }, []);
+  }, [botId, getChatbot]);
 
-  const [initialMsg, setInitialMsg] = useState(
-    chatbot?.chatBotCustomizeData.welcomeMessage
-  );
+  const [initialMsg, setInitialMsg] = useState();
+  const [initialMsgsArr, setInitialMsgsArr] = useState();
   const [displayName, setDisplayName] = useState(
     chatbot?.chatBotCustomizeData.assistantTabHeader
   );
@@ -38,6 +37,7 @@ function InterfaceSettings({ botId }) {
   const [msgPlaceholder, setMsgPlaceholder] = useState(
     chatbot?.chatBotCustomizeData.chatInputPlaceholderText
   );
+
   const [chatColour, setChatColour] = useState("");
   // theme selection
   const [selectedTheme, setSelectedTheme] = useState(
@@ -118,7 +118,7 @@ function InterfaceSettings({ botId }) {
       setAutoShowMsg(chatbot.chatBotCustomizeData.popupDelay);
       setChatIcon(chatbot.chatBotCustomizeData.launcherIcon);
       setProfileImg(chatbot.chatBotCustomizeData.profileImage);
-      setSuggestMsgArr(chatbot.chatBotCustomizeData.questionExamples);
+      // setSuggestMsgArr(chatbot.chatBotCustomizeData.questionExamples);
       const dbMsgStringArr = chatbot.chatBotCustomizeData.questionExamples.map(
         (message) => message.question
       );
@@ -126,7 +126,8 @@ function InterfaceSettings({ botId }) {
       setDisplayName(chatbot.chatBotCustomizeData.assistantTabHeader);
       setSelectedTheme(chatbot.chatBotCustomizeData.widgetTheme);
       setMsgPlaceholder(chatbot.chatBotCustomizeData.chatInputPlaceholderText);
-      setInitialMsg(chatbot.chatBotCustomizeData.welcomeMessage);
+      // setInitialMsgsArr(chatbot.chatBotCustomizeData.welcomeMessages);
+      setInitialMsg(chatbot.chatBotCustomizeData.welcomeMessages.join("\n"));
     }
   }, [chatbot]);
 
@@ -139,10 +140,17 @@ function InterfaceSettings({ botId }) {
     }
   }, [suggestedMessages]);
 
+  useEffect(() => {
+    if (initialMsg) {
+      const msgArr = initialMsg?.split("\n");
+      setInitialMsgsArr(msgArr);
+    }
+  }, [initialMsg]);
+
   const handleSubmitChatInterface = (e) => {
     e.preventDefault();
     const botData = {
-      initialMsg: initialMsg,
+      initialMsgs: initialMsgsArr,
       suggestedMsgs: suggestMsgArr,
       msgPlaceholder: msgPlaceholder,
       theme: selectedTheme,
@@ -152,8 +160,6 @@ function InterfaceSettings({ botId }) {
       autoShowMsg: autoShowMsg,
       profileImage: profileImg,
     };
-
-    // console.log(botData);
 
     updateInterface({ botData, botId }, async () => {
       await getChatbot(botId);
@@ -172,23 +178,35 @@ function InterfaceSettings({ botId }) {
 
   const resetInterface = () => {
     const botData = {
-      initialMsg: chatBotCustomizeDataDefault.welcomeMessage,
+      initialMsgs: chatBotCustomizeDataDefault.welcomeMessages,
       suggestedMsgs: chatBotCustomizeDataDefault.questionExamples,
       msgPlaceholder: chatBotCustomizeDataDefault.chatInputPlaceholderText,
       theme: chatBotCustomizeDataDefault.widgetTheme,
-      displayName: displayName,
+      displayName: chatBotCustomizeDataDefault.assistantTabHeader,
       chatIcon: chatBotCustomizeDataDefault.launcherIcon,
       alignChatButton: chatBotCustomizeDataDefault.placement,
       autoShowMsg: chatBotCustomizeDataDefault.popupDelay,
       profileImage: chatBotCustomizeDataDefault.profileImage,
     };
 
-    // console.log(botData);
+    setAlignChat(chatBotCustomizeDataDefault.placement);
+    setAutoShowMsg(chatBotCustomizeDataDefault.popupDelay);
+    setChatIcon(chatBotCustomizeDataDefault.launcherIcon);
+    setProfileImg(chatBotCustomizeDataDefault.profileImage);
+    const dbMsgStringArr = chatBotCustomizeDataDefault.questionExamples.map(
+      (message) => message.question
+    );
+    setSuggestedMessages(dbMsgStringArr.join("\n"));
+    setDisplayName(chatBotCustomizeDataDefault.assistantTabHeader);
+    setSelectedTheme(chatBotCustomizeDataDefault.widgetTheme);
+    setMsgPlaceholder(chatBotCustomizeDataDefault.chatInputPlaceholderText);
+    setInitialMsg(chatBotCustomizeDataDefault.welcomeMessages.join("\n"));
 
     updateInterface({ botData, botId }, async () => {
       await getChatbot(botId);
     });
   };
+
   return (
     <div className="w-full px-3 lg:p-[6%]  flex flex-col overflow-x-hidden items-center justify-center ">
       <div className="flex w-full flex-col items-center  justify-center border-gray-200 border-[1px] gap-4 rounded-t-md ">
@@ -210,14 +228,21 @@ function InterfaceSettings({ botId }) {
             </div>
             <div className="flex gap-y-4 w-full flex-col items-start p-3">
               <div className="text-zinc-800 text-[10px]  font-bold font-manrope leading-[14px] tracking-tight">
-                Initial Message
+                Initial Messages
               </div>
-              <input
+              {/* <input
                 value={initialMsg}
                 onChange={(e) => setInitialMsg(e.target.value)}
                 placeholder="👋 Hi!  How can I help"
                 className="h-[50px] p-2 w-full -mt-2 border-[1px] text-xs font-manrope border-gray-200 rounded-md"
-              />
+              /> */}
+
+              <textarea
+                value={initialMsg}
+                onChange={(e) => setInitialMsg(e.target.value)}
+                className="max-h-[150px] lg:w-full text-sm font-normal max-w-full overflow-auto p-2 font-manrope border border-gray-200 rounded-md"
+                placeholder={"👋 Hi!  How can I help"}
+              ></textarea>
 
               <p className="text-gray-600 text-[10px] font-normal font-manrope leading-[14px] tracking-tight">
                 <span className="text-gray-600 text-[10px] font-bold font-manrope leading-[14px] tracking-tight">

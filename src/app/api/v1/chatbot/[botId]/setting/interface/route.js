@@ -15,7 +15,7 @@ async function updateChatInterface(req) {
 }
 
 updateChatInterface.schema = joi.object({
-    initialMsg: joi.string().required(),
+    initialMsgs: joi.array().items(joi.string()).required(),
     suggestedMsgs: joi.array().items(joi.object({
         question: joi.string().required(),
     })).required(),

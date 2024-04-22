@@ -129,7 +129,7 @@ function SecuritySettings({ botId }) {
                   value={visibility}
                   className="text-gray-900  text-xs font-medium font-manrope leading-none tracking-tight"
                 >
-                  {capitalizeFirstLetter(visibility)}
+                  {capitalizeFirstLetter(visibility.toLowerCase())}
                 </option>
               ))}
             </select>
@@ -146,7 +146,7 @@ function SecuritySettings({ botId }) {
               ))}
             </div>
           </div>
-          <div className="mt-[30px] p-3">
+          {/* <div className="mt-[30px] p-3">
             <div className="text-zinc-800 mb-2 text-[10px] font-bold font-manrope leading-[14px] tracking-tight">
               Only allow the iframe and widget on specific domains
             </div>
@@ -211,7 +211,7 @@ function SecuritySettings({ botId }) {
               placeholder="Too many messages in a row"
               className="h-[50px] p-2 w-full -mt-2 border-[1px] text-xs font-manrope border-gray-200 rounded-md"
             />
-          </div>
+          </div> */}
         </div>
 
         <div className="w-full p-3 flex-end items-end flex flex-col">
