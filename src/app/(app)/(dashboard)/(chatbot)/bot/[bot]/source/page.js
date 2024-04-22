@@ -1,8 +1,8 @@
 "use client";
 
-import Retrain from "../../../../../../../components/mainComponent/chatbot/source/retrain";
 import QandA from "../../../../../../../components/mainComponent/chatbot/source/Q&A";
 import DataSource from "../../../../../../../components/mainComponent/chatbot/source/dataSource";
+import Retrain from "../../../../../../../components/mainComponent/chatbot/source/retrain";
 import Source_Text from "../../../../../../../components/mainComponent/chatbot/source/sources_text";
 import WebsiteSource from "../../../../../../../components/mainComponent/chatbot/source/sourecs_website";
 import SourceNav from "../../../../../../../components/navigation/SourceNav";
@@ -29,7 +29,7 @@ function Page({ params: { bot } }) {
     <div className="flex flex-col w-full items-center justify-center mt-[100px] ">
       <div className="lg:flex hidden flex-col w-full  items-start justify-start"></div>
       <div className="w-full gap-x-4 lg:max-w-[80%] gap-3 flex flex-col lg:flex-col  ">
-        <div className="text-sky-700 hidden lg:block text-[32px] font-bold font-['Manrope'] leading-[38.40px]">
+        <div className="text-sky-700 hidden lg:block text-[32px] font-bold font-manrope leading-[38.40px]">
           Data Sources
         </div>
 
@@ -39,7 +39,7 @@ function Page({ params: { bot } }) {
           </div>
           <div className="w-full">{renderContent()}</div>
           <div className="flex flex-col w-full items-center justify-center">
-            <Retrain chatbotId={bot}/>
+            <Retrain chatbotId={bot} />
           </div>
         </div>
       </div>

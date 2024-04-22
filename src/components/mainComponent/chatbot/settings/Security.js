@@ -1,6 +1,11 @@
 import { useEffect, useState } from "react";
+import {
+  chatBotCustomizeDataDefault,
+  rateLimits,
+} from "../../../../helpers/enums";
 import useChatbotSettings from "../../../../store/chatbot/useChatbotSettings";
 import useChatbotStore from "../../../../store/chatbot/useChatbotStore";
+import { capitalizeFirstLetter } from "../../../../utils/wordStructure";
 import Toggle from "../../../customComponents/slider/toggler";
 
 function SecuritySettings({ botId }) {
@@ -21,12 +26,18 @@ function SecuritySettings({ botId }) {
   }, [botId, getChatbot]);
 
   //limit values
-  const [inputLimit, setInputLimit] = useState(chatbot?.rateLimiting?.msg_count);
-  const [inputMessage, setInputMessage] = useState(chatbot?.rateLimiting?.timeframe);
+  const [inputLimit, setInputLimit] = useState(
+    chatbot?.rateLimiting?.msg_count
+  );
+  const [inputMessage, setInputMessage] = useState(
+    chatbot?.rateLimiting?.timeframe
+  );
   // Limit values
 
   //iframe & widget toggle
-  const [toggleChecked, setToggleChecked] = useState(chatbot?.chatBotCustomizeData?.allowPublicDomains);
+  const [toggleChecked, setToggleChecked] = useState(
+    chatbot?.chatBotCustomizeData?.allowPublicDomains
+  );
   const handleToggleChange = () => {
     setToggleChecked(!toggleChecked);
   };
@@ -43,7 +54,9 @@ function SecuritySettings({ botId }) {
   //privacy selection
 
   // exceed limit message
-  const [limitMessage, setLimitMessage] = useState(chatbot?.rateLimiting?.limitMsg);
+  const [limitMessage, setLimitMessage] = useState(
+    chatbot?.rateLimiting?.limitMsg
+  );
   // console.log(limitMessage);
   // Exceed limit message
 
@@ -51,21 +64,21 @@ function SecuritySettings({ botId }) {
 
   useEffect(() => {
     if (chatbot) {
-      setSelectedPrivacy(chatbot.visibility)
-      setLimitMessage(chatbot.rateLimiting.limitMsg)
-      setToggleChecked(chatbot.chatBotCustomizeData.allowPublicDomains)
-      setInputMessage(chatbot.rateLimiting.timeframe)
-      setInputLimit(chatbot.rateLimiting.msg_count)
+      setSelectedPrivacy(chatbot.visibility);
+      setLimitMessage(chatbot.rateLimiting.limitMsg);
+      setToggleChecked(chatbot.chatBotCustomizeData.allowPublicDomains);
+      setInputMessage(chatbot.rateLimiting.timeframe);
+      setInputLimit(chatbot.rateLimiting.msg_count);
     }
-  }, [chatbot])
+  }, [chatbot]);
 
   const handleSubmitBotSecurity = (e) => {
     e.preventDefault();
     const botSecurityData = {
       visibility: selectedPrivacy,
-      allowPublicDomains: toggleChecked,
+      allowPublicDomains: chatBotCustomizeDataDefault.allowPublicDomains,
       rateLimit: {
-        limitMsg: limitMessage,
+        limitMsg: chatBotCustomizeDataDefault.ra,
         msgCount: inputLimit,
         timeframe: inputMessage,
       },
@@ -77,6 +90,23 @@ function SecuritySettings({ botId }) {
   };
 
   //security submission
+
+  const resetSecuritySettings = (e) => {
+    e.preventDefault();
+    const botSecurityData = {
+      visibility: "PRIVATE",
+      allowPublicDomains: chatBotCustomizeDataDefault.allowPublicDomains,
+      rateLimit: {
+        limitMsg: rateLimits.limitMsg,
+        msgCount: rateLimits.msg_count,
+        timeframe: rateLimits.timeframe,
+      },
+    };
+
+    updateSecuritySettings({ botId, botSecurityData }, async () => {
+      await getChatbot(botId);
+    });
+  };
   return (
     <div className="w-full px-3 lg:p-[6%]  flex flex-col items-center justify-center ">
       <div className="flex w-full flex-col items-center  justify-center border-gray-200 border-[1px] gap-4 rounded-md ">
@@ -91,15 +121,15 @@ function SecuritySettings({ botId }) {
             <select
               value={selectedPrivacy}
               onChange={handlePrivacyChange}
-              className="h-[50px] w-full -mt-2 border-[1px] border-gray-200 rounded-md"
+              className="h-[50px] w-full  -mt-2 border-[1px]  font-medium font-manrope border-gray-200 rounded-md"
             >
               {visibility.map((visibility, i) => (
                 <option
                   key={i}
                   value={visibility}
-                  className="text-gray-900 text-xs font-medium font-manrope leading-none tracking-tight"
+                  className="text-gray-900  text-xs font-medium font-manrope leading-none tracking-tight"
                 >
-                  {visibility}
+                  {capitalizeFirstLetter(visibility)}
                 </option>
               ))}
             </select>
@@ -127,19 +157,23 @@ function SecuritySettings({ botId }) {
               <div className="text-zinc-800 mt-[4px] text-[10px] font-bold font-manrope leading-[14px] tracking-tight">
                 Rate Limiting
               </div>
-              <button className="text-sky-700 text-xs font-bold font-manrope leading-snug  px-3.5 py-1 bg-sky-50 rounded-lg shadow border border-sky-50 justify-center items-center gap-2 flex">
+              <button
+                disabled={updatingSecuritySettings}
+                onClick={resetSecuritySettings}
+                className="text-sky-700 disabled:bg-sky-300 text-xs font-bold font-manrope leading-snug  px-3.5 py-1 bg-sky-50 rounded-lg shadow border border-sky-50 justify-center items-center gap-2 flex"
+              >
                 Reset
               </button>
             </div>
             <div className="w-full text-gray-600 text-xs font-medium font-manrope leading-none tracking-tight">
-              Limit the number of messages sent from one device on the iframe
-              and chat bubble (this limit will not be applied to you on
-              stomps.io, only on your website for your users to prevent abuse).
+              Restrict the number of messages sent from a single device using
+              the iframe and chat bubble interfaces. This limit will be enforced
+              for users on your website to prevent abuse
             </div>
           </div>
           <div className="flex flex-wrap lg:flex-row w-full items-start p-3 gap-4">
             <div className="flex-row gap-x-2 flex items-center ">
-              <div className="text-gray-600 text-xs font-medium font-['Manrope'] leading-none tracking-tight">
+              <div className="text-gray-600 text-xs font-medium font-manrope leading-none tracking-tight">
                 Limit to only
               </div>
               <input
@@ -152,7 +186,7 @@ function SecuritySettings({ botId }) {
             </div>
 
             <div className="flex-row gap-x-2 flex items-center ">
-              <div className="text-gray-600 text-xs font-medium font-['Manrope'] leading-none tracking-tight">
+              <div className="text-gray-600 text-xs font-medium font-manrope leading-none tracking-tight">
                 messages every
               </div>
               <input
@@ -162,7 +196,7 @@ function SecuritySettings({ botId }) {
                 style={{ width: `${inputMessage?.length * 8 + 55}px` }}
                 className="w-[75px] max-w-auto h-[30px] lg:h-[37px] px-3.5 py-2.5 bg-white rounded shadow border border-zinc-100 justify-start items-center"
               />
-              <div className="text-gray-600 text-xs font-medium font-['Manrope'] leading-none tracking-tight">
+              <div className="text-gray-600 text-xs font-medium font-manrope leading-none tracking-tight">
                 seconds
               </div>
             </div>
@@ -184,7 +218,7 @@ function SecuritySettings({ botId }) {
           <button
             disabled={updatingSecuritySettings}
             onClick={handleSubmitBotSecurity}
-            className="text-white h-11 disabled:bg-sky-300 rounded-lg justify-start items-start  px-5 py-3 bg-sky-700  shadow border border-sky-700  gap-2 "
+            className="text-white justify-center items-center text center disabled:bg-sky-300 lg:w-auto font-manrope w-[150px] h-11 flex-end rounded-lg     p-2 bg-sky-700  shadow border border-sky-700   "
           >
             Save Changes
           </button>

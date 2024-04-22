@@ -38,11 +38,11 @@ function ChatRange({
   };
 
   return (
-    <div className="flex w-full items-start justify-between  flex-col lg:flex-row gap-6 p-3 ">
+    <div className="flex w-full items-start justify-between font-manrope  flex-col lg:flex-row gap-6 p-3 ">
       <div className="flex flex-[60%] gap-4 items-start ">
         <div className="flex gap-4 items-center">
           <div className="w-[150px] flex flex-col">
-            <p>Start</p>
+            <p className="font-medium font-manrope text-sm">Start</p>
             <DatePicker
               selected={startDate}
               onChange={handleStartDateChange}
@@ -51,12 +51,12 @@ function ChatRange({
               endDate={endDate}
               placeholderText={startDate && endDate ? "Select" : "Select"}
               dateFormat={displayFormat}
-              className="border w-full border-gray-300 rounded px-4 py-2 focus:outline-none focus:border-blue-500"
+              className="border w-full border-gray-300 rounded font-medium font-manrope placeholder:font-medium placeholder:font-manrope placeholder:text-sm px-4 py-2 focus:outline-none focus:border-blue-500"
             />
           </div>
 
           <div className="w-[150px] flex flex-col">
-            <p>End</p>
+            <p className="font-medium font-manrope text-sm">End</p>
             <DatePicker
               selected={endDate}
               onChange={handleEndDateChange}
@@ -66,7 +66,7 @@ function ChatRange({
               minDate={startDate}
               placeholderText={startDate && endDate ? "Select" : "Select"}
               dateFormat={displayFormat}
-              className="border w-full border-gray-300 rounded px-4 py-2 focus:outline-none focus:border-blue-500"
+              className="border w-full border-gray-300 rounded font-medium font-manrope placeholder:font-medium placeholder:font-manrope placeholder:text-sm px-4 py-2 focus:outline-none focus:border-blue-500"
             />
           </div>
         </div>

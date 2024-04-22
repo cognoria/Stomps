@@ -1,23 +1,21 @@
 "use client";
 
+import Image from "next/image";
 import { useEffect, useState } from "react";
 import useChatbotSettings from "../../../../store/chatbot/useChatbotSettings";
 import useChatbotStore from "../../../../store/chatbot/useChatbotStore";
-import Image from "next/image";
 
 export default function GeneralSettings({ botId }) {
   const { getChatbot, loading, chatbot } = useChatbotStore((state) => ({
     getChatbot: state.getChatbot,
     loading: state.loading,
     chatbot: state.chatbot,
-  }))
+  }));
 
-  const { updateBotName, loadingName } = useChatbotSettings(
-    (state) => ({
-      updateBotName: state.updateBotName,
-      loadingName: state.updatingBotName,
-    })
-  );
+  const { updateBotName, loadingName } = useChatbotSettings((state) => ({
+    updateBotName: state.updateBotName,
+    loadingName: state.updatingBotName,
+  }));
 
   useEffect(() => {
     getChatbot(botId);
@@ -51,7 +49,13 @@ export default function GeneralSettings({ botId }) {
               <div className="text-gray-900 text-sm font-bold font-manrope leading-snug">
                 {chatbot?._id}
               </div>
-              <Image width={20} height={20} alt="" src="/images/chatbox/copy.svg" className="w-6 h-6" />
+              <Image
+                width={20}
+                height={20}
+                alt=""
+                src="/images/chatbox/copy.svg"
+                className="w-6 h-6"
+              />
             </div>
           </div>
 
@@ -89,7 +93,7 @@ export default function GeneralSettings({ botId }) {
           <button
             onClick={handleUpdateName}
             disabled={loadingName}
-            className="text-white h-11 rounded-lg disabled:bg-sky-300 justify-start items-start  px-5 py-3 bg-sky-700  shadow border border-sky-700  gap-2 "
+            className="text-white justify-center items-center text center disabled:bg-sky-300 lg:w-auto font-manrope w-[150px] h-11 flex-end rounded-lg     p-2 bg-sky-700  shadow border border-sky-700   "
           >
             Save Changes
           </button>
@@ -98,4 +102,3 @@ export default function GeneralSettings({ botId }) {
     </div>
   );
 }
-

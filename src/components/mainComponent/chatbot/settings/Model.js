@@ -1,9 +1,12 @@
 import { useEffect, useState } from "react";
-import { chatModelEnum } from "../../../../helpers/enums";
+import {
+  chatBotCustomizeDataDefault,
+  chatModelEnum,
+} from "../../../../helpers/enums";
+import useChatbotSettings from "../../../../store/chatbot/useChatbotSettings";
+import useChatbotStore from "../../../../store/chatbot/useChatbotStore";
 import { formatDate } from "../../../../utils/dataFormat/date";
 import Temprature_slider from "../../../customComponents/slider/temprature_slider";
-import useChatbotSettings from "../../../../store/chatbot/useChatbotSettings"
-import useChatbotStore from "../../../../store/chatbot/useChatbotStore";
 
 /* eslint-disable react/no-unescaped-entities */
 function ModelSettings({ botId }) {
@@ -11,35 +14,39 @@ function ModelSettings({ botId }) {
     getChatbot: state.getChatbot,
     loading: state.loading,
     chatbot: state.chatbot,
-  }))
+  }));
 
-  const { updateModel, updatingModel } = useChatbotSettings(
-    (state) => ({
-      updateModel: state.updateModel,
-      updatingModel: state.updatingModel,
-    })
-  );
+  const { updateModel, updatingModel } = useChatbotSettings((state) => ({
+    updateModel: state.updateModel,
+    updatingModel: state.updatingModel,
+  }));
 
   useEffect(() => {
     getChatbot(botId);
   }, [botId, getChatbot]);
 
   // model selection
-  const [selectedModel, setSelectedModel] = useState(chatbot?.chatBotCustomizeData.model);
+  const [selectedModel, setSelectedModel] = useState(
+    chatbot?.chatBotCustomizeData.model
+  );
   const handleModelChange = (event) => {
     setSelectedModel(event.target.value);
   };
   // model selection
 
   //chatbot temprature
-  const [selectedTemperature, setSelectedTemperature] = useState(chatbot?.chatBotCustomizeData.temparature);
+  const [selectedTemperature, setSelectedTemperature] = useState(
+    chatbot?.chatBotCustomizeData.temparature
+  );
   const handleTemperatureChange = (value) => {
     setSelectedTemperature(value);
   };
   //chatbot temprature
 
   //model prompt
-  const [modelText, setModelText] = useState(chatbot?.chatBotCustomizeData.prompt);
+  const [modelText, setModelText] = useState(
+    chatbot?.chatBotCustomizeData.prompt
+  );
   const handleTextChange = (event) => {
     setModelText(event.target.value);
   };
@@ -54,10 +61,22 @@ function ModelSettings({ botId }) {
       temparature: selectedTemperature,
     };
 
-    updateModel({ botData, botId });
+    updateModel({ botData, botId }, async () => {
+      await getChatbot(botId);
+    });
   };
   // submit handler
-  
+  const resetModel = () => {
+    const botData = {
+      prompt: chatBotCustomizeDataDefault.prompt,
+      model: chatBotCustomizeDataDefault.model,
+      temparature: chatBotCustomizeDataDefault.temparature,
+    };
+
+    updateModel({ botData, botId }, async () => {
+      await getChatbot(botId);
+    });
+  };
   return (
     <div className="w-full px-3 lg:p-[6%]  flex flex-col items-center justify-center ">
       <div className="flex w-full flex-col items-center  justify-center border-gray-200 border-[1px] gap-4 rounded-md ">
@@ -70,7 +89,11 @@ function ModelSettings({ botId }) {
               <div className="text-zinc-800 text-[10px] font-bold font-manrope leading-[14px] tracking-tight">
                 Prompt
               </div>
-              <button className="h-[31px] text-sky-700 text-xs font-bold font-manrope leading-snug rounded-lg  px-3.5 py-1 bg-sky-50 shadow border border-sky-50 justify-center items-center flex flex-row ">
+              <button
+                disabled={updatingModel}
+                onClick={resetModel}
+                className="h-[31px] disabled:bg-sky-300 text-sky-700 text-xs font-bold font-manrope leading-snug rounded-lg  px-3.5 py-1 bg-sky-50 shadow border border-sky-50 justify-center items-center flex flex-row "
+              >
                 Reset
               </button>
             </div>
@@ -78,7 +101,7 @@ function ModelSettings({ botId }) {
             <textarea
               value={modelText}
               onChange={handleTextChange}
-              className="flex flex-col items-start p-3 h-[150px] active:border-gray-300  border-[1px]  border-gray-200 shadow-md w-full"
+              className="flex flex-col items-start p-3 h-[150px] active:border-gray-300  border-[1px] font-manrope text-sm font-medium border-gray-200 shadow-md w-full"
             ></textarea>
           </div>
           <div className="w-full p-3 text-zinc-500 text-xs font-medium font-manrope tracking-tight">
@@ -94,7 +117,7 @@ function ModelSettings({ botId }) {
               <select
                 value={selectedModel}
                 onChange={handleModelChange}
-                className="h-[50px] w-full -mt-2 border-[1px] border-gray-200 rounded-md"
+                className="h-[50px] w-full -mt-2 border-[1px] font-manrope border-gray-200 rounded-md"
               >
                 <option
                   value={chatModelEnum.GPT_3_5}
@@ -118,8 +141,6 @@ function ModelSettings({ botId }) {
               <div className="w-auto text-gray-600 text-[10px] font-normal font-manrope leading-[14px] tracking-tight">
                 gpt-4 is much better at following the instructions and not
                 hallucinating, but slower and more expensive than gpt-3.5-turbo
-                (1 message using gpt-3.5-turbo costs 1 message credit. 1 message
-                using gpt-4-turbo costs 10 message credits.)
               </div>
             </div>
             {/* <div className="flex-1 w-full flex gap-y-4 p-3 flex-col items-start ">
@@ -175,8 +196,9 @@ function ModelSettings({ botId }) {
             </div>
             <div className="flex fle-end items-end  w-full flex-col ">
               <button
+                disabled={updatingModel}
                 onClick={handleSubmitBotModel}
-                className="text-white justify-end lg:w-auto w-[150px] h-11 flex-end mt-[70px] lg:mt-0 rounded-lg lg:justify-start items-start   lg:px-5 lg:py-3 bg-sky-700  shadow border border-sky-700  gap-2 "
+                className="text-white justify-center items-center text center disabled:bg-sky-300 lg:w-auto font-manrope w-[150px] h-11 flex-end rounded-lg     p-2 bg-sky-700  shadow border border-sky-700   "
               >
                 Save Changes
               </button>

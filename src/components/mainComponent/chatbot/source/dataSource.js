@@ -1,7 +1,9 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import Image from "next/image";
+import { useState } from "react";
 import { toast } from "react-toastify";
+import useKnowledgebase from "../../../../store/chatbot/useKnowledgebase";
 import {
   extractTextFromDoc,
   extractTextFromPDF,
@@ -10,18 +12,18 @@ import {
   isPDFFile,
   isTXTFile,
 } from "../../../../utils/extractDoc/file_extract";
-import Image from "next/image";
-import useKnowledgebase from "../../../../store/chatbot/useKnowledgebase";
 
 export default function DataSource() {
   const [selectedFile, setSelectedFile] = useState(null);
 
-  const { files, addFiles, deleteFile, deleteAllFiles } = useKnowledgebase((state) => ({
-    files: state.files,
-    addFiles: state.addFiles,
-    deleteFile: state.deleteFile,
-    deleteAllFiles: state.deleteAllFiles,
-  }))
+  const { files, addFiles, deleteFile, deleteAllFiles } = useKnowledgebase(
+    (state) => ({
+      files: state.files,
+      addFiles: state.addFiles,
+      deleteFile: state.deleteFile,
+      deleteAllFiles: state.deleteAllFiles,
+    })
+  );
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
@@ -63,7 +65,7 @@ export default function DataSource() {
         return toast.error("unspported file selected"); //toast file not supported
       }
       await addFiles(file);
-      setSelectedFile(null)
+      setSelectedFile(null);
     } catch (e) {
       console.error("error adding file: ", e);
       toast.error("Failed to add file");
@@ -92,7 +94,12 @@ export default function DataSource() {
                   onChange={handleFileChange}
                 />
                 <label htmlFor="file-input" className="upload-label">
-                  <Image width={15} height={15} src="/images/chatbox/folder-add.svg" alt="Upload icon" />
+                  <Image
+                    width={15}
+                    height={15}
+                    src="/images/chatbox/folder-add.svg"
+                    alt="Upload icon"
+                  />
                   <div className="main-text">
                     Select a File Upload, or Drag and Drop it here
                   </div>
@@ -109,7 +116,12 @@ export default function DataSource() {
             </div>
 
             <div className="items-center flex flex-row justify-center gap-x-2 text-neutral-400 py-4 lg:p-0 p-2 text-xs w-full tracking-tigh leading-none  font-normal font-manrope">
-              <Image width={15} height={15} src="/images/chatbox/warning-2.svg" alt="" />
+              <Image
+                width={15}
+                height={15}
+                src="/images/chatbox/warning-2.svg"
+                alt=""
+              />
               <p>
                 If you’re uploading a PDF, be sure that the texts can be
                 highlighted
@@ -130,7 +142,12 @@ export default function DataSource() {
                     onClick={deleteAllFiles}
                     className="bg-transparent items-center gap-2 flex flex-row"
                   >
-                    <Image width={15} height={15} src="/images/chatbox/trash.svg" alt="" />
+                    <Image
+                      width={15}
+                      height={15}
+                      src="/images/chatbox/trash.svg"
+                      alt=""
+                    />
                     <p className="text-red-500 text-xs font-bold font-manrope leading-snug">
                       Delete all
                     </p>
@@ -152,12 +169,14 @@ export default function DataSource() {
                         className="w-full flex flex-row items-center gap-2 justify-between "
                       >
                         <div className="w-[94%]  h-[42px] pl-[15px] pr-4 pt-3 pb-[13px] rounded-lg border border-gray-200 justify-between items-start gap-[158px] flex flex-row">
-                          <div className="text-gray-900  w-[92%] text-xs font-normal font-['Manrope'] leading-none tracking-tight">
+                          <div className="text-gray-900  w-[92%] text-xs font-normal font-manrope leading-none tracking-tight">
                             {file.name}
                           </div>
                         </div>
                         <button onClick={() => deleteFile(index)}>
-                          <Image width={15} height={15}
+                          <Image
+                            width={15}
+                            height={15}
                             src="/images/chatbox/trash.svg"
                             alt=""
                             classNAme="w-full h-auto"

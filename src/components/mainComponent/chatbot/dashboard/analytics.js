@@ -21,9 +21,9 @@ function Analytics({ botId }) {
   const [filteredData, setFilteredData] = useState(null);
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
-  console.log({ startDate, endDate });
+
   useEffect(() => {
-     if (!analytics || !startDate || !endDate) return;
+    if (!analytics || !startDate || !endDate) return;
 
     // Filter data within the selected date range
     const filtered = analytics?.chatsPerDay?.filter((item) => {

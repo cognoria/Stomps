@@ -39,12 +39,12 @@ function EmbbedModal({ botId }) {
       </div>
       <div className="flex flex-col w-full gap-3 items-center justify-center ">
         <img src="/images/landing/logo.svg" />
-        <div className="w-full text-center text-neutral-900 text-sm font-normal font-['Manrope'] leading-snug">
+        <div className="w-full text-center text-neutral-900 text-sm font-normal font-manrope leading-snug">
           To add the chatbot to anywhere on your site, add this iframe to your
           HTML code.
         </div>
         <div className="w-full py-2.5 bg-zinc-100 rounded-lg justify-center items-center gap-2.5 inline-flex">
-          <div className="text-black text-[14px] font-normal font-['Manrope'] ">
+          <div className="text-black text-[14px] font-normal font-manrope ">
             <CodeDisplay code={embedIframe} />
           </div>
         </div>
@@ -64,12 +64,12 @@ function EmbbedModal({ botId }) {
         </button>
       </div>
       <div className="flex items-center justify-center flex-col w-full gap-3">
-        <div className="w-full text-center text-neutral-900 text-sm font-normal font-['Manrope'] leading-snug">
+        <div className="w-full text-center text-neutral-900 text-sm font-normal font-manrope leading-snug">
           To add a chat bubble to the bottom right of your site, add this script
           tag to your HTML code.
         </div>
         <div className="w-full py-2.5 bg-zinc-100 rounded-lg justify-center items-center gap-2.5 inline-flex">
-          <div className="text-black text-[14px] font-normal font-['Manrope'] ">
+          <div className="text-black text-[14px] font-normal font-manrope ">
             <CodeDisplay code={widgetCode} />
           </div>
         </div>

@@ -89,7 +89,7 @@ export function ForgetPass({ email }) {
             <span className="text-zinc-500 text-sm font-normal font-manrope leading-snug"></span>
 
             {countdown >= 1 && (
-              <span className="text-red-600 text-[10px] font-bold font-['Manrope'] leading-[14px] tracking-tight">
+              <span className="text-red-600 text-[10px] font-bold font-manrope leading-[14px] tracking-tight">
                 {countdown >= 0
                   ? `00:${countdown.toString().padStart(2, "0")}`
                   : "00:00"}

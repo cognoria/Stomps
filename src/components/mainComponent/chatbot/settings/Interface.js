@@ -2,6 +2,7 @@
 "use client";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
+import { chatBotCustomizeDataDefault } from "../../../../helpers/enums";
 import useChatbotSettings from "../../../../store/chatbot/useChatbotSettings";
 import useChatbotStore from "../../../../store/chatbot/useChatbotStore";
 import { convertImageToBase64 } from "../../../../utils/imageConverter/base64Image";
@@ -138,7 +139,8 @@ function InterfaceSettings({ botId }) {
     }
   }, [suggestedMessages]);
 
-  const handleSubmitChatInterface = () => {
+  const handleSubmitChatInterface = (e) => {
+    e.preventDefault();
     const botData = {
       initialMsg: initialMsg,
       suggestedMsgs: suggestMsgArr,
@@ -166,7 +168,27 @@ function InterfaceSettings({ botId }) {
     if (container) {
       setShowScrollArrow(container.scrollWidth > container.clientWidth);
     }
-  }, []);
+  }, [containerRef]);
+
+  const resetInterface = () => {
+    const botData = {
+      initialMsg: chatBotCustomizeDataDefault.welcomeMessage,
+      suggestedMsgs: chatBotCustomizeDataDefault.questionExamples,
+      msgPlaceholder: chatBotCustomizeDataDefault.chatInputPlaceholderText,
+      theme: chatBotCustomizeDataDefault.widgetTheme,
+      displayName: displayName,
+      chatIcon: chatBotCustomizeDataDefault.launcherIcon,
+      alignChatButton: chatBotCustomizeDataDefault.placement,
+      autoShowMsg: chatBotCustomizeDataDefault.popupDelay,
+      profileImage: chatBotCustomizeDataDefault.profileImage,
+    };
+
+    // console.log(botData);
+
+    updateInterface({ botData, botId }, async () => {
+      await getChatbot(botId);
+    });
+  };
   return (
     <div className="w-full px-3 lg:p-[6%]  flex flex-col overflow-x-hidden items-center justify-center ">
       <div className="flex w-full flex-col items-center  justify-center border-gray-200 border-[1px] gap-4 rounded-t-md ">
@@ -178,7 +200,11 @@ function InterfaceSettings({ botId }) {
         <div className="w-full overflow-x-hidden flex flex-col lg:flex-row items-start py-8  px-3 ">
           <div className="flex overflow-x-hidden flex-col w-full flex-1">
             <div className="flex flex-col w-full items-end justify-end px-4">
-              <button className="h-[31px] text-sky-700 text-xs font-bold font-manrope leading-snug rounded-lg  px-3.5 py-1 bg-sky-50 shadow border border-sky-50 justify-center items-center flex flex-row ">
+              <button
+                disabled={updatingInterface}
+                onClick={resetInterface}
+                className="h-[31px] text-sky-700 disabled:bg-sky-300 text-xs font-bold font-manrope leading-snug rounded-lg  px-3.5 py-1 bg-sky-50 shadow border border-sky-50 justify-center items-center flex flex-row "
+              >
                 Reset
               </button>
             </div>
@@ -208,7 +234,7 @@ function InterfaceSettings({ botId }) {
               <textarea
                 value={suggestedMessages}
                 onChange={(e) => setSuggestedMessages(e.target.value)}
-                className="max-h-[150px] lg:w-full max-w-full overflow-auto p-2 border border-gray-200 rounded-md"
+                className="max-h-[150px] lg:w-full text-sm font-normal max-w-full overflow-auto p-2 font-manrope border border-gray-200 rounded-md"
                 placeholder={"example email.com"}
               ></textarea>
 
@@ -273,12 +299,12 @@ function InterfaceSettings({ botId }) {
                     onChange={handleChatProfileImageChange}
                   />
                   <label htmlFor="file-input-profile" className="upload-label">
-                    {profileImg.startsWith("#") && (
+                    {profileImg?.startsWith("#") && (
                       <div
                         className={`h-12 w-12 rounded-full bg-[${profileImg}]`}
                       />
                     )}
-                    {profileImg.startsWith("data:image") && (
+                    {profileImg?.startsWith("data:image") && (
                       <Image
                         width={30}
                         height={30}
@@ -301,7 +327,7 @@ function InterfaceSettings({ botId }) {
                       setDelProfileImg(e.target.checked), setProfileImg("");
                     }}
                   />
-                  <p className="text-zinc-800 text-[10px] font-normal font-['Manrope'] leading-[14px] tracking-tight">
+                  <p className="text-zinc-800 text-[10px] font-normal font-manrope leading-[14px] tracking-tight">
                     Delete Chat Profile image
                   </p>
                 </div>
@@ -335,7 +361,7 @@ function InterfaceSettings({ botId }) {
             <div className="flex gap-y-4 w-full flex-col items-start p-3">
               <div className="text-zinc-800 text-[10px]  font-bold font-manrope leading-[14px] tracking-tight">
                 Upload Chat icon
-                <span className="text-zinc-800 text-[10px] font-normal font-['Manrope'] leading-[14px] tracking-tight">
+                <span className="text-zinc-800 text-[10px] font-normal font-manrope leading-[14px] tracking-tight">
                   (images can only be square)
                 </span>
               </div>
@@ -350,12 +376,12 @@ function InterfaceSettings({ botId }) {
                     onChange={handleChatIconChange}
                   />
                   <label htmlFor="file-input-chat" className="upload-label">
-                    {chatIcon.startsWith("#") && (
+                    {chatIcon?.startsWith("#") && (
                       <div
                         className={`h-12 w-12 rounded-full bg-[${chatIcon}]`}
                       />
                     )}
-                    {chatIcon.startsWith("data:image") && (
+                    {chatIcon?.startsWith("data:image") && (
                       <Image
                         width={30}
                         height={30}
@@ -377,7 +403,7 @@ function InterfaceSettings({ botId }) {
                       className="w-4 h-4"
                       onChange={(e) => setUsePlainColor(e.target.checked)}
                     />
-                    <p className="text-zinc-800 text-[10px] font-normal font-['Manrope'] leading-[14px] tracking-tight">
+                    <p className="text-zinc-800 text-[10px] font-normal font-manrope leading-[14px] tracking-tight">
                       Use a plain color instead
                     </p>
                   </div>
@@ -441,12 +467,12 @@ function InterfaceSettings({ botId }) {
             >
               <div className="flex border-b-[1px] h-[8%] border-gray-200 flex-row  px-4 py-2 w-full flex-start items-start justify-between">
                 <div className="flex flex-row items-center justify-start gap-x-4">
-                  {profileImg.startsWith("#") && (
+                  {profileImg?.startsWith("#") && (
                     <div
                       className={`h-8 w-8 rounded-full bg-[${profileImg}]`}
                     />
                   )}
-                  {profileImg.startsWith("data:image") && (
+                  {profileImg?.startsWith("data:image") && (
                     <Image
                       width={30}
                       height={30}
@@ -504,8 +530,8 @@ function InterfaceSettings({ botId }) {
                   {suggestMsgArr &&
                     suggestMsgArr?.map((msg, i) => {
                       return (
-                        <p
-                          className={`rounded-lg p-1 text-sm text-center whitespace-nowrap ${
+                        <div
+                          className={`rounded-md py-1 px-2  font-normal font-manrope leading-snug text-sm text-center whitespace-nowrap ${
                             selectedTheme === "DARK"
                               ? "bg-gray-800 hover:bg-gray-600 text-zinc-100"
                               : "bg-sky-700 text-white"
@@ -513,7 +539,7 @@ function InterfaceSettings({ botId }) {
                           key={i}
                         >
                           {msg.question}
-                        </p>
+                        </div>
                       );
                     })}
                 </div>
@@ -560,7 +586,7 @@ function InterfaceSettings({ botId }) {
           <button
             disabled={updatingInterface}
             onClick={handleSubmitChatInterface}
-            className="text-white h-11 disabled:bg-sky-300 rounded-lg justify-start items-start  px-5 py-3 bg-sky-700  shadow border border-sky-700  gap-2 "
+            className="text-white justify-center items-center text center disabled:bg-sky-300 lg:w-auto font-manrope w-[150px] h-11 flex-end rounded-lg     p-2 bg-sky-700  shadow border border-sky-700   "
           >
             Save Changes
           </button>

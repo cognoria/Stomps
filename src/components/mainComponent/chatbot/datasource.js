@@ -211,7 +211,7 @@ export default function Datasource() {
                         className="w-full flex flex-row items-center gap-2 justify-between "
                       >
                         <div className="w-[94%]  h-[42px] pl-[15px] pr-4 pt-3 pb-[13px] rounded-lg border border-gray-200 justify-between items-start gap-[158px] flex flex-row">
-                          <div className="text-gray-900  w-[92%] text-xs font-normal font-['Manrope'] leading-none tracking-tight">
+                          <div className="text-gray-900  w-[92%] text-xs font-normal font-manrope leading-none tracking-tight">
                             {file.name}
                           </div>
                         </div>

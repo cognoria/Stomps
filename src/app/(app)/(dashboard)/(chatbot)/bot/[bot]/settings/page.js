@@ -1,10 +1,10 @@
 "use client";
 
-import LeadsSettings from "../../../../../../../components/mainComponent/chatbot/settings/Leads";
-import SecuritySettings from "../../../../../../../components/mainComponent/chatbot/settings/Security";
-import InterfaceSettings from "../../../../../../../components/mainComponent/chatbot/settings/Interface";
 import GeneralSettings from "../../../../../../../components/mainComponent/chatbot/settings/General";
+import InterfaceSettings from "../../../../../../../components/mainComponent/chatbot/settings/Interface";
+import LeadsSettings from "../../../../../../../components/mainComponent/chatbot/settings/Leads";
 import ModelSettings from "../../../../../../../components/mainComponent/chatbot/settings/Model";
+import SecuritySettings from "../../../../../../../components/mainComponent/chatbot/settings/Security";
 
 import SourceNav from "../../../../../../../components/navigation/SourceNav";
 import useSourceNav from "../../../../../../../store/chatbot/useSourceNav";
@@ -34,7 +34,7 @@ function Page({ params: { bot } }) {
     <div className="flex flex-col w-[98%] lg:w-full items-center overflow-x-hidden justify-center mt-[100px]">
       <div className="lg:flex hidden flex-col w-full  items-start justify-start"></div>
       <div className="w-full gap-x-4 lg:max-w-[80%] gap-3 flex flex-col lg:flex-col  ">
-        <div className="text-sky-700 hidden lg:block text-[32px] font-bold font-['Manrope'] leading-[38.40px]">
+        <div className="text-sky-700 hidden lg:block text-[32px] font-bold font-manrope leading-[38.40px]">
           Settings
         </div>
 

@@ -37,7 +37,7 @@ export function DeleteBot({ text, button_name, id }) {
         </button>
       </div>
       <div className="self-stretch h-11 flex-col justify-center items-center gap-[13px] flex">
-        <div className="w-[317.63px] text-center text-zinc-800 text-base font-bold font-['Manrope'] leading-snug tracking-tight">
+        <div className="w-[317.63px] text-center text-zinc-800 text-base font-bold font-manrope leading-snug tracking-tight">
           {text}
         </div>
       </div>
@@ -46,7 +46,7 @@ export function DeleteBot({ text, button_name, id }) {
           <div className="grow shrink basis-0 h-10 px-4 py-2.5 bg-sky-700 rounded-lg shadow border border-sky-700 justify-center items-center gap-2 flex">
             <button
               onClick={hideModal}
-              className="grow w-full shrink basis-0 text-center text-white text-sm font-bold font-['Manrope'] leading-snug"
+              className="grow w-full shrink basis-0 text-center text-white text-sm font-bold font-manrope leading-snug"
             >
               Cancel
             </button>
@@ -59,7 +59,7 @@ export function DeleteBot({ text, button_name, id }) {
               onClick={() => delete_bot(id)}
               className={`grow shrink basis-0 text-center ${
                 deletingChatbot ? "" : ""
-              }  text-red-600 text-sm font-bold font-['Manrope'] leading-snug`}
+              }  text-red-600 text-sm font-bold font-manrope leading-snug`}
             >
               {deletingChatbot ? "deleting" : button_name}
             </button>

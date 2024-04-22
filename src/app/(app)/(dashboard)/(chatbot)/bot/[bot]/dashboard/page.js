@@ -1,12 +1,10 @@
 "use client";
 
-import { useEffect } from "react";
 import Analytics from "../../../../../../../components/mainComponent/chatbot/dashboard/analytics";
 import Chat_logs from "../../../../../../../components/mainComponent/chatbot/dashboard/chatLogs";
 import Leeds from "../../../../../../../components/mainComponent/chatbot/dashboard/leeds";
 
 import SourceNav from "../../../../../../../components/navigation/SourceNav";
-import useChatbotStore from "../../../../../../../store/chatbot/useChatbotStore";
 import useSourceNav from "../../../../../../../store/chatbot/useSourceNav";
 
 function Page({ params: { bot } }) {
@@ -35,25 +33,24 @@ function Page({ params: { bot } }) {
   //   getChatbotLead(bot);
   // }, [analytics, bot, leads]);
 
-
   const renderContent = () => {
     switch (currentPage) {
       case "Leads":
-        return <Leeds botId={bot}  />;
+        return <Leeds botId={bot} />;
       case "Analytics":
-        return <Analytics botId={bot}  />;
+        return <Analytics botId={bot} />;
       case "Chat logs":
         return <Chat_logs botId={bot} />;
 
       default:
-        return <Chat_logs botId={bot}/>;
+        return <Chat_logs botId={bot} />;
     }
   };
   return (
     <div className="flex flex-col w-[98%] lg:w-full items-center overflow-x-hidden justify-center mt-[100px]">
       <div className="lg:flex hidden flex-col w-full  items-start justify-start"></div>
       <div className="w-full gap-x-4 lg:max-w-[80%] gap-3 flex flex-col lg:flex-col  ">
-        <div className="text-sky-700 hidden lg:block text-[32px] font-bold font-['Manrope'] leading-[38.40px]">
+        <div className="text-sky-700 hidden lg:block text-[32px] font-bold font-manrope leading-[38.40px]">
           Dashboard
         </div>
 

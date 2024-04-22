@@ -64,6 +64,10 @@ html {
 /* Input Style */
 /* Input Style */
 /* Input Style */
+
+select option.selected::first-letter {
+  text-transform: capitalize;
+}
 .custom-date-input {
   display: flex;
   align-items: center;
@@ -86,7 +90,6 @@ html {
 .custom-date-input::-webkit-calendar-picker-indicator {
   display: none; /* Hide the default arrow */
 }
-
 
 /* Input Text */
 .custom-date-input::after {
