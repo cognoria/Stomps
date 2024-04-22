@@ -1,6 +1,7 @@
 import { useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { formatRangeDate } from "../../../utils/dataFormat/dateRange";
 import {
   exportToCSV,
   exportToJSON,
@@ -15,13 +16,15 @@ function ChatRange({
   exportDataFile,
 }) {
   const [showExportFormat, setShowExportFormat] = useState(false);
-
+  const [displayFormat, setDisplayFormat] = useState("0");
   const handleStartDateChange = (date) => {
-    onDateRangeSelect({ startDate: date, endDate });
+    onDateRangeSelect({ startDate: formatRangeDate(date), endDate });
+    setDisplayFormat("dd/MM/yyyy");
   };
 
   const handleEndDateChange = (date) => {
-    onDateRangeSelect({ startDate, endDate: date });
+    onDateRangeSelect({ startDate, endDate: formatRangeDate(date) });
+    setDisplayFormat("dd/MM/yyyy");
   };
 
   const exportFileJson = async () => {
@@ -38,7 +41,7 @@ function ChatRange({
     <div className="flex w-full items-start justify-between  flex-col lg:flex-row gap-6 p-3 ">
       <div className="flex flex-[60%] gap-4 items-start ">
         <div className="flex gap-4 items-center">
-          <div className="w-[50px] flex flex-col">
+          <div className="w-[150px] flex flex-col">
             <p>Start</p>
             <DatePicker
               selected={startDate}
@@ -46,11 +49,13 @@ function ChatRange({
               selectsStart
               startDate={startDate}
               endDate={endDate}
-              className="border border-gray-300 rounded px-4 py-2 focus:outline-none focus:border-blue-500"
+              placeholderText={startDate && endDate ? "Select" : "Select"}
+              dateFormat={displayFormat}
+              className="border w-full border-gray-300 rounded px-4 py-2 focus:outline-none focus:border-blue-500"
             />
           </div>
 
-          <div className="w-[50px] flex flex-col">
+          <div className="w-[150px] flex flex-col">
             <p>End</p>
             <DatePicker
               selected={endDate}
@@ -59,7 +64,9 @@ function ChatRange({
               startDate={startDate}
               endDate={endDate}
               minDate={startDate}
-              className="border border-gray-300 rounded px-4 py-2 focus:outline-none focus:border-blue-500"
+              placeholderText={startDate && endDate ? "Select" : "Select"}
+              dateFormat={displayFormat}
+              className="border w-full border-gray-300 rounded px-4 py-2 focus:outline-none focus:border-blue-500"
             />
           </div>
         </div>

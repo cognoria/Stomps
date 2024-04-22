@@ -1,14 +1,21 @@
 import * as d3 from "d3";
-import { useEffect, useRef } from "react";
+import * as countryData from "i18n-iso-countries";
+import { useEffect, useRef, useState } from "react";
 import * as topojson from "topojson-client";
 
 const ChoroplethMap = ({ data }) => {
   const svgRef = useRef(null);
-
+  const [countryCode, setCountryCode] = useState("");
   useEffect(() => {
     if (!data || data.length === 0) return;
+    countryData.registerLocale(require("i18n-iso-countries/langs/en.json"));
 
     const svg = d3.select(svgRef.current);
+    // console.log(data)
+    const colorScale = d3
+      .scaleSequential(d3.interpolateBlues)
+      .domain([0, d3.max(data, (d) => d.count)]);
+
     const updateDimensions = () => {
       const width = window.innerWidth;
       const height = window.innerHeight;
@@ -41,10 +48,34 @@ const ChoroplethMap = ({ data }) => {
           .attr("d", path)
           .style("fill", (d) => {
             const country = data.find((item) => {
-              // console.log({ dataSet: item.id, mapSet: d.id });
-              return item.id === d.id;
+              function convertCountryToIsoNumeric(country) {
+                // console.log({ country });
+                // Handle case-insensitivity
+                // country = country.toLowerCase();
+
+                // Check for numeric code (ISO 3166-1 numeric)
+                if (!isNaN(country) && country.length === 3) {
+                  return country;
+                }
+
+                if (country.length > 2)
+                  country = countryData.getAlpha2Code(country, "en");
+
+                // Try converting by country name (ISO 3166-1 alpha-2)
+                const isoNumericCode = countryData.alpha2ToNumeric(country);
+
+                if (isoNumericCode) {
+                  // console.log({ isoNumericCode });
+                  return isoNumericCode;
+                }
+
+                // If no match found, throw an error
+                throw new Error(`Invalid country name/code: ${country}`);
+              }
+              const cId = convertCountryToIsoNumeric(item.country);
+
+              return cId === d.id;
             });
-            // console.log(country);
             return country ? getColor(country.count) : "#ccc";
           });
       });
@@ -58,6 +89,25 @@ const ChoroplethMap = ({ data }) => {
       window.removeEventListener("resize", updateDimensions);
     };
   }, [data]);
+
+  function convertCountryToIsoNumeric(country) {
+    // Handle case-insensitivity
+    country = country.toUpperCase();
+
+    // Check for numeric code (ISO 3166-1 numeric)
+    if (!isNaN(country) && country.length === 3) {
+      return country;
+    }
+
+    // Try converting by country name (ISO 3166-1 alpha-2)
+    const isoNumericCode = countryData.alpha2ToNumeric(country);
+    if (isoNumericCode) {
+      return isoNumericCode;
+    }
+
+    // If no match found, throw an error
+    throw new Error(`Invalid country name/code: ${country}`);
+  }
 
   const getColor = (count) => {
     if (count >= 0 && count <= 50) {

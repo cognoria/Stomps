@@ -10,6 +10,7 @@ import {
   Tooltip,
 } from "chart.js";
 import * as d3 from "d3";
+import { useEffect, useState } from "react";
 import { Line } from "react-chartjs-2";
 import ChoroplethMap from "../map/map";
 import MapLegend from "../map/mapLegend";
@@ -58,15 +59,22 @@ const options = {
   },
 };
 
-export function Chart_page({ data, mapData, country, count }) {
-  // console.log(mapData);
-  const dataDemo = [
-    { country: "CA", count: 78, id: "124" },
-    { country: "NG", count: 305, id: "566" },
-    { country: "US", count: 1005, id: "840" },
-    { country: "MX", count: 25, id: "484" },
-    { country: "CM", count: 200, id: "120" },
-  ];
+export function Chart_page({
+  data,
+  mapData,
+  country,
+  count,
+  startDate,
+  endDate,
+  handleDateRangeSelect,
+}) {
+  // const dataDemo = [
+  //   { country: "Canada", count: 78 },
+  //   { country: "NIGERIA", count: 305 },
+  //   { country: "UNITED STATES", count: 1005 },
+  //   { country: "SWEDEN", count: 25 },
+  //   { country: "CHINA", count: 200 },
+  // ];
   const colorScale = d3
     .scaleThreshold()
     .domain([0, 50, 100, 200])
@@ -74,31 +82,35 @@ export function Chart_page({ data, mapData, country, count }) {
 
   return (
     <div className="w-[90%] flex flex-col overflow-hidden">
-      <ChatRange />
+      <ChatRange
+        startDate={startDate}
+        endDate={endDate}
+        onDateRangeSelect={handleDateRangeSelect}
+      />
       <Line options={options} data={data} />
       <div className="w-full h-full p-4 flex flex-row items-start gap-4">
-        <ChoroplethMap data={dataDemo} />
+        <ChoroplethMap data={mapData} />
         <div className="flex flex-col w-[20%] mt-[10px] items-start">
-          <table class="min-w-full  rounded-t-[15px] shadow-lg overflow-scroll  lg:divide-y lg:divide-gray-200">
-            <thead class="hidden  bg-[#F6F9FF] lg:table-header-group">
+          <table className="min-w-full rounded-t-[15px] shadow-lg overflow-scroll lg:divide-y lg:divide-gray-200">
+            <thead className="hidden bg-[#F6F9FF] lg:table-header-group">
               <tr>
-                <td class="px-6 py-4 text-sm font-medium text-[#1261AC] whitespace-normal">
+                <th className="px-6 py-4 text-sm font-medium text-[#1261AC] whitespace-normal">
                   Country
-                </td>
-                <td class="px-6 py-4 text-sm font-medium text-[#1261AC] whitespace-normal">
+                </th>
+                <th className="px-6 py-4 text-sm font-medium text-[#1261AC] whitespace-normal">
                   Chats
-                </td>
+                </th>
               </tr>
             </thead>
 
-            <tbody class="divide-y  justify-start overflow-y-scroll max-h-[380px] divide-gray-200">
+            <tbody className="divide-y justify-start overflow-y-scroll max-h-[380px] divide-gray-200">
               <tr>
-                <td class="hidden px-6 py-4 text-sm font-medium text-gray-900 lg:table-cell whitespace-nowrap">
+                <td className="hidden px-6 py-4 text-sm font-medium text-gray-900 lg:table-cell whitespace-nowrap">
                   {country.map((country, i) => (
                     <p key={i}>{country}</p>
                   ))}
                 </td>
-                <td class="hidden px-6 py-4 text-sm font-medium text-gray-900 lg:table-cell whitespace-nowrap">
+                <td className="hidden px-6 py-4 text-sm font-medium text-gray-900 lg:table-cell whitespace-nowrap">
                   {count.map((count, i) => (
                     <p key={i}>{count}</p>
                   ))}

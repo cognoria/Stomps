@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import useChatbotStore from "../../../../store/chatbot/useChatbotStore";
 import { Chart_page } from "../../../customComponents/chart/chart";
 import EmptyDashboard from "./emptyDashboard";
@@ -18,34 +18,63 @@ function Analytics({ botId }) {
     getChatbotAnalytics(botId);
   }, [botId, getChatbotAnalytics]);
 
-  const dataValue = analytics?.chatsPerDay?.map((item) => item.count);
-  const label = analytics?.chatsPerDay?.map((item) => item.date);
-  const country = analytics?.chatsPerCountry?.map((item) => item.country);
-  const count = analytics?.chatsPerCountry?.map((item) => item.count);
+  const [filteredData, setFilteredData] = useState(null);
+  const [startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
+  console.log({ startDate, endDate });
+  useEffect(() => {
+     if (!analytics || !startDate || !endDate) return;
 
-  const chartData = {
-    labels: label,
-    datasets: [
-      {
-        fill: true,
-        label: "",
-        data: dataValue,
-        borderColor: "rgb(53, 162, 235)",
-        backgroundColor: "rgba(53, 162, 235, 0.5)",
-      },
-    ],
+    // Filter data within the selected date range
+    const filtered = analytics?.chatsPerDay?.filter((item) => {
+      const itemDate = new Date(item.date);
+      const convStartDate = new Date(startDate);
+      const convEndDate = new Date(endDate);
+      console.log({
+        apiDate: itemDate,
+        start: convStartDate,
+        end: convEndDate,
+      });
+      return itemDate >= convStartDate && itemDate <= convEndDate;
+    });
+
+    // Update the filtered data state
+    setFilteredData(filtered);
+    console.log(filtered);
+  }, [analytics, startDate, endDate]);
+
+  const handleDateRangeSelect = ({ startDate, endDate }) => {
+    setStartDate(startDate);
+    setEndDate(endDate);
   };
-
-  // map data Structure
 
   return (
     <div className="flex flex-col w-full items-center overflow-hidden">
       {analytics ? (
         <Chart_page
-          country={country}
-          count={count}
-          data={chartData}
+          startDate={startDate}
+          endDate={endDate}
+          handleDateRangeSelect={handleDateRangeSelect}
+          country={analytics?.chatsPerCountry?.map((item) => item.country)}
+          count={analytics?.chatsPerCountry?.map((item) => item.count)}
+          data={{
+            labels: filteredData
+              ? filteredData?.map((item) => item.count)
+              : analytics?.chatsPerDay?.map((item) => item.count),
+            datasets: [
+              {
+                fill: true,
+                label: "",
+                data: filteredData
+                  ? filteredData?.map((item) => item.count)
+                  : analytics?.chatsPerDay?.map((item) => item.count),
+                borderColor: "rgb(53, 162, 235)",
+                backgroundColor: "rgba(53, 162, 235, 0.5)",
+              },
+            ],
+          }}
           mapData={analytics?.chatsPerCountry}
+          onDateRangeSelect={handleDateRangeSelect}
         />
       ) : (
         <EmptyDashboard />

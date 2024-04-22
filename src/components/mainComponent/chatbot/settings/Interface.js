@@ -441,11 +441,18 @@ function InterfaceSettings({ botId }) {
             >
               <div className="flex border-b-[1px] h-[8%] border-gray-200 flex-row  px-4 py-2 w-full flex-start items-start justify-between">
                 <div className="flex flex-row items-center justify-start gap-x-4">
-                  {profileImg && (
-                    <img
-                      className="w-[40px] h-[40px]"
+                  {profileImg.startsWith("#") && (
+                    <div
+                      className={`h-8 w-8 rounded-full bg-[${profileImg}]`}
+                    />
+                  )}
+                  {profileImg.startsWith("data:image") && (
+                    <Image
+                      width={30}
+                      height={30}
+                      className="w-[50px] h-[50px] rounded-full"
                       src={profileImg}
-                      alt="profile image"
+                      alt={""}
                     />
                   )}
                   {displayName && (

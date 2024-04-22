@@ -32,6 +32,12 @@ export default function RootLayout({ children }) {
         {/* <script src="/embed.js" strategy="afterInteractive" chatbotId="660eacb8642adae92cff46ed" domain="http://localhost:3000/" defer> </script> */}
         <link rel="icon" href="/favicon.ico" sizes="any" />
         <link
+          rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/jvectormap/2.0.4/jquery-jvectormap.css"
+          type="text/css"
+          media="screen"
+        />
+        <link
           rel="icon"
           href="/images/landing/logopng.png"
           type="image/png"
