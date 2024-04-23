@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import useFormDataStore from "./useChatbotSource";
+import { redirect } from "next/navigation";
 
 export default create((set) => ({
   links: [],
@@ -9,11 +10,17 @@ export default create((set) => ({
   fetchSitemapAndUpdateInclude: async (sitemapUrl) => {
     set({ loading: true, error: null });
     try {
-      const response = await fetch(`/api/v1/data/links?type=sitemap&url=${sitemapUrl}`, {
-        method: "GET",
-        headers: { "Content-Type": "application/json" },
-      });
-      if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+      const response = await fetch(
+        `/api/v1/data/links?type=sitemap&url=${sitemapUrl}`,
+        {
+          method: "GET",
+          headers: { "Content-Type": "application/json" },
+        }
+      );
+      if (!response.ok) {
+        if (response.status === 401) return redirect("/signin");
+        throw new Error(data.message || "An error occurred");
+      }
       const html = await response.json();
 
       set((state) => ({
@@ -36,7 +43,10 @@ export default create((set) => ({
         method: "GET",
         headers: { "Content-Type": "application/json" },
       });
-      if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+      if (!response.ok) {
+        if (response.status === 401) return redirect("/signin");
+        throw new Error(data.message || "An error occurred");
+      }
       const html = await response.json();
 
       set((state) => ({
