@@ -45,9 +45,12 @@ function Account() {
           </div>
           <div className="flex items-end flex-col justify-end w-full lg:w-auto bg:block">
             <div className="w-[210px] flex-end px-2.5 py-2 rounded-lg shadow border border-sky-700 justify-center items-center gap-2 flex">
-              <div className="text-sky-700 text-sm font-bold font-manrope leading-snug">
+              <Link
+                href="/account/keys"
+                className="text-sky-700 text-sm font-bold font-manrope leading-snug"
+              >
                 Create New Secret key
-              </div>
+              </Link>
               <Image
                 width={15}
                 height={15}
@@ -93,7 +96,17 @@ function Account() {
           </div>
         </div>
       </div>
-      <PlanCards />
+      <div classNAme="flex flex-col w-full">
+        <PlanCards />
+        <div className="px-[4%] py-[12px] flex flex-row  justify-start lg:justify-center items-start">
+          <img alt="" src="/images/landing/warning.svg" />
+          <div className="w-full lg:w-[454px] mt-4 text-gray-900 text-base font-normal font-manrope leading-relaxed tracking-tight">
+             API costs not included, you need to pay OpenAI and Pinecone for API
+            usage separately
+          </div>
+        </div>
+      </div>
+
       <div className="lg:w-[570px] w-[95%] rounded-lg flex-row flex gap-4  justify-end items-end ">
         <button
           className="w-[146px] p-2 rounded-lg shadow border border-red-500 justify-center items-center gap-2 flex"

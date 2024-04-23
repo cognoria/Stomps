@@ -1,10 +1,12 @@
 "use client";
 
+import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { remark } from "remark";
 import remarkHTML from "remark-html";
 import useBotMessagingStore from "../../../../store/chatbot/useChatbotMessaging";
 import useChatbotStore from "../../../../store/chatbot/useChatbotStore";
+import { copyCode } from "../../../../utils/dataFormat/copyCode";
 import { formatDate } from "../../../../utils/dataFormat/date";
 import Temprature_slider from "../../../customComponents/slider/temprature_slider";
 import SkeletonLoader from "../../../skeleton";
@@ -67,7 +69,14 @@ function ChatPage({ botId }) {
                     <>{chatbot?._id}</>
                   )}
                 </div>
-                <img src="/images/chatbox/copy.svg" className="w-6 h-6" />
+                <Image
+                  onClick={() => copyCode(chatbot?._id)}
+                  width={20}
+                  height={20}
+                  alt=""
+                  src="/images/chatbox/copy.svg"
+                  className="w-6 h-6"
+                />
               </div>
             </div>
             <div className=" flex flex-row w-full justify-between gap-1 items-start">
@@ -237,7 +246,14 @@ function Chat({ id, status }) {
         <p className="mx-3 text-red-500 font-manrope font-normal text-sm">
           {error && error}
         </p>
-        <img src="/images/chatbox/refresh.svg" alt="" />
+        <Image
+          width={20}
+          height={20}
+          // onClick={() => refreshChat(botId, true)}
+          className="hover:-rotate-90 cursor-pointer self-center"
+          src="/images/chatbox/refresh.svg"
+          alt=""
+        />
       </div>
       <div
         ref={chatContainerRef}
