@@ -1,4 +1,4 @@
-import { toast } from "react-toastify";
+import { redirect } from "next/navigation";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
@@ -17,15 +17,18 @@ export const useUserStore = create(
           const data = await response.json();
 
           if (!response.ok) {
-            if (callback) callback()
+            if (callback) callback();
+            if (response.status === 401) return redirect("/signin");
             throw new Error(data.message || "An error occurred");
           }
-          set({ user: data })
+
+          set({ user: data });
         } catch (e) {
-          // console.log(e)
-          toast.error(e.message)
+          // console.log(e);
+          // toast.error(e.message);
+          set({ user: null });
         }
-      }
+      },
     }),
     {
       name: "user-storage",

@@ -29,7 +29,7 @@ export default create((set) => ({
     } catch (error) {
       set({ updatingModel: false, loading: false, error: error.message });
       toast.error(error.message);
-      console.error(error.message);
+      // console.error(error.message);
     }
   },
 
@@ -56,7 +56,7 @@ export default create((set) => ({
         error: error.message,
       });
       toast.error(error.message);
-      console.error(error.message);
+      // console.error(error.message);
     }
   },
 
@@ -79,7 +79,7 @@ export default create((set) => ({
         error: error.message,
       });
       toast.error(error.message);
-      console.error(error.message);
+      // console.error(error.message);
     }
   },
 
@@ -99,7 +99,7 @@ export default create((set) => ({
     } catch (error) {
       set({ updatingBotName: false, loading: false, error: error.message });
       toast.error(error.message);
-      console.error(error.message);
+      // console.error(error.message);
     }
   },
 

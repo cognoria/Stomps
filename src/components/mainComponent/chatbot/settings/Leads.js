@@ -78,7 +78,7 @@ function LeadsSettings({ botId }) {
 
   // handle lead submission
 
-  const resetLeads = (e) => {
+  const resetLeads = async (e) => {
     e.preventDefault();
     const botLeadsData = {
       title: chatBotCustomizeDataDefault.leadMsgDescription,
@@ -86,15 +86,17 @@ function LeadsSettings({ botId }) {
       collectEmail: chatBotCustomizeDataDefault.collectEmail,
       collectPhone: chatBotCustomizeDataDefault.collectPhone,
     };
-    updateLeadsSettings(
-      {
-        botLeadsData,
-        botId,
-      },
-      async () => {
-        await getChatbot(botId);
-      }
-    );
+
+    setTitle(chatBotCustomizeDataDefault.leadMsgDescription);
+    setNameToggle(chatBotCustomizeDataDefault.collectName);
+    setEmailToggle(chatBotCustomizeDataDefault.collectEmail);
+    setPhoneToggle(chatBotCustomizeDataDefault.collectPhone);
+
+    await updateLeadsSettings({
+      botLeadsData,
+      botId,
+    });
+    await getChatbot(botId);
   };
   return (
     <div className="w-full px-3 lg:p-[6%]  flex flex-col items-center justify-center ">

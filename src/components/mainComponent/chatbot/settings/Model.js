@@ -66,16 +66,19 @@ function ModelSettings({ botId }) {
     });
   };
   // submit handler
-  const resetModel = () => {
+  const resetModel = async () => {
     const botData = {
       prompt: chatBotCustomizeDataDefault.prompt,
       model: chatBotCustomizeDataDefault.model,
       temparature: chatBotCustomizeDataDefault.temparature,
     };
+    setSelectedModel(chatBotCustomizeDataDefault.model);
+    setSelectedTemperature(chatBotCustomizeDataDefault.temparature);
+    setModelText(chatBotCustomizeDataDefault.prompt);
 
-    updateModel({ botData, botId }, async () => {
-      await getChatbot(botId);
-    });
+    await updateModel({ botData, botId });
+
+    await getChatbot(botId);
   };
   return (
     <div className="w-full px-3 lg:p-[6%]  flex flex-col items-center justify-center ">

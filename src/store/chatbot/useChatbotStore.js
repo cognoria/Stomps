@@ -1,3 +1,4 @@
+import { redirect } from "next/navigation";
 import { toast } from "react-toastify";
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
@@ -61,14 +62,18 @@ export default create(
           method: "GET",
         });
         const data = await response.json();
-        if (!response.ok) throw new Error(data.message || "An error occurred");
+        if (!response.ok) {
+          if (response.status === 401) return redirect("/signin");
+          throw new Error(data.message || "An error occurred");
+        }
+
         set({ loading: false, chatbot: data });
         if (onSuccess) onSuccess(data);
         return data;
       } catch (error) {
         set({ error: error.message, loading: false });
-        toast.error(error.message || "Failed to fetch!");
-        console.error("fetch failed:", error);
+        // toast.error(error.message || "Failed to fetch!");
+        // console.error("fetch failed:", error);
         throw error;
       }
     },
@@ -80,14 +85,17 @@ export default create(
           method: "GET",
         });
         const data = await response.json();
-        if (!response.ok) throw new Error(data.message || "An error occurred");
+        if (!response.ok) {
+          if (response.status === 401) return redirect("/signin");
+          throw new Error(data.message || "An error occurred");
+        }
         if (onSuccess) onSuccess(data);
         set({ loading: false, chatbots: data });
         return data;
       } catch (error) {
         set({ error: error.message, loading: false });
-        toast.error(error.message || "Failed to fetch!");
-        console.error("fetch failed:", error);
+        // toast.error(error.message || "Failed to fetch!");
+        // console.error("fetch failed:", error);
         throw error;
       }
     },
@@ -99,14 +107,17 @@ export default create(
           method: "GET",
         });
         const data = await response.json();
-        if (!response.ok) throw new Error(data.message || "An error occurred");
+        if (!response.ok) {
+          if (response.status === 401) return redirect("/signin");
+          throw new Error(data.message || "An error occurred");
+        }
         if (onSuccess) onSuccess(data);
         set({ loading: false, analytics: data });
         return data;
       } catch (error) {
         set({ error: error.message, loading: false });
-        toast.error(error.message || "Failed to fetch!");
-        console.error("fetch failed:", error);
+        // toast.error(error.message || "Failed to fetch!");
+        // console.error("fetch failed:", error);
         throw error;
       }
     },
@@ -121,16 +132,19 @@ export default create(
           method: "GET",
         });
         const data = await response.json();
-        // console.log(data);
-        if (!response.ok) throw new Error(data.message || "An error occurred");
+
+        if (!response.ok) {
+          if (response.status === 401) return redirect("/signin");
+          throw new Error(data.message || "An error occurred");
+        }
         if (onSuccess) onSuccess(data);
         set({ loading: false, leads: data });
 
         return data;
       } catch (error) {
         set({ error: error.message, loading: false });
-        toast.error(error.message || "Failed to fetch!");
-        console.error("fetch failed:", error);
+        // toast.error(error.message || "Failed to fetch!");
+        // console.error("fetch failed:", error);
         throw error;
       }
     },
@@ -144,14 +158,17 @@ export default create(
           method: "GET",
         });
         const data = await response.json();
-        if (!response.ok) throw new Error(data.message || "An error occurred");
+        if (!response.ok) {
+          if (response.status === 401) return redirect("/signin");
+          throw new Error(data.message || "An error occurred");
+        }
         if (onSuccess) onSuccess(data);
         set({ loading: false, chats: data });
         return data;
       } catch (error) {
         set({ error: error.message, loading: false });
-        toast.error(error.message || "Failed to fetch!");
-        console.error("fetch failed:", error);
+        // toast.error(error.message || "Failed to fetch!");
+        // console.error("fetch failed:", error);
         throw error;
       }
     },

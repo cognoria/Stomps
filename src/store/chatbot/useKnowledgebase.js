@@ -1,3 +1,4 @@
+import { redirect } from "next/navigation";
 import { toast } from "react-toastify";
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
@@ -23,7 +24,10 @@ export default create(
           headers: { "Content-Type": "application/json" },
         });
         const data = await response.json();
-        if (!response.ok) throw new Error(data.message || "An error occurred");
+        if (!response.ok) {
+          if (response.status === 401) return redirect("/signin");
+          throw new Error(data.message || "An error occurred");
+        }
         const updatedState = { ...data.knowledgebase };
         const files = [];
         data.knowledgebase.contents.forEach(({ url, content }) => {
@@ -84,8 +88,10 @@ export default create(
             headers: { "Content-Type": "application/json" },
           }
         );
-        if (!response.ok)
-          throw new Error(`HTTP error! Status: ${response.status}`);
+        if (!response.ok) {
+          if (response.status === 401) return redirect("/signin");
+          throw new Error(data.message || "An error occurred");
+        }
         const links = await response.json();
 
         set((state) => ({
@@ -108,8 +114,10 @@ export default create(
             headers: { "Content-Type": "application/json" },
           }
         );
-        if (!response.ok)
-          throw new Error(`HTTP error! Status: ${response.status}`);
+        if (!response.ok) {
+          if (response.status === 401) return redirect("/signin");
+          throw new Error(data.message || "An error occurred");
+        }
         const links = await response.json();
 
         set((state) => ({
