@@ -18,12 +18,12 @@ function Account() {
   const user = useUserStore((state) => state.user);
   // console.log(user);
   return (
-    <div className="mt-[80px] lg:mt-[120px] w-screen mb-[50px] flex flex-col items-center justify-center gap-y-6">
+    <div className="mt-[80px] lg:mt-[120px] w-full mb-[50px] flex flex-col items-center justify-center gap-y-6">
       <div className="w-full text-center text-sky-700 text-sm lg:text-[28px] font-extrabold font-manrope leading-tight tracking-tight lg:leading-[33.60px]">
         Account
       </div>
 
-      <div className="w-[95%] lg:w-[570px] h-[149px] rounded-lg  border border-gray-200">
+      <div className="w-[95%] lg:w-[570px] h-[149px] items-center rounded-lg  border border-gray-200">
         <div className="left-[17px]  p-4 text-sky-700 text-base font-bold font-manrope leading-snug">
           Your Email address
         </div>
@@ -34,7 +34,7 @@ function Account() {
         </div>
       </div>
 
-      <div className="w-[95%] lg:w-[570px] flex flex-col rounded-lg border border-gray-200">
+      <div className="w-[95%] lg:w-[570px] flex flex-col items-center rounded-lg border border-gray-200">
         <div className="text-sky-700  p-4 lg:text-base  text-sm font-bold font-manrope leading-snug">
           Your Stomps API Key
         </div>
@@ -96,7 +96,7 @@ function Account() {
           </div>
         </div>
       </div>
-      <div classNAme="flex flex-col w-full">
+      <div className="flex flex-col items-center w-[95%] lg:w-[570px]">
         <PlanCards />
         <div className="px-[4%] py-[12px] flex flex-row  justify-start lg:justify-center items-start">
           <img alt="" src="/images/landing/warning.svg" />

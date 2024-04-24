@@ -82,7 +82,20 @@ const useBotMessagingStore = create(
           throw error;
         }
       },
+
+      clearMessages: (id) => {
+        set((state) => ({
+          bots: {
+            ...state.bots,
+            [id]: {
+              ...state.bots[id],
+              chatMessages: [], // Clearing chat messages
+            },
+          },
+        }));
+      },
       // remove a bot message when bot is deleted
+
       removeBot: (id) => {
         set((state) => {
           const newBots = { ...state.bots };

@@ -62,7 +62,7 @@ function Account_page() {
                       color: "#45c9c3",
                     },
                   },
-                  buttonDestination: "checkout",
+                  buttonDestination: "Checkout",
                   contents: {
                     img: false,
                     title: false,
@@ -141,7 +141,7 @@ function Account_page() {
     }
   }, []);
   return (
-    <div>
+    <div className="w-full flex flex-col items-center ">
       <Account />
     </div>
   );

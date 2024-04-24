@@ -26,7 +26,7 @@ function BarHeader({
   };
   const [showExportFormat, setShowExportFormat] = useState(false);
   return (
-    <div className="flex w-full items-start justify-between  flex-col lg:flex-row gap-6 p-3 ">
+    <div className="flex w-full items-start justify-between  flex-row gap-6 p-3 ">
       <div className="flex flex-[60%] gap-4 items-start ">
         {date && (
           <div class="relative">

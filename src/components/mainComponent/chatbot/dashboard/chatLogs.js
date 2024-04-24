@@ -79,8 +79,8 @@ const Filled_bot_state = ({ chatData, handleDateSelect }) => {
           onDateSelect={handleDateSelect}
         />
 
-        <div className="flex gap-3 p-3 w-full flex-row items-start justify-start">
-          <div className="flex border-none h-[400px] items-start overflow-y-scroll gap-2  flex-col w-[40%]">
+        <div className="flex gap-3 p-3 w-full flex-col lg:flex-row items-start justify-start">
+          <div className="flex border-none h-auto max-h-[400px] lg:h-[400px] items-start overflow-y-scroll gap-2  flex-col w-full lg:w-[40%]">
             {arrangedData?.map((item, i) => {
               const lastUserMessage = item.messages.find(
                 (message) => message.role === "user"
@@ -117,7 +117,7 @@ const Filled_bot_state = ({ chatData, handleDateSelect }) => {
             })}
           </div>
 
-          <div className="flex flex-col  rounded-lg  items-start justify-start border-gray-200 border-[1px] w-[60%]">
+          <div className="flex flex-col  rounded-lg  items-start justify-start border-gray-200 border-[1px] w-full lg:w-[60%]">
             <div
               // ref={chatContainerRef}
               style={{ scrollBehavior: "smooth" }}
