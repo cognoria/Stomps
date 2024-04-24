@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import useChatbotSettings from "../../../../store/chatbot/useChatbotSettings";
 import useChatbotStore from "../../../../store/chatbot/useChatbotStore";
+import { copyCode } from "../../../../utils/dataFormat/copyCode";
 
 export default function GeneralSettings({ botId }) {
   const { getChatbot, loading, chatbot } = useChatbotStore((state) => ({
@@ -50,6 +51,7 @@ export default function GeneralSettings({ botId }) {
                 {chatbot?._id}
               </div>
               <Image
+                onClick={() => copyCode(chatbot?._id)}
                 width={20}
                 height={20}
                 alt=""

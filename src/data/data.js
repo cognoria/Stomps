@@ -1,12 +1,12 @@
 export const ai_card_data = [
   {
     title: "Intelligent Conversations",
-    body: "The chatbot application leverages state-of-the-art GPT models to provide intelligent, context-aware responses, ensuring engaging and personalized conversations with your customers.",
+    body: " Leverage powerful AI models including GPT-4 to provide context aware responses to inquiries",
     icon: "./images/landing/ai_card_data_icon_1.svg",
   },
   {
     title: "Tailored Knowledge Base",
-    body: "Stomps is designed to digest and utilize a knowledge base unique to your business, ensuring every response is accurate and perfectly aligned with your specific industry demands.",
+    body: "Use data from multiples sources to train your bot",
     icon: "./images/landing/ai_card_data_icon_2.svg",
   },
   {
@@ -15,29 +15,19 @@ export const ai_card_data = [
     icon: "./images/landing/ai_card_data_icon_3.svg",
   },
   {
-    title: "Automation of Routine Tasks",
-    body: "Stomps excels in handling inquiries and providing quick, accurate FAQs around the clock. By taking over routine questions, it frees your team to focus on more complex tasks. jgjhh",
+    title: "Collect Leads",
+    body: " Capture interested visitors’ details, allowing you to build a list of potential customers",
     icon: "./images/landing/ai_card_data_icon_4.svg",
   },
   {
-    title: "Scalability and Adaptability",
-    body: "The chatbot effortlessly handles more conversations as your business expands. It ensures you're always equipped to engage your customers, no matter how big you get.ygygig jhbhyg",
+    title: "Analytics",
+    body: " Get insights into how customers interact with your bot and review conversation histories",
     icon: "./images/landing/ai_card_data_icon_5.svg",
   },
   {
-    title: "Customization & Personalization",
+    title: "Customization ",
     body: "Stomps is fully customizable, allowing you to tailor its appearance, feel, and responses to seamlessly align with your brand identity and engage your audience with a truly personalized experience",
     icon: "./images/landing/ai_card_data_icon_6.svg",
-  },
-  {
-    title: "Analytics and Insights",
-    body: "The chatbot offers deep analytics on user interactions. Discover your customers' true needs, preferences, and the hurdles they face, enabling data-driven strategies to enhance their experience.",
-    icon: "./images/landing/ai_card_data_icon_7.svg",
-  },
-  {
-    title: "Cost Savings",
-    body: "The chatbot automates your customer support and routine tasks, enabling your business to save costs associated with hiring additional staff or outsourcing support services.",
-    icon: "./images/landing/ai_card_data_icon_8.svg",
   },
 ];
 
@@ -70,46 +60,57 @@ export const how_it_works = [
 
 export const your_question_answered = [
   {
-    question: "When will Stomps be available?",
+    question: "What exactly do I get?",
     answer:
-      "We're working hard to bring Stomps to you as soon as possible, aiming for a launch in the near future. While we're targeting the end of 1st quarter or beginning of second quarter for our release, our commitment is to ensure Stomps meets our high standards of quality and user experience. To stay updated on our progress and get notified the moment Stomps is available, sign up for our mailing list. We appreciate your interest and patience!",
+      "After purchasing the chatbot software, you'll get access to the source code on GitHub and an hour of live setup help.",
     open: false,
   },
   {
-    question: "What does the one-time purchase price of Stomps include?",
+    question: "Is customer support included?",
     answer:
-      "The one-time purchase of Stomps grants you complete access to deploy the software on your chosen cloud provider, ensuring you can start enhancing your customer interactions right away. Plus, it includes an hour of free setup support to help you get up and running smoothly, making onboarding a breeze.",
+      "Basic customer support is included. However, support for issues arising from code modifications is not available. Send questions and feature requests to israel@stomps.io",
     open: false,
   },
   {
-    question: "Are there any recurring fees after the one-time purchase?",
+    question: "How do updates work?",
     answer:
-      "No, there are no recurring fees with Stomps after your initial purchase. Enjoy ongoing updates that enhance Stomps' functionality, viewable in our changelog. Optional advanced updates may incur a one-time fee, but these are entirely at your discretion, ensuring you only pay for what you need.",
+      "Free updates are provided. We'll inform you about new versions and assist with manual updates until an automated system is in place.",
     open: false,
   },
   {
-    question: "What additional costs should I anticipate?",
+    question: "Are there recurring fees from Stomps?",
     answer:
-      "Beyond the one-time purchase of Stomps, anticipate costs related to usage-based fees from Pinecone and OpenAI, as their services power key functionalities of your chatbot. Additionally, one-time fees may apply for specific actions, such as embedding content into the database. You'll also cover cloud hosting costs for your deployment. These external expenses depend on your usage and hosting choices, allowing you to manage and optimize based on your needs.",
+      "No recurring fees. You pay once to own the software. Future major version upgrades (e.g., from 1.x to 2.x) may involve additional costs, but upgrading is optional.",
     open: false,
   },
   {
-    question:
-      "What roles do Pinecone and OpenAI play in enhancing Stomps, and what are the associated costs?",
+    question: "Any additional cost I should know about? ",
     answer:
-      "Pinecone and OpenAI are integral to Stomps, providing the advanced search capabilities and natural language processing that make your chatbot intelligent and responsive. Pinecone powers our sophisticated data retrieval, ensuring quick, relevant answers, while OpenAI's GPT technology enables Stomps to understand and generate human-like text. These services operate on usage-based pricing, meaning costs will vary depending on how much you use them.",
+      "Yes, you will pay directly to OpenAI and Pinecone for API usage on a pay-as-you-go basis.",
     open: false,
   },
   {
-    question: "How easy is it to set up and deploy Stomps?",
+    question: "What role does OpenAI play?",
     answer:
-      "Setting up and deploying Stomps is designed to be straightforward, ensuring you can get your chatbot up and running quickly. With a simple installation process complemented by dedicated setup support, you'll have Stomps integrated into your website effortlessly. Our dashboard further simplifies customization and management, enabling you to tailor Stomps to your needs seamlessly without any technical headaches.",
+      "OpenAI provides the AI models that our software uses to generate responses, allowing for intelligent conversation capabilities.",
     open: false,
   },
   {
-    question: "Can I customize Stomps to fit my brand?",
+    question: "What role does Pinecone play? ",
     answer:
-      "Absolutely! Stomps is designed with customization at its core, allowing you to tailor its appearance, tone, and responses to match your brand identity perfectly. From visual elements to conversational style, Stomps can be adapted to ensure a seamless and branded experience for your customers.",
+      "Pinecone manages the database that powers the chatbot, ensuring quick retrieval of information for accurate and timely responses.",
+    open: false,
+  },
+  {
+    question: "Can I have a refund?  ",
+    answer:
+      "No refunds are available, as the software source code is non-returnable once purchased.",
+    open: false,
+  },
+  {
+    question: "Can I resell the software ",
+    answer:
+      "No. The purchase only allows use for a single software instance and does not permit publishing, distributing, sub licensing, or selling the software.",
     open: false,
   },
 ];
@@ -118,46 +119,97 @@ export const plan_data = [
   {
     availability: true,
     tag: "Your Own API Key:",
-    text: " Opt for GPT-3.5 or GPT-4, tailoring the AI's power to your needs.",
+    text: "Choose between GPT-3.5 or GPT-4 with a dedicated API Key.",
   },
   {
     availability: true,
     tag: "Unlimited Message Credits:",
-    text: "Freely interact with your audience, with no cap on exchanges.",
+    text: "Enjoy unlimited messaging without restrictions.",
   },
   {
     availability: true,
     tag: "Unlimited Characters for Embeddings:",
-    text: "Process extensive data without limits, perfect for creating rich, nuanced chatbot interactions.",
+    text: "Upload as much text as you need to train your chatbot.",
   },
   {
     availability: true,
     tag: "View Conversation History:",
-    text: "Easily access past chats for insights and optimization.",
+    text: "Access conversation histories.",
   },
-  {
-    availability: true,
-    tag: "View Conversation History:",
-    text: "Easily access past chats for insights and optimization.",
-  },
+
   {
     availability: true,
     tag: "Upload Multiple Files:",
-    text: "Broaden your chatbot’s understanding with diverse document uploads.",
+    text: "Easily upload various document types for enhanced chatbot training.",
   },
   {
     availability: true,
     tag: "Train on Unlimited Website Links:",
-    text: "Enhance its knowledge base by linking to an unlimited number of web pages.",
+    text: "Train your bot with limitless website links.",
   },
   {
     availability: true,
     tag: "No 'Powered by Stomps' Branding:",
-    text: "Maintain your brand’s integrity without external logos or mentions.",
+    text: "Maintain brand consistency with no mandatory external branding.",
   },
   {
     availability: true,
     tag: "Embed on Unlimited Websites:",
-    text: "Extend your reach by embedding Stomps across all your online platforms.",
+    text: "Freely embed your chatbot on multiple websites.",
   },
+  {
+    availability: true,
+    tag: "",
+    text: "Benefit from one hour live video installation support.",
+  },
+  {
+    availability: true,
+    tag: "",
+    text: "Receive ongoing updates for your software version at no extra cost. ",
+  },
+  {
+    availability: true,
+    tag: "",
+    text: "License covers a single software instance for focused efficiency. ",
+  },
+];
+
+export const compareData = [
+  {
+    stomp: "Freedom with a one-time payment",
+    gpt: "Trapped in recurring payment cycles",
+  },
+  {
+    stomp: "Unlimited interactions to handle all customer queries",
+    gpt: "Limited interactions due to capped \n message quotas",
+  },
+  {
+    stomp: "Your brand, your identity \n no extra charge.",
+    gpt: "Additional costs for brand \n customization",
+  },
+  {
+    stomp: "Full access to all powerful features \n from the start",
+    gpt: "Features restrictions based on \n subscription level",
+  },
+  {
+    stomp: "Simple, all-in-one solution, \n no piecemeal extras needed",
+    gpt: "Extra fees for essential  \n integrations",
+  },
+];
+
+export const requirement = [
+  "A Virtual Private Server (VPS) where the software will be hosted.",
+  "A Pinecone account with an API key.",
+  "An OpenAI platform account with API access.",
+];
+
+export const installation = [
+  "Purchase the software to gain access to our private GitHub repository.",
+  "Set up a Virtual Private Server (VPS) with any cloud service or hosting provider. You can also use your existing domain host.",
+  "Link a custom domain to your server.",
+  "Access the admin panel to configure your chatbot.",
+  "Enter your Pinecone and OpenAI API keys.",
+  "Import data from various sources, such as Word documents and websites, to train your chatbot.",
+  "Customize settings as needed, including the chat interface.",
+  "Embed the chatbot on your website.",
 ];

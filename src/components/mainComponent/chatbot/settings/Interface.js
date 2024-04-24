@@ -525,16 +525,23 @@ function InterfaceSettings({ botId }) {
               </div>
               <div className="w-full overflow-y-scroll h-[72%] flex flex-col gap-3 p-4">
                 {initialMsg && (
-                  <div
-                    className={`max-w-[70%] w-fit  px-[15px] py-[11px] items-start ${
-                      selectedTheme === "DARK"
-                        ? "bg-gray-800 text-zinc-100"
-                        : "bg-zinc-100 text-stone-900"
-                    }    rounded-tl rounded-tr rounded-br border justify-center  flex-col flex`}
-                  >
-                    <div className=" text-start text-sm font-normal font-manrope leading-snug">
-                      {initialMsg}
-                    </div>
+                  <div className="gap-1 flex flex-col max-w-[70%]">
+                    {initialMsgsArr?.map((msg, i) => {
+                      return (
+                        <div
+                          key={i}
+                          className={` w-fit  px-[15px] py-[11px] items-start ${
+                            selectedTheme === "DARK"
+                              ? "bg-gray-800 text-zinc-100"
+                              : "bg-zinc-100 text-stone-900"
+                          }    rounded-tl rounded-tr rounded-br border justify-center  flex-col flex`}
+                        >
+                          <div className=" text-start text-sm font-normal font-manrope leading-snug break-words">
+                            {msg}
+                          </div>
+                        </div>
+                      );
+                    })}
                   </div>
                 )}
 

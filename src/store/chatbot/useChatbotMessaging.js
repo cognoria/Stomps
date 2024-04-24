@@ -92,7 +92,7 @@ const useBotMessagingStore = create(
       },
     }),
     {
-      name: "bot-messaging-store", 
+      name: "bot-messaging-store",
     }
   )
 );

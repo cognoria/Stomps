@@ -32,7 +32,7 @@ function BarHeader({
           <div class="relative">
             <input
               type="date"
-              class="appearance-none py-[10px] lg:py-[20px] border border-gray-300 font-medium font-manrope placeholder:font-medium placeholder:font-manrope placeholder:text-sm rounded  px-4 w-[100px] lg:w-[150px] leading-tight focus:outline-none focus:border-blue-500"
+              class="appearance-none py-[10px] lg:py-[20px] border border-gray-300 font-medium font-manrope placeholder:font-medium placeholder:font-manrope placeholder:text-sm rounded  px-4 w-[100px] lg:w-[180px] leading-tight focus:outline-none focus:border-blue-500"
               placeholder="Select a date"
               onChange={handleDateChange}
             />
