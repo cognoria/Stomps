@@ -2,7 +2,6 @@
 
 import Image from "next/image";
 import { plan_data } from "../../../data/data";
-import { RoundedSubmitButton } from "../buttons/button1";
 
 /* eslint-disable react/no-unescaped-entities */
 export function PlanCards() {
@@ -38,11 +37,9 @@ export function PlanCards() {
             </span>
           </div>
         </div>
-        <RoundedSubmitButton
-          text_color={"text-white"}
-          button_content={"Get Started"}
-          radius={"rounded-[8px]"}
-          width={"w-[293px]"}
+        <button
+          id="product-component-1713759313241"
+          className="flex flex-col items-center justify-center text-center font-manrope px-2 py-2 bg-transparent w-auto rounded-[8px] text-white"
         />
       </div>
     </div>
