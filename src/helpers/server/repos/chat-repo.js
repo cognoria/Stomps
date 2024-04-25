@@ -175,7 +175,7 @@ async function getChatsPerCountry(chatbotId) {
 async function getChatSession(chatbotId, params) {
     const sessionId = cookies().get(`chat-session-${chatbotId}`)?.value;
     let userChatSession = await Chats.findById(sessionId);
-    console.log({sessionId, userChatSession, chatbotId, session: cookies().get(`chat-session-${chatbotId}`)})
+    console.log({sessionId, userChatSession, chatbotId})
     if (!sessionId || !userChatSession) {
         userChatSession = await createChatSession(chatbotId, params);
     }
