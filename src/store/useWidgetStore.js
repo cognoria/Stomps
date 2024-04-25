@@ -195,7 +195,7 @@ const useWidgetStore = create(
           
           const response = await fetch(`/api/v1/embed/${botId}/chat`, {
             method: "POST",
-            credentials: 'same-origin',
+            credentials: 'include',
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(requestBody),
           });
