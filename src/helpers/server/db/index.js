@@ -10,8 +10,6 @@ import leadModel from './leadModel';
 
 const dbUrl = process.env.MONGODB_URI;
 mongoose.connect(dbUrl);
-console.log({dbUrl})
-
 export const db = {
     Log: logModel(),
     User: userModel(),
