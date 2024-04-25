@@ -87,6 +87,7 @@ export const chatRepo = {
 //     return response
 // }
 async function widgetChatResponse(chatbotId, params) {
+    console.log({session: cookies().get(`chat-session-${chatbotId}`)})
     const userChatSession = await getChatSession(chatbotId, params);
     const chatbot = await getChatbot(userChatSession.chatbot);
     checkChatbotStatus(chatbot);
