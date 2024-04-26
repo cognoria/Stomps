@@ -214,6 +214,7 @@ async function updateModelData(chatbotId, modelData) {
     chatbot.chatBotCustomizeData.prompt = modelData.prompt
     chatbot.chatBotCustomizeData.model = modelData.model
     chatbot.chatBotCustomizeData.temparature = modelData.temparature
+    chatbot.chatBotCustomizeData.defaultAnswer = modelData.defaultAnswer
     await chatbot.save()
 
     return { message: "Successfully updated chatbot " };

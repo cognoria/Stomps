@@ -21,7 +21,7 @@ export const getContext = async (message, pineconeIndex, owner, namespace, maxTo
     // Use a map to deduplicate matches by URL
     return qualifyingDocs
   }
-
+  //TODO: log context
   let docs = matches ? sortedMatches.map(match => (match.metadata).chunk) : [];
   // let docs = matches ? qualifyingDocs.map(match => (match.metadata).chunk) : [];
 

@@ -17,6 +17,7 @@ async function updateModel(req) {
 
 updateModel.schema = joi.object({
     prompt: joi.string().required(),
+    defaultAnswer: joi.string().required(),
     model: joi.string().valid(...Object.values(chatModelEnum)).required(),
     temparature: joi.number().min(0).max(1).required()
 });

@@ -30,7 +30,7 @@ async function getWebLinksFromUrl(url) {
     const baseUrl = new URL(url).origin
     const Urls = new Set();
     Urls.add(url)
-
+    //TODO: log unfiltered href
     $('a[target="_blank"], a').each((_, element) => {
         const href = $(element).attr('href');
         if (href && !/^(javascript:|https?:\/\/|\/\/|#|.*\.(png|jpg|jpeg|gif|svg))$/i.test(href)) {
