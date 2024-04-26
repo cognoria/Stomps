@@ -239,6 +239,17 @@ function Chat({ id, status }) {
 
   const bots = useBotMessagingStore((state) => state.bots);
 
+  const clearMessagesAndReload = async () => {
+    try {
+      // Clear messages
+      useBotMessagingStore.getState().clearMessages(id);
+      // Reload chat
+      // await useBotMessagingStore.getState().chat({ id, data: [] });
+    } catch (error) {
+      console.error("Failed to reload chat:", error);
+    }
+  };
+
   return (
     <div className="border-[1px] w-full lg:w-[53%] h-[588px] border-gray-200  items-start flex-col ">
       <div className="flex border-b-[1px] border-gray-200 flex-row  p-4 w-full flex-end items-end justify-end">
@@ -248,7 +259,7 @@ function Chat({ id, status }) {
         <Image
           width={20}
           height={20}
-          // onClick={() => refreshChat(botId, true)}
+          onClick={clearMessagesAndReload}
           className="hover:-rotate-90 cursor-pointer self-center"
           src="/images/chatbox/refresh.svg"
           alt=""

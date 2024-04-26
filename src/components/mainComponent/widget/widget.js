@@ -113,7 +113,7 @@ const Widget = ({ botId }) => {
 
   const sendMessage = async (e) => {
     e.preventDefault();
-    if(chatting) return;
+    if (chatting) return;
     if (!messageInput.trim()) return;
     try {
       await chat(botId, { role: "user", content: messageInput });
@@ -123,7 +123,7 @@ const Widget = ({ botId }) => {
   };
 
   const sendSuggestedMessage = async (e) => {
-    if(chatting) return;
+    if (chatting) return;
     try {
       await chat(botId, { role: "user", content: e });
     } catch (error) {
@@ -147,9 +147,9 @@ const Widget = ({ botId }) => {
 
   return (
     <div
-      className={`flex w-screen h-screen font-manrope flex-col items-start bg-transparent justify-center`}
+      className={`flex w-screen h-screen font-manrope flex-col overflow-hidden items-start bg-transparent justify-center`}
     >
-      <div className="w-full h-full items-start flex-col">
+      <div className="w-full h-full overflow-y-hidden relative items-start flex-col">
         <div
           className={`flex ${
             widgetTheme === "DARK" ? "bg-[#333]" : "bg-[#fff]"
@@ -172,7 +172,7 @@ const Widget = ({ botId }) => {
             )}
             {chatbotStyle?.assistantTabHeader && (
               <p
-                className={`font-bold text-lg ${
+                className={`font-medium text-nowrap text-md font-manrope ${
                   widgetTheme === "DARK" ? "text-zinc-100" : ""
                 }`}
               >
@@ -181,7 +181,7 @@ const Widget = ({ botId }) => {
             )}
           </div>
           <div className="flex flex-row h-full items-center gap-x-2">
-            <p className="mx-3 text-red-500 font-manrope font-normal text-sm">
+            <p className="text-red-500 font-manrope font-normal text-sm">
               {error && error}
             </p>{" "}
             <Image
@@ -207,7 +207,7 @@ const Widget = ({ botId }) => {
         <div
           ref={chatContainerRef}
           style={{ scrollBehavior: "smooth" }}
-          className="w-full overflow-y-scroll h-[75%] mt-16 flex flex-col gap-3 p-4"
+          className="w-full overflow-y-scroll h-[70%] mt-16 flex flex-col gap-3 p-4"
         >
           {messages?.map((message, index) => (
             <ChatMessage
@@ -240,13 +240,13 @@ const Widget = ({ botId }) => {
             )}
         </div>
 
-        <div className="flex flex-row w-full px-4 overflow-x-scroll h-[7%] items-start justify-start gap-x-3">
+        <div className="flex flex-row w-full px-4 py-2 overflow-x-scroll h-[6%] items-start justify-start gap-x-2">
           {chatbotStyle?.questionExamples &&
             chatbotStyle?.questionExamples?.map((msg, i) => {
               return (
                 <p
                   onClick={() => sendSuggestedMessage(msg.question)}
-                  className={`rounded-lg p-1 text-sm text-center whitespace-nowrap ${
+                  className={`rounded-lg p-1 text-sm font-manrope text-center whitespace-nowrap ${
                     widgetTheme === "DARK"
                       ? "bg-gray-800 hover:bg-gray-600 text-zinc-100"
                       : "bg-sky-700 text-white"
@@ -258,7 +258,7 @@ const Widget = ({ botId }) => {
               );
             })}
         </div>
-        <div className="relative p-4 h-[17%] bottom-2 font-manrope overflow-y-scroll items-center flex-col  flex">
+        <div className="relative  p-4 h-[16%] bottom-2 font-manrope overflow-y-scroll items-center flex-col  flex">
           <textarea
             value={messageInput}
             onChange={(e) => setMessageInput(e.target.value)}
@@ -293,12 +293,12 @@ const markdownToHtml = (markdown) =>
 
 const ChatMessage = memo(({ message, isUser, theme }) => (
   <div
-    className={`w-full h-auto font-manrope text-[16px] items-start justify-center flex-col flex  ${
+    className={`w-full h-auto font-manrope text-sm items-start justify-center flex-col flex  ${
       isUser ? "justify-end items-end " : "justify-start"
     }`}
   >
     <div
-      className={`max-w-[85%] p-[10px] ${
+      className={`max-w-[85%] p-[10px] font-manrope text-sm ${
         theme === "DARK"
           ? "bg-gray-800 text-zinc-100"
           : "bg-zinc-100 text-stone-900"
@@ -358,7 +358,7 @@ function LeadCollector({
 
   return (
     <div
-      className={`max-w-[85%] p-[10px] relative gap-1 ${
+      className={`max-w-[85%] flex flex-col font-manrope  p-[10px] relative gap-1 ${
         theme === "DARK"
           ? "bg-gray-800 text-zinc-100"
           : "bg-zinc-100 text-stone-900"
@@ -381,7 +381,7 @@ function LeadCollector({
           />
         </svg>
       </button>
-      {title && <p className="font-bold text-lg">{title}</p>}
+      {title && <p className="font-manrope text-sm mt-[15px]">{title}</p>}
       {collectName && (
         <div>
           <input
@@ -389,7 +389,7 @@ function LeadCollector({
             value={name}
             onChange={(e) => setName(e.target.value)}
             type="text"
-            className="h-10 w-full p-2 pl-10 bg-transparent border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            className="h-10 w-full p-2  bg-transparent border placeholder:text-xs placeholder:font-manrope border-gray-300 rounded-md"
             placeholder="What is your name? e.g John Deo"
           />
         </div>
@@ -401,7 +401,7 @@ function LeadCollector({
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             type="email"
-            className="h-10 w-full p-2 pl-10 bg-transparent border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            className="h-10 w-full p-2 bg-transparent placeholder:text-xs placeholder:font-manrope border border-gray-300 rounded-md"
             placeholder="What is your email? e.g johndoe@gmail.com"
           />
         </div>
@@ -413,7 +413,7 @@ function LeadCollector({
             required={collectPhone}
             onChange={(e) => setPhone(e.target.value)}
             type="text"
-            className="h-10 w-full p-2 pl-10 bg-transparent border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            className="h-10 w-full p-2 placeholder:text-xs placeholder:font-manrope bg-transparent border border-gray-300 rounded-md "
             placeholder="What is your phone number? e.g +1 0234 56789"
           />
         </div>
@@ -421,11 +421,10 @@ function LeadCollector({
       {(collectEmail || collectPhone || collectName) && (
         <button
           disabled={loading}
-          className="bg-sky-700 text-center disabled:cursor-not-allowed text-white w-full flex flex-col items-center rounded-lg justify-center p-2"
+          className="bg-sky-700 text-center text-sm font-manrope disabled:cursor-not-allowed text-white w-full flex flex-col items-center rounded-lg justify-center p-2"
           onClick={handleSubmitLead}
         >
-          {" "}
-          Submit{" "}
+          Submit
         </button>
       )}
     </div>

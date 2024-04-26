@@ -26,13 +26,13 @@ function BarHeader({
   };
   const [showExportFormat, setShowExportFormat] = useState(false);
   return (
-    <div className="flex w-full items-start justify-between  flex-col lg:flex-row gap-6 p-3 ">
+    <div className="flex w-full items-start justify-between  flex-row gap-6 p-3 ">
       <div className="flex flex-[60%] gap-4 items-start ">
         {date && (
           <div class="relative">
             <input
               type="date"
-              class="appearance-none py-[10px] lg:py-[20px] border border-gray-300 font-medium font-manrope placeholder:font-medium placeholder:font-manrope placeholder:text-sm rounded  px-4 w-[100px] lg:w-[180px] leading-tight focus:outline-none focus:border-blue-500"
+              class="appearance-none py-[10px] lg:py-[20px] border border-gray-300 font-medium font-manrope placeholder:font-medium placeholder:font-manrope placeholder:text-sm rounded px-2 lg:px-4 w-[160px] lg:w-[180px] leading-tight focus:outline-none focus:border-blue-500"
               placeholder="Select a date"
               onChange={handleDateChange}
             />
@@ -70,7 +70,7 @@ function BarHeader({
         {exportData && (
           <button
             onClick={() => setShowExportFormat(!showExportFormat)}
-            className="flex flex-row rounded-lg items-center font-manrope w-fit p-4 text-white font-[700] gap-4  bg-[#1261AC]"
+            className="flex flex-row rounded-lg text-sm lg:text-medium items-center font-manrope w-fit p-2 lg:p-4 text-white font-[700] gap-4  bg-[#1261AC]"
           >
             <p>Export</p>
             <img src="/images/chatbox/downloadIcon.png" />

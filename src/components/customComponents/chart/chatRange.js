@@ -51,7 +51,7 @@ function ChatRange({
               endDate={endDate}
               placeholderText={startDate && endDate ? "Select" : "Select"}
               dateFormat={displayFormat}
-              className="border w-full border-gray-300 rounded font-medium font-manrope placeholder:font-medium placeholder:font-manrope placeholder:text-sm px-4 py-2 focus:outline-none focus:border-blue-500"
+              className="border w-full border-gray-300 rounded font-medium font-manrope placeholder:font-medium placeholder:font-manrope placeholder:text-sm px-2 lg:px-4 py-2 focus:outline-none focus:border-blue-500"
             />
           </div>
 
@@ -66,15 +66,15 @@ function ChatRange({
               minDate={startDate}
               placeholderText={startDate && endDate ? "Select" : "Select"}
               dateFormat={displayFormat}
-              className="border w-full border-gray-300 rounded font-medium font-manrope placeholder:font-medium placeholder:font-manrope placeholder:text-sm px-4 py-2 focus:outline-none focus:border-blue-500"
+              className="border w-full border-gray-300 rounded font-medium font-manrope placeholder:font-medium placeholder:font-manrope placeholder:text-sm px-2 lg:px-4 py-2 focus:outline-none focus:border-blue-500"
             />
           </div>
         </div>
       </div>
-      <div className="flex relative flex-[40%] flex-col items-end justify-end">
+      <div className="flex relative w-full flex-[40%] flex-col items-end justify-end">
         <button
           onClick={() => setShowExportFormat(!showExportFormat)}
-          className="flex flex-row rounded-lg items-center font-manrope w-fit p-4 text-white font-[700] gap-4  bg-[#1261AC]"
+          className="flex flex-row rounded-lg text-sm lg:text-medium items-center font-manrope w-fit p-2 lg:p-4 text-white font-[700] gap-4  bg-[#1261AC]"
         >
           <p>Export</p>
           <img src="/images/chatbox/downloadIcon.png" alt="Download Icon" />

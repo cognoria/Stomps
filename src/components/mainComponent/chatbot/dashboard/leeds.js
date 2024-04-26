@@ -34,7 +34,7 @@ function Leeds({ botId }) {
     setSelectedDate(date);
   };
   return (
-    <div className="w-full flex flex-col">
+    <div className="w-full flex flex-col items-center">
       {filteredLeads ? (
         <Filled_bot_state
           handleDateSelect={handleDateSelect}

@@ -40,7 +40,6 @@ function Analytics({ botId }) {
 
     // Update the filtered data state
     setFilteredData(filtered);
-    console.log(filtered);
   }, [analytics, startDate, endDate]);
 
   const handleDateRangeSelect = ({ startDate, endDate }) => {
@@ -59,8 +58,8 @@ function Analytics({ botId }) {
           count={analytics?.chatsPerCountry?.map((item) => item.count)}
           data={{
             labels: filteredData
-              ? filteredData?.map((item) => item.count)
-              : analytics?.chatsPerDay?.map((item) => item.count),
+              ? filteredData?.map((item) => item.date)
+              : analytics?.chatsPerDay?.map((item) => item.date),
             datasets: [
               {
                 fill: true,

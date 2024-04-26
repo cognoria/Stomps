@@ -40,7 +40,7 @@ function Chat_logs({ botId }) {
     setSelectedDate(date);
   };
   return (
-    <div className="w-full ">
+    <div className="w-full flex flex-col items-center ">
       {chats ? (
         <Filled_bot_state
           chatData={FilteredChats}
@@ -66,7 +66,7 @@ const Filled_bot_state = ({ chatData, handleDateSelect }) => {
   );
 
   return (
-    <div className="w-full px-3 lg:p-[6%]  flex flex-col items-center justify-center ">
+    <div className="w-full px-3 lg:p-[6%]   flex flex-col items-center justify-center ">
       <div className="flex w-full flex-col items-center  justify-center border-gray-200 border-[1px] gap-4 rounded-md ">
         <div className="text-gray-900 w-full text-base font-bold p-3 border-gray-200 border-b-[2px] font-manrope leading-snug">
           Chat logs
@@ -79,8 +79,8 @@ const Filled_bot_state = ({ chatData, handleDateSelect }) => {
           onDateSelect={handleDateSelect}
         />
 
-        <div className="flex gap-3 p-3 w-full flex-row items-start justify-start">
-          <div className="flex border-none h-[400px] items-start overflow-y-scroll gap-2  flex-col w-[40%]">
+        <div className="flex gap-3 p-3 w-full flex-col lg:flex-row items-start justify-start">
+          <div className="flex border-none h-auto max-h-[400px] lg:h-[400px] items-start overflow-y-scroll gap-2  flex-col w-full lg:w-[40%]">
             {arrangedData?.map((item, i) => {
               const lastUserMessage = item.messages.find(
                 (message) => message.role === "user"
@@ -117,7 +117,7 @@ const Filled_bot_state = ({ chatData, handleDateSelect }) => {
             })}
           </div>
 
-          <div className="flex flex-col  rounded-lg  items-start justify-start border-gray-200 border-[1px] w-[60%]">
+          <div className="flex flex-col  rounded-lg  items-start justify-start border-gray-200 border-[1px] w-full lg:w-[60%]">
             <div
               // ref={chatContainerRef}
               style={{ scrollBehavior: "smooth" }}
