@@ -51,7 +51,7 @@ function Signin_form() {
             name="email"
             {...register("email")}
             type="email"
-            className="h-10 w-full p-2 pl-4 font-manrope text-[#8A8A8A] bg-transparent border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            className="h-10 w-full p-2 pl-4 font-manrope placeholder:font-manrope text-sm placeholder:text-xs text-[#8A8A8A] bg-transparent border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             placeholder="Janeearnest@gmail.com"
           />
           {errors.email && (
@@ -86,7 +86,7 @@ function Signin_form() {
               {...register("password")}
               name="password"
               type={eye_open ? "text" : "password"}
-              className="h-10 w-full p-2 pl-4 font-manrope text-[#8A8A8A] bg-transparent border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="h-10 w-full p-2 pl-4 font-manrope placeholder:font-manrope text-sm placeholder:text-xs text-[#8A8A8A] bg-transparent border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               placeholder="****************"
             />
           </div>

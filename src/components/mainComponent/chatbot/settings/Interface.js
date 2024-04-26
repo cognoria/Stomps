@@ -326,13 +326,11 @@ function InterfaceSettings({ botId }) {
                   <label htmlFor="file-input-profile" className="upload-label">
                     {profileImg?.startsWith("#") && (
                       <div
-                        className={`h-12 w-12 rounded-full bg-[${profileImg}]`}
+                        className={`h-[50px] w-[50px] rounded-full bg-[${profileImg}]`}
                       />
                     )}
                     {profileImg?.startsWith("data:image") && (
                       <Image
-                        width={30}
-                        height={30}
                         className="w-[50px] h-[50px] rounded-full"
                         src={profileImg}
                         alt={""}
@@ -403,13 +401,11 @@ function InterfaceSettings({ botId }) {
                   <label htmlFor="file-input-chat" className="upload-label">
                     {chatIcon?.startsWith("#") && (
                       <div
-                        className={`h-12 w-12 rounded-full bg-[${chatIcon}]`}
+                        className={`h-[50px] w-[50px] rounded-full bg-[${chatIcon}]`}
                       />
                     )}
                     {chatIcon?.startsWith("data:image") && (
                       <Image
-                        width={30}
-                        height={30}
                         className="w-[50px] h-[50px] rounded-full"
                         src={chatIcon}
                         alt={""}
@@ -490,17 +486,15 @@ function InterfaceSettings({ botId }) {
                 selectedTheme === "DARK" ? "bg-black" : ""
               } `}
             >
-              <div className="flex border-b-[1px] h-[8%] border-gray-200 flex-row  px-4 py-2 w-full flex-start items-start justify-between">
+              <div className="flex border-b-[1px] h-[10%] border-gray-200 flex-row  px-4 py-2 w-full flex-start items-start justify-between">
                 <div className="flex flex-row items-center justify-start gap-x-4">
                   {profileImg?.startsWith("#") && (
                     <div
-                      className={`h-8 w-8 rounded-full bg-[${profileImg}]`}
+                      className={`h-[50px] w-[50px] rounded-full bg-[${profileImg}]`}
                     />
                   )}
                   {profileImg?.startsWith("data:image") && (
                     <Image
-                      width={30}
-                      height={30}
                       className="w-[50px] h-[50px] rounded-full"
                       src={profileImg}
                       alt={""}
