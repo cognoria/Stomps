@@ -68,6 +68,7 @@ html {
 select option.selected::first-letter {
   text-transform: capitalize;
 }
+
 .custom-date-input {
   display: flex;
   align-items: center;

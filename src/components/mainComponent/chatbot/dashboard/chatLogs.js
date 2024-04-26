@@ -40,7 +40,7 @@ function Chat_logs({ botId }) {
     setSelectedDate(date);
   };
   return (
-    <div className="w-full ">
+    <div className="w-full flex flex-col items-center ">
       {chats ? (
         <Filled_bot_state
           chatData={FilteredChats}
@@ -66,7 +66,7 @@ const Filled_bot_state = ({ chatData, handleDateSelect }) => {
   );
 
   return (
-    <div className="w-full px-3 lg:p-[6%]  flex flex-col items-center justify-center ">
+    <div className="w-full px-3 lg:p-[6%]   flex flex-col items-center justify-center ">
       <div className="flex w-full flex-col items-center  justify-center border-gray-200 border-[1px] gap-4 rounded-md ">
         <div className="text-gray-900 w-full text-base font-bold p-3 border-gray-200 border-b-[2px] font-manrope leading-snug">
           Chat logs

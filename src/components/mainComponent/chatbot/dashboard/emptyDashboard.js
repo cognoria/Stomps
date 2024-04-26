@@ -2,7 +2,7 @@ import BarHeader from "./header";
 
 function EmptyDashboard() {
   return (
-    <div className="lg:w-full w-[98%]  lg:p-[6%]  flex flex-col items-start  ">
+    <div className="lg:w-full w-[95%]  lg:p-[6%]  flex flex-col justify-center items-center  ">
       <div className="flex flex-col items-start justify-center w-full border-gray-200 border-[1px] gap-4 rounded-md ">
         <div className="text-gray-900 w-full text-base font-bold p-3 border-gray-200 border-b-[2px] font-manrope leading-snug">
           Chat logs

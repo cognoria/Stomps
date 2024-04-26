@@ -29,9 +29,9 @@ ChartJS.register(
 const options = {
   responsive: true,
   plugins: {
-    // legend: {
-    //   position: "top",
-    // },
+    legend: {
+      display: false,
+    },
     title: {
       display: true,
       text: "Chat Analytics Data",
@@ -86,12 +86,14 @@ export function Chart_page({
         endDate={endDate}
         onDateRangeSelect={handleDateRangeSelect}
       />
+
       <Line options={options} data={data} />
-      <div className="w-full h-full p-4 flex flex-row font-manrope items-start gap-4">
+
+      <div className="w-full h-full p-4 flex flex-col lg:flex-row font-manrope items-start gap-4">
         <ChoroplethMap data={mapData} />
-        <div className="flex flex-col w-[20%] mt-[10px] items-start">
+        <div className="flex flex-col w-full lg:w-[20%] mt-[10px] items-start">
           <table className="min-w-full font-manrope rounded-t-[15px] shadow-lg overflow-scroll lg:divide-y lg:divide-gray-200">
-            <thead className="hidden bg-[#F6F9FF] lg:table-header-group">
+            <thead className=" bg-[#F6F9FF] table-header-group">
               <tr>
                 <th className="px-6 py-4 font-manrope text-sm font-medium text-[#1261AC] whitespace-normal">
                   Country
@@ -104,12 +106,12 @@ export function Chart_page({
 
             <tbody className="divide-y justify-start font-manrope overflow-y-scroll max-h-[380px] divide-gray-200">
               <tr>
-                <td className="hidden px-6 py-4 text-sm font-manrope font-medium text-gray-900 lg:table-cell whitespace-nowrap">
+                <td className=" px-6 py-4 text-sm font-manrope font-medium text-gray-900 table-cell whitespace-nowrap">
                   {country.map((country, i) => (
                     <p key={i}>{country}</p>
                   ))}
                 </td>
-                <td className="hidden px-6 py-4 text-sm font-manrope font-medium text-gray-900 lg:table-cell whitespace-nowrap">
+                <td className=" px-6 py-4 text-sm font-manrope font-medium text-gray-900 table-cell whitespace-nowrap">
                   {count.map((count, i) => (
                     <p key={i}>{count}</p>
                   ))}
