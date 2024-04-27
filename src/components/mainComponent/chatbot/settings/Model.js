@@ -47,15 +47,25 @@ function ModelSettings({ botId }) {
   const [modelText, setModelText] = useState(
     chatbot?.chatBotCustomizeData.prompt
   );
+
+  const [fallback, setFallback] = useState(
+    chatbot?.chatBotCustomizeData.defaultAnswer
+  );
   const handleTextChange = (event) => {
     setModelText(event.target.value);
+  };
+
+  const fallbackChange = (event) => {
+    setFallback(event.target.value);
   };
   //model prompt
 
   // submit handler
   const handleSubmitBotModel = (e) => {
     e.preventDefault();
+    console.log(fallback);
     const botData = {
+      defaultAnswer: fallback,
       prompt: modelText,
       model: selectedModel,
       temparature: selectedTemperature,
@@ -90,7 +100,7 @@ function ModelSettings({ botId }) {
           <div className="flex flex-col gap-4  items-start w-full p-3">
             <div className="w-full flex flex-row items-center justify-between ">
               <div className="text-zinc-800 text-[10px] font-bold font-manrope leading-[14px] tracking-tight">
-                Personality input
+                Chatbot Personality input
               </div>
               <button
                 disabled={updatingModel}
@@ -104,7 +114,7 @@ function ModelSettings({ botId }) {
             <textarea
               value={modelText}
               onChange={handleTextChange}
-              className="flex flex-col items-start p-3 h-[150px] active:border-gray-300  border-[1px] font-manrope text-sm font-medium border-gray-200 shadow-md w-full"
+              className="flex flex-col items-start p-3 h-[100px] max-h-[150px] active:border-gray-300  border-[1px] font-manrope text-sm font-medium border-gray-200 shadow-md w-full"
             ></textarea>
           </div>
           <div className="flex flex-col gap-4  items-start w-full p-3">
@@ -112,9 +122,9 @@ function ModelSettings({ botId }) {
               Fallback Response
             </div>
             <textarea
-              // value={modelText}
-              // onChange={handleFallBackResponse}
-              className="flex flex-col items-start p-3 h-[150px] active:border-gray-300  border-[1px] font-manrope text-sm font-medium border-gray-200 shadow-md w-full"
+              value={fallback}
+              onChange={fallbackChange}
+              className="flex flex-col items-start p-3 max-h-[150px] h-[100px] active:border-gray-300  border-[1px] font-manrope text-sm font-medium border-gray-200 shadow-md w-full"
             ></textarea>
           </div>
           <div className="w-full p-3 text-zinc-500 text-xs font-medium font-manrope tracking-tight">
