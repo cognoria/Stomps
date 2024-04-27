@@ -90,7 +90,7 @@ function ModelSettings({ botId }) {
           <div className="flex flex-col gap-4  items-start w-full p-3">
             <div className="w-full flex flex-row items-center justify-between ">
               <div className="text-zinc-800 text-[10px] font-bold font-manrope leading-[14px] tracking-tight">
-                Prompt
+                Personality input
               </div>
               <button
                 disabled={updatingModel}
@@ -104,6 +104,16 @@ function ModelSettings({ botId }) {
             <textarea
               value={modelText}
               onChange={handleTextChange}
+              className="flex flex-col items-start p-3 h-[150px] active:border-gray-300  border-[1px] font-manrope text-sm font-medium border-gray-200 shadow-md w-full"
+            ></textarea>
+          </div>
+          <div className="flex flex-col gap-4  items-start w-full p-3">
+            <div className="text-zinc-800 text-[10px] font-bold font-manrope leading-[14px] tracking-tight">
+              Fallback Response
+            </div>
+            <textarea
+              // value={modelText}
+              // onChange={handleFallBackResponse}
               className="flex flex-col items-start p-3 h-[150px] active:border-gray-300  border-[1px] font-manrope text-sm font-medium border-gray-200 shadow-md w-full"
             ></textarea>
           </div>

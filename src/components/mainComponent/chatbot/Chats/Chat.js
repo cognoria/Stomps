@@ -19,6 +19,10 @@ function ChatPage({ botId }) {
   }));
 
   useEffect(() => {
+    getChatbot(botId);
+  }, []);
+
+  useEffect(() => {
     const interval = setInterval(async () => {
       try {
         const data = await getChatbot(botId);
