@@ -35,7 +35,7 @@ async function getWebLinksFromUrl(url) {
         const href = $(element).attr('href');
         if (href && !/^(javascript:|https?:\/\/|\/\/|#|.*\.(png|jpg|jpeg|gif|svg))$/i.test(href)) {
             // Check if the URL has a query parameter or a hash fragment
-            if (!href.includes('?') && !href.includes('#')) {
+            if (!href.includes('?') && !href.includes('#') && !href.includes('tel')) {
                 if (!href.startsWith('javascript:') && href.trim() !== '') {
                     const completeUrl = new URL(href, baseUrl).href;
                     Urls.add(completeUrl);

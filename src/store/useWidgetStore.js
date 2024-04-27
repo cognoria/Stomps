@@ -183,7 +183,7 @@ const useWidgetStore = create(
           const { messages } = get().getChatbotState(botId);
           let { userData } = get();
 
-          if (userData == null || userData == undefined) {
+          if (userData === null || userData === undefined) {
             await get().setUserData();
             userData = get().userData;
           }
@@ -192,9 +192,10 @@ const useWidgetStore = create(
           if (userData !== null || userData !== undefined) {
             requestBody.user = userData;
           }
-          
+
           const response = await fetch(`/api/v1/embed/${botId}/chat`, {
             method: "POST",
+            credentials: 'include',
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(requestBody),
           });

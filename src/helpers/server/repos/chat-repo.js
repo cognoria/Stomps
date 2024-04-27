@@ -87,7 +87,8 @@ export const chatRepo = {
 //     return response
 // }
 async function widgetChatResponse(chatbotId, params) {
-    let userChatSession = await getChatSession(chatbotId, params);
+    console.log({session: cookies().get(`chat-session-${chatbotId}`)})
+    const userChatSession = await getChatSession(chatbotId, params);
     const chatbot = await getChatbot(userChatSession.chatbot);
     checkChatbotStatus(chatbot);
 
@@ -174,6 +175,7 @@ async function getChatsPerCountry(chatbotId) {
 async function getChatSession(chatbotId, params) {
     const sessionId = cookies().get(`chat-session-${chatbotId}`)?.value;
     let userChatSession = await Chats.findById(sessionId);
+    console.log({sessionId, userChatSession, chatbotId})
     if (!sessionId || !userChatSession) {
         userChatSession = await createChatSession(chatbotId, params);
     }
@@ -182,27 +184,27 @@ async function getChatSession(chatbotId, params) {
 
 async function createChatSession(chatbotId, params) {
     if (!chatbotId || chatbotId === 'undefined') throw "chatbotId is required to create a session";
-   
+
     const userIp = headers().get('X-Forwarded-For');
     const IPINFO_TOKEN = process.env.IPINFO_TOKEN;
     let userData = params?.user;
-    if(!userData) {
-    if (IPINFO_TOKEN) {
-        const res = await fetch(`https://ipinfo.io/${userIp}?token=${IPINFO_TOKEN}`);
-        if (res.ok) {
-            const data = await res.json();
-            console.log("user session data: ", data)
-            userData = { ...data };
+    if (!userData) {
+        if (IPINFO_TOKEN) {
+            const res = await fetch(`https://ipinfo.io/${userIp}?token=${IPINFO_TOKEN}`);
+            if (res.ok) {
+                const data = await res.json();
+                console.log("user session data: ", data)
+                userData = { ...data };
+            } else {
+                userData = { ip: userIp };
+            }
         } else {
             userData = { ip: userIp };
         }
-    } else {
-        userData = { ip: userIp };
     }
 
-    }
     const userChatSession = await Chats.create({ chatbot: chatbotId, userData });
-    cookies().set(`chat-session-${chatbotId}`, userChatSession.id);
+    cookies().set(`chat-session-${chatbotId}`, userChatSession._id);
     return userChatSession;
 }
 
