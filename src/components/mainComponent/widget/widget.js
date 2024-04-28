@@ -240,7 +240,7 @@ const Widget = ({ botId }) => {
             )}
         </div>
 
-        <div className="flex flex-row w-full px-4 py-2 overflow-x-scroll h-[6%] items-start justify-start gap-x-2">
+        <div className="flex flex-row w-full px-4 custom-scrollbar py-2 overflow-x-scroll h-[6%] items-start justify-start gap-x-2">
           {chatbotStyle?.questionExamples &&
             chatbotStyle?.questionExamples?.map((msg, i) => {
               return (

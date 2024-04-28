@@ -288,7 +288,7 @@ function InterfaceSettings({ botId }) {
               <select
                 value={selectedTheme}
                 onChange={handleThemeChange}
-                className="h-[50px] w-full -mt-2 border-[1px] border-gray-200 rounded-md"
+                className="h-[50px] w-full font-manrope text-sm -mt-2 border-[1px] border-gray-200 rounded-md"
               >
                 <option
                   value={"LIGHT"}
@@ -448,7 +448,7 @@ function InterfaceSettings({ botId }) {
               <select
                 value={alignChat}
                 onChange={handleAlignChat}
-                className="h-[50px] w-full -mt-2 border-[1px] border-gray-200 rounded-md"
+                className="h-[50px] w-full font-manrope text-sm -mt-2 border-[1px] border-gray-200 rounded-md"
               >
                 <option
                   value={"LEFT"}
@@ -548,40 +548,22 @@ function InterfaceSettings({ botId }) {
                 </div>
               </div>
 
-              <div className="w-full flex flex-row items-center">
-                <div
-                  ref={containerRef}
-                  className="flex flex-row w-full px-4 overflow-x-scroll h-[7%] items-start justify-start gap-x-3"
-                >
-                  {suggestMsgArr &&
-                    suggestMsgArr?.map((msg, i) => {
-                      return (
-                        <div
-                          className={`rounded-md py-1 px-2  font-normal font-manrope leading-snug text-sm text-center whitespace-nowrap ${
-                            selectedTheme === "DARK"
-                              ? "bg-gray-800 hover:bg-gray-600 text-zinc-100"
-                              : "bg-sky-700 text-white"
-                          } `}
-                          key={i}
-                        >
-                          {msg.question}
-                        </div>
-                      );
-                    })}
-                </div>
-                {showScrollArrow && (
-                  <button
-                    className="bg-transparent text-gray-400 w-auto px-2 "
-                    onClick={() =>
-                      containerRef.current.scrollBy({
-                        left: 100,
-                        behavior: "smooth",
-                      })
-                    }
-                  >
-                    &rarr;
-                  </button>
-                )}
+              <div className="flex flex-row w-full px-4 custom-scrollbar overflow-x-scroll h-[7%] items-start justify-start gap-x-3">
+                {suggestMsgArr &&
+                  suggestMsgArr?.map((msg, i) => {
+                    return (
+                      <div
+                        className={`rounded-md py-1 px-2 font-normal font-manrope leading-snug text-sm text-center whitespace-nowrap ${
+                          selectedTheme === "DARK"
+                            ? "bg-gray-800 hover:bg-gray-600 text-zinc-100"
+                            : "bg-sky-700 text-white"
+                        } `}
+                        key={i}
+                      >
+                        {msg.question}
+                      </div>
+                    );
+                  })}
               </div>
 
               <div className="w-full h-[12%] relative p-2 items-center flex-col  flex">
