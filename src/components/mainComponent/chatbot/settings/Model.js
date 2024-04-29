@@ -79,6 +79,7 @@ function ModelSettings({ botId }) {
   const resetModel = async () => {
     const botData = {
       prompt: chatBotCustomizeDataDefault.prompt,
+      defaultAnswer: chatBotCustomizeDataDefault.defaultAnswer,
       model: chatBotCustomizeDataDefault.model,
       temparature: chatBotCustomizeDataDefault.temparature,
     };

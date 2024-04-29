@@ -230,6 +230,7 @@ function InterfaceSettings({ botId }) {
               <div className="text-zinc-800 text-[10px]  font-bold font-manrope leading-[14px] tracking-tight">
                 Initial Messages
               </div>
+              
               {/* <input
                 value={initialMsg}
                 onChange={(e) => setInitialMsg(e.target.value)}
