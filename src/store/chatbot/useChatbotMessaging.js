@@ -45,7 +45,7 @@ const useBotMessagingStore = create(
           });
 
           if (!response.ok) {
-            throw new Error(data.message || "An error occurred");
+            throw new Error(response.message || "An error occurred");
           }
 
           const updatedMessage = await response.json();

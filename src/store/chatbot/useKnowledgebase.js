@@ -90,7 +90,7 @@ export default create(
         );
         if (!response.ok) {
           if (response.status === 401) return redirect("/signin");
-          throw new Error(data.message || "An error occurred");
+          throw new Error(response.message || "An error occurred");
         }
         const links = await response.json();
 
@@ -101,8 +101,8 @@ export default create(
             ...state,
             fetching: false,
             include: uniqueLinksArray,
-            urls: [...state.urls, website]
-          }
+            urls: [...state.urls, website],
+          };
         });
       } catch (e) {
         set({ fetching: false });
@@ -121,7 +121,7 @@ export default create(
         );
         if (!response.ok) {
           if (response.status === 401) return redirect("/signin");
-          throw new Error(data.message || "An error occurred");
+          throw new Error(response.message || "An error occurred");
         }
         const links = await response.json();
 
@@ -132,8 +132,8 @@ export default create(
             ...state,
             fetching: false,
             include: uniqueLinksArray,
-            urls: [...state.urls, website]
-          }
+            urls: [...state.urls, website],
+          };
         });
       } catch (e) {
         set({ fetching: false });
@@ -148,13 +148,15 @@ export default create(
     },
     deleteUrl: (index) => {
       set((state) => {
-        const exempt = state.urls[index]
-        console.log({exempt})
+        const exempt = state.urls[index];
+        console.log({ exempt });
         return {
           ...state,
           urls: state.urls.filter((_, i) => i !== index),
-          include: state.include.filter(link => !link.includes(exempt.replace(/^https:\/\//, '')))
-        }
+          include: state.include.filter(
+            (link) => !link.includes(exempt.replace(/^https:\/\//, ""))
+          ),
+        };
       });
     },
     deleteAllInclude: () => {
