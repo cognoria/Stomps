@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import useCreateChatbotStore from "../../../store/chatbot/useCreateChatbotStore";
 
 function Text() {

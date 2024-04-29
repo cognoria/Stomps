@@ -221,7 +221,7 @@ function ModelSettings({ botId }) {
                 Last Trained:
               </div>
               <div className="text-gray-900 text-sm font-bold font-manrope leading-snug">
-                {formatDate(chatbot?.updatedAt)}
+                {formatDate(chatbot?.crawlData.updatedAt)}
               </div>
             </div>
             <div className="flex fle-end items-end  w-full flex-col ">

@@ -1,4 +1,4 @@
-import { cookies } from "next/headers";
+// import { cookies } from "next/headers";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
@@ -102,7 +102,11 @@ const useWidgetStore = create(
             data.done.json.WhoisRecord.registryData.registrant?.country;
           const countryCode =
             data.done.json.WhoisRecord.registryData.registrant?.countryCode;
-          const userData = { ...ip, country, countryCode: countryCode ? countryCode : undefined }
+          const userData = {
+            ...ip,
+            country,
+            countryCode: countryCode ? countryCode : undefined,
+          };
           set({ userData });
           return userData;
         } catch (error) {
@@ -190,17 +194,17 @@ const useWidgetStore = create(
             userData = await get().setUserData();
           }
 
-          console.log("userData: ", userData)
+          console.log("userData: ", userData);
           if (get().userData !== null || get().userData !== undefined) {
             requestBody.user = userData;
           }
-          const sessionId = cookies().get(`chat-session-${botId}`)?.value
+          // const sessionId = cookies().get(`chat-session-${botId}`)?.value;
           const response = await fetch(`/api/v1/embed/${botId}/chat`, {
             method: "POST",
-            credentials: 'include',
+            credentials: "include",
             headers: {
               "Content-Type": "application/json",
-              sessionId: sessionId
+              // sessionId: sessionId,
             },
             body: JSON.stringify(requestBody),
           });

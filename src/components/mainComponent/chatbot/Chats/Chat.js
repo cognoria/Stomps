@@ -185,7 +185,7 @@ function ChatPage({ botId }) {
               {chatbot?._id != botId || !chatbot ? (
                 <SkeletonLoader width={250} />
               ) : (
-                <>{formatDate(chatbot?.updatedAt)}</>
+                <>{formatDate(chatbot?.crawlData.updatedAt)}</>
               )}
             </div>
           </div>

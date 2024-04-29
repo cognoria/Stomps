@@ -122,7 +122,7 @@ async function getById(id) {
     if (!id || id === 'undefined') throw 'Please provide a valid bot id';
 
     const chatbot = await Chatbot.findById(id)
-        .select("+chatBotCustomizeData owner visibility status name createdAt updatedAt rateLimiting crawlData.charCount")
+        .select("+chatBotCustomizeData owner visibility status name createdAt updatedAt rateLimiting crawlData.charCount crawlData.updatedAt")
         .lean();
 
     if (!chatbot) throw `Chatbot with id "${id}" not found`;
@@ -296,7 +296,7 @@ async function updateKnowledgebase(chatbotId, params) {
     chatbot.knowledgebase.exclude = mergeAndRemoveDuplicates(chatbot.knowledgebase.exclude, params.exclude);
     chatbot.knowledgebase.urls = mergeAndRemoveDuplicates(chatbot.knowledgebase.urls, params.urls);
     chatbot.knowledgebase.website = params.website;
-    
+
     params.contents.forEach(content => {
         const existingContent = chatbot.knowledgebase.contents.find(c => c.content === content.content);
         if (!existingContent) {
