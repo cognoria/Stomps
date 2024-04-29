@@ -1,7 +1,10 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 function Temprature_slider({ height, value, onChange }) {
   const [localValue, setLocalValue] = useState(value);
+  useEffect(() => {
+    setLocalValue(value);
+  }, [value]);
 
   const handleChange = (e) => {
     const newValue = parseFloat(e.target.value);
