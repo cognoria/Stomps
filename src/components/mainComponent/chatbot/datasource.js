@@ -3,24 +3,32 @@
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
-import useFormDataStore from "../../../store/chatbot/useChatbotSource";
 import {
   extractTextFromDoc,
+  extractTextFromPDF,
   extractTextFromTXT,
   isDOCFile,
   isPDFFile,
   isTXTFile,
 } from "../../../utils/extractDoc/file_extract";
+import useCreateChatbotStore from "../../../store/chatbot/useCreateChatbotStore";
 
 export default function Datasource() {
   const [selectedFile, setSelectedFile] = useState(null);
   const [uploadProgress, setUploadProgress] = useState(0);
-  const files = useFormDataStore((state) => state.formData.files);
+
+  const { files, addFiles, deleteFile, deleteAllFiles } = useCreateChatbotStore(
+    (state) => ({
+      files: state.files,
+      addFiles: state.addFiles,
+      deleteFile: state.deleteFile,
+      deleteAllFiles: state.deleteAllFiles,
+    })
+  );
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
     if (file) {
-      // console.log("Selected file:", file);
       setSelectedFile(file);
     }
   };
@@ -43,18 +51,6 @@ export default function Datasource() {
     }
   };
 
-  async function deleteFile(index) {
-    return await useFormDataStore.getState().deleteFileFromContent(index);
-  }
-
-  async function deleteAllFile() {
-    if (files.length == 0) return;
-
-    for (const file of files) {
-      deleteFile(file.index);
-    }
-  }
-
   async function handleAddFile() {
     if (!selectedFile) return toast.error("Please select a file first");
     try {
@@ -64,55 +60,17 @@ export default function Datasource() {
       } else if (isDOCFile(selectedFile)) {
         file = await extractTextFromDoc(selectedFile);
       } else if (isPDFFile(selectedFile)) {
-        // file = await extractTextFromPDF(selectedFile);
-        await getPdfContents();
+        file = await extractTextFromPDF(selectedFile);
       } else {
         return toast.error("unspported file selected"); //toast file not supported
       }
-      if (file) {
-        await useFormDataStore.getState().addDataToFiles(file);
-        await useFormDataStore.getState().addFileToContents(file);
-        setSelectedFile(null);
-      }
+      await addFiles(file);
+      setSelectedFile(null);
     } catch (e) {
       console.error("error adding file: ", e);
       toast.error("Failed to add file");
-      //toast
     }
   }
-
-  const getPdfContents = async () => {
-    const formData = new FormData();
-    formData.append("pdf", selectedFile);
-
-    const uploadRequest = new XMLHttpRequest();
-    uploadRequest.open("POST", "/api/v1/data/pdf");
-
-    uploadRequest.upload.addEventListener("progress", (event) => {
-      if (event.lengthComputable) {
-        const progress = Math.round((event.loaded / event.total) * 100);
-        setUploadProgress(progress);
-      }
-    });
-
-    uploadRequest.onload = async () => {
-      if (uploadRequest.status === 200) {
-        const response = JSON.parse(uploadRequest.response);
-        // console.log('PDF Name:', response.name);
-        // console.log('PDF Content:', response.content);
-        await useFormDataStore.getState().addDataToFiles(file);
-        await useFormDataStore.getState().addFileToContents(file);
-      } else {
-        // console.error('Upload failed:', uploadRequest.statusText);
-      }
-    };
-
-    uploadRequest.send(formData);
-  };
-
-  useEffect(() => {
-    // console.log(files);
-  }, [files]);
 
   return (
     <div className="flex flex-col  items-center justify-center w-full">
@@ -181,7 +139,7 @@ export default function Datasource() {
               <div className="flex flex-row  p-5 items-end lg:mt-0 mt-[70px] [mt-50px]  h-auto lg:h-[70%] justify-end">
                 <div className="flex flex-row items-center  gap-x-5 ">
                   <button
-                    onClick={deleteAllFile}
+                    onClick={deleteAllFiles}
                     className="bg-transparent items-center gap-2 flex flex-row"
                   >
                     <Image
@@ -205,7 +163,7 @@ export default function Datasource() {
               {files.length > 0 && (
                 <div className="w-full px-2 mt-[40px]">
                   <ul className="w-full">
-                    {files?.slice(0, 10).map((file, index) => (
+                    {files.map((file, index) => (
                       <li
                         key={index}
                         className="w-full flex flex-row items-center gap-2 justify-between "

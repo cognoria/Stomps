@@ -22,6 +22,7 @@ async function getSource(req) {
 }
 
 updateSource.schema = joi.object({
+    website: joi.string(), //sting
     urls: joi.array().required(), //array of string
     include: joi.array(),  //array of string
     exclude: joi.array(),  //array of string

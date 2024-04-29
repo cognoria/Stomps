@@ -4,9 +4,9 @@ import useChatbotSettings from "../../../../store/chatbot/useChatbotSettings";
 import useKnowledgebase from "../../../../store/chatbot/useKnowledgebase";
 import { useEffect } from "react";
 
-export default function Retrain({chatbotId}) {
-  const { website, urls, include, exclude, files, text, questions, getKnowledgebase, getTextLength, getIncludeCount, getFilesCount } = useKnowledgebase()
-
+export default function Retrain({ chatbotId }) {
+  const { website, urls, include, exclude, files, text, questions, getKnowledgebase } = useKnowledgebase()
+  
   const dataToSend = {
     website: website,
     urls: urls,
@@ -61,6 +61,12 @@ export default function Retrain({chatbotId}) {
         {text.length > 0 && (
           <li className="text-neutral-400  text-xs font-normal font-manrope leading-none tracking-tight">
             {text.length} text input characters
+          </li>
+        )}
+
+        {urls.length > 1 && (
+          <li className="text-neutral-400 text-xs font-normal font-manrope leading-none tracking-tight">
+            {urls.length} websites
           </li>
         )}
 

@@ -10,6 +10,8 @@ import {
 import { truncateMessage } from "../../../../utils/truncateMsg";
 import EmptyDashboard from "./emptyDashboard";
 import BarHeader from "./header";
+import { remark } from "remark";
+import remarkHtml from "remark-html";
 function Chat_logs({ botId }) {
   const { getChatbotChats, loading, chats, error } = useChatbotStore(
     (state) => ({
@@ -41,7 +43,7 @@ function Chat_logs({ botId }) {
   };
   return (
     <div className="w-full flex flex-col items-center ">
-      {chats ? (
+      {FilteredChats && FilteredChats.length > 0 ? (
         <Filled_bot_state
           chatData={FilteredChats}
           handleDateSelect={handleDateSelect}
@@ -54,6 +56,11 @@ function Chat_logs({ botId }) {
 }
 
 export default Chat_logs;
+
+
+const markdownToHtml = (markdown) =>
+  remark().use(remarkHtml).processSync(markdown).toString();
+
 
 const Filled_bot_state = ({ chatData, handleDateSelect }) => {
   const [chatIndex, setIndex] = useState(0);
@@ -126,18 +133,16 @@ const Filled_bot_state = ({ chatData, handleDateSelect }) => {
               {arrangedData?.[chatIndex]?.messages.map((message, index) => (
                 <div
                   key={index}
-                  className={`w-full h-auto flex flex-col ${
-                    message?.role === "user"
+                  className={`w-full h-auto flex flex-col ${message?.role === "user"
                       ? "justify-end  items-end"
                       : " justify-start"
-                  } `}
+                    } `}
                 >
                   <div
-                    className={`max-w-[85%] h-auto px-[15px] items-start py-[11px] ${
-                      message?.role === "user"
+                    className={`max-w-[85%] h-auto px-[15px] items-start py-[11px] ${message?.role === "user"
                         ? "bg-[#0C4173] text-white"
                         : "bg-zinc-100 text-stone-900 "
-                    }  rounded-tl rounded-tr rounded-br border justify-center  flex-col flex`}
+                      }  rounded-tl rounded-tr rounded-br border justify-center  flex-col flex`}
                   >
                     <div className=" text-start text-sm font-normal font-manrope leading-snug">
                       {message?.role === "user" ? (
@@ -147,7 +152,9 @@ const Filled_bot_state = ({ chatData, handleDateSelect }) => {
                           {/* <div className="flex my-2 w-fit text-nowrap p-1 rounded-lg bg-sky-50 border-[1px] border-[#1261AC] text-[#1261AC] bg-[] ">
                             Confidence score {message?.confidence_score}
                           </div> */}
-                          {message?.content}
+                          <div
+                            dangerouslySetInnerHTML={{ __html: markdownToHtml(message.content) }}
+                          />
                         </div>
                       )}
                     </div>

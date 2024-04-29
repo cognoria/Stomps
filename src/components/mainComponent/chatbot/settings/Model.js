@@ -44,15 +44,11 @@ function ModelSettings({ botId }) {
   //chatbot temprature
 
   //model prompt
-  const [modelText, setModelText] = useState(
-    chatbot?.chatBotCustomizeData.prompt
-  );
+  const [prompt, setPrompt] = useState();
 
-  const [fallback, setFallback] = useState(
-    chatbot?.chatBotCustomizeData.defaultAnswer
-  );
-  const handleTextChange = (event) => {
-    setModelText(event.target.value);
+  const [fallback, setFallback] = useState();
+  const promptChange = (event) => {
+    setPrompt(event.target.value);
   };
 
   const fallbackChange = (event) => {
@@ -66,7 +62,7 @@ function ModelSettings({ botId }) {
     console.log(fallback);
     const botData = {
       defaultAnswer: fallback,
-      prompt: modelText,
+      prompt: prompt,
       model: selectedModel,
       temparature: selectedTemperature,
     };
@@ -83,14 +79,24 @@ function ModelSettings({ botId }) {
       model: chatBotCustomizeDataDefault.model,
       temparature: chatBotCustomizeDataDefault.temparature,
     };
+    
     setSelectedModel(chatBotCustomizeDataDefault.model);
     setSelectedTemperature(chatBotCustomizeDataDefault.temparature);
-    setModelText(chatBotCustomizeDataDefault.prompt);
+    setFallback(chatBotCustomizeDataDefault.defaultAnswer)
+    setPrompt(chatBotCustomizeDataDefault.prompt);
 
     await updateModel({ botData, botId });
 
     await getChatbot(botId);
   };
+
+  useEffect(() => {
+    if (chatbot) {
+      setPrompt(chatbot?.chatBotCustomizeData.prompt)
+      setFallback(chatbot?.chatBotCustomizeData.defaultAnswer)
+    }
+  }, [chatbot])
+
   return (
     <div className="w-full px-3 lg:p-[6%]  flex flex-col items-center justify-center ">
       <div className="flex w-full flex-col items-center  justify-center border-gray-200 border-[1px] gap-4 rounded-md ">
@@ -101,7 +107,7 @@ function ModelSettings({ botId }) {
           <div className="flex flex-col gap-4  items-start w-full p-3">
             <div className="w-full flex flex-row items-center justify-between ">
               <div className="text-zinc-800 text-[10px] font-bold font-manrope leading-[14px] tracking-tight">
-                Chatbot Personality input
+                Chatbot Personality
               </div>
               <button
                 disabled={updatingModel}
@@ -113,8 +119,8 @@ function ModelSettings({ botId }) {
             </div>
 
             <textarea
-              value={modelText}
-              onChange={handleTextChange}
+              value={prompt}
+              onChange={promptChange}
               className="flex flex-col items-start p-3 h-[100px] max-h-[150px] active:border-gray-300  border-[1px] font-manrope text-sm font-medium border-gray-200 shadow-md w-full"
             ></textarea>
           </div>

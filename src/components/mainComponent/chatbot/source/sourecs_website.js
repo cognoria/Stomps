@@ -8,10 +8,12 @@ function WebsiteSource() {
   const [error, setError] = useState(null);
 
   const {
+    urls,
     sitemap,
     website,
     include,
     loading,
+    deleteUrl,
     addLinksWithSitemap,
     deleteInclude,
     deleteAllInclude,
@@ -19,10 +21,12 @@ function WebsiteSource() {
     updateWebsite,
     updateSiteMap,
   } = useKnowledgebase((state) => ({
+    urls: state.urls,
     sitemap: state.sitemap,
     website: state.website,
     include: state.include,
     loading: state.fetching,
+    deleteUrl: state.deleteUrl,
     updateWebsite: state.updateWebsite,
     updateSiteMap: state.updateSiteMap,
     deleteInclude: state.deleteInclude,
@@ -82,9 +86,8 @@ function WebsiteSource() {
                   />
                   <button
                     onClick={handleAddWebsite}
-                    className={`h-11 w-full lg:w-fit px-5 py-3    ${
-                      !loading ? "bg-sky-700" : "bg-sky-700/20"
-                    } rounded-lg shadow border border-sky-700 justify-center items-center gap-2 flex`}
+                    className={`h-11 w-full lg:w-fit px-5 py-3    ${!loading ? "bg-sky-700" : "bg-sky-700/20"
+                      } rounded-lg shadow border border-sky-700 justify-center items-center gap-2 flex`}
                   >
                     <p className="text-white text-sm font-bold font-manrope leading-snug">
                       {loading ? "fetching..." : " Fetch link"}
@@ -123,9 +126,8 @@ function WebsiteSource() {
                   />
                   <button
                     onClick={handleAddSitemap}
-                    className={`h-11 w-full lg:w-fit px-5 py-3 ${
-                      loading ? "bg-sky-700/20" : "bg-sky-700"
-                    }  rounded-lg shadow border border-sky-700 justify-center items-center gap-2 flex`}
+                    className={`h-11 w-full lg:w-fit px-5 py-3 ${loading ? "bg-sky-700/20" : "bg-sky-700"
+                      }  rounded-lg shadow border border-sky-700 justify-center items-center gap-2 flex`}
                   >
                     <p className="text-white text-sm font-bold font-manrope leading-snug">
                       {loading ? "Loading Sitemap..." : "Load Sitemap"}
@@ -138,6 +140,41 @@ function WebsiteSource() {
                 </div>
               </div>
             </div>
+            {urls && urls.length > 1 && (<div className="h-auto  mt-[20px] lg:mt-0 p-3  w-full  flex flex-col">
+              <div className="flex gap-3 mt-[50px] flex-row w-full items-center ">
+                <hr className="bg-gray-200 h-[2px] w-full" />
+                <div className="text-center text-gray-900 text-[10px] font-normal font-manrope leading-[14px] tracking-tight">
+                  websites
+                </div>
+                <hr className="bg-gray-200 h-[2px] w-full" />
+              </div>
+              <div className="w-full px-2 mt-[40px] max-h-[420px] overflow-y-scroll">
+                <ul className="w-full flex-col gap-1 flex">
+                  {urls.map((link, index) => (
+                    <li
+                      key={index}
+                      className="w-full flex flex-row items-center gap-2 justify-between "
+                    >
+                      <div className="w-[94%]  h-[42px] pl-[15px] pr-4 pt-3 pb-[13px] rounded-lg border border-gray-200 justify-between items-start gap-[158px] flex flex-row">
+                        <div className="text-gray-900  lg:max-w-[85%] w-[92%] text-xs font-normal font-manrope leading-none tracking-tight">
+                          {link}
+                        </div>
+                      </div>
+                      <button onClick={() => deleteUrl(index)}>
+                        <Image
+                          width={15}
+                          height={15}
+                          src="/images/chatbox/trash.svg"
+                          alt=""
+                          classNAme="w-full h-auto"
+                        />
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+            )}
             <div className="h-auto  mt-[20px] lg:mt-0 p-3  w-full  flex flex-col">
               <div className="flex gap-3 mt-[50px] flex-row w-full items-center ">
                 <hr className="bg-gray-200 h-[2px] w-full" />

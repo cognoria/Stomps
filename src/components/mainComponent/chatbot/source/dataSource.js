@@ -28,7 +28,6 @@ export default function DataSource() {
   const handleFileChange = (event) => {
     const file = event.target.files[0];
     if (file) {
-      // console.log("Selected file:", file);
       setSelectedFile(file);
     }
   };
@@ -95,8 +94,8 @@ export default function DataSource() {
                 />
                 <label htmlFor="file-input" className="upload-label">
                   <Image
-                    width={15}
-                    height={15}
+                    width={60}
+                    height={60}
                     src="/images/chatbox/folder-add.svg"
                     alt="Upload icon"
                   />
@@ -163,7 +162,7 @@ export default function DataSource() {
               {files.length > 0 && (
                 <div className="w-full px-2 mt-[40px]">
                   <ul className="w-full">
-                    {files?.slice(0, 10).map((file, index) => (
+                    {files.map((file, index) => (
                       <li
                         key={index}
                         className="w-full flex flex-row items-center gap-2 justify-between "

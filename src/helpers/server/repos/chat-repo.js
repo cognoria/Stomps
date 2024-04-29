@@ -4,6 +4,7 @@ import { getChatCompletion } from "../../AI/openai";
 import { KnowledgebaseStatus } from "../../enums";
 import { headers, cookies } from "next/headers";
 import mongoose from "mongoose";
+import logger from "../../logger";
 
 const Chatbot = db.Chatbot;
 const Chats = db.Chat;
@@ -87,7 +88,7 @@ export const chatRepo = {
 //     return response
 // }
 async function widgetChatResponse(chatbotId, params) {
-    console.log({session: cookies().get(`chat-session-${chatbotId}`)})
+    console.log({ session: cookies().get(`chat-session-${chatbotId}`) })
     const userChatSession = await getChatSession(chatbotId, params);
     const chatbot = await getChatbot(userChatSession.chatbot);
     checkChatbotStatus(chatbot);
@@ -96,6 +97,7 @@ async function widgetChatResponse(chatbotId, params) {
     userChatSession.messages.push(lastMessage);
 
     const context = await getContext(lastMessage.content, chatbot.pIndex, chatbot.owner, '');
+    logger.context(`context for query: ${lastMessage.content} ==>: \n ${context}`)
     const prompt = generatePrompt(chatbot.chatBotCustomizeData.prompt, context, chatbot.chatBotCustomizeData.defaultAnswer);
     const message = [...prompt, ...params.messages.filter((msg) => msg.role === 'user')];
     const response = await getChatCompletion(message, chatbot.chatBotCustomizeData.model, chatbot.owner);
@@ -125,6 +127,7 @@ async function getChatResponse(messages, chatbotId) {
 
     // Get the context from the last message
     const context = await getContext(lastMessage.content, chatbot.pIndex, chatbot.owner, '')
+    logger.context(`context for query: ${lastMessage.content} ==>: \n ${context}`)
     const prompt = generatePrompt(chatbot.chatBotCustomizeData.prompt, context, chatbot.chatBotCustomizeData.defaultAnswer);
 
     const message = [...prompt, ...messages.filter((msg) => msg.role === 'user')]
@@ -173,9 +176,9 @@ async function getChatsPerCountry(chatbotId) {
 }
 
 async function getChatSession(chatbotId, params) {
-    const sessionId = cookies().get(`chat-session-${chatbotId}`)?.value;
+    const sessionId = cookies().get(`chat-session-${chatbotId}`)?.value || headers().get('sessionId');;
     let userChatSession = await Chats.findById(sessionId);
-    console.log({sessionId, userChatSession, chatbotId})
+    console.log({ sessionId, userChatSession, chatbotId })
     if (!sessionId || !userChatSession) {
         userChatSession = await createChatSession(chatbotId, params);
     }
@@ -232,15 +235,17 @@ function generatePrompt(prompt, context, defaultAnswer) {
     return [
         {
             role: `system`,
-            content: `${prompt} 
-            As an assistant, your responses will be based only on the given data.
+            content: `As a customer support agent, your personality is described as ${prompt}. 
+            Your responses should reflect this personality and should be based strictly on the provided data.
             START CONTEXT BLOCK 
             ${context}
             END OF CONTEXT BLOCK
-            Remember to not provide any additional information or answer from outside the given data. 
-            If you can't answer from the given data reply with predefined message "${defaultAnswer}"
-            Your answer should be short and concise.
-            Your answers should be in markdown when neccesary.
+            When generating answers, adhere to the following guidelines:
+            * Remember not to provide additional information or answers from outside the given data. 
+            If the given data does not contain sufficient information to form a response, reply with the predefined message "${defaultAnswer}."
+            * Adhere strictly to the context and avoid any form of speculation or fabrication.
+            * Ensure there is a blank line between multiple paragraphs to improve readability, clearly separating distinct points or sections.
+            * For common greetings like 'Hello' or 'Hi', respond warmly. For expressions of gratitude like 'Thank you', respond with 'You're welcome!' or a similarly polite acknowledgement.     
             `
         }
     ];

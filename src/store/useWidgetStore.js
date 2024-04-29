@@ -1,3 +1,4 @@
+import { cookies } from "next/headers";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
@@ -5,7 +6,7 @@ const useWidgetStore = create(
   persist(
     (set, get) => ({
       chatbotStates: {},
-      userData: null,
+      userData: undefined,
 
       // Function to initialize state for a specific chatbot ID
       initializeChatbotState: (botId) => {
@@ -98,11 +99,12 @@ const useWidgetStore = create(
           const data = await dataResponse.json();
 
           const country =
-            data.done.json.WhoisRecord.registryData.registrant.country;
+            data.done.json.WhoisRecord.registryData.registrant?.country;
           const countryCode =
-            data.done.json.WhoisRecord.registryData.registrant.countryCode;
-
-          set({ userData: { ...ip, country, countryCode } });
+            data.done.json.WhoisRecord.registryData.registrant?.countryCode;
+          const userData = { ...ip, country, countryCode: countryCode ? countryCode : undefined }
+          set({ userData });
+          return userData;
         } catch (error) {
           console.error("Failed to set user data:", error);
         }
@@ -182,21 +184,24 @@ const useWidgetStore = create(
         try {
           const { messages } = get().getChatbotState(botId);
           let { userData } = get();
+          const requestBody = { messages };
 
           if (userData === null || userData === undefined) {
-            await get().setUserData();
-            userData = get().userData;
+            userData = await get().setUserData();
           }
 
-          const requestBody = { messages };
-          if (userData !== null || userData !== undefined) {
+          console.log("userData: ", userData)
+          if (get().userData !== null || get().userData !== undefined) {
             requestBody.user = userData;
           }
-
+          const sessionId = cookies().get(`chat-session-${botId}`)?.value
           const response = await fetch(`/api/v1/embed/${botId}/chat`, {
             method: "POST",
             credentials: 'include',
-            headers: { "Content-Type": "application/json" },
+            headers: {
+              "Content-Type": "application/json",
+              sessionId: sessionId
+            },
             body: JSON.stringify(requestBody),
           });
 

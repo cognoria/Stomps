@@ -295,7 +295,8 @@ async function updateKnowledgebase(chatbotId, params) {
     chatbot.knowledgebase.include = mergeAndRemoveDuplicates(chatbot.knowledgebase.include, params.include);
     chatbot.knowledgebase.exclude = mergeAndRemoveDuplicates(chatbot.knowledgebase.exclude, params.exclude);
     chatbot.knowledgebase.urls = mergeAndRemoveDuplicates(chatbot.knowledgebase.urls, params.urls);
-
+    chatbot.knowledgebase.website = params.website;
+    
     params.contents.forEach(content => {
         const existingContent = chatbot.knowledgebase.contents.find(c => c.content === content.content);
         if (!existingContent) {

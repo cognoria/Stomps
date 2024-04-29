@@ -94,11 +94,16 @@ export default create(
         }
         const links = await response.json();
 
-        set((state) => ({
-          ...state,
-          fetching: false,
-          include: [...state.include, ...links],
-        }));
+        set((state) => {
+          const uniqueLinks = new Set([...state.include, ...links]);
+          const uniqueLinksArray = Array.from(uniqueLinks);
+          return {
+            ...state,
+            fetching: false,
+            include: uniqueLinksArray,
+            urls: [...state.urls, website]
+          }
+        });
       } catch (e) {
         set({ fetching: false });
         toast.error(e.message);
@@ -120,11 +125,16 @@ export default create(
         }
         const links = await response.json();
 
-        set((state) => ({
-          ...state,
-          fetching: false,
-          include: [...state.include, ...links],
-        }));
+        set((state) => {
+          const uniqueLinks = new Set([...state.include, ...links]);
+          const uniqueLinksArray = Array.from(uniqueLinks);
+          return {
+            ...state,
+            fetching: false,
+            include: uniqueLinksArray,
+            urls: [...state.urls, website]
+          }
+        });
       } catch (e) {
         set({ fetching: false });
         toast.error(e.message);
@@ -135,6 +145,17 @@ export default create(
         ...state,
         include: state.include.filter((_, i) => i !== index),
       }));
+    },
+    deleteUrl: (index) => {
+      set((state) => {
+        const exempt = state.urls[index]
+        console.log({exempt})
+        return {
+          ...state,
+          urls: state.urls.filter((_, i) => i !== index),
+          include: state.include.filter(link => !link.includes(exempt.replace(/^https:\/\//, '')))
+        }
+      });
     },
     deleteAllInclude: () => {
       set((state) => ({ ...state, include: [] }));

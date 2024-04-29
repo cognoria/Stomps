@@ -1,5 +1,6 @@
 import cheerio from 'cheerio'
 import xml2js from 'xml2js';
+import logger from '../../logger';
 // import { deletePincone } from '../../AI/pinecone';
 
 export const websiteRepo = {
@@ -29,10 +30,12 @@ async function getWebLinksFromUrl(url) {
     const $ = cheerio.load(html);
     const baseUrl = new URL(url).origin
     const Urls = new Set();
+    const unfiltered = []
     Urls.add(url)
-    //TODO: log unfiltered href
+    ////DONE TODO: log unfiltered href
     $('a[target="_blank"], a').each((_, element) => {
         const href = $(element).attr('href');
+        unfiltered.push(href)
         if (href && !/^(javascript:|https?:\/\/|\/\/|#|.*\.(png|jpg|jpeg|gif|svg))$/i.test(href)) {
             // Check if the URL has a query parameter or a hash fragment
             if (!href.includes('?') && !href.includes('#') && !href.includes('tel')) {
@@ -43,6 +46,9 @@ async function getWebLinksFromUrl(url) {
             }
         }
     });
+
+    logger.crawl(`${url} crawled unfiltered ${JSON.stringify(unfiltered)}`)
+    logger.crawl(`${url} crawled filtered ${JSON.stringify(Array.from(Urls))}`)
 
     return Array.from(Urls);
 }

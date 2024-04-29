@@ -1,24 +1,19 @@
 "use client";
 
 import { useState } from "react";
-import useFormDataStore from "../../../store/chatbot/useChatbotSource";
+import useCreateChatbotStore from "../../../store/chatbot/useCreateChatbotStore";
 
 function Text() {
-  const [textInput, setTextInput] = useState("");
+  const { text, updateText} = useCreateChatbotStore((state) => ({
+    text: state.text,
+    updateText: state.updateText,
+  }))
 
   const handleInputChange = (event) => {
-    setTextInput(event.target.value);
-    useFormDataStore.getState().addText(event.target.value);
+    event.preventDefault()
+    updateText(event.target.value);
   };
 
-  const text = useFormDataStore((state) => state.formData.text);
-
-  const handleSubmit = async () => {
-    try {
-    } catch (error) {
-      console.error("Failed to create bot:", error.message);
-    }
-  };
   return (
     <div className="flex flex-col  items-center justify-center w-full">
       <div className="flex mt-[60px] w-full flex-col lg:flex-row items-center lg:items-start gap-3  justify-center">
@@ -37,7 +32,6 @@ function Text() {
             </div>
             <div className="h-[20%] p-5 border-gray-200 flex flex-col items-end justify-end">
               <button
-                onClick={handleSubmit}
                 className=" px-5 py-3 text-[#1261AC] text-xs font-bold font-manrope leading-snug bg-[#EEF8FF] flex items-center justify-center flex-col  rounded-lg"
               >
                 Save
