@@ -1,6 +1,29 @@
 import Image from "next/image";
+import emailjs from "emailjs-com";
 
 function Support() {
+  const handleSunmitMessage = async (values) => {
+    if ( true
+      /**ensure all neccesary field was filed  */
+    ) {
+      toast.error("All Fields are Required")
+    } else {
+      emailjs
+        .send(
+          "service_c8ptsgf", // service id
+          "template_cseme6r", // template id
+          values,
+          "jzLVRt4ErlDhmrvvY" //api key
+        )
+        .then(() => {
+          toast.success("Your Message has been successfully sent. We will contact you soon.")
+        
+          values.name = "";
+          values.email = "";
+          values.message = "";
+        });
+    }
+  };
   return (
     <div className="w-screen overflow-x-hidden mt-[80px] flex flex-col justify-center font-manrope items-center">
       <div className="text-sky-700 w-full text-center items-center flex justify-center flex-col my-[30px] text-[28px] font-extrabold font-manrope leading-[33.60px]">
