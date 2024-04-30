@@ -61,8 +61,8 @@ const Widget = ({ botId }) => {
     if (chatbotStyle) {
       setShowLeadForm(
         chatbotStyle.collectEmail ||
-          chatbotStyle.collectName ||
-          chatbotStyle.collectPhone
+        chatbotStyle.collectName ||
+        chatbotStyle.collectPhone
       );
     }
   }, [chatbotStyle, setInitialMsg, messages, botId]);
@@ -139,21 +139,20 @@ const Widget = ({ botId }) => {
     if (chatbotStyle) {
       setShowLeadForm(
         chatbotStyle.collectEmail ||
-          chatbotStyle.collectName ||
-          chatbotStyle.collectPhone
+        chatbotStyle.collectName ||
+        chatbotStyle.collectPhone
       );
     }
   }, [chatbotStyle]);
 
   return (
     <div
-      className={`flex w-screen h-screen font-manrope flex-col overflow-hidden items-start bg-transparent justify-center`}
+      className={`flex w-screen h-screen font-manrope flex-col overflow-hidden bg-transparent`}
     >
-      <div className="w-full h-full overflow-y-hidden relative items-start flex-col">
+      <div className="w-full h-full overflow-y-hidden relative flex-col">
         <div
-          className={`flex ${
-            widgetTheme === "DARK" ? "bg-[#333]" : "bg-[#fff]"
-          } fixed border-b-[1px] h-[8%] border-gray-200 flex-row  px-4 py-2 w-full flex-start items-start justify-between`}
+          className={`flex ${widgetTheme === "DARK" ? "bg-[#333]" : "bg-[#fff]"
+            } fixed border-b-[1px] h-[60px] border-gray-200 flex-row px-4 py-2 w-full flex-start justify-between`}
         >
           <div className="flex flex-row items-center h-full gap-x-4">
             {chatbotStyle?.profileImage.startsWith("#") && (
@@ -172,9 +171,8 @@ const Widget = ({ botId }) => {
             )}
             {chatbotStyle?.assistantTabHeader && (
               <p
-                className={`font-medium text-nowrap text-md font-manrope ${
-                  widgetTheme === "DARK" ? "text-zinc-100" : ""
-                }`}
+                className={`font-medium text-nowrap text-md font-manrope ${widgetTheme === "DARK" ? "text-zinc-100" : ""
+                  }`}
               >
                 {chatbotStyle?.assistantTabHeader}
               </p>
@@ -207,7 +205,7 @@ const Widget = ({ botId }) => {
         <div
           ref={chatContainerRef}
           style={{ scrollBehavior: "smooth" }}
-          className="w-full overflow-y-scroll h-[70%] mt-16 flex flex-col gap-3 p-4"
+          className="w-full overflow-y-scroll mt-16 flex flex-col gap-3 p-4"
         >
           {messages?.map((message, index) => (
             <ChatMessage
@@ -240,17 +238,16 @@ const Widget = ({ botId }) => {
             )}
         </div>
 
-        <div className="flex flex-row w-full px-4 custom-scrollbar py-2 overflow-x-scroll h-[6%] items-start justify-start gap-x-2">
+        <div className="flex flex-row w-full h-fit px-4 fixed bottom-[90px] custom-scrollbar py-2 overflow-x-scroll items-start justify-start gap-x-2">
           {chatbotStyle?.questionExamples &&
             chatbotStyle?.questionExamples?.map((msg, i) => {
               return (
                 <p
                   onClick={() => sendSuggestedMessage(msg.question)}
-                  className={`rounded-lg p-1 text-sm font-manrope text-center whitespace-nowrap ${
-                    widgetTheme === "DARK"
+                  className={`rounded-lg p-1 text-sm font-manrope text-center whitespace-nowrap ${widgetTheme === "DARK"
                       ? "bg-gray-800 hover:bg-gray-600 text-zinc-100"
                       : "bg-sky-700 text-white"
-                  } `}
+                    } `}
                   key={i}
                 >
                   {msg.question}
@@ -258,21 +255,20 @@ const Widget = ({ botId }) => {
               );
             })}
         </div>
-        <div className="relative p-2 max-h-[16%] h-fit bottom-2 font-manrope overflow-y-scroll items-center flex-col flex">
+        <div className="p-2 m-1 fixed border rounded-lg h-fit w-full bottom-4 font-manrope justify-center items-center flex">
           <textarea
             value={messageInput}
             onChange={(e) => setMessageInput(e.target.value)}
             placeholder={chatbotStyle?.chatInputPlaceholderText}
-            className={`text-neutral-700 max-h-full h-fit w-full ${
-              widgetTheme === "DARK"
+            className={`text-neutral-700 max-h-full h-[40px] w-full ${widgetTheme === "DARK"
                 ? "bg-transparent text-zinc-100 placeholder:text-neutral-300"
                 : "bg-transparent text-zinc-700 placeholder:text-neutral-400"
-            }  border p-3 overflow-y-scroll flex flex-col pl-[15px] rounded-lg pr-[50px] decoration-none text-sm font-normal font-manrope leading-snug`}
+              } overflow-y-scroll focus:outline-none flex-[90%] text-sm font-manrope leading-snug`}
           />
           <button
             disabled={chatting}
             onClick={sendMessage}
-            className="w-[32px] h-[32px] disabled:cursor-wait absolute top-[24px] right-7"
+            className="w-[30px] h-[30px] disabled:cursor-wait flex-[10%]"
           >
             <Image
               height={20}
@@ -293,18 +289,15 @@ const markdownToHtml = (markdown) =>
 
 const ChatMessage = memo(({ message, isUser, theme }) => (
   <div
-    className={`w-full h-auto font-manrope text-sm items-start justify-center flex-col flex  ${
-      isUser ? "justify-end items-end " : "justify-start"
-    }`}
+    className={`w-full h-auto font-manrope text-sm items-start justify-center flex-col flex  ${isUser ? "justify-end items-end " : "justify-start"
+      }`}
   >
     <div
-      className={`max-w-[85%] p-[10px] font-manrope text-sm ${
-        theme === "DARK"
+      className={`max-w-[85%] p-[10px] font-manrope text-sm ${theme === "DARK"
           ? "bg-gray-800 text-zinc-100"
           : "bg-zinc-100 text-stone-900"
-      } ${
-        isUser ? "bg-[#0C4173] rounded-l rounded-tr" : "rounded-tl rounded-r"
-      } text-start text-smleading-snug `}
+        } ${isUser ? "bg-[#0C4173] rounded-l rounded-tr" : "rounded-tl rounded-r"
+        } text-start text-smleading-snug `}
     >
       {isUser ? (
         message.content
@@ -358,11 +351,10 @@ function LeadCollector({
 
   return (
     <div
-      className={`max-w-[85%] flex flex-col font-manrope  p-[10px] relative gap-1 ${
-        theme === "DARK"
+      className={`max-w-[85%] flex flex-col font-manrope  p-[10px] relative gap-1 ${theme === "DARK"
           ? "bg-gray-800 text-zinc-100"
           : "bg-zinc-100 text-stone-900"
-      } rounded-tl-[8px] rounded-r-[8px] text-start text-sm leading-snug `}
+        } rounded-tl-[8px] rounded-r-[8px] text-start text-sm leading-snug `}
     >
       <button
         onClick={handleCancel}
