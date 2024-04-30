@@ -263,7 +263,7 @@ const Widget = ({ botId }) => {
             value={messageInput}
             onChange={(e) => setMessageInput(e.target.value)}
             placeholder={chatbotStyle?.chatInputPlaceholderText}
-            className={`text-neutral-700 max-h-full h-auto w-full ${
+            className={`text-neutral-700 max-h-full h-[30px] w-full ${
               widgetTheme === "DARK"
                 ? "bg-transparent text-zinc-100 placeholder:text-neutral-300"
                 : "bg-transparent text-zinc-700 placeholder:text-neutral-400"
