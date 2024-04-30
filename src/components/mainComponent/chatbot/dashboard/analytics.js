@@ -30,11 +30,7 @@ function Analytics({ botId }) {
       const itemDate = new Date(item.date);
       const convStartDate = new Date(startDate);
       const convEndDate = new Date(endDate);
-      console.log({
-        apiDate: itemDate,
-        start: convStartDate,
-        end: convEndDate,
-      });
+
       return itemDate >= convStartDate && itemDate <= convEndDate;
     });
 
@@ -49,7 +45,7 @@ function Analytics({ botId }) {
 
   return (
     <div className="flex flex-col w-full items-center overflow-hidden">
-      {analytics && analytics.length > 0 ? (
+      {analytics ? (
         <Chart_page
           startDate={startDate}
           endDate={endDate}

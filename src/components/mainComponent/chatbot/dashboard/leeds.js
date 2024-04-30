@@ -35,7 +35,7 @@ function Leeds({ botId }) {
   };
   return (
     <div className="w-full flex flex-col items-center">
-      {filteredLeads && filteredLeads.length >0  ? (
+      {filteredLeads && leads.length > 0 ? (
         <Filled_bot_state
           handleDateSelect={handleDateSelect}
           leads={filteredLeads}
