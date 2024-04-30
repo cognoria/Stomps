@@ -205,7 +205,7 @@ const Widget = ({ botId }) => {
         <div
           ref={chatContainerRef}
           style={{ scrollBehavior: "smooth" }}
-          className="w-full overflow-y-scroll mt-16 flex flex-col gap-3 p-4"
+          className="w-full h-[calc(100vh-180px)] overflow-y-scroll mt-16 flex flex-col gap-3 p-4"
         >
           {messages?.map((message, index) => (
             <ChatMessage
@@ -237,47 +237,49 @@ const Widget = ({ botId }) => {
               </div>
             )}
         </div>
-
-        <div className="flex flex-row w-full h-fit px-4 fixed bottom-[90px] custom-scrollbar py-2 overflow-x-scroll items-start justify-start gap-x-2">
-          {chatbotStyle?.questionExamples &&
-            chatbotStyle?.questionExamples?.map((msg, i) => {
-              return (
-                <p
-                  onClick={() => sendSuggestedMessage(msg.question)}
-                  className={`rounded-lg p-1 text-sm font-manrope text-center whitespace-nowrap ${widgetTheme === "DARK"
+        <div className={`${widgetTheme === "DARK" ? "bg-[#333]" : "bg-[#fff]"} w-full z-50 flex flex-col gap-2 fixed bottom-0 py-2`}>
+          <div className={`flex flex-row w-full h-fit px-4 custom-scrollbar py-2 overflow-x-scroll items-start justify-start gap-x-2`}>
+            {chatbotStyle?.questionExamples &&
+              chatbotStyle?.questionExamples?.map((msg, i) => {
+                return (
+                  <p
+                    onClick={() => sendSuggestedMessage(msg.question)}
+                    className={`rounded-lg p-1 cursor-pointer text-sm font-manrope text-center whitespace-nowrap ${widgetTheme === "DARK"
                       ? "bg-gray-800 hover:bg-gray-600 text-zinc-100"
                       : "bg-sky-700 text-white"
-                    } `}
-                  key={i}
-                >
-                  {msg.question}
-                </p>
-              );
-            })}
-        </div>
-        <div className="p-2 m-1 fixed border rounded-lg h-fit w-full bottom-4 font-manrope justify-center items-center flex">
-          <textarea
-            value={messageInput}
-            onChange={(e) => setMessageInput(e.target.value)}
-            placeholder={chatbotStyle?.chatInputPlaceholderText}
-            className={`text-neutral-700 max-h-full h-[40px] w-full ${widgetTheme === "DARK"
+                      } `}
+                    key={i}
+                  >
+                    {msg.question}
+                  </p>
+                );
+              })}
+          </div>
+          <div className={` p-2 m-1 border rounded-lg h-fit w-full font-manrope justify-center items-center flex`}>
+            <textarea
+              value={messageInput}
+              onChange={(e) => setMessageInput(e.target.value)}
+              placeholder={chatbotStyle?.chatInputPlaceholderText}
+              className={`text-neutral-700 max-h-full h-[40px] w-full ${widgetTheme === "DARK"
                 ? "bg-transparent text-zinc-100 placeholder:text-neutral-300"
                 : "bg-transparent text-zinc-700 placeholder:text-neutral-400"
-              } overflow-y-scroll focus:outline-none flex-[90%] text-sm font-manrope leading-snug`}
-          />
-          <button
-            disabled={chatting}
-            onClick={sendMessage}
-            className="w-[30px] h-[30px] disabled:cursor-wait flex-[10%]"
-          >
-            <Image
-              height={20}
-              width={20}
-              src="/images/chatbox/send.svg"
-              alt=""
-              className={`w-full h-full disabled:animate-pulse`}
+                } overflow-y-scroll focus:outline-none flex-[90%] text-sm font-manrope leading-snug`}
             />
-          </button>
+            <button
+              disabled={chatting}
+              onClick={sendMessage}
+              className="w-[30px] h-[30px] disabled:cursor-wait flex-[10%]"
+            >
+              <Image
+                height={20}
+                width={20}
+                src="/images/chatbox/send.svg"
+                alt=""
+                className={`w-full h-full disabled:animate-pulse`}
+              />
+            </button>
+          </div>
+
         </div>
       </div>
     </div>
@@ -294,8 +296,8 @@ const ChatMessage = memo(({ message, isUser, theme }) => (
   >
     <div
       className={`max-w-[85%] p-[10px] font-manrope text-sm ${theme === "DARK"
-          ? "bg-gray-800 text-zinc-100"
-          : "bg-zinc-100 text-stone-900"
+        ? "bg-gray-800 text-zinc-100"
+        : "bg-zinc-100 text-stone-900"
         } ${isUser ? "bg-[#0C4173] rounded-l rounded-tr" : "rounded-tl rounded-r"
         } text-start text-smleading-snug `}
     >
@@ -352,8 +354,8 @@ function LeadCollector({
   return (
     <div
       className={`max-w-[85%] flex flex-col font-manrope  p-[10px] relative gap-1 ${theme === "DARK"
-          ? "bg-gray-800 text-zinc-100"
-          : "bg-zinc-100 text-stone-900"
+        ? "bg-gray-800 text-zinc-100"
+        : "bg-zinc-100 text-stone-900"
         } rounded-tl-[8px] rounded-r-[8px] text-start text-sm leading-snug `}
     >
       <button
