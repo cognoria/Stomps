@@ -33,12 +33,12 @@ export function PlanCards() {
         <div className="text-center justify-center flex flex-row">
           <div className="w-[296px] text-center">
             <span className="text-sky-700 text-[40px] font-extrabold font-manrope leading-[48px]">
-              $219
+              $999
             </span>
           </div>
         </div>
         <button
-          id="product-component-1713759313241"
+          id="product-component-1714498324650"
           className="flex flex-col items-center justify-center text-center font-manrope px-2 py-2 bg-transparent w-auto rounded-[8px] text-white"
         />
       </div>
