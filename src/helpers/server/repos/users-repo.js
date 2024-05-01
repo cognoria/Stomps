@@ -239,7 +239,7 @@ async function forgetPassword(email) {
     const origin = headers().get("host")
     // const url = new URL(origin);
 
-    const resetBaseUrl = `http://${origin}/verify`
+    const resetBaseUrl = `http://${origin}/reset`
     const text = getEmailText('reset');
     const link = `${resetBaseUrl}/${resetToken}`
     const title = "[Action Required]: Reset Password."

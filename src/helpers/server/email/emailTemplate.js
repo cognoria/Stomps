@@ -9,8 +9,7 @@ export function emailTemplate({ greetingName, message, buttonLink, buttonText = 
     const emailHtml = `<html>
     <body>
       <div style="max-width: 600px; margin: 0 auto; font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif; font-size: 16px; color: #333;">
-        <h2>${greetingName ? `Hello, ${greetingName}!` : "Hello!"}</h2>
-        <br />
+        <h4>${greetingName ? `Hello, ${greetingName}!` : "Hello!"}</h4>
         <br />
         <p>${message}</p>
         <div style="text-align: center;">
