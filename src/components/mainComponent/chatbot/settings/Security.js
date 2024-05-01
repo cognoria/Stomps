@@ -78,7 +78,7 @@ function SecuritySettings({ botId }) {
       visibility: selectedPrivacy,
       allowPublicDomains: chatBotCustomizeDataDefault.allowPublicDomains,
       rateLimit: {
-        limitMsg: chatBotCustomizeDataDefault.ra,
+        limitMsg: limitMessage,
         msgCount: inputLimit,
         timeframe: inputMessage,
       },
@@ -234,12 +234,10 @@ const visibility = ["PRIVATE", "PUBLIC"];
 const visibility_description = [
   {
     tag: `Private:`,
-    desc: `  No one can access your chatbot except you (your account)`,
+    desc: ` No one can access your chatbot except you (your account)`,
   },
   {
     tag: `Public:`,
-    desc: `  Other people can chat with your chatbot if you send them the
-                link. You can also embed it on your website so your website
-                visitors are able to use it.`,
+    desc: `Visitors can interact with the bot embedded on your website`,
   },
 ];

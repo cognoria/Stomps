@@ -59,9 +59,11 @@ export default function Datasource() {
         file = await extractTextFromTXT(selectedFile);
       } else if (isDOCFile(selectedFile)) {
         file = await extractTextFromDoc(selectedFile);
-      } else if (isPDFFile(selectedFile)) {
-        file = await extractTextFromPDF(selectedFile);
-      } else {
+      } 
+      // else if (isPDFFile(selectedFile)) {
+      //   file = await extractTextFromPDF(selectedFile);
+    // }
+       else {
         return toast.error("unspported file selected"); //toast file not supported
       }
       await addFiles(file);
