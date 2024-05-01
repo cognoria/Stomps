@@ -85,32 +85,28 @@ const useWidgetStore = create(
         if (userData !== null && userData !== undefined) return;
 
         try {
-          const ipResponse = await fetch("/api/v1/data/ip", { method: "POST" });
-          const ip = await ipResponse.json();
-
           const dataResponse = await fetch(
-            "https://qwo6ei9p45.execute-api.us-east-1.amazonaws.com/dev",
+            "https://ip.guide/frontend/api",
             {
-              method: "POST",
+              method: "GET",
               mode: "cors",
-              body: ip.ip,
             }
           );
+
           const data = await dataResponse.json();
 
-          const country =
-            data.done.json.WhoisRecord.registryData.registrant?.country;
-          const countryCode =
-            data.done.json.WhoisRecord.registryData.registrant?.countryCode;
+          const country = data.ip_response.location?.country;
+          const countryCode = data.ip_response.network.autonomous_system?.country;
           const userData = {
-            ...ip,
+            ip: data.ip_response.ip,
             country,
-            countryCode: countryCode ? countryCode : undefined,
+            countryCode,
           };
           set({ userData });
           return userData;
         } catch (error) {
           console.error("Failed to set user data:", error);
+          set({ userData: undefined });
         }
       },
 
@@ -184,20 +180,18 @@ const useWidgetStore = create(
           error: null,
           lastMsgTime: new Date().getTime(),
         });
-        get().startChatting(botId);
         try {
           const { messages } = get().getChatbotState(botId);
           let { userData } = get();
           const requestBody = { messages };
 
-          if (userData === null || userData === undefined) {
+          if (!userData || userData == null) {
             userData = await get().setUserData();
           }
 
           console.log("userData: ", userData);
-          if (get().userData !== null || get().userData !== undefined) {
-            requestBody.user = userData;
-          }
+          if (userData && userData !== null) requestBody.user = userData;
+
           // const sessionId = cookies().get(`chat-session-${botId}`)?.value;
           const response = await fetch(`/api/v1/embed/${botId}/chat`, {
             method: "POST",
