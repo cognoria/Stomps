@@ -82,7 +82,7 @@ async function create(params) {
     }
 
     // Check if the maximum number of users has been reached
-    const maxUsers = process.env.MAX_USERS ? parseInt(process.env.MAX_USERS, 10) : Infinity;
+    const maxUsers = process.env.MAX_USER ? parseInt(process.env.MAX_USER, 10) : Infinity;
     const currentUserCount = await User.countDocuments();
     if (currentUserCount >= maxUsers) {
         throw 'You cannot register. contact support@stomps.io';

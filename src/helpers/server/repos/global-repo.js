@@ -133,8 +133,9 @@ async function getEmbedModel() {
 async function setGlobalKeys(params) {
     if (!params.openaiKey && !params.pineconeKey) throw 'Openai and Pinecone keys are required'
 
-    const openaiKeyHash = encrypt(params.openaiKey)
-    const pineconeKeyHash = encrypt(params.pineconeKey)
+    const { openaiKey, pineconeKey } = params;
+    const openaiKeyHash = openaiKey ? encrypt(openaiKey) : undefined;
+    const pineconeKeyHash = pineconeKey ? encrypt(pineconeKey) : undefined;
 
     if (process.env.ALLOW_INDIVIDUAL_KEYS) {
         const userId = headers().get('userId');
@@ -146,38 +147,43 @@ async function setGlobalKeys(params) {
         const openaiService = user.services?.find(
             (service) => service.name === AppServiceProviders.OPENAI
         );
-        if (openaiService) {
-            openaiService.apiKey = openaiKeyHash;
-        } else {
-            user.services.push({
-                name: AppServiceProviders.OPENAI,
-                apiKey: openaiKeyHash,
-                meta: { desc: 'open ai api key' },
-            });
+        if (openaiKeyHash) {
+            if (openaiService) {
+                openaiService.apiKey = openaiKeyHash;
+            } else {
+                user.services.push({
+                    name: AppServiceProviders.OPENAI,
+                    apiKey: openaiKeyHash,
+                    meta: { desc: 'open ai api key' },
+                });
+            }
+            await user.save();
         }
 
         const pineconeService = user.services?.find(
             (service) => service.name === AppServiceProviders.PINECONE
         );
-        if (pineconeService) {
-            // Check if there are any chatbots associated with this Pinecone key
-            const chatbotsCount = await Chatbots.countDocuments({
-                pineconeKeyId: pineconeService._id,
-            });
+        if (pineconeKeyHash) {
+            if (pineconeService) {
+                // Check if there are any chatbots associated with this Pinecone key
+                const chatbotsCount = await Chatbots.countDocuments({
+                    pineconeKeyId: pineconeService._id,
+                });
 
-            if (chatbotsCount > 0) {
-                throw new Error(
-                    'Cannot update or remove the Pinecone key as there are chatbots associated with it'
-                );
+                if (chatbotsCount > 0) {
+                    throw new Error(
+                        'Cannot update or remove the Pinecone key as there are chatbots associated with it'
+                    );
+                }
+
+                pineconeService.apiKey = pineconeKeyHash;
+            } else {
+                user.services.push({
+                    name: AppServiceProviders.PINECONE,
+                    apiKey: pineconeKeyHash,
+                    meta: { desc: 'pinecone api key' },
+                });
             }
-
-            pineconeService.apiKey = pineconeKeyHash;
-        } else {
-            user.services.push({
-                name: AppServiceProviders.PINECONE,
-                apiKey: pineconeKeyHash,
-                meta: { desc: 'pinecone api key' },
-            });
         }
 
         await user.save();
@@ -190,22 +196,21 @@ async function setGlobalKeys(params) {
     if (!global) {
         global = await Global.create({})
     }
-
-    global.services.push({
-        name: AppServiceProviders.OPENAI,
-        apiKey: openaiKeyHash,
-        meta: {
-            desc: "open ai api key"
-        }
-    })
-
-    global.services.push({
-        name: AppServiceProviders.PINECONE,
-        apiKey: pineconeKeyHash,
-        meta: {
-            desc: "pinecone api key"
-        }
-    })
+    if (openaiKeyHash) {
+        global.services.push({
+          name: AppServiceProviders.OPENAI,
+          apiKey: openaiKeyHash,
+          meta: { desc: "open ai api key" }
+        });
+      }
+    
+      if (pineconeKeyHash) {
+        global.services.push({
+          name: AppServiceProviders.PINECONE,
+          apiKey: pineconeKeyHash,
+          meta: { desc: "pinecone api key" }
+        });
+      }
     await global.save()
     return { message: "Api keys set successfully" };
 }

@@ -41,7 +41,7 @@ function Account() {
         <div className="w-full h-[0px] lg:w-[570px]  my-2  border border-gray-200" />
         <div className="flex gap-y-4 flex-col lg:flex-row items-start justify-between w-full p-4">
           <div className="w-[260px] text-gray-900 text-sm font-medium font-manrope leading-tight tracking-tight">
-            Make sure to keep your keys secret and never expose them.
+            For security reasons your keys would not be exposed.
           </div>
           <div className="flex items-end flex-col justify-end w-full lg:w-auto bg:block">
             <div className="w-[210px] flex-end px-2.5 py-2 rounded-lg shadow border border-sky-700 justify-center items-center gap-2 flex">
@@ -49,7 +49,7 @@ function Account() {
                 href="/account/keys"
                 className="text-sky-700 text-sm font-bold font-manrope leading-snug"
               >
-                Create New Secret key
+                Update your API key
               </Link>
               <Image
                 width={15}
@@ -61,7 +61,7 @@ function Account() {
             </div>
           </div>
         </div>
-        <div className="flex w-full flex-col items-start justify-between p-4 ">
+        {/* <div className="flex w-full flex-col items-start justify-between p-4 ">
           <div className="rounded-lg flex flex-col gap-y-4 lg:flex-row items-start justify-between  border w-full border-gray-200 p-4">
             <div className="flex flex-row gap-4 mt-2">
               <div className="w-[287px] text-zinc-800 text-sm font-medium font-manrope leading-tight tracking-tight">
@@ -94,7 +94,7 @@ function Account() {
               </div>
             </div>
           </div>
-        </div>
+        </div> */}
       </div>
       {/* <div className="flex flex-col items-center w-[95%] lg:w-[570px]">
         <PlanCards />
