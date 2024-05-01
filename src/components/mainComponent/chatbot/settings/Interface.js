@@ -226,11 +226,11 @@ function InterfaceSettings({ botId }) {
                 Reset
               </button>
             </div>
-            <div className="flex gap-y-4 w-full flex-col items-start p-3">
+            <div className="flex gap-y-1 w-full flex-col items-start p-3">
               <div className="text-zinc-800 text-[10px]  font-bold font-manrope leading-[14px] tracking-tight">
                 Initial Messages
               </div>
-              
+
               {/* <input
                 value={initialMsg}
                 onChange={(e) => setInitialMsg(e.target.value)}
@@ -252,7 +252,7 @@ function InterfaceSettings({ botId }) {
                 Enter each message in a new line.
               </p>
             </div>
-            <div className="flex gap-y-4 max-w-full w-full flex-col items-start p-3">
+            <div className="flex gap-y-1 max-w-full w-full flex-col items-start p-3">
               <div className="text-zinc-800 text-[10px]  font-bold font-manrope leading-[14px] tracking-tight">
                 Suggested Messages
               </div>

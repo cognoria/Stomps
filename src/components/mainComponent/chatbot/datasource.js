@@ -1,8 +1,9 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { toast } from "react-toastify";
+import useCreateChatbotStore from "../../../store/chatbot/useCreateChatbotStore";
 import {
   extractTextFromDoc,
   extractTextFromPDF,
@@ -11,7 +12,6 @@ import {
   isPDFFile,
   isTXTFile,
 } from "../../../utils/extractDoc/file_extract";
-import useCreateChatbotStore from "../../../store/chatbot/useCreateChatbotStore";
 
 export default function Datasource() {
   const [selectedFile, setSelectedFile] = useState(null);
@@ -104,7 +104,7 @@ export default function Datasource() {
                     Select a File Upload, or Drag and Drop it here
                   </div>
                   <div className="sub-text mb-2">
-                    Supported file type: .pdf, .doc, .txt, .docx
+                    Supported file type: .doc, .txt, .docx
                   </div>
                 </label>
                 {selectedFile && (

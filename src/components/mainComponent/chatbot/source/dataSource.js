@@ -103,7 +103,7 @@ export default function DataSource() {
                     Select a File Upload, or Drag and Drop it here
                   </div>
                   <div className="sub-text mb-2">
-                    Supported file type: .pdf, .doc, .txt, .docx
+                    Supported file type: .doc, .txt, .docx
                   </div>
                 </label>
                 {selectedFile && (

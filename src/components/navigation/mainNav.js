@@ -51,8 +51,11 @@ function MainNav() {
   return (
     <div style={navbarStyles} className={`flex flex-col   z-50 mb-[20px]`}>
       <div className="w-screen hidden    fixed  lg:flex  bg-white px-[8%] pt-[5%] md:pt-0 lg:py-[2.2%] h-[2%]  flex-row justify-between items-center">
-        <img src="/images/landing/logo.svg" alt="logo" />
-        {!user && (
+        <a href="http://stomps.io/">
+          <img src="/images/landing/logo.svg" alt="logo" />
+        </a>
+
+        {/* {!user && (
           <div className="flex-row gap-4 md:flex hidden items-center justify-center">
             <div className="text-[#1261AC] text-sm font-bold font-manrope leading-snug">
               <Link href="https://stomp-ai.vercel.app/">Home</Link>
@@ -61,7 +64,7 @@ function MainNav() {
               <Link href="https://stomp-ai.vercel.app/#price">Pricing</Link>
             </div>
           </div>
-        )}
+        )} */}
 
         {!user ? (
           <div className="md:flex hidden flex-row gap-4">
@@ -105,11 +108,16 @@ function MainNav() {
       <div className="flex flex-col w-full px-[4%] py-[2.5%] lg:hidden bg-white z-50 items-center justify-between">
         <div className="flex flex-row w-full justify-between">
           {expanded ? (
-            <div className="text-[#1261AC]   text-2xl font-extrabold font-manrope leading-[28.80px]">
+            <a
+              href="http://stomps.io/"
+              className="text-[#1261AC]   text-2xl font-extrabold font-manrope leading-[28.80px]"
+            >
               Stomps.io
-            </div>
+            </a>
           ) : (
-            <img src="/images/landing/logo1.svg" alt="logo" />
+            <a href="http://stomps.io/">
+              <img src="/images/landing/logo1.svg" alt="logo" />
+            </a>
           )}
 
           <div className="flex ">
@@ -163,7 +171,7 @@ function MainNav() {
           <nav className="px-[4%] w-full">
             <div className="px-1 py-8">
               <div className="grid gap-y-7">
-                {!user && (
+                {/* {!user && (
                   <div>
                     <div
                       href="#"
@@ -187,7 +195,7 @@ function MainNav() {
                       </Link>
                     </div>
                   </div>
-                )}
+                )} */}
 
                 {!user ? (
                   <div className="flex flex-col w-full gap-y-5">
