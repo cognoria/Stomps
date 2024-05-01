@@ -53,7 +53,7 @@ function Reset_password({ token }) {
       >
         <div className="flex w-[90%] gap-4 md:w-[479px] flex-col items-start justify-start">
           <p className="text-xs font-bold font-manrope leading-none tracking-tight text-[#8A8A8A]">
-            Password
+           New password
           </p>
           <div className="w-full relative">
             <button
@@ -151,7 +151,7 @@ function Reset_password({ token }) {
 
         <div className="flex w-[90%] gap-4 md:w-[479px] flex-col items-start justify-start">
           <p className="text-xs font-bold font-manrope leading-none tracking-tight text-[#8A8A8A]">
-            Password
+            Confirm password
           </p>
           <div className="w-full relative">
             <button
