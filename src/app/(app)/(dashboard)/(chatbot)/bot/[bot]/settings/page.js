@@ -63,12 +63,12 @@ const nav = [
     link: "/text",
   },
   {
-    link_name: "Chat interface",
+    link_name: "Chat Interface",
     img_link: "/images/chatbox/droplet1.svg",
     link: "/website",
   },
   {
-    link_name: "security",
+    link_name: "Security",
     img_link: "/images/chatbox/security.svg",
     link: "/website",
   },
