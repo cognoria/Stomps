@@ -153,7 +153,7 @@ async function getByName(name) {
 
 async function getAllUserBot() {
     const ownerId = headers().get('userId');
-    return await Chatbot.find({ owner: ownerId }).sort({ timestamp: -1 }).lean()
+    return await Chatbot.find({ owner: ownerId }).select('owner visibility createdAt updatedAt status name chatBotCustomizeData.launcherIcon chatBotCustomizeData.profileImage').sort({ timestamp: -1 }).lean()
 }
 
 async function getAllNewBot() {
