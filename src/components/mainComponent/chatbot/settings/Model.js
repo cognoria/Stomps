@@ -134,7 +134,7 @@ function ModelSettings({ botId }) {
               className="flex flex-col items-start p-3 max-h-[150px] h-[100px] active:border-gray-300  border-[1px] font-manrope text-sm font-medium border-gray-200 shadow-md w-full"
             ></textarea>
           </div>
-          <div className="w-full p-3 text-zinc-500 text-xs font-medium font-manrope tracking-tight">
+          <div className="w-full p-3 text-zinc-500 text-[10px] font-medium font-manrope tracking-tight">
             The instructions allows you to customize your chatbot's personality
             and style. Please make sure to experiment with the instructions by
             making it very specific to your data and use case.

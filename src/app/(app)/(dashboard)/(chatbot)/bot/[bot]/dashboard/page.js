@@ -39,7 +39,7 @@ function Page({ params: { bot } }) {
         return <Leeds botId={bot} />;
       case "Analytics":
         return <Analytics botId={bot} />;
-      case "Chat logs":
+      case "Chat Logs":
         return <Chat_logs botId={bot} />;
 
       default:
@@ -69,7 +69,7 @@ export default Page;
 
 const nav = [
   {
-    link_name: "Chat logs",
+    link_name: "Chat Logs",
     img_link: "/images/chatbox/directbox-notif.svg",
     link: "/",
   },

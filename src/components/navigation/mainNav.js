@@ -96,9 +96,9 @@ function MainNav() {
             <Link href="/">
               <div>ChatBot</div>
             </Link>
-            <Link href="/support">
+            {/* <Link href="/support">
               <div>Help</div>
-            </Link>
+            </Link> */}
             <Link href="/account">
               <div>Account</div>
             </Link>

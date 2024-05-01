@@ -36,7 +36,7 @@ function Account() {
 
       <div className="w-[95%] lg:w-[570px] flex flex-col items-center rounded-lg border border-gray-200">
         <div className="text-sky-700  p-4 lg:text-base  text-sm font-bold font-manrope leading-snug">
-          Your Stomps API Key
+          Your API Key
         </div>
         <div className="w-full h-[0px] lg:w-[570px]  my-2  border border-gray-200" />
         <div className="flex gap-y-4 flex-col lg:flex-row items-start justify-between w-full p-4">
@@ -96,7 +96,7 @@ function Account() {
           </div>
         </div>
       </div>
-      <div className="flex flex-col items-center w-[95%] lg:w-[570px]">
+      {/* <div className="flex flex-col items-center w-[95%] lg:w-[570px]">
         <PlanCards />
         <div className="px-[4%] py-[12px] flex flex-row  justify-start lg:justify-center items-start">
           <img alt="" src="/images/landing/warning.svg" />
@@ -105,10 +105,10 @@ function Account() {
             usage separately
           </div>
         </div>
-      </div>
+      </div> */}
 
       <div className="lg:w-[570px] w-[95%] rounded-lg flex-row flex gap-4  justify-end items-end ">
-        <button
+        {/* <button
           className="w-[146px] p-2 rounded-lg shadow border border-red-500 justify-center items-center gap-2 flex"
           onClick={() =>
             useModalStore
@@ -130,7 +130,7 @@ function Account() {
           <p className="text-red-500 text-xs font-bold font-manrope leading-snug">
             Delete Account
           </p>
-        </button>
+        </button> */}
         <Link
           onClick={() => logout()}
           className="w-[146px]   p-2 rounded-lg shadow bg-[#1261AC] justify-center items-center gap-2 flex"
