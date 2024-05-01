@@ -50,7 +50,7 @@ function ChatbotsDisplay({ chatbots }) {
                         alt=""
                         src="/images/chatbox/edit.svg"
                       />
-                      Edith
+                      Edit
                     </Link>
                     <button
                       onClick={() =>
