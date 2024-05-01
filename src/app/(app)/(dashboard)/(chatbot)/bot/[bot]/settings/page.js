@@ -19,9 +19,9 @@ function Page({ params: { bot } }) {
         return <GeneralSettings botId={bot} />;
       case "Model":
         return <ModelSettings botId={bot} />;
-      case "Chat interface":
+      case "Chat Interface":
         return <InterfaceSettings botId={bot} />;
-      case "security":
+      case "Security":
         return <SecuritySettings botId={bot} />;
       case "Leads":
         return <LeadsSettings botId={bot} />;
