@@ -42,7 +42,7 @@ export default function Datasource() {
     const file = event.dataTransfer.files[0];
     if (file) {
       // console.log("Dropped file:", file);
-      if (!isTXTFile(file) && !isPDFFile(file) && !isDOCFile(file)) {
+      if (!isTXTFile(file) && !isDOCFile(file)) {
         return; //toaste file not supported
       } else {
         setSelectedFile(file);
@@ -59,11 +59,11 @@ export default function Datasource() {
         file = await extractTextFromTXT(selectedFile);
       } else if (isDOCFile(selectedFile)) {
         file = await extractTextFromDoc(selectedFile);
-      } 
+      }
       // else if (isPDFFile(selectedFile)) {
       //   file = await extractTextFromPDF(selectedFile);
-    // }
-       else {
+      // }
+      else {
         return toast.error("unspported file selected"); //toast file not supported
       }
       await addFiles(file);
