@@ -114,7 +114,7 @@ export default function DataSource() {
               </div>
             </div>
 
-            <div className="items-center flex flex-row justify-center gap-x-2 text-neutral-400 py-4 lg:p-0 p-2 text-xs w-full tracking-tigh leading-none  font-normal font-manrope">
+            {/* <div className="items-center flex flex-row justify-center gap-x-2 text-neutral-400 py-4 lg:p-0 p-2 text-xs w-full tracking-tigh leading-none  font-normal font-manrope">
               <Image
                 width={15}
                 height={15}
@@ -125,7 +125,7 @@ export default function DataSource() {
                 If you’re uploading a PDF, be sure that the texts can be
                 highlighted
               </p>
-            </div>
+            </div> */}
 
             <div className="h-auto  mt-[20px] lg:mt-0 p-3  w-full  flex flex-col">
               <div className="flex gap-3 mt-[50px] flex-row w-full items-center ">
