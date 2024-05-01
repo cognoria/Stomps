@@ -198,19 +198,20 @@ async function setGlobalKeys(params) {
     }
     if (openaiKeyHash) {
         global.services.push({
-          name: AppServiceProviders.OPENAI,
-          apiKey: openaiKeyHash,
-          meta: { desc: "open ai api key" }
+            name: AppServiceProviders.OPENAI,
+            apiKey: openaiKeyHash,
+            meta: { desc: "open ai api key" }
         });
-      }
-    
-      if (pineconeKeyHash) {
+    }
+
+    if (pineconeKeyHash) {
         global.services.push({
-          name: AppServiceProviders.PINECONE,
-          apiKey: pineconeKeyHash,
-          meta: { desc: "pinecone api key" }
+            name: AppServiceProviders.PINECONE,
+            apiKey: pineconeKeyHash,
+            meta: { desc: "pinecone api key" }
         });
-      }
+    }
+    
     await global.save()
     return { message: "Api keys set successfully" };
 }
