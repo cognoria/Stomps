@@ -1,14 +1,14 @@
 
-const websiteUrl = 'www.yourWebsite.com';
-const twitterUrl = 'x.com/yourTwitter';
-const linkedInUrl = 'linkedin.com/yourProfile';
+const websiteUrl = 'https://stomps.io';
+const twitterUrl = 'https://x.com/stompsio';
+const linkedInUrl = 'https://www.linkedin.com/company/stomps/';
 const projectAddress = 'Your Project Address';
 
 export function emailTemplate({ greetingName, message, buttonLink, buttonText = "Click Here" }) {
 
     const emailHtml = `<html>
     <body>
-      <div style="font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif; font-size: 16px; color: #ececec;">
+      <div style="max-width: 600px; margin: 0 auto; font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif; font-size: 16px; color: #333;">
         <h2>${greetingName ? `Hello, ${greetingName}!` : "Hello!"}</h2>
         <br />
         <br />
