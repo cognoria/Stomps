@@ -48,7 +48,7 @@ function VerifyEmail({ token, email }) {
               onClick={() => resend(email, () => {})}
               className="text-white text-sm font-bold font-manrope leading-snug"
             >
-              Resent Verification Email
+              Resend Verification Email
             </button>
           </div>
         )}
