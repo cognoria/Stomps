@@ -96,9 +96,9 @@ function MainNav() {
             <Link href="/">
               <div>ChatBot</div>
             </Link>
-            <Link href="/support">
+            {/* <Link href="/support">
               <div>Help</div>
-            </Link>
+            </Link> */}
             <Link href="/account">
               <div>Account</div>
             </Link>
@@ -225,14 +225,14 @@ function MainNav() {
                     >
                       Chatbot
                     </Link>
-                    <Link
+                    {/* <Link
                       href="/support"
                       title=""
                       className="flex items-center p-3 -m-3 border-b-[1px] border-[#DBDDE0] text-base font-medium text-gray-900 transition-all duration-200  hover:bg-gray-50 focus:outline-none font-pj focus:ring-1 focus:ring-gray-900 focus:ring-offset-2"
                       role="button"
                     >
                       Help
-                    </Link>
+                    </Link> */}
                     <Link
                       href="/account"
                       title=""

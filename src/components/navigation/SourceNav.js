@@ -60,7 +60,7 @@ function SourceNav({ nav, tag }) {
                 currentPage == items.link_name
                   ? "border-r-[4px] border-[#1261AC]"
                   : ""
-              }  flex-row gap-4 items-start justify-start`}
+              }  flex-row gap-4 items-start justify-start capitalize`}
             >
               <img src={items.img_link} alt="" />
               <p className="text-zinc-500 text-sm font-bold font-manrope leading-snug">

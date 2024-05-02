@@ -1,12 +1,7 @@
 import { useEffect, useState } from "react";
-import {
-  chatBotCustomizeDataDefault,
-  rateLimits,
-} from "../../../../helpers/enums";
 import useChatbotSettings from "../../../../store/chatbot/useChatbotSettings";
 import useChatbotStore from "../../../../store/chatbot/useChatbotStore";
 import { capitalizeFirstLetter } from "../../../../utils/wordStructure";
-import Toggle from "../../../customComponents/slider/toggler";
 
 function SecuritySettings({ botId }) {
   const { getChatbot, loading, chatbot } = useChatbotStore((state) => ({
@@ -65,10 +60,10 @@ function SecuritySettings({ botId }) {
   useEffect(() => {
     if (chatbot) {
       setSelectedPrivacy(chatbot.visibility);
-      setLimitMessage(chatbot.rateLimiting.limitMsg);
-      setToggleChecked(chatbot.chatBotCustomizeData.allowPublicDomains);
-      setInputMessage(chatbot.rateLimiting.timeframe);
-      setInputLimit(chatbot.rateLimiting.msg_count);
+      // setLimitMessage(chatbot.rateLimiting.limitMsg);
+      // setToggleChecked(chatbot.chatBotCustomizeData.allowPublicDomains);
+      // setInputMessage(chatbot.rateLimiting.timeframe);
+      // setInputLimit(chatbot.rateLimiting.msg_count);
     }
   }, [chatbot]);
 
@@ -76,12 +71,12 @@ function SecuritySettings({ botId }) {
     e.preventDefault();
     const botSecurityData = {
       visibility: selectedPrivacy,
-      allowPublicDomains: chatBotCustomizeDataDefault.allowPublicDomains,
-      rateLimit: {
-        limitMsg: chatBotCustomizeDataDefault.ra,
-        msgCount: inputLimit,
-        timeframe: inputMessage,
-      },
+      // allowPublicDomains: chatBotCustomizeDataDefault.allowPublicDomains,
+      // rateLimit: {
+      //   limitMsg: chatBotCustomizeDataDefault.ra,
+      //   msgCount: inputLimit,
+      //   timeframe: inputMessage,
+      // },
     };
 
     updateSecuritySettings({ botId, botSecurityData }, async () => {
@@ -91,22 +86,22 @@ function SecuritySettings({ botId }) {
 
   //security submission
 
-  const resetSecuritySettings = (e) => {
-    e.preventDefault();
-    const botSecurityData = {
-      visibility: "PRIVATE",
-      allowPublicDomains: chatBotCustomizeDataDefault.allowPublicDomains,
-      rateLimit: {
-        limitMsg: rateLimits.limitMsg,
-        msgCount: rateLimits.msg_count,
-        timeframe: rateLimits.timeframe,
-      },
-    };
+  // const resetSecuritySettings = (e) => {
+  //   e.preventDefault();
+  //   const botSecurityData = {
+  //     visibility: "PRIVATE",
+  //     allowPublicDomains: chatBotCustomizeDataDefault.allowPublicDomains,
+  //     rateLimit: {
+  //       limitMsg: rateLimits.limitMsg,
+  //       msgCount: rateLimits.msg_count,
+  //       timeframe: rateLimits.timeframe,
+  //     },
+  //   };
 
-    updateSecuritySettings({ botId, botSecurityData }, async () => {
-      await getChatbot(botId);
-    });
-  };
+  //   updateSecuritySettings({ botId, botSecurityData }, async () => {
+  //     await getChatbot(botId);
+  //   });
+  // };
   return (
     <div className="w-full px-3 lg:p-[6%]  flex flex-col items-center justify-center ">
       <div className="flex w-full flex-col items-center  justify-center border-gray-200 border-[1px] gap-4 rounded-md ">
@@ -238,8 +233,6 @@ const visibility_description = [
   },
   {
     tag: `Public:`,
-    desc: `  Other people can chat with your chatbot if you send them the
-                link. You can also embed it on your website so your website
-                visitors are able to use it.`,
+    desc: `  Visitors can interact with the bot embedded on your website`,
   },
 ];

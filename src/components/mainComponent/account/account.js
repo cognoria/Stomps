@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useUserStore } from "../../../store/auth/userState";
 import useModalStore from "../../../store/modal/modalState";
-import { PlanCards } from "../../customComponents/cards/planCards";
+// import { PlanCards } from "../../customComponents/cards/planCards";
 import { AccountModal } from "../../customComponents/modals/dashboardModal/accountModal";
 
 function Account() {
@@ -35,10 +35,10 @@ function Account() {
       </div>
 
       <div className="w-[95%] lg:w-[570px] flex flex-col items-center rounded-lg border border-gray-200">
-        <div className="text-sky-700  p-4 lg:text-base  text-sm font-bold font-manrope leading-snug">
+        {/* <div className="text-sky-700  p-4 lg:text-base  text-sm font-bold font-manrope leading-snug">
           Your Stomps API Key
         </div>
-        <div className="w-full h-[0px] lg:w-[570px]  my-2  border border-gray-200" />
+        <div className="w-full h-[0px] lg:w-[570px]  my-2  border border-gray-200" /> */}
         <div className="flex gap-y-4 flex-col lg:flex-row items-start justify-between w-full p-4">
           <div className="w-[260px] text-gray-900 text-sm font-medium font-manrope leading-tight tracking-tight">
             Make sure to keep your keys secret and never expose them.
@@ -96,7 +96,7 @@ function Account() {
           </div>
         </div>
       </div>
-      <div className="flex flex-col items-center w-[95%] lg:w-[570px]">
+      {/* <div className="flex flex-col items-center w-[95%] lg:w-[570px]">
         <PlanCards />
         <div className="px-[4%] py-[12px] flex flex-row  justify-start lg:justify-center items-start">
           <img alt="" src="/images/landing/warning.svg" />
@@ -105,7 +105,7 @@ function Account() {
             usage separately
           </div>
         </div>
-      </div>
+      </div> */}
 
       <div className="lg:w-[570px] w-[95%] rounded-lg flex-row flex gap-4  justify-end items-end ">
         <button

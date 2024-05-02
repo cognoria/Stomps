@@ -15,11 +15,11 @@ function ChatbotNav() {
   const chatbot = useChatbotStore((state) => state.chatbot);
   const { bot: id } = useParams();
   const navItems = [
-    { name: "chatbot", link: `/bot/${id}`, tag: "chatbot" },
-    { name: "settings", link: `/bot/${id}/settings`, tag: "settings" },
-    { name: "dashboard", link: `/bot/${id}/dashboard`, tag: "dashboard" },
-    { name: "sources", link: `/bot/${id}/source`, tag: "source" },
-    { name: "embed on site", link: "/", tag: "embed" },
+    { name: "Chatbot", link: `/bot/${id}`, tag: "chatbot" },
+    { name: "Settings", link: `/bot/${id}/settings`, tag: "settings" },
+    { name: "Dashboard", link: `/bot/${id}/dashboard`, tag: "dashboard" },
+    { name: "Sources", link: `/bot/${id}/source`, tag: "source" },
+    { name: "Embed on Site", link: "/", tag: "embed" },
   ];
 
   const handleEmbedButtonClick = () => {
