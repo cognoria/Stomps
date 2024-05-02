@@ -1,4 +1,8 @@
 import { useEffect, useState } from "react";
+import {
+  chatBotCustomizeDataDefault,
+  rateLimits,
+} from "../../../../helpers/enums";
 import useChatbotSettings from "../../../../store/chatbot/useChatbotSettings";
 import useChatbotStore from "../../../../store/chatbot/useChatbotStore";
 import { capitalizeFirstLetter } from "../../../../utils/wordStructure";
@@ -37,7 +41,6 @@ function SecuritySettings({ botId }) {
     setToggleChecked(!toggleChecked);
   };
 
-  // console.log(toggleChecked);
   //iframe & widget toggle
 
   // privacy selection
@@ -52,7 +55,7 @@ function SecuritySettings({ botId }) {
   const [limitMessage, setLimitMessage] = useState(
     chatbot?.rateLimiting?.limitMsg
   );
-  // console.log(limitMessage);
+
   // Exceed limit message
 
   // security submission
@@ -60,10 +63,10 @@ function SecuritySettings({ botId }) {
   useEffect(() => {
     if (chatbot) {
       setSelectedPrivacy(chatbot.visibility);
-      // setLimitMessage(chatbot.rateLimiting.limitMsg);
-      // setToggleChecked(chatbot.chatBotCustomizeData.allowPublicDomains);
-      // setInputMessage(chatbot.rateLimiting.timeframe);
-      // setInputLimit(chatbot.rateLimiting.msg_count);
+      setLimitMessage(chatbot.rateLimiting.limitMsg);
+      setToggleChecked(chatbot.chatBotCustomizeData.allowPublicDomains);
+      setInputMessage(chatbot.rateLimiting.timeframe);
+      setInputLimit(chatbot.rateLimiting.msg_count);
     }
   }, [chatbot]);
 
@@ -71,12 +74,12 @@ function SecuritySettings({ botId }) {
     e.preventDefault();
     const botSecurityData = {
       visibility: selectedPrivacy,
-      // allowPublicDomains: chatBotCustomizeDataDefault.allowPublicDomains,
-      // rateLimit: {
-      //   limitMsg: chatBotCustomizeDataDefault.ra,
-      //   msgCount: inputLimit,
-      //   timeframe: inputMessage,
-      // },
+      allowPublicDomains: chatBotCustomizeDataDefault.allowPublicDomains,
+      rateLimit: {
+        limitMsg: rateLimits.limitMsg,
+        msgCount: rateLimits.msg_count,
+        timeframe: rateLimits.timeframe,
+      },
     };
 
     updateSecuritySettings({ botId, botSecurityData }, async () => {
