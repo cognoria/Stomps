@@ -16,10 +16,10 @@ async function updateSecurityData(req) {
 
 updateSecurityData.schema = joi.object({
     visibility: joi.string().valid('PRIVATE', 'PUBLIC').required(), 
-    allowPublicDomains: joi.boolean().required(),
-    rateLimit: joi.object({
-        limitMsg: joi.string().required(),
-        msgCount: joi.number().integer().min(0).required(),
-        timeframe: joi.number().integer().min(0).required()
-    }).required()
+    // allowPublicDomains: joi.boolean().required(),
+    // rateLimit: joi.object({
+    //     limitMsg: joi.string().required(),
+    //     msgCount: joi.number().integer().min(0).required(),
+    //     timeframe: joi.number().integer().min(0).required()
+    // }).required()
 });

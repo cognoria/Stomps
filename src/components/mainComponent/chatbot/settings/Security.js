@@ -76,12 +76,12 @@ function SecuritySettings({ botId }) {
     e.preventDefault();
     const botSecurityData = {
       visibility: selectedPrivacy,
-      allowPublicDomains: chatBotCustomizeDataDefault.allowPublicDomains,
-      rateLimit: {
-        limitMsg: limitMessage,
-        msgCount: inputLimit,
-        timeframe: inputMessage,
-      },
+      // allowPublicDomains: chatBotCustomizeDataDefault.allowPublicDomains,
+      // rateLimit: {
+      //   limitMsg: limitMessage,
+      //   msgCount: inputLimit,
+      //   timeframe: inputMessage,
+      // },
     };
 
     updateSecuritySettings({ botId, botSecurityData }, async () => {
@@ -95,18 +95,19 @@ function SecuritySettings({ botId }) {
     e.preventDefault();
     const botSecurityData = {
       visibility: "PRIVATE",
-      allowPublicDomains: chatBotCustomizeDataDefault.allowPublicDomains,
-      rateLimit: {
-        limitMsg: rateLimits.limitMsg,
-        msgCount: rateLimits.msg_count,
-        timeframe: rateLimits.timeframe,
-      },
+      // allowPublicDomains: chatBotCustomizeDataDefault.allowPublicDomains,
+      // rateLimit: {
+      //   limitMsg: rateLimits.limitMsg,
+      //   msgCount: rateLimits.msg_count,
+      //   timeframe: rateLimits.timeframe,
+      // },
     };
 
     updateSecuritySettings({ botId, botSecurityData }, async () => {
       await getChatbot(botId);
     });
   };
+  
   return (
     <div className="w-full px-3 lg:p-[6%]  flex flex-col items-center justify-center ">
       <div className="flex w-full flex-col items-center  justify-center border-gray-200 border-[1px] gap-4 rounded-md ">

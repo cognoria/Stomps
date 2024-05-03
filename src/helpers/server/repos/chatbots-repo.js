@@ -248,10 +248,10 @@ async function updateSecurityData(chatbotId, securityData) {
     if (!chatbot) throw 'Your Chatbot with id "' + chatbotId + '" not found';
 
     chatbot.visibility = securityData.visibility;
-    chatbot.rateLimiting.limitMsg = securityData.rateLimit.limitMsg;
-    chatbot.rateLimiting.msg_count = securityData.rateLimit.msgCount;
-    chatbot.rateLimiting.timeframe = securityData.rateLimit.timeframe;
-    chatbot.chatBotCustomizeData.allowPublicDomains = securityData.allowPublicDomains
+    // chatbot.rateLimiting.limitMsg = securityData.rateLimit.limitMsg;
+    // chatbot.rateLimiting.msg_count = securityData.rateLimit.msgCount;
+    // chatbot.rateLimiting.timeframe = securityData.rateLimit.timeframe;
+    // chatbot.chatBotCustomizeData.allowPublicDomains = securityData.allowPublicDomains
     await chatbot.save()
 
     return { message: "Successfully updated chatbot security" };
