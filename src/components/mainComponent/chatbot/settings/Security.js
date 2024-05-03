@@ -6,7 +6,6 @@ import {
 import useChatbotSettings from "../../../../store/chatbot/useChatbotSettings";
 import useChatbotStore from "../../../../store/chatbot/useChatbotStore";
 import { capitalizeFirstLetter } from "../../../../utils/wordStructure";
-import Toggle from "../../../customComponents/slider/toggler";
 
 function SecuritySettings({ botId }) {
   const { getChatbot, loading, chatbot } = useChatbotStore((state) => ({
@@ -42,7 +41,6 @@ function SecuritySettings({ botId }) {
     setToggleChecked(!toggleChecked);
   };
 
-  // console.log(toggleChecked);
   //iframe & widget toggle
 
   // privacy selection
@@ -57,7 +55,7 @@ function SecuritySettings({ botId }) {
   const [limitMessage, setLimitMessage] = useState(
     chatbot?.rateLimiting?.limitMsg
   );
-  // console.log(limitMessage);
+
   // Exceed limit message
 
   // security submission

@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useUserStore } from "../../../store/auth/userState";
 import useModalStore from "../../../store/modal/modalState";
-import { PlanCards } from "../../customComponents/cards/planCards";
+// import { PlanCards } from "../../customComponents/cards/planCards";
 import { AccountModal } from "../../customComponents/modals/dashboardModal/accountModal";
 
 function Account() {
@@ -96,6 +96,7 @@ function Account() {
           </div>
         </div> */}
       </div>
+      {/* <div className="flex flex-col items-center w-[95%] lg:w-[570px]">
       {/* <div className="flex flex-col items-center w-[95%] lg:w-[570px]">
         <PlanCards />
         <div className="px-[4%] py-[12px] flex flex-row  justify-start lg:justify-center items-start">

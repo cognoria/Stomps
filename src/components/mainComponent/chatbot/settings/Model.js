@@ -79,10 +79,10 @@ function ModelSettings({ botId }) {
       model: chatBotCustomizeDataDefault.model,
       temparature: chatBotCustomizeDataDefault.temparature,
     };
-    
+
     setSelectedModel(chatBotCustomizeDataDefault.model);
     setSelectedTemperature(chatBotCustomizeDataDefault.temparature);
-    setFallback(chatBotCustomizeDataDefault.defaultAnswer)
+    setFallback(chatBotCustomizeDataDefault.defaultAnswer);
     setPrompt(chatBotCustomizeDataDefault.prompt);
 
     await updateModel({ botData, botId });
@@ -92,10 +92,10 @@ function ModelSettings({ botId }) {
 
   useEffect(() => {
     if (chatbot) {
-      setPrompt(chatbot?.chatBotCustomizeData.prompt)
-      setFallback(chatbot?.chatBotCustomizeData.defaultAnswer)
+      setPrompt(chatbot?.chatBotCustomizeData.prompt);
+      setFallback(chatbot?.chatBotCustomizeData.defaultAnswer);
     }
-  }, [chatbot])
+  }, [chatbot]);
 
   return (
     <div className="w-full px-3 lg:p-[6%]  flex flex-col items-center justify-center ">
@@ -168,7 +168,7 @@ function ModelSettings({ botId }) {
                   {chatModelEnum.GPT_4_turbo}
                 </option>
               </select>
-              <div className="w-auto text-gray-600 text-[10px] font-normal font-manrope leading-[14px] tracking-tight">
+              <div className="w-full p-3 text-zinc-500 text-xs font-medium font-manrope tracking-tight">
                 gpt-4 is much better at following the instructions and not
                 hallucinating, but slower and more expensive than gpt-3.5-turbo
               </div>
@@ -206,10 +206,10 @@ function ModelSettings({ botId }) {
               />
             </div>
             <div className="flex w-full flex-row items-end justify-between">
-              <p className="text-zinc-800 text-[10px] font-normal font-manrope leading-[14px] tracking-tight">
+              <p className="text-zinc-800 text-xs font-normal font-manrope leading-[14px] tracking-tight">
                 Reserved
               </p>
-              <p className="text-zinc-800 text-[10px] font-normal font-manrope leading-[14px] tracking-tight">
+              <p className="text-zinc-800 text-xs font-normal font-manrope leading-[14px] tracking-tight">
                 Creative
               </p>
             </div>
