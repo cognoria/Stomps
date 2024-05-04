@@ -149,7 +149,7 @@ export default create(
     deleteUrl: (index) => {
       set((state) => {
         const exempt = state.urls[index];
-        console.log({ exempt });
+        // console.log({ exempt });
         return {
           ...state,
           urls: state.urls.filter((_, i) => i !== index),

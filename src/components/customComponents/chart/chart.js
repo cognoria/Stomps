@@ -74,6 +74,7 @@ export function Chart_page({
   //   { country: "SWEDEN", count: 25 },
   //   { country: "CHINA", count: 200 },
   // ];
+  console.log(mapData);
   const colorScale = d3
     .scaleThreshold()
     .domain([0, 50, 100, 200])
