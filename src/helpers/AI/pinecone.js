@@ -52,8 +52,6 @@ export async function createPinconeIndex(name, type = 'serverless', owner) {
         const apiKey = await globalRepo.getServiceKey(AppServiceProviders.PINECONE, owner)
         const pinecone = await getPineconeClient(apiKey);
 
-        let index;
-
         switch (type.toLowerCase()) {
             case 'serverless':
                 return await pinecone.createIndex({
@@ -90,7 +88,7 @@ export async function createPinconeIndex(name, type = 'serverless', owner) {
                     spec: {
                         serverless: {
                             cloud: 'aws',
-                            region: 'us-west-1'
+                            region: 'us-west-2'
                         }
                     }
                 });
@@ -108,7 +106,6 @@ export async function createPinconeIndex(name, type = 'serverless', owner) {
                     }
                 });
         }
-        // return index;
     } catch (e) {
         console.log("Error creating pinecone index: ", e)
         if (e.message.includes("FORBIDDEN")) {
