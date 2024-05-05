@@ -120,11 +120,15 @@ export class Crawler {
     _extractUrls(html, url) {
         const $ = cheerio.load(html);
         const uniqueUrls = new Set();
-        const baseUrl = new URL(url).origin;
-        
+
         $('a[target="_blank"], a').each((_, element) => {
             const href = $(element).attr('href');
-            const completeUrl = new URL(href, baseUrl).href;
+            let completeUrl;
+            try{
+             completeUrl = new URL(href, baseUrl).href;
+            } catch (e){
+                console.log("skip invalid link")
+            }
             if (completeUrl && !/^(https?:\/\/|\/\/|#|.*\.(png|jpg|jpeg|gif|svg))$/i.test(completeUrl)) {
                 // Check if the URL has a query parameter or a hash fragment
                 if (!completeUrl.includes('?') && !completeUrl.includes('#') && !completeUrl.includes('tel')) {
