@@ -63,7 +63,7 @@ export async function createPinconeIndex(name, type = 'serverless', owner) {
                     spec: {
                         serverless: {
                             cloud: 'aws',
-                            region: 'us-west-2'
+                            region: 'us-west-1'
                         }
                     }
                 });
