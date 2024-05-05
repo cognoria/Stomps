@@ -37,7 +37,7 @@ export const chunkedUpsert = async (index, vectors, chunkSize = 10, owner) => {
     await Promise.allSettled(
       chunks.map(async (chunk) => {
         try {
-          queue.add(async () => await Index.upsert(vectors))
+          queue.add(async () => await Index.upsert(chunk))
         } catch (e) {
           console.log('Error upserting chunk', e);
           throw new Error(e.message)
@@ -45,7 +45,7 @@ export const chunkedUpsert = async (index, vectors, chunkSize = 10, owner) => {
       })
     );
 
-    while ((await checkUpserted(Index)) !== vectors.length) {
+    while ((await checkUpserted(Index)) !== chunks.length) {
       console.log(`Chunks not ready. Retrying in 15 seconds...`);
       await new Promise(resolve => setTimeout(resolve, 15000));
     }

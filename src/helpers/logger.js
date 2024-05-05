@@ -59,7 +59,7 @@ const logger = winston.createLogger({
     }),
     new winston.transports.File({
       filename: path.join(logDir, 'chunks.log'),
-      level: 'chunks',
+      level: 'chunk',
     }),
   ],
 });
@@ -75,6 +75,6 @@ if (process.env.NODE_ENV !== 'production') {
 // Define custom logging methods
 logger.context = logger.log.bind(logger, 'context');
 logger.crawl = logger.log.bind(logger, 'crawl');
-logger.chunk = logger.log.bind(logger, 'chunks');
+logger.chunk = logger.log.bind(logger, 'chunk');
 
 export default logger;
