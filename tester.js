@@ -1,7 +1,7 @@
 import cheerio from 'cheerio'
 import fs from 'fs';
 
-async function getWebLinksFromUrl(url = "au.int") {
+async function getWebLinksFromUrl(url = "medscape.com") {
     if (!url.startsWith("http://") && !url.startsWith("https://")) {
         url = "https://" + url;
     }

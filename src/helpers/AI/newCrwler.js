@@ -117,10 +117,11 @@ export class Crawler {
         await this.chatbot.save();
     }
 
-    _extractUrls(html, baseUrl) {
+    _extractUrls(html, url) {
         const $ = cheerio.load(html);
         const uniqueUrls = new Set();
-
+        const baseUrl = new URL(url).origin;
+        
         $('a[target="_blank"], a').each((_, element) => {
             const href = $(element).attr('href');
             const completeUrl = new URL(href, baseUrl).href;
