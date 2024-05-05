@@ -29,7 +29,7 @@ export const chunkedUpsert = async (index, vectors, chunkSize = 10, owner) => {
   const chunks = sliceIntoChunks(vectors, chunkSize);
 
   logger.chunk(`${index}: ${JSON.stringify(vectors)}`)
-  console.log(`Upserting. ${vectors.length} chunks`);
+  console.log(`Upserting. ${chunks.length} chunks`);
 
   const queue = new PQueue({ concurrency: 20 });
   try {
