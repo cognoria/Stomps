@@ -127,12 +127,6 @@ export class Crawler {
             try {
                 completeUrl = new URL(href, url).href;
             } catch (e) {
-                // if (href.startsWith('//')) {
-                //     completeUrl = new URL(`https:${href}`, baseUrl).href;
-                // } else {
-                //     console.error(`Skipping invalid URL: ${href}`);
-                //     return;
-                // }
                 console.error(`Skipping invalid URL: ${href}`);
             }
             if (completeUrl && !/^(https?:\/\/|\/\/|#|.*\.(png|jpg|jpeg|gif|svg))$/i.test(completeUrl)) {

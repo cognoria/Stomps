@@ -36,7 +36,14 @@ async function getWebLinksFromUrl(url) {
     $('a[target="_blank"], a').each((_, element) => {
         const href = $(element).attr('href');
         unfiltered.add(href)
-        const completeUrl = new URL(href, baseUrl).toString();
+        // const completeUrl = new URL(href, baseUrl).toString();
+
+        let completeUrl;
+        try {
+            completeUrl = new URL(href, baseUrl).href;
+        } catch (e) {
+            console.error(`Skipping invalid URL: ${href}`);
+        }
         if (completeUrl && !/^(javascript:|https?:\/\/|\/\/|#|.*\.(png|jpg|jpeg|gif|svg))$/i.test(completeUrl)) {
             // Check if the URL has a query parameter or a hash fragment
             if (!completeUrl.includes('?') && !completeUrl.includes('#') && !completeUrl.includes('tel')) {
