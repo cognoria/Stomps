@@ -1,7 +1,7 @@
 import { Pinecone } from "@pinecone-database/pinecone";
 import { globalRepo } from "../server/repos/global-repo";
 import { AppServiceProviders } from "../enums";
-
+import { AwsRegions, GcpRegions } from "@pinecone-database/pinecone/"
 // let pinecone = null;
 
 export const getPineconeClient = async (apikey) => {
@@ -61,7 +61,7 @@ export async function createPinconeIndex(name, type = 'serverless', owner) {
                     spec: {
                         serverless: {
                             cloud: 'aws',
-                            region: 'us-west-1'
+                            region: 'us-east-1'
                         }
                     }
                 });
@@ -88,7 +88,7 @@ export async function createPinconeIndex(name, type = 'serverless', owner) {
                     spec: {
                         serverless: {
                             cloud: 'aws',
-                            region: 'us-west-2'
+                            region: 'us-east-1'
                         }
                     }
                 });
@@ -101,7 +101,7 @@ export async function createPinconeIndex(name, type = 'serverless', owner) {
                     spec: {
                         serverless: {
                             cloud: 'aws',
-                            region: 'us-west-1'
+                            region: 'us-east-1'
                         }
                     }
                 });
