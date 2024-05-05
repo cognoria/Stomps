@@ -38,7 +38,7 @@ export async function getChatCompletion(messages, model, owner, temperature) {
         const completion = await openai.chat.completions.create({
             messages,
             model,
-            max_tokens: 2048,
+            max_tokens: 1024,
             temperature
         });
         return completion.choices[0].message;
