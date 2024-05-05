@@ -45,7 +45,7 @@ export const chunkedUpsert = async (index, vectors, chunkSize = 10, owner) => {
       })
     );
 
-    while ((await checkUpserted(Index)) !== chunks.length) {
+    while ((await checkUpserted(Index)) < vectors.length) {
       console.log(`Chunks not ready. Retrying in 15 seconds...`);
       await new Promise(resolve => setTimeout(resolve, 15000));
     }
