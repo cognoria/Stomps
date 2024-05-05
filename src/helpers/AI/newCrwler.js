@@ -124,10 +124,16 @@ export class Crawler {
         $('a[target="_blank"], a').each((_, element) => {
             const href = $(element).attr('href');
             let completeUrl;
-            try{
-             completeUrl = new URL(href, baseUrl).href;
-            } catch (e){
-                console.log("skip invalid link")
+            try {
+                completeUrl = new URL(href, url).href;
+            } catch (e) {
+                // if (href.startsWith('//')) {
+                //     completeUrl = new URL(`https:${href}`, baseUrl).href;
+                // } else {
+                //     console.error(`Skipping invalid URL: ${href}`);
+                //     return;
+                // }
+                console.error(`Skipping invalid URL: ${href}`);
             }
             if (completeUrl && !/^(https?:\/\/|\/\/|#|.*\.(png|jpg|jpeg|gif|svg))$/i.test(completeUrl)) {
                 // Check if the URL has a query parameter or a hash fragment
