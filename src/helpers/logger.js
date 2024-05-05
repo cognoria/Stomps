@@ -20,21 +20,8 @@ if (!fs.existsSync(logDir)) {
   fs.mkdirSync(logDir);
 }
 
-// const colors = {
-//   error: 'red',
-//   warn: 'yellow',
-//   info: 'green',
-//   http: 'magenta',
-//   context: 'cyan',
-//   crawl: 'blue',
-//   debug: 'white',
-// };
-
-// winston.addColors(colors);
-
 const format = winston.format.combine(
   winston.format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss:ms' }),
-  // winston.format.colorize({ all: true }),
   winston.format.printf(
     (info) => `${info.timestamp} ${info.level}: ${info.message}`
   )
