@@ -29,7 +29,7 @@ export const chunkedUpsert = async (index, vectors, chunkSize = 10, owner) => {
   const chunks = sliceIntoChunks(vectors, chunkSize);
 
   logger.chunk(`${index}: ${JSON.stringify(vectors)}`)
-  console.log(`Upserting. ${chunks.length} chunks`);
+  console.log(`Upserting. ${vectors.length} chunks`);
 
   const queue = new PQueue({ concurrency: 20 });
   try {
@@ -45,7 +45,7 @@ export const chunkedUpsert = async (index, vectors, chunkSize = 10, owner) => {
       })
     );
 
-    while ((await checkUpserted(Index)) < vectors.length) {
+    while ((await checkUpserted(Index)) !== vectors.length) {
       console.log(`Chunks not ready. Retrying in 15 seconds...`);
       await new Promise(resolve => setTimeout(resolve, 15000));
     }
