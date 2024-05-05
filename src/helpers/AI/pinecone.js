@@ -56,7 +56,7 @@ export async function createPinconeIndex(name, type = 'serverless', owner) {
 
         switch (type.toLowerCase()) {
             case 'serverless':
-                return index = await pinecone.createIndex({
+                return await pinecone.createIndex({
                     name,
                     dimension: 1536,
                     metric: 'cosine',
@@ -69,7 +69,7 @@ export async function createPinconeIndex(name, type = 'serverless', owner) {
                 });
 
             case 'pod':
-                return index = await pinecone.createIndex({
+                return await pinecone.createIndex({
                     name,
                     dimension: 1536,
                     metric: 'cosine',
@@ -83,29 +83,27 @@ export async function createPinconeIndex(name, type = 'serverless', owner) {
                 });
 
             case 'starter':
-                return index = await pinecone.createIndex({
+                return await pinecone.createIndex({
                     name,
                     dimension: 1536,
                     metric: 'cosine',
                     spec: {
-                        pod: {
-                            environment: 'gcp-starter',
-                            podType: 'p1.x1',
-                            pods: 1
+                        serverless: {
+                            cloud: 'aws',
+                            region: 'us-west-1'
                         }
                     }
                 });
 
             default:
-                return index = await pinecone.createIndex({
+                return await pinecone.createIndex({
                     name,
                     dimension: 1536,
                     metric: 'cosine',
                     spec: {
-                        pod: {
-                            environment: 'gcp-starter',
-                            podType: 'p1.x1',
-                            pods: 1
+                        serverless: {
+                            cloud: 'aws',
+                            region: 'us-west-1'
                         }
                     }
                 });

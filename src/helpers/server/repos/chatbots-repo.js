@@ -70,7 +70,7 @@ async function create(params) {
     const indexName = `${chatbotName}-${generateRandomString(6)}-index`
 
     const count = await Chatbot.countDocuments({ owner: ownerId });
-    const indexType = 'serverless';
+    const indexType = count === 0 ? 'starter' : 'serverless';
     
     //create pinecone index
     await createPinconeIndex(indexName, indexType, ownerId)
