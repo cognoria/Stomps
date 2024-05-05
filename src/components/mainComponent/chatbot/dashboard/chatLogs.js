@@ -42,7 +42,6 @@ function Chat_logs({ botId }) {
     setSelectedDate(date);
   };
 
-  console.log(FilteredChats);
   return (
     <div className="w-full flex flex-col items-center ">
       {FilteredChats && chats.length > 0 ? (
