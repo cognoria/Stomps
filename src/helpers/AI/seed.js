@@ -21,7 +21,7 @@ async function seed(chatbotId) {
     // console.log(chatbot)
     //TODO: make these dynamic either store in Global or inside each chatbot make editable
     let splittingMethod = "markdown";
-    let chunkSize = 2048;
+    let chunkSize = 1024;
     let chunkOverlap = 20;
     const owner = await chatbot.owner.toString()
 

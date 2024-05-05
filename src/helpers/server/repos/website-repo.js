@@ -30,13 +30,13 @@ async function getWebLinksFromUrl(url) {
     const $ = cheerio.load(html);
     const baseUrl = new URL(url).origin
     const Urls = new Set();
-    const unfiltered = []
+    const unfiltered = new Set();
     Urls.add(url)
     ////DONE TODO: log unfiltered href
     $('a[target="_blank"], a').each((_, element) => {
         const href = $(element).attr('href');
-        unfiltered.push(href)
-        const completeUrl = new URL(href, baseUrl).href;
+        unfiltered.add(href)
+        const completeUrl = new URL(href, baseUrl).toString();
         if (completeUrl && !/^(javascript:|https?:\/\/|\/\/|#|.*\.(png|jpg|jpeg|gif|svg))$/i.test(completeUrl)) {
             // Check if the URL has a query parameter or a hash fragment
             if (!completeUrl.includes('?') && !completeUrl.includes('#') && !completeUrl.includes('tel')) {
@@ -48,7 +48,7 @@ async function getWebLinksFromUrl(url) {
         }
     });
 
-    logger.crawl(`${url} crawled unfiltered ${JSON.stringify(unfiltered)}`)
+    logger.crawl(`${url} crawled unfiltered ${JSON.stringify(Array.from(unfiltered))}`)
     logger.crawl(`${url} crawled filtered ${JSON.stringify(Array.from(Urls))}`)
 
     return Array.from(Urls);
