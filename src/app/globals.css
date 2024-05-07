@@ -44,12 +44,12 @@
 
 .custom_chat_style div,
 .custom_chat_style p {
-  margin-bottom: 0.5rem; /* 16px if base font-size is 8px */
+  margin-bottom: 0.5rem;
 }
 
 .custom_chat_style li,
 .custom_chat_style ol {
-  margin-bottom: 0.25rem; /* 4px if base font-size is 16px */
+  margin-bottom: 0.25rem; 
 }
 
 ::-webkit-scrollbar {
@@ -97,10 +97,6 @@ html {
     opacity: 1;
   }
 }
-/* Input Style */
-/* Input Style */
-/* Input Style */
-/* Input Style */
 
 select option.selected::first-letter {
   text-transform: capitalize;
