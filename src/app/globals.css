@@ -28,6 +28,30 @@
     rgb(var(--background-start-rgb));
 } */
 
+/* .custom_chat_style div,
+.custom_chat_style p,
+.custom_chat_style li,
+.custom_chat_style ol {
+  font-variant-numeric: normal;
+  font-size: 1rem;
+  line-height: normal;
+  color: black;
+  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  font-weight: 400;
+  margin: 0;
+  padding: 0;
+} */
+
+.custom_chat_style div,
+.custom_chat_style p {
+  margin: 0.5rem; /* 16px if base font-size is 8px */
+}
+
+.custom_chat_style li,
+.custom_chat_style ol {
+  margin: 0.25rem; /* 4px if base font-size is 16px */
+}
+
 ::-webkit-scrollbar {
   width: 5px;
   height: 5px;
@@ -53,25 +77,6 @@ html {
 @layer utilities {
   .text-balance {
     text-wrap: balance;
-  }
-
-  .custom_chat_style {
-    div,
-    p,
-    li,
-    ol {
-      @apply !normal-case !not-italic !normal-nums !text-base !leading-normal !text-black !font-sans !font-normal !m-0 !p-0;
-    }
-
-    div,
-    p {
-      @apply m-4;
-    }
-
-    li,
-    ol {
-      @apply m-2;
-    }
   }
 }
 
