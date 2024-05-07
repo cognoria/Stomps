@@ -44,12 +44,12 @@
 
 .custom_chat_style div,
 .custom_chat_style p {
-  margin: 0.5rem; /* 16px if base font-size is 8px */
+  margin-bottom: 0.5rem; /* 16px if base font-size is 8px */
 }
 
 .custom_chat_style li,
 .custom_chat_style ol {
-  margin: 0.25rem; /* 4px if base font-size is 16px */
+  margin-bottom: 0.25rem; /* 4px if base font-size is 16px */
 }
 
 ::-webkit-scrollbar {
