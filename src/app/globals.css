@@ -60,7 +60,7 @@ html {
   }
   .custom_chat_style {
     div, p, li {
-      @apply !normal-case !not-italic !normal-nums !normal-font !text-base !leading-normal !text-black !font-sans !font-normal !m-0 !p-0;
+      @apply !normal-case !not-italic !normal-nums !text-base !leading-normal !text-black !font-sans !font-normal !m-0 !p-0;
     }
   }
 }
