@@ -65,11 +65,11 @@ html {
     }
 
     div, p {
-      @apply mb-2;
+      @apply m-4;
     }
 
     li, ol {
-      @apply mb-1;
+      @apply m-2;
     }
   }
 }
