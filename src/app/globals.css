@@ -52,6 +52,27 @@
   margin-bottom: 0.25rem; 
 }
 
+.custom_chat_style ul {
+  list-style-type: disc;
+  margin-left: 1rem;
+}
+
+.custom_chat_style ol {
+  list-style-type: decimal;
+  margin-left: 1rem;
+}
+
+.custom_chat_style ul ul, 
+.custom_chat_style ol ul {
+  list-style-type: circle;
+}
+
+.custom_chat_style ul ul ul,
+.custom_chat_style ol ol ul,
+.custom_chat_style ul ol ul {
+  list-style-type: square;
+}
+
 ::-webkit-scrollbar {
   width: 5px;
   height: 5px;
