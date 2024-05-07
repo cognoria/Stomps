@@ -58,7 +58,7 @@
 }
 
 .custom_chat_style ol {
-  list-style-type: decimal;
+  list-style-type: disc;
   margin-left: 1rem;
 }
 
