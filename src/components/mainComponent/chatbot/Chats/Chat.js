@@ -289,6 +289,7 @@ function Chat({ id, status }) {
                   message?.content
                 ) : (
                   <div
+                  className="custom_chat_style"
                     dangerouslySetInnerHTML={{
                       __html: markdownToHtml(message?.content),
                     }}

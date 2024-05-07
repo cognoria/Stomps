@@ -28,6 +28,10 @@
     rgb(var(--background-start-rgb));
 } */
 
+.custom_chat_style{
+  /* i want div, p, li, to have it's default styles inside here */
+}
+
 ::-webkit-scrollbar {
   width: 5px;
   height: 5px;
@@ -54,7 +58,13 @@ html {
   .text-balance {
     text-wrap: balance;
   }
+  .custom_chat_style {
+    div, p, li {
+      @apply !normal-case !not-italic !normal-nums !normal-font !text-base !leading-normal !text-black !font-sans !font-normal !m-0 !p-0;
+    }
+  }
 }
+
 
 @keyframes spin {
   from {

@@ -154,6 +154,7 @@ const Filled_bot_state = ({ chatData, handleDateSelect }) => {
                             Confidence score {message?.confidence_score}
                           </div> */}
                           <div
+                          className="custom_chat_style"
                             dangerouslySetInnerHTML={{
                               __html: markdownToHtml(message.content),
                             }}
