@@ -58,9 +58,18 @@ html {
   .text-balance {
     text-wrap: balance;
   }
+
   .custom_chat_style {
-    div, p, li {
+    div, p, li, ol {
       @apply !normal-case !not-italic !normal-nums !text-base !leading-normal !text-black !font-sans !font-normal !m-0 !p-0;
+    }
+
+    div, p {
+      @apply mb-2;
+    }
+
+    li, ol {
+      @apply mb-1;
     }
   }
 }
