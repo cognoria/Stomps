@@ -82,35 +82,35 @@ async function create(params) {
     }
 
     // Check if the maximum number of users has been reached
-    const maxUsers = process.env.MAX_USER ? parseInt(process.env.MAX_USER, 10) : Infinity;
+    const maxUsers = 1
     const currentUserCount = await User.countDocuments();
     if (currentUserCount >= maxUsers) {
         throw 'You cannot register. contact support@stomps.io';
     }
 
     const hash = bcrypt.hashSync(params.password, 10);
-    const user = await User.create({ ...params, hash, isVerified: false });
+    const user = await User.create({ email: params.email, hash, isVerified: true, security: { question: params.question, answer: params.answer } });
 
-    //send email verification
-    const verifyToken = crypto.randomBytes(20).toString("hex");
+    // //send email verification
+    // const verifyToken = crypto.randomBytes(20).toString("hex");
 
-    // Hash and save token
-    const verifyTokenHash = hashToken(verifyToken)
-    await tokenRepo.create(user.id, verifyTokenHash)
+    // // Hash and save token
+    // const verifyTokenHash = hashToken(verifyToken)
+    // await tokenRepo.create(user.id, verifyTokenHash)
 
-    const origin = headers().get("origin")
-    // console.log({origin})
-    const url = new URL(origin);
+    // const origin = headers().get("origin")
+    // // console.log({origin})
+    // const url = new URL(origin);
 
-    const verifyBaseUrl = `${url}verify`
-    // ///TODO: send verifyToken to user email email
-    const text = getEmailText('verify');
-    const link = `${verifyBaseUrl}/${verifyToken}?email=${params.email}`
-    const title = "Stomps Email Verification"
-    const html = emailTemplate({ message: text, buttonLink: link, buttonText: "Verify Email Address" })
+    // const verifyBaseUrl = `${url}verify`
+    // // ///TODO: send verifyToken to user email email
+    // const text = getEmailText('verify');
+    // const link = `${verifyBaseUrl}/${verifyToken}?email=${params.email}`
+    // const title = "Stomps Email Verification"
+    // const html = emailTemplate({ message: text, buttonLink: link, buttonText: "Verify Email Address" })
 
-    // await sendGridSender({email, title, text, html})
-    await elasticMailSender({ email: params.email, title, text, html });
+    // // await sendGridSender({email, title, text, html})
+    // await elasticMailSender({ email: params.email, title, text, html });
 
     //log user register
     await logUserActivity(user.id, 'User Register', { ip: headers().get('X-Forwarded-For'), email: params.email })
@@ -182,7 +182,7 @@ async function resendVerificationEmail(email) {
 
     //TODO: change this to use app's root url
     // const verifyBaseUrl = 'https://stomp-ai-app-zkwp.vercel.app/verify'
-    
+
     const origin = headers().get("host")
     // const url = new URL(origin);
 
@@ -225,10 +225,14 @@ async function googleAuth(token) {
     return 'Login Success'
 }
 
-async function forgetPassword(email) {
-    const user = await User.findOne({ email }).lean();
+async function forgetPassword(email, question, answer) {
+    const user = await User.findOne({ email });
 
     if (!user) throw `Error: User not found`
+
+    const isValid = user.validateSecurityQuestion(question, answer);
+
+    if (!isValid) throw `Error: Incorrect security question or answer`
 
     const resetToken = crypto.randomBytes(20).toString("hex");
 
@@ -236,21 +240,22 @@ async function forgetPassword(email) {
     const resetTokenHash = hashToken(resetToken)
     await tokenRepo.create(user._id, resetTokenHash)
 
-    const origin = headers().get("host")
-    // const url = new URL(origin);
+    // const origin = headers().get("host")
+    // // const url = new URL(origin);
 
-    const resetBaseUrl = `http://${origin}/reset`
-    const text = getEmailText('reset');
-    const link = `${resetBaseUrl}/${resetToken}`
-    const title = "[Action Required]: Reset Password."
-    const html = emailTemplate({ message: text, buttonLink: link, buttonText: "Reset Password" })
+    // // const resetBaseUrl = `http://${origin}/reset`
+    // // const text = getEmailText('reset');
+    // // const link = `${resetBaseUrl}/${resetToken}`
+    // // const title = "[Action Required]: Reset Password."
+    // // const html = emailTemplate({ message: text, buttonLink: link, buttonText: "Reset Password" })
 
-    // await sendGridSender({email, title, text, html})
-    await elasticMailSender({ email, title, text, html })
+    // // // await sendGridSender({email, title, text, html})
+    // // await elasticMailSender({ email, title, text, html })
 
     return {
         success: true,
-        message: "Success: reset email sent.",
+        message: "Success: Change Password.",
+        token: resetToken,
     };
 }
 
@@ -274,9 +279,7 @@ async function resetPassword(token, password, confirmPassword) {
     //log user reset pass
     await logUserActivity(user._id, 'User Reset Password', { ip: headers().get('X-Forwarded-For') })
 
-
     return { success: true, message: "Success: Password updated, Please Login." };
-
 }
 
 async function _delete(id) {

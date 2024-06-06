@@ -7,6 +7,8 @@ module.exports = apiHandler({
 
 async function resend(req) {
     const { email } = req.params;
-    return await usersRepo.resendVerificationEmail(email);
+    
+    throw 'Deprecated'
+    // return await usersRepo.resendVerificationEmail(email);
 }
 

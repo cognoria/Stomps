@@ -53,7 +53,7 @@ const chatBotCustomizeDataDefault = {
     assistantTabHeader: 'AI assistant',
     readMoreText: 'Read more:',
     leadMsgDescription: "Let us know how to contact you.",
-    model: 'gpt-4-turbo-preview',
+    model: 'gpt-4o',
     temparature: 0.7,
     widgetTheme: 'LIGHT',
     collectName: false,

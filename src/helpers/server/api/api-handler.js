@@ -1,5 +1,4 @@
-import { NextRequest, NextResponse } from 'next/server';
-import nextCors from 'next-cors';
+import { NextResponse } from 'next/server';
 import { errorHandler, jwtMiddleware, validateMiddleware } from './';
 import { Upload } from './uploads';
 
@@ -39,6 +38,18 @@ function apiHandler(handler) {
             req.query = Object.fromEntries(req.nextUrl.searchParams);
 
             try {
+                if (req.headers.get('content-type')?.startsWith('multipart/form-data')) {
+                    const formdata = await req.formData();
+                    const pdf = await formdata.get("pdf")
+
+                    req.pdf = pdf
+                }
+            } catch (e) {
+                console.log(e)
+                throw 'error uploading doc: ' + e
+            }
+            
+            try {
                 //check if file upload
                 if (!req.headers.get('content-type')?.startsWith('multipart/form-data')) {
 
@@ -48,15 +59,6 @@ function apiHandler(handler) {
                 }
             } catch { /* Ignore JSON parsing errors */ }
 
-            try {
-                if (req.headers.get('content-type')?.startsWith('multipart/form-data')) {
-                    const upload = await Upload(req, "files", ['pdf'])
-                    req.fileDir = upload
-                }
-            } catch (e) {
-                console.log(e)
-                throw 'error uploading doc: ' + e
-            }
 
             try {
                 // global middleware

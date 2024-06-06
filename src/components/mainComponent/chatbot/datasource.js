@@ -6,7 +6,6 @@ import { toast } from "react-toastify";
 import useCreateChatbotStore from "../../../store/chatbot/useCreateChatbotStore";
 import {
   extractTextFromDoc,
-  extractTextFromPDF,
   extractTextFromTXT,
   isDOCFile,
   isPDFFile,
@@ -42,11 +41,10 @@ export default function Datasource() {
     const file = event.dataTransfer.files[0];
     if (file) {
       // console.log("Dropped file:", file);
-      if (!isTXTFile(file) && !isDOCFile(file)) {
-        return; //toaste file not supported
+      if (!isTXTFile(file) && !isDOCFile(file) && !isPDFFile(file)) {
+        return toast.error("unspported file selected");
       } else {
         setSelectedFile(file);
-        //add file to content;
       }
     }
   };
@@ -60,18 +58,53 @@ export default function Datasource() {
       } else if (isDOCFile(selectedFile)) {
         file = await extractTextFromDoc(selectedFile);
       }
-      // else if (isPDFFile(selectedFile)) {
-      //   file = await extractTextFromPDF(selectedFile);
-      // }
-      else {
-        return toast.error("unspported file selected"); //toast file not supported
+      else if (isPDFFile(selectedFile)) {
+        file = await handleExtractPDF();
       }
-      await addFiles(file);
+      else {
+        return toast.error("unspported file selected");
+      }
+      if (file) await addFiles(file);
       setSelectedFile(null);
+      setUploadProgress(0)
     } catch (e) {
       console.error("error adding file: ", e);
       toast.error("Failed to add file");
     }
+  }
+
+  const handleExtractPDF = async () => {
+    return new Promise((resolve, reject) => {
+      const xhr = new XMLHttpRequest();
+      const formData = new FormData();
+      formData.append("pdf", selectedFile);
+  
+      xhr.open("POST", "/api/v1/data/pdf", true);
+  
+      xhr.upload.onprogress = (event) => {
+        if (event.lengthComputable) {
+          const percentComplete = Math.round((event.loaded / event.total) * 100);
+          setUploadProgress(percentComplete);
+        }
+      };
+  
+      xhr.onload = () => {
+        if (xhr.status === 200) {
+          const response = JSON.parse(xhr.responseText);
+          resolve({ name: selectedFile.name, content: response.content });
+        } else {
+          reject(new Error("Failed to upload PDF file"));
+          toast.error("Failed to add PDF file");
+        }
+      };
+  
+      xhr.onerror = () => {
+        reject(new Error("Failed to upload PDF file"));
+        toast.error("Failed to add PDF file");
+      };
+  
+      xhr.send(formData);
+    });
   }
 
   return (
@@ -106,12 +139,13 @@ export default function Datasource() {
                     Select a File Upload, or Drag and Drop it here
                   </div>
                   <div className="sub-text mb-2">
-                    Supported file type: .doc, .txt, .docx
+                    Supported file type: .doc, .txt, .docx, .pdf
                   </div>
                 </label>
                 {selectedFile && (
                   <div className="file-name">
                     Selected file: {selectedFile.name}
+                    {isPDFFile(selectedFile) && uploadProgress >1 &&  <progress value={progress} max="100">{progress}%</progress>}
                   </div>
                 )}
               </div>

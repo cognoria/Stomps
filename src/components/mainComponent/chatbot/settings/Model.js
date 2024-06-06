@@ -167,6 +167,12 @@ function ModelSettings({ botId }) {
                 >
                   {chatModelEnum.GPT_4_turbo}
                 </option>
+                <option
+                  value={chatModelEnum.GPT_4o}
+                  className="text-gray-900 text-xs font-medium font-manrope leading-none tracking-tight"
+                >
+                  {chatModelEnum.GPT_4o}
+                </option>
               </select>
               <div className="w-full p-3 text-zinc-500 text-xs font-medium font-manrope tracking-tight">
                 gpt-4 is much better at following the instructions and not
