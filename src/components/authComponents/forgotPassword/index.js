@@ -2,11 +2,17 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
+import { securityQuestions } from "../../../helpers/enums";
 import useForgetPasswordAuthStore from "../../../store/auth/forgetPassword";
 import useModalStore from "../../../store/modal/modalState";
 import { email_schema } from "../../../utils/resolver/yup_schema";
 import { ForgetPass } from "../../customComponents/modals/authModal/authModals";
+import Image from "next/image";
+import { toast } from "react-toastify";
+import { useRouter } from "next/navigation";
+
 function Forgot_password() {
+  const router = useRouter();
   const { forgetPassword, loading, error } = useForgetPasswordAuthStore(
     (state) => ({
       forgetPassword: state.forgetPassword,
@@ -22,12 +28,14 @@ function Forgot_password() {
   } = useForm({
     resolver: yupResolver(email_schema),
   });
-  const onSubmit = (data, e) => {
+
+  const onSubmit = async (data, e) => {
     e.preventDefault();
-    forgetPassword(data, () => {
-      useModalStore.getState().showModal(<ForgetPass email={data.email} />);
-    });
+    const res = await forgetPassword(data);
+    if (res.message) toast.success(res.message)
+    if (res.token) router.push(`/reset/${res.token}`)
   };
+
   return (
     <div className="flex pb-[20px] flex-col mt-[30px] md:mt-[40px] gap-4 items-center justify-center w-screen h-auto">
       <form
@@ -46,23 +54,60 @@ function Forgot_password() {
             placeholder="Janeearnest@gmail.com"
           />
         </div>
+
+        <div className="flex w-[90%] gap-4 md:w-[479px] flex-col items-start justify-start">
+          <p className="text-xs font-bold font-manrope leading-none tracking-tight text-[#8A8A8A]">
+            Security Question
+          </p>
+          <select
+            {...register("question")}
+            name="question"
+            className="h-10 w-full p-2 pl-4 font-manrope placeholder:font-manrope text-sm placeholder:text-xs text-[#8A8A8A] bg-transparent border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          >
+            {securityQuestions.map((q, index) => (
+              <option key={index} value={q.question}>{q.question}</option>
+            ))}
+          </select>
+          {errors.question && (
+            <div aria-live="polite" className="text-red-500 text-xs md:text-sm">
+              <span>{errors.question.message}</span>
+            </div>
+          )}
+        </div>
+
+        <div className="flex gap-4 md:w-[479px] w-[90%] flex-col items-start justify-start">
+          <p className="text-xs font-bold font-manrope leading-none tracking-tight text-[#8A8A8A]">
+            Security Answer
+          </p>
+          <input
+            name="answer"
+            {...register("answer")}
+            type="text"
+            className="h-10 w-full p-2 pl-4 font-manrope placeholder:font-manrope text-sm placeholder:text-xs text-[#8A8A8A] bg-transparent border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            placeholder="Your answer"
+          />
+          {errors.answer && (
+            <div aria-live="polite" className="text-red-500 text-xs md:text-sm">
+              <span>{errors.answer.message}</span>
+            </div>
+          )}
+        </div>
         <div
-          className={`md:w-[481px] w-[90%] mt-[20px] h-11 px-5 py-3 ${
-            loading ? "bg-sky-700/30" : "bg-sky-700"
-          } rounded-lg shadow border border-sky-700 justify-center items-center gap-2 inline-flex`}
+          className={`md:w-[481px] w-[90%] mt-[20px] h-11 px-5 py-3 ${loading ? "bg-sky-700/30" : "bg-sky-700"
+            } rounded-lg shadow border border-sky-700 justify-center items-center gap-2 inline-flex`}
         >
           <button
             disabled={loading}
             type="submit"
             className="w-full text-white text-sm font-bold font-manrope leading-snug"
           >
-            {loading ? "Processing..." : "Get Link"}
+            {loading ? "Processing..." : "Proceed"}
           </button>
         </div>
       </form>
       <Link className="w-full md:w-[481px]" href="/signin">
         <div className="md:w-[481px] w-[90%] mt-[10px] h-11 px-5 py-3  justify-center items-center gap-2 inline-flex">
-          <img src="/images/auth/arrow_left.svg" alt="" className="w-6 h-6 " />
+          <Image height={30} width={30} src="/images/auth/arrow_left.svg" alt="" className="w-6 h-6 " />
           <div className="text-sky-700 text-sm font-normal font-manrope leading-snug">
             Return to the login screen
           </div>

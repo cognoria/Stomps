@@ -13,6 +13,7 @@ function errorHandler(err) {
 
     if (err.name === 'JsonWebTokenError') {
         // jwt error - delete cookie to auto logout
+        cookies().delete('token');
         cookies().delete('authorization');
         return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
     }

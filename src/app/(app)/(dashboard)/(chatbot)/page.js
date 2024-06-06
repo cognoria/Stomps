@@ -10,8 +10,7 @@ import useChatbotStore from "../../../../store/chatbot/useChatbotStore";
 import { useUserStore } from "../../../../store/auth/userState";
 
 const Page = () => {
-  const router = useRouter();
-  const user = useUserStore((state) => state.user);
+  // const user = useUserStore((state) => state.user);
 
   const { getUserChatBots, loading, chatbots } = useChatbotStore((state) => ({
     getUserChatBots: state.getUserChatBots,
@@ -19,22 +18,22 @@ const Page = () => {
     chatbots: state.chatbots,
   }));
 
-  const { checkKeys, loadingKeys } = useKeysStore((state) => ({
-    checkKeys: state.checkKeys,
-    loadingKeys: state.loading,
-    keysError: state.error,
-    hasKeys: state.hasKeys,
-  }));
+  // const { checkKeys, loadingKeys } = useKeysStore((state) => ({
+  //   checkKeys: state.checkKeys,
+  //   loadingKeys: state.loading,
+  //   keysError: state.error,
+  //   hasKeys: state.hasKeys,
+  // }));
 
-  useEffect(() => {
-    if (user) {
-      checkKeys((hasKeys) => {
-        if (!hasKeys) {
-          router.push("/account/keys");
-        }
-      });
-    }
-  }, [user]);
+  // useEffect(() => {
+  //   if (user) {
+  //     checkKeys((hasKeys) => {
+  //       if (!hasKeys) {
+  //         router.push("/account/keys");
+  //       }
+  //     });
+  //   }
+  // }, [user]);
 
   useEffect(() => {
     getUserChatBots();

@@ -2,8 +2,8 @@
 <g filter="url(#filter0_d_155_5087)">
 <rect x="2" y="1" width="48" height="36" rx="18" fill="#1261AC"/>
 <rect x="2.5" y="1.5" width="47" height="35" rx="17.5" stroke="#1261AC"/>
-<path d="M28.0247 13.9419L33.0831 19.0002L28.0247 24.0586" stroke="white" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M18.9167 19H32.9417" stroke="white" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M28.0247 13.9419L33.0831 19.0002L28.0247 24.0586" stroke="white" strokeWidth="1.5" stroke-miterlimit="10" strokeLinecap="round" strokeLinejoin="round"/>
+<path d="M18.9167 19H32.9417" stroke="white" strokeWidth="1.5" stroke-miterlimit="10" strokeLinecap="round" strokeLinejoin="round"/>
 </g>
 <defs>
 <filter id="filter0_d_155_5087" x="0" y="0" width="52" height="40" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">

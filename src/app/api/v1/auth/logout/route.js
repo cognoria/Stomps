@@ -9,5 +9,6 @@ module.exports = apiHandler({
 });
 
 function logout() {
+    cookies().delete('token');
     cookies().delete('authorization');
 }

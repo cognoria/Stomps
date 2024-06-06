@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 import { useUserStore } from "../../store/auth/userState";
 import { RoundedSubmitButton } from "../customComponents/buttons/button1";
 
-function MainNav() {
+function MainNav({dashboard}) {
   const [expanded, setExpanded] = useState(false);
   const toggleExpansion = () => {
     setExpanded(!expanded);
@@ -19,7 +19,7 @@ function MainNav() {
   //   user: state.user,
   // }));
 
-  const user = useUserStore((state) => state.user);
+  // const user = useUserStore((state) => state.user);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -66,7 +66,7 @@ function MainNav() {
           </div>
         )} */}
 
-        {!user ? (
+        {!dashboard ? (
           <div className="md:flex hidden flex-row gap-4">
             <Link href="/signin">
               <RoundedSubmitButton
@@ -137,9 +137,9 @@ function MainNav() {
                     stroke="currentColor"
                   >
                     <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="1.5"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="1.5"
                       d="M4 6h16M4 12h16M4 18h16"
                     />
                   </svg>
@@ -156,9 +156,9 @@ function MainNav() {
                     stroke="currentColor"
                   >
                     <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
                       d="M6 18L18 6M6 6l12 12"
                     />
                   </svg>
@@ -197,7 +197,7 @@ function MainNav() {
                   </div>
                 )} */}
 
-                {!user ? (
+                {!dashboard ? (
                   <div className="flex flex-col w-full gap-y-5">
                     <Link
                       href="/signin"

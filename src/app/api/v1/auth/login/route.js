@@ -15,6 +15,7 @@ async function login(req) {
   const { user, token } = await usersRepo.authenticate(body);
 
   // return jwt token in http only cookie
+
   cookies().set("authorization", token, { httpOnly: true });
 
   return user;

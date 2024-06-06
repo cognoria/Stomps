@@ -7,7 +7,8 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import useLoginAuthStore from "../../../store/auth/login";
-import { auth_schema } from "../../../utils/resolver/yup_schema";
+import { loginSchema } from "../../../utils/resolver/yup_schema";
+
 function Signin_form() {
   const router = useRouter();
   const { loginUser, loading, error } = useLoginAuthStore((state) => ({
@@ -15,9 +16,7 @@ function Signin_form() {
     loading: state.loading,
     error: state.error,
   }));
-  const onFailure = () => {
-    router.push("/account/keys");
-  };
+  
   const onSuccess = () => {
     router.push("/");
   };
@@ -27,11 +26,11 @@ function Signin_form() {
     formState: { errors },
     watch,
   } = useForm({
-    resolver: yupResolver(auth_schema),
+    resolver: yupResolver(loginSchema),
   });
   const onSubmit = async (data) => {
     try {
-      await loginUser(data, onSuccess, onFailure);
+      await loginUser(data, onSuccess);
     } catch (error) {
       console.error("Error during login:", error);
     }
@@ -120,14 +119,14 @@ function Signin_form() {
           </button>
         </div>
       </form>
-      <div className="w-[90%] md:w-[481px] text-center mt-[20px]">
+      {/* <div className="w-[90%] md:w-[481px] text-center mt-[20px]">
         <span className="text-zinc-800 text-sm font-normal font-manrope leading-snug">
           Don’t have an account?
         </span>
         <span className="text-blue-500 my-[20px] text-sm font-bold font-manrope leading-tight tracking-tight">
           <Link href="/signup">Create Account</Link>
         </span>
-      </div>
+      </div> */}
       {/* <div className="mt-[20px] w-full md:w-[481px] h-5 justify-center items-center gap-4 inline-flex">
         <hr className="text-center w-[40%] mt-[2px] h-[3px] text-zinc-500 text-sm font-medium font-manrope leading-tight tracking-tight" />
         Or

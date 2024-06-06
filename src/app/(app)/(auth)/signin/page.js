@@ -1,12 +1,24 @@
+import { redirect } from "next/navigation";
 import Auth_header from "../../../../components/authComponents/header";
 import Signin_form from "../../../../components/authComponents/signin/signin";
-import MainNav from "../../../../components/navigation/mainNav";
+import { usersRepo } from "../../../../helpers/server";
+import Signup_form from "../../../../components/authComponents/signup/signup";
 
-function page() {
+async function page() {
+  const allUsers = await usersRepo.allUserCount()
+
   return (
     <div className=" overflow-x-hidden">
-      <Auth_header desc={"Sign in your account"} />
-      <Signin_form />
+      {allUsers > 0 ?
+        <>
+          <Auth_header desc={"Sign in your account"} />
+          <Signin_form />
+        </>
+        :
+        <>
+          <Auth_header desc={"Create your account"} />
+          <Signup_form />
+        </>}
     </div>
   );
 }

@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 import crypto from "crypto"
-import { headers } from 'next/headers';
+import { cookies, headers } from 'next/headers';
 import { db } from '../db';
 import { hashToken } from '../../cryptography';
 import { emailTemplate, getEmailText } from '../email/emailTemplate';
@@ -25,6 +25,7 @@ export const usersRepo = {
     googleAuth,
     forgetPassword,
     resetPassword,
+    allUserCount,
     resendVerificationEmail,
 };
 
@@ -39,9 +40,9 @@ async function authenticate({ email, password }) {
 
     // create a jwt token that is valid for 7 days
     //TODO: JWT_Secret will be created randomly and saved for the user
-    const token = jwt.sign({ sub: user.id }, process.env.JWT_SECRET, { expiresIn: '7d' });
-    // const token = jwt.sign({ sub: user.id }, await globalRepo.getJwtSecret(), { expiresIn: '7d' });
-
+    const token = jwt.sign({ sub: user.id }, process.env.JWT_SECRET, { expiresIn: '30d' });
+    const expires = 30 * 24 * 60 * 60 * 1000
+    cookies().set('token', token, { secure: true, httpOnly: true, expires: Date.now() + expires })
     await logUserActivity(user.id, 'User Login', { ip: headers().get('X-Forwarded-For') })
     return {
         user: user.toJSON(),
@@ -68,6 +69,10 @@ async function getCurrent() {
     } catch {
         throw 'Current User Not Found';
     }
+}
+
+async function allUserCount(){
+    return await User.countDocuments()
 }
 
 /**

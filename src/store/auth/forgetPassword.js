@@ -1,15 +1,17 @@
 import { toast } from "react-toastify";
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
+
 const useForgetPasswordAuthStore = create(
   devtools((set) => ({
     error: null,
     loading: false,
-    forgetPassword: async ({ email}, onSuccess) => {
+    forgetPassword: async ({ email, question, answer }, onSuccess) => {
       set({ loading: true, error: null });
       try {
         const response = await fetch(`api/v1/auth/password/forget/${email}`, {
           method: "GET",
+          body: JSON.stringify({ question, answer }),
           headers: { "Content-Type": "application/json" },
         });
         const data = await response.json();
@@ -20,6 +22,8 @@ const useForgetPasswordAuthStore = create(
 
         if (onSuccess) onSuccess();
         set({ loading: false });
+        return data;
+        
       } catch (error) {
         set({ error: error.message, loading: false });
         toast.error(error.message || "Failed to login!", {

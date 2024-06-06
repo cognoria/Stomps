@@ -24,7 +24,6 @@ function ChatbotsDisplay({ chatbots }) {
           ?.slice()
           .reverse()
           .map((item, i) => {
-            console.log(item);
             return (
               <div
                 className="lg:w-[385px] w-full h-[392px] relative bg-white rounded-2xl border border-sky-700"
