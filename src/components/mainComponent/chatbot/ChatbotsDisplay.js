@@ -40,7 +40,7 @@ function ChatbotsDisplay({ chatbots }) {
                   </div>
                   <div className="flex flex-row items-center justify-between">
                     <Link
-                      href={`/bot/${item._id}/settings`}
+                      href={`/bot/${item._id}/config`}
                       className="inline-flex items-center p-3 bg-[#1261AC] rounded-lg gap-3 text-white text-sm font-bold font-manrope leading-snug"
                     >
                       <Image
