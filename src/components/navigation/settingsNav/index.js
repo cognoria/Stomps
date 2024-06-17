@@ -16,8 +16,9 @@ function ChatbotNav() {
   const { bot: id } = useParams();
   const navItems = [
     { name: "Chatbot", link: `/bot/${id}`, tag: "chatbot" },
-    { name: "Settings", link: `/bot/${id}/settings`, tag: "settings" },
+    { name: "Chat Config", link: `/bot/${id}/config`, tag: "config" },
     { name: "Dashboard", link: `/bot/${id}/dashboard`, tag: "dashboard" },
+    { name: "Leads", link: `/bot/${id}/leads`, tag: "leads" },
     { name: "Sources", link: `/bot/${id}/source`, tag: "source" },
     { name: "Embed on Site", link: "/", tag: "embed" },
   ];
