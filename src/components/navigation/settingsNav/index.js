@@ -60,10 +60,10 @@ function ChatbotNav() {
       <ul className="lg:w-full w-[90%] flex flex-wrap gap-8 items-start lg:items-center justify-start lg:justify-center">
         {navItems.map((items, i) => (
           <li className="" key={i}>
-            {items.tag === "embed" ? ( // Check if the current item is the "embed on site" button
+            {items.tag === "embed" ? (
               <button
                 onClick={handleEmbedButtonClick}
-                className=" px-3 py-1.5 border-none capitalize border-[1px] "
+                className="capitalize"
               >
                 {items.name}
               </button>
@@ -72,7 +72,7 @@ function ChatbotNav() {
                 className={
                   lastSegment === items.tag ||
                   (i === 0 && items.tag === "chatbot" && lastSegment === id)
-                    ? "p-3 border-[#1261AC] capitalize border-[1px] px-3 py-1.5 bg-sky-50 rounded-[300px]"
+                    ? "border-[#1261AC] capitalize border-[1px] px-3 py-1.5 bg-sky-50 rounded-[300px]"
                     : " capitalize"
                 }
                 href={items.link ? items.link : "#"}

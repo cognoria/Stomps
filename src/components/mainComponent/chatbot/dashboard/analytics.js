@@ -45,7 +45,7 @@ function Analytics({ botId }) {
 
   return (
     <div className="flex flex-col w-full items-center overflow-hidden">
-      {analytics ? (
+      {analytics.length > 0 ? (
         <Chart_page
           startDate={startDate}
           endDate={endDate}
@@ -72,7 +72,7 @@ function Analytics({ botId }) {
           onDateRangeSelect={handleDateRangeSelect}
         />
       ) : (
-        <EmptyDashboard />
+        <EmptyDashboard header={'Analytics'} msg={"No Analytics yet"} />
       )}
     </div>
   );

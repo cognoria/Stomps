@@ -48,7 +48,7 @@ function SourceNav({ nav, tag }) {
   };
 
   return (
-    <div style={navbarStyles} className={`flex  flex-col    w-full`}>
+    <div style={navbarStyles} className={`flex flex-col w-full`}>
       {/* desktop nav for chat bot */}
       <div className="lg:flex hidden flex-col gap-2 ">
         {nav.map((items, i) => {
@@ -62,7 +62,7 @@ function SourceNav({ nav, tag }) {
                   : ""
               }  flex-row gap-4 items-start justify-start capitalize`}
             >
-              <img src={items.img_link} alt="" />
+              <img src={items.img_link} alt="" className={` ${currentPage == items.link_name ? 'text-[#1261AC]' : 'text-[#8A8A8A]'}`} />
               <p className="text-zinc-500 text-sm font-bold font-manrope leading-snug">
                 {items.link_name}
               </p>
@@ -140,7 +140,7 @@ function SourceNav({ nav, tag }) {
                     : ""
                 } flex-row gap-4 items-start justify-start`}
               >
-                <img src={items.img_link} alt="" />
+                <img src={items.img_link} alt=""  className={` ${currentPage == items.link_name ? 'text-[#1261AC]' : 'text-[#8A8A8A]'}`} />
                 <p className="text-zinc-500 text-sm font-bold font-manrope leading-snug">
                   {items.link_name}
                 </p>

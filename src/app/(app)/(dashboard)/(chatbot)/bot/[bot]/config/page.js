@@ -21,10 +21,8 @@ function Page({ params: { bot } }) {
         return <ModelSettings botId={bot} />;
       case "Chat Interface":
         return <InterfaceSettings botId={bot} />;
-      case "Security":
-        return <SecuritySettings botId={bot} />;
-      case "Leads":
-        return <LeadsSettings botId={bot} />;
+      // case "Leads":
+      //   return <LeadsSettings botId={bot} />;
 
       default:
         return <GeneralSettings botId={bot} />;
@@ -35,12 +33,12 @@ function Page({ params: { bot } }) {
       <div className="lg:flex hidden flex-col w-full  items-start justify-start"></div>
       <div className="w-full gap-x-4 lg:max-w-[80%] gap-3 flex flex-col lg:flex-col  ">
         <div className="text-sky-700 hidden lg:block text-[32px] font-bold font-manrope leading-[38.40px]">
-          Settings
+        Chat Configuration
         </div>
 
         <div className="flex flex-col lg:flex-row w-full  items-start justify-center">
           <div className="lg:max-w-[212px] w-full flex-end flex flex-col mt-[60px]">
-            <SourceNav tag={"Settings"} nav={nav} />
+            <SourceNav tag={"Chat Configuration"} nav={nav} />
           </div>
           <div className="w-full lg:mt-0 mt-[30px]">{renderContent()}</div>
         </div>
@@ -67,14 +65,9 @@ const nav = [
     img_link: "/images/chatbox/droplet1.svg",
     link: "/website",
   },
-  {
-    link_name: "Security",
-    img_link: "/images/chatbox/security.svg",
-    link: "/website",
-  },
-  {
-    link_name: "Leads",
-    img_link: "/images/chatbox/leads.svg",
-    link: "/website",
-  },
+  // {
+  //   link_name: "Leads",
+  //   img_link: "/images/chatbox/leads.svg",
+  //   link: "/website",
+  // },
 ];

@@ -14,12 +14,11 @@ function Page({ params: { bot } }) {
         switch (currentPage) {
             case "Leads":
                 return <Leeds botId={bot} />;
-                // <LeadsSettings botId={bot} />;
             case "Settings":
                 return <LeadsSettings botId={bot} />;
 
             default:
-                return <LeadsSettings botId={bot} />;
+                return <Leeds botId={bot} />;
         }
     };
     return (

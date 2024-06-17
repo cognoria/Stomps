@@ -167,7 +167,7 @@ function Website() {
                           height={15}
                           src="/images/chatbox/trash.svg"
                           alt=""
-                          classNAme="w-full h-auto"
+                          className="w-full h-auto"
                         />
                       </button>
                     </li>
@@ -225,7 +225,7 @@ function Website() {
                             height={20}
                             src="/images/chatbox/trash.svg"
                             alt=""
-                            classNAme="w-full h-auto"
+                            className="w-full h-auto"
                           />
                         </button>
                       </li>

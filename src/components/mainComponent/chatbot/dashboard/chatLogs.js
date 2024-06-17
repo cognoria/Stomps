@@ -50,7 +50,7 @@ function ChatLogs({ botId }) {
           handleDateSelect={handleDateSelect}
         />
       ) : (
-        <EmptyDashboard />
+        <EmptyDashboard header={'Chat Log'} msg={'No Converstions yet'} />
       )}
     </div>
   );
