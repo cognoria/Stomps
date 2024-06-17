@@ -1,13 +1,10 @@
 "use client";
-
 import Leeds from "../../../../../../../components/mainComponent/chatbot/dashboard/leeds";
 import LeadsSettings from "../../../../../../../components/mainComponent/chatbot/settings/Leads";
-
 import SourceNav from "../../../../../../../components/navigation/SourceNav";
 import useSourceNav from "../../../../../../../store/chatbot/useSourceNav";
 
 function Page({ params: { bot } }) {
-    // console.log(bot);
     const currentPage = useSourceNav((state) => state.currentPage);
 
     const renderContent = () => {
