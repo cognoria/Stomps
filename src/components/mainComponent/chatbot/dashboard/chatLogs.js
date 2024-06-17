@@ -44,7 +44,7 @@ function ChatLogs({ botId }) {
 
   return (
     <div className="w-full flex flex-col items-center ">
-      {FilteredChats && chats.length > 0 ? (
+      {FilteredChats?.length > 0 ? (
         <Filled_bot_state
           chatData={FilteredChats}
           handleDateSelect={handleDateSelect}
