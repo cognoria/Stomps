@@ -1,3 +1,4 @@
+import Image from "next/image";
 import BarHeader from "./header";
 
 function EmptyDashboard({ header, msg }) {
@@ -9,7 +10,7 @@ function EmptyDashboard({ header, msg }) {
         </div>
         <BarHeader />
         <div className="w-full gap-4 h-[541px] flex flex-col items-center justify-center">
-          <img src="/images/chatbox/chatbox.svg" alt="" className="" />
+          <Image width={50} height={50} src="/images/chatbox/chatbox.svg" alt="" className="w-[220px] h-[220px]" />
 
           <div className="text-zinc-500 text-sm font-medium font-manrope leading-tight tracking-tight">
             {msg}.
@@ -18,7 +19,7 @@ function EmptyDashboard({ header, msg }) {
             <div className="text-sky-700 text-sm font-bold font-manrope  leading-snug">
               Refresh
             </div>
-            <img src="/images/chatbox/refres.svg" />
+            <Image width={20} height={20} alt="" src="/images/chatbox/refres.svg" />
           </div>
         </div>
       </div>

@@ -45,7 +45,7 @@ function Analytics({ botId }) {
 
   return (
     <div className="flex flex-col w-full items-center overflow-hidden">
-      {analytics.length > 0 ? (
+      {analytics?.length > 0 ? (
         <Chart_page
           startDate={startDate}
           endDate={endDate}

@@ -29,6 +29,7 @@ function Reset_password({ token }) {
   } = useForm({
     resolver: yupResolver(password_schema),
   });
+  
   const onSubmit = async (data, e) => {
     e.preventDefault();
     resetPassword({ ...data, token }, () => {
@@ -39,12 +40,13 @@ function Reset_password({ token }) {
   const updateValidation = usePasswordValidationStore(
     (state) => state.updateValidation
   );
-  const { hasUppercase, hasNumber, isLongEnough } =
-    usePasswordValidationStore();
+  const { hasUppercase, hasNumber, isLongEnough } = usePasswordValidationStore();
   const passwordValue = watch("password");
+
   useEffect(() => {
     updateValidation(passwordValue);
-  }, [passwordValue]);
+  }, [passwordValue, updateValidation]);
+
   return (
     <div className="flex pb-[20px] flex-col mt-[30px] md:mt-[40px] gap-4 items-center justify-center w-screen h-auto">
       <form
