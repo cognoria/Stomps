@@ -7,7 +7,7 @@ import { useForm } from "react-hook-form";
 import useResetPasswordAuthStore from "../../../store/auth/resetPassword";
 import useModalStore from "../../../store/modal/modalState";
 import { usePasswordValidationStore } from "../../../store/validation/validations";
-import { password_schema } from "../../../utils/resolver/yup_schema";
+import { password_schema } from "../../../utils/resolver/Schema";
 import { ResetPass } from "../../customComponents/modals/authModal/authModals";
 import { useRouter } from "next/navigation";
 

@@ -1,13 +1,12 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
-// import { auth_schema } from "@/src/utils/resolver/yup_schema";
 import { yupResolver } from "@hookform/resolvers/yup";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import useLoginAuthStore from "../../../store/auth/login";
-import { loginSchema } from "../../../utils/resolver/yup_schema";
+import { loginSchema } from "../../../utils/resolver/Schema";
 
 function Signin_form() {
   const router = useRouter();

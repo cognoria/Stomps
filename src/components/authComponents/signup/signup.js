@@ -7,7 +7,7 @@ import { useForm, useFieldArray } from "react-hook-form";
 import { securityQuestions } from "../../../helpers/enums";
 import useRegisterAuthStore from "../../../store/auth/register";
 import { usePasswordValidationStore } from "../../../store/validation/validations";
-import { auth_schema } from "../../../utils/resolver/yup_schema";
+import { auth_schema } from "../../../utils/resolver/Schema";
 import Image from "next/image";
 
 function Signup_form() {

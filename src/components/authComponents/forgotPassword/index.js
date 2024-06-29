@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import { securityQuestions } from "../../../helpers/enums";
 import useForgetPasswordAuthStore from "../../../store/auth/forgetPassword";
 import useModalStore from "../../../store/modal/modalState";
-import { email_schema } from "../../../utils/resolver/yup_schema";
+import { email_schema } from "../../../utils/resolver/Schema";
 import { ForgetPass } from "../../customComponents/modals/authModal/authModals";
 import Image from "next/image";
 import { toast } from "react-toastify";
