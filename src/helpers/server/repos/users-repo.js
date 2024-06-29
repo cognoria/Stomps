@@ -86,10 +86,8 @@ async function create(params) {
         throw 'User "' + params.email + '"  already exist';
     }
 
-    // Check if the maximum number of users has been reached
-    const maxUsers = 1
     const currentUserCount = await User.countDocuments();
-    if (currentUserCount >= maxUsers) {
+    if (currentUserCount >= 1) {
         throw 'You cannot register. contact support@stomps.io';
     }
 

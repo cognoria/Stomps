@@ -6,7 +6,7 @@ import { usersRepo } from "../../../../helpers/server";
 
 async function Page() {
   const allUsers = await usersRepo.allUserCount()
-  if(allUsers>0) redirect('/signin')
+  if(allUsers >= 1) redirect('/signin')
     
   return (
     <div className=" overflow-x-hidden">

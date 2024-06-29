@@ -6,19 +6,13 @@ import Signup_form from "../../../../components/authComponents/signup/signup";
 
 async function Page() {
   const allUsers = await usersRepo.allUserCount()
+console.log(allUsers)
+if(allUsers < 1) redirect('/signup')
 
   return (
     <div className=" overflow-x-hidden">
-      {allUsers > 0 ?
-        <>
           <Auth_header desc={"Sign in your account"} />
           <Signin_form />
-        </>
-        :
-        <>
-          <Auth_header desc={"Create your account"} />
-          <Signup_form />
-        </>}
     </div>
   );
 }

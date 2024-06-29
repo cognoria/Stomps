@@ -119,25 +119,6 @@ function Signin_form() {
           </button>
         </div>
       </form>
-      {/* <div className="w-[90%] md:w-[481px] text-center mt-[20px]">
-        <span className="text-zinc-800 text-sm font-normal font-manrope leading-snug">
-          Don’t have an account?
-        </span>
-        <span className="text-blue-500 my-[20px] text-sm font-bold font-manrope leading-tight tracking-tight">
-          <Link href="/signup">Create Account</Link>
-        </span>
-      </div> */}
-      {/* <div className="mt-[20px] w-full md:w-[481px] h-5 justify-center items-center gap-4 inline-flex">
-        <hr className="text-center w-[40%] mt-[2px] h-[3px] text-zinc-500 text-sm font-medium font-manrope leading-tight tracking-tight" />
-        Or
-        <hr className="text-center w-[40%] h-[3px] mt-[2px] text-zinc-500 text-sm font-medium font-manrope leading-tight tracking-tight" />
-      </div>
-      <div className="md:w-[430px] w-[90%] my-[20px] h-11 md:px-[126px] px-[25%] py-2.5 rounded-[36px] border border-indigo-400 justify-center items-center gap-4 flex-row flex">
-        <img src="/images/auth/google_logo.svg" alt="" className="w-6 h-6 " />
-        <div className="text-center w-full text-zinc-800 text-xs md:text-sm font-medium font-manrope leading-none md:leading-tight tracking-tight">
-          Sign in with Google
-        </div>
-      </div> */}
     </div>
   );
 }
