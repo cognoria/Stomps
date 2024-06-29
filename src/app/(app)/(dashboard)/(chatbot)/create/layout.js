@@ -6,7 +6,6 @@ import { Inter } from "next/font/google";
 const inter = Inter({ subsets: ["latin"] });
 
 export default function Layout({ children }) {
-  // const user = useUserStore((state) => state.user);
 
   return <div className={inter.className}>{children}</div>;
 }
