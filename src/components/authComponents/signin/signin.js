@@ -5,8 +5,8 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import useLoginAuthStore from "../../../store/auth/login";
-import { loginSchema } from "../../../utils/resolver/Schema";
+import useLoginAuthStore from "../../../store/auth/login.js";
+import { loginSchema } from "../../../utils/resolver/Schema.js";
 
 function Signin_form() {
   const router = useRouter();

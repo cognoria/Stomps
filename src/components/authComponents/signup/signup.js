@@ -4,9 +4,9 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useEffect } from "react";
 import { useForm, useFieldArray } from "react-hook-form";
-import { securityQuestions } from "../../../helpers/enums";
+import { securityQuestions } from "../../../helpers/enums.js";
 import useRegisterAuthStore from "../../../store/auth/register";
-import { usePasswordValidationStore } from "../../../store/validation/validations";
+import { usePasswordValidationStore } from "../../../store/validation/validations.js";
 import { auth_schema } from "../../../utils/resolver/Schema";
 import Image from "next/image";
 

@@ -1,8 +1,7 @@
 import { redirect } from "next/navigation";
-import Auth_header from "../../../../components/authComponents/header";
+import Auth_header from "../../../../components/authComponents/header.js";
 import Signin_form from "../../../../components/authComponents/signin/signin";
 import { usersRepo } from "../../../../helpers/server";
-import Signup_form from "../../../../components/authComponents/signup/signup";
 
 async function Page() {
   const allUsers = await usersRepo.allUserCount()
