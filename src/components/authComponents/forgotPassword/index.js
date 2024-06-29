@@ -11,7 +11,7 @@ import Image from "next/image";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 
-function Forgot_password() {
+function Forgetpassword() {
   const router = useRouter();
   const { forgetPassword, loading, error } = useForgetPasswordAuthStore(
     (state) => ({
@@ -42,7 +42,7 @@ function Forgot_password() {
         onSubmit={handleSubmit(onSubmit)}
         className="flex w-full flex-col items-center  justify-between gap-6"
       >
-        <div className="flex gap-4 md:w-[479px] w-[90%] flex-col items-start justify-start">
+        <div className="flex gap-2 md:w-[479px] w-[90%] flex-col items-start justify-start">
           <p className="text-xs font-bold font-manrope leading-none  tracking-tight text-[#8A8A8A]">
             Email Address
           </p>
@@ -55,43 +55,47 @@ function Forgot_password() {
           />
         </div>
 
-        <div className="flex w-[90%] gap-4 md:w-[479px] flex-col items-start justify-start">
-          <p className="text-xs font-bold font-manrope leading-none tracking-tight text-[#8A8A8A]">
-            Security Question
-          </p>
-          <select
-            {...register("question")}
-            name="question"
-            className="h-10 w-full p-2 pl-4 font-manrope placeholder:font-manrope text-sm placeholder:text-xs text-[#8A8A8A] bg-transparent border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-          >
-            {securityQuestions.map((q, index) => (
-              <option key={index} value={q.question}>{q.question}</option>
-            ))}
-          </select>
-          {errors.question && (
-            <div aria-live="polite" className="text-red-500 text-xs md:text-sm">
-              <span>{errors.question.message}</span>
+        {[1, 2].map((index) => (
+          <div key={index} className="gap-6 flex flex-col">
+            <div className="flex w-[90%] gap-2 md:w-[479px] flex-col items-start justify-start">
+              <p className="text-xs font-bold font-manrope leading-none tracking-tight text-[#8A8A8A]">
+                Security Question {index}
+              </p>
+              <select
+                {...register(`questions[${index - 1}].question`)}
+                name={`questions[${index - 1}].question`}
+                className="h-10 w-full p-2 pl-4 font-manrope placeholder:font-manrope text-sm placeholder:text-xs text-[#8A8A8A] bg-transparent border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              >
+                {securityQuestions.map((q, index) => (
+                  <option key={index} value={q.question}>{q.question}</option>
+                ))}
+              </select>
+              {errors.questions && errors.questions[index - 1] && (
+                <div aria-live="polite" className="text-red-500 text-xs md:text-sm">
+                  <span>{errors.questions[index - 1].question.message}</span>
+                </div>
+              )}
             </div>
-          )}
-        </div>
 
-        <div className="flex gap-4 md:w-[479px] w-[90%] flex-col items-start justify-start">
-          <p className="text-xs font-bold font-manrope leading-none tracking-tight text-[#8A8A8A]">
-            Security Answer
-          </p>
-          <input
-            name="answer"
-            {...register("answer")}
-            type="text"
-            className="h-10 w-full p-2 pl-4 font-manrope placeholder:font-manrope text-sm placeholder:text-xs text-[#8A8A8A] bg-transparent border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            placeholder="Your answer"
-          />
-          {errors.answer && (
-            <div aria-live="polite" className="text-red-500 text-xs md:text-sm">
-              <span>{errors.answer.message}</span>
+            <div className="flex gap-2 md:w-[479px] w-[90%] flex-col items-start justify-start">
+              <p className="text-xs font-bold font-manrope leading-none tracking-tight text-[#8A8A8A]">
+                Security Answer {index}
+              </p>
+              <input
+                name={`questions[${index - 1}].answer`}
+                {...register(`questions[${index - 1}].answer`)}
+                type="text"
+                className="h-10 w-full p-2 pl-4 font-manrope placeholder:font-manrope text-sm placeholder:text-xs text-[#8A8A8A] bg-transparent border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                placeholder="Your answer"
+              />
+              {errors.questions && errors.questions[index - 1] && (
+                <div aria-live="polite" className="text-red-500 text-xs md:text-sm">
+                  <span>{errors.questions[index - 1].answer.message}</span>
+                </div>
+              )}
             </div>
-          )}
-        </div>
+          </div>
+        ))}
         <div
           className={`md:w-[481px] w-[90%] mt-[20px] h-11 px-5 py-3 ${loading ? "bg-sky-700/30" : "bg-sky-700"
             } rounded-lg shadow border border-sky-700 justify-center items-center gap-2 inline-flex`}
@@ -117,4 +121,4 @@ function Forgot_password() {
   );
 }
 
-export default Forgot_password;
+export default Forgetpassword;

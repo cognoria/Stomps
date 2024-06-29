@@ -1,4 +1,4 @@
-import Forgot_password from "../../../../components/authComponents/forgotPassword";
+import Forgetpassword from "../../../../components/authComponents/forgotPassword";
 import Auth_header from "../../../../components/authComponents/header";
 
 function page() {
@@ -10,7 +10,7 @@ function page() {
           "No Worries! Input the email associated with your password to reset your password"
         }
       />
-      <Forgot_password />
+      <Forgetpassword />
     </div>
   );
 }

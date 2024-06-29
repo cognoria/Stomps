@@ -6,12 +6,12 @@ const useForgetPasswordAuthStore = create(
   devtools((set) => ({
     error: null,
     loading: false,
-    forgetPassword: async ({ email, question, answer }, onSuccess) => {
+    forgetPassword: async ({ email, questions }, onSuccess) => {
       set({ loading: true, error: null });
       try {
         const response = await fetch(`api/v1/auth/password/forget/${email}`, {
           method: "GET",
-          body: JSON.stringify({ question, answer }),
+          body: JSON.stringify({ questions }),
           headers: { "Content-Type": "application/json" },
         });
         const data = await response.json();

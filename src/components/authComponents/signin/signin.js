@@ -101,7 +101,7 @@ function Signin_form() {
               Forgot password?{" "}
             </span>
             <span className="text-sky-700 text-sm font-bold font-manrope leading-tight tracking-tight">
-              <Link href="/forgot_password">Reset</Link>
+              <Link href="/forget">Reset</Link>
             </span>
           </div>
         </div>

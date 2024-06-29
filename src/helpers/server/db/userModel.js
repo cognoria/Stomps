@@ -23,19 +23,19 @@ export default function userModel() {
         isVerified: { type: Boolean, default: false },
         googleId: { type: String, },
         services: [{ type: service, select: false, default: [] }],
-        security: {
+        security: [{
             question: { type: String },
             answer: { type: String },
-        }
+        }]
     }, {
         timestamps: true
     });
 
-    schema.methods.validateSecurityQuestion = function (question, answer) {
-        if (this.security.question.trim().toLowerCase() === question.trim().toLowerCase()) {
-            return this.security.answer.trim().toLowerCase() === answer.trim().toLowerCase();
-        }
-        return false;
+    schema.methods.validateSecurityQuestions = function (questions) {
+        return questions.every(q => {
+            const matchedQuestion = this.security.find(s => s.question.trim().toLowerCase() === q.question.trim().toLowerCase());
+            return matchedQuestion && matchedQuestion.answer.trim().toLowerCase() === q.answer.trim().toLowerCase();
+        });
     };
 
     schema.set('toJSON', {

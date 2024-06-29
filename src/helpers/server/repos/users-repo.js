@@ -94,28 +94,12 @@ async function create(params) {
     }
 
     const hash = bcrypt.hashSync(params.password, 10);
-    const user = await User.create({ email: params.email, hash, isVerified: true, security: { question: params.question, answer: params.answer } });
-
-    // //send email verification
-    // const verifyToken = crypto.randomBytes(20).toString("hex");
-
-    // // Hash and save token
-    // const verifyTokenHash = hashToken(verifyToken)
-    // await tokenRepo.create(user.id, verifyTokenHash)
-
-    // const origin = headers().get("origin")
-    // // console.log({origin})
-    // const url = new URL(origin);
-
-    // const verifyBaseUrl = `${url}verify`
-    // // ///TODO: send verifyToken to user email email
-    // const text = getEmailText('verify');
-    // const link = `${verifyBaseUrl}/${verifyToken}?email=${params.email}`
-    // const title = "Stomps Email Verification"
-    // const html = emailTemplate({ message: text, buttonLink: link, buttonText: "Verify Email Address" })
-
-    // // await sendGridSender({email, title, text, html})
-    // await elasticMailSender({ email: params.email, title, text, html });
+    const user = await User.create({
+        email: params.email,
+        hash,
+        isVerified: true,
+        security: params.security
+    });
 
     //log user register
     await logUserActivity(user.id, 'User Register', { ip: headers().get('X-Forwarded-For'), email: params.email })
@@ -230,32 +214,20 @@ async function googleAuth(token) {
     return 'Login Success'
 }
 
-async function forgetPassword(email, question, answer) {
+async function forgetPassword(email, questions) {
     const user = await User.findOne({ email });
 
     if (!user) throw `Error: User not found`
 
-    const isValid = user.validateSecurityQuestion(question, answer);
+    const isValid = user.validateSecurityQuestions(questions);
 
-    if (!isValid) throw `Error: Incorrect security question or answer`
+    if (!isValid) throw `Error: Incorrect security questions or answers`
 
     const resetToken = crypto.randomBytes(20).toString("hex");
 
     // Hash token
     const resetTokenHash = hashToken(resetToken)
     await tokenRepo.create(user._id, resetTokenHash)
-
-    // const origin = headers().get("host")
-    // // const url = new URL(origin);
-
-    // // const resetBaseUrl = `http://${origin}/reset`
-    // // const text = getEmailText('reset');
-    // // const link = `${resetBaseUrl}/${resetToken}`
-    // // const title = "[Action Required]: Reset Password."
-    // // const html = emailTemplate({ message: text, buttonLink: link, buttonText: "Reset Password" })
-
-    // // // await sendGridSender({email, title, text, html})
-    // // await elasticMailSender({ email, title, text, html })
 
     return {
         success: true,

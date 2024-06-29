@@ -11,9 +11,13 @@ async function register(req) {
   return await usersRepo.create(body);
 }
 
+const securitySchema = joi.object({
+  question: joi.string().required(),
+  answer: joi.string().required(),
+});
+
 register.schema = joi.object({
   email: joi.string().email().required(),
   password: joi.string().min(6).required(),
-  question: joi.string().required(),
-  answer: joi.string().required(),
+  security: joi.array().items(securitySchema).min(2).required(),
 });

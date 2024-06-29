@@ -2,8 +2,8 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import React from "react";
-import { useForm } from "react-hook-form";
+import React, { useEffect } from "react";
+import { useForm, useFieldArray } from "react-hook-form";
 import { securityQuestions } from "../../../helpers/enums";
 import useRegisterAuthStore from "../../../store/auth/register";
 import { usePasswordValidationStore } from "../../../store/validation/validations";
@@ -23,9 +23,23 @@ function Signup_form() {
     handleSubmit,
     formState: { errors },
     watch,
+    control,
   } = useForm({
     resolver: yupResolver(auth_schema),
   });
+
+
+  const { fields, append } = useFieldArray({
+    control,
+    name: "security",
+  });
+
+  useEffect(() => {
+    if (fields.length < 2) {
+      append({ question: "", answer: "" });
+      append({ question: "", answer: "" });
+    }
+  }, [fields, append]);
 
   const onSubmit = async (data, e) => {
     e.preventDefault();
@@ -42,7 +56,7 @@ function Signup_form() {
     usePasswordValidationStore();
   const passwordValue = watch("password");
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (passwordValue != '') updateValidation(passwordValue);
   }, [passwordValue]);
 
@@ -53,7 +67,7 @@ function Signup_form() {
         onSubmit={handleSubmit(onSubmit)}
         className="flex w-full flex-col items-center  justify-between gap-6"
       >
-        <div className="flex gap-4 md:w-[479px] w-[90%] flex-col items-start justify-start">
+        <div className="flex gap-2 md:w-[479px] w-[90%] flex-col items-start justify-start">
           <p className="text-xs font-bold font-manrope leading-none tracking-tight text-[#8A8A8A]">
             Email Address
           </p>
@@ -70,7 +84,7 @@ function Signup_form() {
             </div>
           )}
         </div>
-        <div className="flex w-[90%] gap-4 md:w-[479px] flex-col items-start justify-start">
+        <div className="flex w-[90%] gap-2 md:w-[479px] flex-col items-start justify-start">
           <p className="text-xs font-bold font-manrope leading-none tracking-tight text-[#8A8A8A]">
             Password
           </p>
@@ -169,7 +183,47 @@ function Signup_form() {
             </div>
           </div>
         )}
-        <div className="flex w-[90%] gap-4 md:w-[479px] flex-col items-start justify-start">
+        {fields.map((field, index) => (
+          <div key={field.id} className="flex flex-col w-[90%] gap-6 md:w-[479px]">
+            <div className="flex flex-col gap-2 items-start">
+              <p className="text-xs font-bold font-manrope leading-none tracking-tight text-[#8A8A8A]">
+                Security Question {index + 1}
+              </p>
+              <select
+                {...register(`security.${index}.question`)}
+                name={`security.${index}.question`}
+                className="h-10 w-full p-2 pl-4 font-manrope placeholder:font-manrope text-sm placeholder:text-xs text-[#8A8A8A] bg-transparent border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              >
+                {securityQuestions.map((q, index) => (
+                  <option key={index} value={q.question}>{q.question}</option>
+                ))}
+              </select>
+              {errors.security && errors.security[index] && errors.security[index].question && (
+                <div aria-live="polite" className="text-red-500 text-xs md:text-sm">
+                  <span>{errors.security[index].question.message}</span>
+                </div>
+              )}
+            </div>
+            <div className="flex flex-col gap-2 items-start">
+              <p className="text-xs font-bold font-manrope leading-none tracking-tight text-[#8A8A8A]">
+                Security Answer {index + 1}
+              </p>
+              <input
+                name={`security.${index}.answer`}
+                {...register(`security.${index}.answer`)}
+                type="text"
+                className="h-10 w-full p-2 pl-4 font-manrope placeholder:font-manrope text-sm placeholder:text-xs text-[#8A8A8A] bg-transparent border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                placeholder="Your answer"
+              />
+              {errors.security && errors.security[index] && errors.security[index].answer && (
+                <div aria-live="polite" className="text-red-500 text-xs md:text-sm">
+                  <span>{errors.security[index].answer.message}</span>
+                </div>
+              )}
+            </div>
+          </div>
+        ))}
+        {/* <div className="flex w-[90%] gap-4 md:w-[479px] flex-col items-start justify-start">
           <p className="text-xs font-bold font-manrope leading-none tracking-tight text-[#8A8A8A]">
             Security Question
           </p>
@@ -205,7 +259,7 @@ function Signup_form() {
               <span>{errors.answer.message}</span>
             </div>
           )}
-        </div>
+        </div> */}
         <div
           className={`md:w-[481px] w-[90%] mt-[20px] h-11 px-5 py-3 ${loading ? "bg-sky-700/30" : "bg-sky-700 "
             } rounded-lg shadow border border-sky-700 justify-center items-center gap-2 inline-flex`}
@@ -219,14 +273,6 @@ function Signup_form() {
           </button>
         </div>
       </form>
-      {/* <div className="w-[90%] md:w-[481px] text-center mt-[20px]">
-        <span className="text-zinc-800 text-sm font-normal font-manrope leading-snug">
-          Already have an account?
-        </span>
-        <span className="text-blue-500 my-[20px] text-sm font-bold font-manrope leading-tight tracking-tight">
-          <Link href="/signin"> Sign in</Link>
-        </span>
-      </div> */}
     </div>
   );
 }

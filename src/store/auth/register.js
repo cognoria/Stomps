@@ -2,6 +2,7 @@
 import { toast } from "react-toastify";
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
+
 const useRegisterAuthStore = create(
   devtools((set) => ({
     user: null,
