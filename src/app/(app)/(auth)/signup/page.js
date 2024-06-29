@@ -5,8 +5,8 @@ import Signup_form from "../../../../components/authComponents/signup/signup";
 import { usersRepo } from "../../../../helpers/server";
 
 async function page() {
-  // const allUsers = await usersRepo.allUserCount()
-  // if(allUsers>0) redirect('/signin')
+  const allUsers = await usersRepo.allUserCount()
+  if(allUsers>0) redirect('/signin')
     
   return (
     <div className=" overflow-x-hidden">
