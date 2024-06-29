@@ -1,7 +1,5 @@
-"use client";
 import { Inter } from "next/font/google";
 import ChatbotNav from "../../../../../../components/navigation/settingsNav";
-// import useUserStore  from "../../../store/auth/userState";
 
 const inter = Inter({ subsets: ["latin"] });
 
