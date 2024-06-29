@@ -4,7 +4,7 @@ import Auth_header from "../../../../components/authComponents/header";
 import Signup_form from "../../../../components/authComponents/signup/signup";
 import { usersRepo } from "../../../../helpers/server";
 
-async function page() {
+async function Page() {
   const allUsers = await usersRepo.allUserCount()
   if(allUsers>0) redirect('/signin')
     
@@ -16,4 +16,4 @@ async function page() {
   );
 }
 
-export default page;
+export default Page;

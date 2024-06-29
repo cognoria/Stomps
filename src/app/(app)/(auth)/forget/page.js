@@ -1,7 +1,7 @@
 import Forgetpassword from "../../../../components/authComponents/forgotPassword";
 import Auth_header from "../../../../components/authComponents/header";
 
-function page() {
+function Page() {
   return (
     <div className=" overflow-x-hidden">
       <Auth_header
@@ -15,4 +15,4 @@ function page() {
   );
 }
 
-export default page;
+export default Page;

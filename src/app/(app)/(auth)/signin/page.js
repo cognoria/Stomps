@@ -4,7 +4,7 @@ import Signin_form from "../../../../components/authComponents/signin/signin";
 import { usersRepo } from "../../../../helpers/server";
 import Signup_form from "../../../../components/authComponents/signup/signup";
 
-async function page() {
+async function Page() {
   const allUsers = await usersRepo.allUserCount()
 
   return (
@@ -23,4 +23,4 @@ async function page() {
   );
 }
 
-export default page;
+export default Page;
