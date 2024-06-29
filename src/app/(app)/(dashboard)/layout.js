@@ -7,7 +7,7 @@ import { useUserStore } from "../../../store/auth/userState";
 
 const inter = Inter({ subsets: ["latin"] });
 
-export default function Layout({ children }) {
+export default function RootLayout({ children }) {
   const getMe = useUserStore((state) => state.getMe);
 
   const router = useRouter();
