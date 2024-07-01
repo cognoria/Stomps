@@ -273,6 +273,14 @@ function Signup_form() {
           </button>
         </div>
       </form>
+      <div className="w-[90%] md:w-[481px] text-center mt-[20px]">
+        <span className="text-zinc-800 text-sm font-normal font-manrope leading-snug">
+          Already have an account?{" "}
+        </span>
+        <span className="text-blue-500 my-[20px] text-sm font-bold font-manrope leading-tight tracking-tight">
+          <Link href="/signin"> Sign in</Link>
+        </span>
+      </div>
     </div>
   );
 }

@@ -4,10 +4,7 @@ import Signin_form from "../../../../components/authComponents/signin/signin";
 import { usersRepo } from "../../../../helpers/server";
 
 async function Page() {
-  const allUsers = await usersRepo.allUserCount()
-console.log(allUsers)
-if(allUsers < 1) redirect('/signup')
-
+  
   return (
     <div className=" overflow-x-hidden">
           <Auth_header desc={"Sign in your account"} />
