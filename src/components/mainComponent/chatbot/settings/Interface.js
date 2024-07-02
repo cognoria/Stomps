@@ -241,7 +241,7 @@ function InterfaceSettings({ botId }) {
               <textarea
                 value={initialMsg}
                 onChange={(e) => setInitialMsg(e.target.value)}
-                className="max-h-[150px] lg:w-full text-sm font-normal max-w-full overflow-auto p-2 font-manrope border border-gray-200 rounded-md"
+                className="max-h-[150px] md:w-full text-sm font-normal max-w-full overflow-auto p-2 font-manrope border border-gray-200 rounded-md"
                 placeholder={"👋 Hi!  How can I help"}
               ></textarea>
 
@@ -260,7 +260,7 @@ function InterfaceSettings({ botId }) {
               <textarea
                 value={suggestedMessages}
                 onChange={(e) => setSuggestedMessages(e.target.value)}
-                className="max-h-[150px] lg:w-full text-sm font-normal max-w-full overflow-auto p-2 font-manrope border border-gray-200 rounded-md"
+                className="max-h-[150px] md:w-full text-sm font-normal max-w-full overflow-auto p-2 font-manrope border border-gray-200 rounded-md"
                 placeholder={"example email.com"}
               ></textarea>
 
@@ -313,8 +313,8 @@ function InterfaceSettings({ botId }) {
               <div className="flex gap-x-4 w-full flex-row items-center">
                 <div
                   className="upload-container flex-1 p-4"
-                  //  onDragOver={handleDragOver}
-                  //    onDrop={handleDrop}
+                //  onDragOver={handleDragOver}
+                //    onDrop={handleDrop}
                 >
                   <input
                     type="file"
@@ -332,6 +332,8 @@ function InterfaceSettings({ botId }) {
                     )}
                     {profileImg?.startsWith("data:image") && (
                       <Image
+                        width={50}
+                        height={50}
                         className="w-[50px] h-[50px] rounded-full"
                         src={profileImg}
                         alt={""}
@@ -407,6 +409,8 @@ function InterfaceSettings({ botId }) {
                     )}
                     {chatIcon?.startsWith("data:image") && (
                       <Image
+                        width={50}
+                        height={50}
                         className="w-[50px] h-[50px] rounded-full"
                         src={chatIcon}
                         alt={""}
@@ -483,9 +487,8 @@ function InterfaceSettings({ botId }) {
             <SkeletonLoader width={"50%"} height={"638px"} />
           ) : (
             <div
-              className={`border-[1px] w-full lg:w-[50%] overflow-hidden rounded-lg h-[638px] border-gray-200  items-start flex-col ${
-                selectedTheme === "DARK" ? "bg-black" : ""
-              } `}
+              className={`border-[1px] w-full lg:w-[50%] overflow-hidden rounded-lg h-[638px] border-gray-200  items-start flex-col ${selectedTheme === "DARK" ? "bg-black" : ""
+                } `}
             >
               <div className="flex border-b-[1px] h-[10%] border-gray-200 flex-row  px-4 py-2 w-full flex-start items-start justify-between">
                 <div className="flex flex-row items-center justify-start gap-x-4">
@@ -496,6 +499,8 @@ function InterfaceSettings({ botId }) {
                   )}
                   {profileImg?.startsWith("data:image") && (
                     <Image
+                      width={50}
+                      height={50}
                       className="w-[50px] h-[50px] rounded-full"
                       src={profileImg}
                       alt={""}
@@ -503,9 +508,8 @@ function InterfaceSettings({ botId }) {
                   )}
                   {displayName && (
                     <p
-                      className={`font - bold text-sm ${
-                        selectedTheme === "DARK" ? "text-zinc-100" : ""
-                      }`}
+                      className={`font - bold text-sm ${selectedTheme === "DARK" ? "text-zinc-100" : ""
+                        }`}
                     >
                       {displayName}
                     </p>
@@ -525,11 +529,10 @@ function InterfaceSettings({ botId }) {
                       return (
                         <div
                           key={i}
-                          className={` w-fit  px-[15px] py-[11px] items-start ${
-                            selectedTheme === "DARK"
+                          className={` w-fit  px-[15px] py-[11px] items-start ${selectedTheme === "DARK"
                               ? "bg-gray-800 text-zinc-100"
                               : "bg-zinc-100 text-stone-900"
-                          }    rounded-tl rounded-tr rounded-br border justify-center  flex-col flex`}
+                            }    rounded-tl rounded-tr rounded-br border justify-center  flex-col flex`}
                         >
                           <div className=" text-start text-sm font-normal font-manrope leading-snug break-words">
                             {msg}
@@ -554,11 +557,10 @@ function InterfaceSettings({ botId }) {
                   suggestMsgArr?.map((msg, i) => {
                     return (
                       <div
-                        className={`rounded-md py-1 px-2 font-normal font-manrope leading-snug text-sm text-center whitespace-nowrap ${
-                          selectedTheme === "DARK"
+                        className={`rounded-md py-1 px-2 font-normal font-manrope leading-snug text-sm text-center whitespace-nowrap ${selectedTheme === "DARK"
                             ? "bg-gray-800 hover:bg-gray-600 text-zinc-100"
                             : "bg-sky-700 text-white"
-                        } `}
+                          } `}
                         key={i}
                       >
                         {msg.question}
@@ -570,11 +572,10 @@ function InterfaceSettings({ botId }) {
               <div className="w-full h-[12%] relative p-2 items-center flex-col  flex">
                 <input
                   placeholder={msgPlaceholder}
-                  className={`text-neutral-700 ${
-                    selectedTheme === "DARK"
+                  className={`text-neutral-700 ${selectedTheme === "DARK"
                       ? "bg-transparent text-zinc-100 placeholder:text-neutral-300"
                       : "bg-transparent text-white placeholder:text-neutral-300"
-                  } outline-gray-200 w-full h-full border  flex flex-col  active:outline-none pl-[15px] rounded-lg  pr-[50px]   decoration-none  text-sm font-normal font-manrope leading-snug`}
+                    } outline-gray-200 w-full h-full border  flex flex-col  active:outline-none pl-[15px] rounded-lg  pr-[50px]   decoration-none  text-sm font-normal font-manrope leading-snug`}
                 />
                 <button
                   className="w-[32px] h-[32px] absolute top-6 right-7"

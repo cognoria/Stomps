@@ -23,9 +23,20 @@ export default function userModel() {
         isVerified: { type: Boolean, default: false },
         googleId: { type: String, },
         services: [{ type: service, select: false, default: [] }],
+        security: [{
+            question: { type: String },
+            answer: { type: String },
+        }]
     }, {
         timestamps: true
     });
+
+    schema.methods.validateSecurityQuestions = function (questions) {
+        return questions.every(q => {
+            const matchedQuestion = this.security.find(s => s.question.trim().toLowerCase() === q.question.trim().toLowerCase());
+            return matchedQuestion && matchedQuestion.answer.trim().toLowerCase() === q.answer.trim().toLowerCase();
+        });
+    };
 
     schema.set('toJSON', {
         virtuals: true,
@@ -36,6 +47,7 @@ export default function userModel() {
             delete ret.services
         }
     });
+    
     schema.index({ googleId: 1 }, { unique: true, sparse: true })
     return mongoose.models.User || mongoose.model('User', schema);
 }

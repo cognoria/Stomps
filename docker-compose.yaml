@@ -7,13 +7,13 @@ services:
     volumes:
       - mongo-data:/data/stompsdb
 
-  # redis:
-  #   image: redis
-  #   restart: always
-  #   ports:
-  #     - '6370:6370'
-  #   volumes:
-  #     - redis:/data/stompsdb
+  redis:
+    image: redis
+    restart: always
+    ports:
+      - '6370:6370'
+    volumes:
+      - redis:/data/stompsdb
 
   app:
     build:
@@ -30,4 +30,4 @@ services:
 
 volumes:
   mongo-data:
-  # redis:
+  redis:

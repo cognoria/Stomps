@@ -11,12 +11,19 @@ const useKeysStore = create(
     fetched: false,
     addKeys: async ({ openaikey, pineconeKey }, onSuccess) => {
       set({ loading: true, error: null });
-
+      let requestBody = {};
+      
+      if(openaikey && openaikey != ""){
+        requestBody.openaiKey = openaikey;
+      }
+      if(pineconeKey && pineconeKey != ""){
+        requestBody.pineconeKey = pineconeKey;
+      }
       try {
         const response = await fetch("/api/v1/user/global", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ openaiKey: openaikey, pineconeKey }),
+          body: JSON.stringify(requestBody),
         });
         const data = await response.json();
 

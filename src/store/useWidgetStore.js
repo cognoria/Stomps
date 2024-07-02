@@ -189,7 +189,7 @@ const useWidgetStore = create(
             userData = await get().setUserData();
           }
 
-          console.log("userData: ", userData);
+          // console.log("userData: ", userData);
           if (userData && userData !== null) requestBody.user = userData;
 
           // const sessionId = cookies().get(`chat-session-${botId}`)?.value;

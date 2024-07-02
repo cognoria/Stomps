@@ -115,7 +115,7 @@ export default function QA() {
                           <Image width={20} height={20}
                             src="/images/chatbox/trash.svg"
                             alt=""
-                            classNAme="w-full h-auto"
+                            className="w-full h-auto"
                           />
                         </button>
                       </div>

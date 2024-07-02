@@ -77,6 +77,12 @@ function LeadsSettings({ botId }) {
   };
 
   // handle lead submission
+  useEffect(() => {
+    setTitle(chatbot?.chatBotCustomizeData?.leadMsgDescription);
+    setNameToggle(chatbot?.chatBotCustomizeData?.collectName);
+    setEmailToggle(chatbot?.chatBotCustomizeData?.collectEmail);
+    setPhoneToggle(chatbot?.chatBotCustomizeData?.collectPhone);
+  }, [chatbot])
 
   const resetLeads = async (e) => {
     e.preventDefault();
@@ -98,11 +104,12 @@ function LeadsSettings({ botId }) {
     });
     await getChatbot(botId);
   };
+
   return (
     <div className="w-full px-3 lg:p-[6%]  flex flex-col items-center justify-center ">
       <div className="flex w-full flex-col items-center  justify-center border-gray-200 border-[1px] gap-4 rounded-md ">
         <div className="text-gray-900 w-full text-base font-bold p-3 border-gray-200 border-b-[2px] font-manrope leading-snug">
-          Leads
+          Settings
         </div>
 
         <div className="flex-1 w-full my-3 p-3 flex flex-col gap-y-2 items-start">

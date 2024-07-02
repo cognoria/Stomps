@@ -30,24 +30,32 @@ async function getWebLinksFromUrl(url) {
     const $ = cheerio.load(html);
     const baseUrl = new URL(url).origin
     const Urls = new Set();
-    const unfiltered = []
+    const unfiltered = new Set();
     Urls.add(url)
     ////DONE TODO: log unfiltered href
     $('a[target="_blank"], a').each((_, element) => {
         const href = $(element).attr('href');
-        unfiltered.push(href)
-        if (href && !/^(javascript:|https?:\/\/|\/\/|#|.*\.(png|jpg|jpeg|gif|svg))$/i.test(href)) {
+        unfiltered.add(href)
+        // const completeUrl = new URL(href, baseUrl).toString();
+
+        let completeUrl;
+        try {
+            completeUrl = new URL(href, baseUrl).href;
+        } catch (e) {
+            console.error(`Skipping invalid URL: ${href}`);
+        }
+        if (completeUrl && !/^(javascript:|https?:\/\/|\/\/|#|.*\.(png|jpg|jpeg|gif|svg))$/i.test(completeUrl)) {
             // Check if the URL has a query parameter or a hash fragment
-            if (!href.includes('?') && !href.includes('#') && !href.includes('tel')) {
-                if (!href.startsWith('javascript:') && href.trim() !== '') {
-                    const completeUrl = new URL(href, baseUrl).href;
+            if (!completeUrl.includes('?') && !completeUrl.includes('#') && !completeUrl.includes('tel')) {
+                if (!completeUrl.startsWith('javascript:') && completeUrl.trim() !== '') {
+                    // const completeUrl = new URL(href, baseUrl).href;
                     Urls.add(completeUrl);
                 }
             }
         }
     });
 
-    logger.crawl(`${url} crawled unfiltered ${JSON.stringify(unfiltered)}`)
+    logger.crawl(`${url} crawled unfiltered ${JSON.stringify(Array.from(unfiltered))}`)
     logger.crawl(`${url} crawled filtered ${JSON.stringify(Array.from(Urls))}`)
 
     return Array.from(Urls);

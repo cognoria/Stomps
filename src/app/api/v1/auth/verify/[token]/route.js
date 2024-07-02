@@ -8,6 +8,7 @@ module.exports = apiHandler({
 
 async function verify(req) {
     const { token } = req.params;
-    return await usersRepo.veryfyUser(token);
+    throw 'Deprecated'
+    // return await usersRepo.veryfyUser(token);
 }
 

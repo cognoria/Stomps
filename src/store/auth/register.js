@@ -2,19 +2,20 @@
 import { toast } from "react-toastify";
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
+
 const useRegisterAuthStore = create(
   devtools((set) => ({
     user: null,
     error: null,
     loading: false, // Add loading state
-    registerUser: async ({ email, password }, onSuccess) => {
+    registerUser: async (payload, onSuccess) => {
       // console.log(`store hitted ${email}, ${password}`);
       set({ loading: true, error: null }); // Start loading and reset any previous errors
       try {
         const response = await fetch("/api/v1/auth/register", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email, password }),
+          body: JSON.stringify(payload),
         });
         const data = await response.json();
 

@@ -117,17 +117,23 @@ export class Crawler {
         await this.chatbot.save();
     }
 
-    _extractUrls(html, baseUrl) {
+    _extractUrls(html, url) {
         const $ = cheerio.load(html);
         const uniqueUrls = new Set();
 
         $('a[target="_blank"], a').each((_, element) => {
             const href = $(element).attr('href');
-            if (href && !/^(https?:\/\/|\/\/|#|.*\.(png|jpg|jpeg|gif|svg))$/i.test(href)) {
+            let completeUrl;
+            try {
+                completeUrl = new URL(href, url).href;
+            } catch (e) {
+                console.error(`Skipping invalid URL: ${href}`);
+            }
+            if (completeUrl && !/^(https?:\/\/|\/\/|#|.*\.(png|jpg|jpeg|gif|svg))$/i.test(completeUrl)) {
                 // Check if the URL has a query parameter or a hash fragment
-                if (!href.includes('?') && !href.includes('#') && !href.includes('tel')) {
-                    if (!href.startsWith('javascript:') && href.trim() !== '') {
-                        const completeUrl = new URL(href, baseUrl).href;
+                if (!completeUrl.includes('?') && !completeUrl.includes('#') && !completeUrl.includes('tel')) {
+                    if (!completeUrl.startsWith('javascript:') && completeUrl.trim() !== '') {
+                        // const completeUrl = new URL(href, baseUrl).href;
                         uniqueUrls.add(completeUrl);
                     }
                 }

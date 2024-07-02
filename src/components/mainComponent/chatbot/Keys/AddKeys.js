@@ -63,7 +63,7 @@ export default function AddKeys() {
             loading ? "bg-sky-700/30" : "bg-sky-700"
           }  text-white text-sm font-bold font-manrope leading-snug`}
         >
-          {loading ? "Adding" : "Continue"}
+          {loading ? "Adding..." : "Continue"}
         </button>
       </form>
     </div>

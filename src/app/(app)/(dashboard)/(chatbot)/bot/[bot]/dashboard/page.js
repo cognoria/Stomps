@@ -2,7 +2,7 @@
 
 import Analytics from "../../../../../../../components/mainComponent/chatbot/dashboard/analytics";
 import Chat_logs from "../../../../../../../components/mainComponent/chatbot/dashboard/chatLogs";
-import Leeds from "../../../../../../../components/mainComponent/chatbot/dashboard/leeds";
+import SecuritySettings from "../../../../../../../components/mainComponent/chatbot/settings/Security";
 
 import SourceNav from "../../../../../../../components/navigation/SourceNav";
 import useSourceNav from "../../../../../../../store/chatbot/useSourceNav";
@@ -35,12 +35,12 @@ function Page({ params: { bot } }) {
 
   const renderContent = () => {
     switch (currentPage) {
-      case "Leads":
-        return <Leeds botId={bot} />;
       case "Analytics":
         return <Analytics botId={bot} />;
-      case "Chat logs":
+      case "Chat Logs":
         return <Chat_logs botId={bot} />;
+      case "Security":
+        return <SecuritySettings botId={bot} />;
 
       default:
         return <Chat_logs botId={bot} />;
@@ -69,18 +69,18 @@ export default Page;
 
 const nav = [
   {
-    link_name: "Chat logs",
+    link_name: "Chat Logs",
     img_link: "/images/chatbox/directbox-notif.svg",
     link: "/",
   },
   {
-    link_name: "Leads",
-    img_link: "/images/chatbox/profile.svg",
-    link: "/text",
-  },
-  {
     link_name: "Analytics",
     img_link: "/images/chatbox/chart.svg",
+    link: "/website",
+  },
+  {
+    link_name: "Security",
+    img_link: "/images/chatbox/security.svg",
     link: "/website",
   },
 ];

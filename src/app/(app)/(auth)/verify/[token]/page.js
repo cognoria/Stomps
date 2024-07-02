@@ -1,8 +1,4 @@
 "use client"
-// import Forgot_password from "@/src/components/authComponents/forgot_password/forgot_password";
-// import Auth_header from "@/src/components/authComponents/header";
-// import MainNav from "@/src/components/navigation/MainNav";
-
 import Auth_header from "../../../../../components/authComponents/header";
 import { useSearchParams } from 'next/navigation';
 import VerifyEmail from "../../../../../components/authComponents/verify/verify";

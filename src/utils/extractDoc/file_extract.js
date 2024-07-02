@@ -1,42 +1,41 @@
-import { PDFDocument } from "pdf-lib"; 
+// import { PDFDocument } from "pdf-lib
 import Docxtemplater  from "docxtemplater";
 import PizZip from "pizzip";
 
+// // Function to extract text from PDF files
+// export async function extractTextFromPDF(file) {
+//   return new Promise((resolve, reject) => {
+//     const reader = new FileReader();
+//     reader.onload = async () => {
+//       const pdfBytes = new Uint8Array(reader.result);
+//       try {
+//         const pdfDoc = await PDFDocument.load(pdfBytes);
+//         const textContent = [];
 
-// Function to extract text from PDF files
-export async function extractTextFromPDF(file) {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onload = async () => {
-      const pdfBytes = new Uint8Array(reader.result);
-      try {
-        const pdfDoc = await PDFDocument.load(pdfBytes);
-        const textContent = [];
+//         const pages = await pdfDoc.getPages();
+//         for (const page of pages) {
+//           const { items } = await page.getTextContent();
+//           const pageText = items.map((item) => item.str).join(' ');
+//           textContent.push(pageText);
+//         }
 
-        const pages = await pdfDoc.getPages();
-        for (const page of pages) {
-          const { items } = await page.getTextContent();
-          const pageText = items.map((item) => item.str).join(' ');
-          textContent.push(pageText);
-        }
-
-        const content = textContent.join('\n');
-        const name = file.name;
-        // const pdfDoc = await PDFDocument.load(pdfBytes);
-        // const textContent = await pdfDoc.copyText();
-        // const content = textContent.map((line) => line.text).join("\n");
-        // const name = file.name;
-        resolve({ name, content });
-      } catch (error) {
-        reject(error);
-      }
-    };
-    reader.onerror = (error) => {
-      reject(error);
-    };
-    reader.readAsArrayBuffer(file);
-  });
-}
+//         const content = textContent.join('\n');
+//         const name = file.name;
+//         // const pdfDoc = await PDFDocument.load(pdfBytes);
+//         // const textContent = await pdfDoc.copyText();
+//         // const content = textContent.map((line) => line.text).join("\n");
+//         // const name = file.name;
+//         resolve({ name, content });
+//       } catch (error) {
+//         reject(error);
+//       }
+//     };
+//     reader.onerror = (error) => {
+//       reject(error);
+//     };
+//     reader.readAsArrayBuffer(file);
+//   });
+// }
 
 // Function to extract text from DOC files
 export async function extractTextFromDoc(file) {

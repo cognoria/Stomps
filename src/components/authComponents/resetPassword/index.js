@@ -7,7 +7,7 @@ import { useForm } from "react-hook-form";
 import useResetPasswordAuthStore from "../../../store/auth/resetPassword";
 import useModalStore from "../../../store/modal/modalState";
 import { usePasswordValidationStore } from "../../../store/validation/validations";
-import { password_schema } from "../../../utils/resolver/yup_schema";
+import { password_schema } from "../../../utils/resolver/Schema";
 import { ResetPass } from "../../customComponents/modals/authModal/authModals";
 import { useRouter } from "next/navigation";
 
@@ -29,6 +29,7 @@ function Reset_password({ token }) {
   } = useForm({
     resolver: yupResolver(password_schema),
   });
+  
   const onSubmit = async (data, e) => {
     e.preventDefault();
     resetPassword({ ...data, token }, () => {
@@ -39,12 +40,13 @@ function Reset_password({ token }) {
   const updateValidation = usePasswordValidationStore(
     (state) => state.updateValidation
   );
-  const { hasUppercase, hasNumber, isLongEnough } =
-    usePasswordValidationStore();
+  const { hasUppercase, hasNumber, isLongEnough } = usePasswordValidationStore();
   const passwordValue = watch("password");
+
   useEffect(() => {
     updateValidation(passwordValue);
-  }, [passwordValue]);
+  }, [passwordValue, updateValidation]);
+
   return (
     <div className="flex pb-[20px] flex-col mt-[30px] md:mt-[40px] gap-4 items-center justify-center w-screen h-auto">
       <form
@@ -53,7 +55,7 @@ function Reset_password({ token }) {
       >
         <div className="flex w-[90%] gap-4 md:w-[479px] flex-col items-start justify-start">
           <p className="text-xs font-bold font-manrope leading-none tracking-tight text-[#8A8A8A]">
-            Password
+           New password
           </p>
           <div className="w-full relative">
             <button
@@ -94,13 +96,13 @@ function Reset_password({ token }) {
                 xmlns="http://www.w3.org/2000/svg"
                 fill={hasUppercase ? "green" : "none"}
                 viewBox="0 0 24 24"
-                stroke-width="1.5"
+                strokeWidth="1.5"
                 stroke={hasUppercase ? "white" : "#B7B7B7"}
                 className="w-6 h-6 "
               >
                 <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                   d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
                 />
               </svg>
@@ -113,13 +115,13 @@ function Reset_password({ token }) {
                 xmlns="http://www.w3.org/2000/svg"
                 fill={isLongEnough ? "green" : "none"}
                 viewBox="0 0 24 24"
-                stroke-width="1.5"
+                strokeWidth="1.5"
                 stroke={isLongEnough ? "white" : "#B7B7B7"}
-                class="w-6 h-6"
+                className="w-6 h-6"
               >
                 <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                   d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
                 />
               </svg>
@@ -132,13 +134,13 @@ function Reset_password({ token }) {
                 xmlns="http://www.w3.org/2000/svg"
                 fill={hasNumber ? "green" : "none"}
                 viewBox="0 0 24 24"
-                stroke-width="1.5"
+                strokeWidth="1.5"
                 stroke={hasNumber ? "white" : "#B7B7B7"}
-                class="w-6 h-6"
+                className="w-6 h-6"
               >
                 <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                   d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
                 />
               </svg>
@@ -151,7 +153,7 @@ function Reset_password({ token }) {
 
         <div className="flex w-[90%] gap-4 md:w-[479px] flex-col items-start justify-start">
           <p className="text-xs font-bold font-manrope leading-none tracking-tight text-[#8A8A8A]">
-            Password
+            Confirm password
           </p>
           <div className="w-full relative">
             <button

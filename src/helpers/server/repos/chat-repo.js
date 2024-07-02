@@ -100,7 +100,7 @@ async function widgetChatResponse(chatbotId, params) {
     logger.context(`context for query: ${lastMessage.content} ==>: \n ${context}`)
     const prompt = generatePrompt(chatbot.chatBotCustomizeData.prompt, context, chatbot.chatBotCustomizeData.defaultAnswer);
     const message = [...prompt, ...params.messages.filter((msg) => msg.role === 'user')];
-    const response = await getChatCompletion(message, chatbot.chatBotCustomizeData.model, chatbot.owner);
+    const response = await getChatCompletion(message, chatbot.chatBotCustomizeData.model, chatbot.owner, chatbot.chatBotCustomizeData.temparature);
     userChatSession.messages.push(response);
     await userChatSession.save();
     return response;
@@ -131,7 +131,7 @@ async function getChatResponse(messages, chatbotId) {
     const prompt = generatePrompt(chatbot.chatBotCustomizeData.prompt, context, chatbot.chatBotCustomizeData.defaultAnswer);
 
     const message = [...prompt, ...messages.filter((msg) => msg.role === 'user')]
-    return await getChatCompletion(message, chatbot.chatBotCustomizeData.model, chatbot.owner)
+    return await getChatCompletion(message, chatbot.chatBotCustomizeData.model, chatbot.owner, chatbot.chatBotCustomizeData.temparature)
 }
 
 async function getChatsPerDay(chatbotId) {
@@ -163,11 +163,12 @@ async function getChatbotChats(chatbotId) {
 async function getChatsPerCountry(chatbotId) {
     const chatsPerCountry = await Chats.aggregate([
         {
-            $match: { chatbot: new mongoose.Types.ObjectId(chatbotId) }
+            $match: { chatbot: new mongoose.Types.ObjectId(chatbotId) },
+            $match: { 'userData.countryCode': { $exists: true, $ne: null } }
         },
         {
             $group: {
-                _id: "$userData.country",
+                _id: "$userData.countryCode",
                 count: { $sum: 1 }
             }
         }

@@ -20,6 +20,6 @@ async function setGlobalKeys(req) {
 }
 
 setGlobalKeys.schema = joi.object({
-    openaiKey: joi.string().required(),
-    pineconeKey: joi.string().required(),
+    openaiKey: joi.string().optional(),
+    pineconeKey: joi.string().optional(),
 });

@@ -47,8 +47,8 @@ export function ForgetPass({ email }) {
         {loading ? (
           <div className="flex gap-4 md:w-[40px] w-[40px] flex-col items-start justify-start">
             {loading && (
-              <div class="flex items-center justify-center mx-auto w-full">
-                <div class="w-[15px] h-[15px] border-4 border-sky-700 border-dotted rounded-full animate-spin"></div>
+              <div className="flex items-center justify-center mx-auto w-full">
+                <div className="w-[15px] h-[15px] border-4 border-sky-700 border-dotted rounded-full animate-spin"></div>
               </div>
             )}
           </div>

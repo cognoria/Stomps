@@ -1,7 +1,7 @@
 import AddKeys from "../../../../../components/mainComponent/chatbot/Keys/AddKeys";
 
-function page() {
+function Page() {
   return <AddKeys />;
 }
 
-export default page;
+export default Page;

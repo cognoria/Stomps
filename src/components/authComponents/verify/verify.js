@@ -48,7 +48,7 @@ function VerifyEmail({ token, email }) {
               onClick={() => resend(email, () => {})}
               className="text-white text-sm font-bold font-manrope leading-snug"
             >
-              Resent Verification Email
+              Resend Verification Email
             </button>
           </div>
         )}
@@ -78,7 +78,7 @@ function Success({ message }) {
         <div className="bg-green-500 rounded-full p-2 animate-fade-in inline-flex items-center justify-center">
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            class="h-8 w-8 text-white"
+            className="h-8 w-8 text-white"
             viewBox="0 0 20 20"
             fill="currentColor"
           >
@@ -106,11 +106,11 @@ function Error({ message }) {
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
-            stroke-width="2"
+            strokeWidth="2"
           >
             <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
+              strokeLinecap="round"
+              strokeLinejoin="round"
               d="M6 18L18 6M6 6l12 12"
             />
           </svg>

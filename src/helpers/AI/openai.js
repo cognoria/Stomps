@@ -30,7 +30,7 @@ export async function getEmbeddings(input, owner) {
     }
 }
 
-export async function getChatCompletion(messages, model, owner) {
+export async function getChatCompletion(messages, model, owner, temperature) {
     try {
         const apiKey = await globalRepo.getServiceKey(AppServiceProviders.OPENAI, owner)
         const openai = await getOpenaiClient(apiKey)
@@ -38,6 +38,8 @@ export async function getChatCompletion(messages, model, owner) {
         const completion = await openai.chat.completions.create({
             messages,
             model,
+            max_tokens: 1024,
+            temperature
         });
         return completion.choices[0].message;
     } catch (e) {

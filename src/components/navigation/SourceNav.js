@@ -48,7 +48,7 @@ function SourceNav({ nav, tag }) {
   };
 
   return (
-    <div style={navbarStyles} className={`flex  flex-col    w-full`}>
+    <div style={navbarStyles} className={`flex flex-col w-full`}>
       {/* desktop nav for chat bot */}
       <div className="lg:flex hidden flex-col gap-2 ">
         {nav.map((items, i) => {
@@ -60,9 +60,9 @@ function SourceNav({ nav, tag }) {
                 currentPage == items.link_name
                   ? "border-r-[4px] border-[#1261AC]"
                   : ""
-              }  flex-row gap-4 items-start justify-start`}
+              }  flex-row gap-4 items-start justify-start capitalize`}
             >
-              <img src={items.img_link} alt="" />
+              <img src={items.img_link} alt="" className={` ${currentPage == items.link_name ? 'text-[#1261AC]' : 'text-[#8A8A8A]'}`} />
               <p className="text-zinc-500 text-sm font-bold font-manrope leading-snug">
                 {items.link_name}
               </p>
@@ -96,9 +96,9 @@ function SourceNav({ nav, tag }) {
                     stroke="currentColor"
                   >
                     <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="1.5"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="1.5"
                       d="M4 6h16M4 12h16M4 18h16"
                     />
                   </svg>
@@ -115,9 +115,9 @@ function SourceNav({ nav, tag }) {
                     stroke="currentColor"
                   >
                     <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
                       d="M6 18L18 6M6 6l12 12"
                     />
                   </svg>
@@ -140,7 +140,7 @@ function SourceNav({ nav, tag }) {
                     : ""
                 } flex-row gap-4 items-start justify-start`}
               >
-                <img src={items.img_link} alt="" />
+                <img src={items.img_link} alt=""  className={` ${currentPage == items.link_name ? 'text-[#1261AC]' : 'text-[#8A8A8A]'}`} />
                 <p className="text-zinc-500 text-sm font-bold font-manrope leading-snug">
                   {items.link_name}
                 </p>

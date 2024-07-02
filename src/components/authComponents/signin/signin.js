@@ -1,13 +1,13 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
-// import { auth_schema } from "@/src/utils/resolver/yup_schema";
 import { yupResolver } from "@hookform/resolvers/yup";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import useLoginAuthStore from "../../../store/auth/login";
-import { auth_schema } from "../../../utils/resolver/yup_schema";
+import useLoginAuthStore from "../../../store/auth/login.js";
+import { loginSchema } from "../../../utils/resolver/Schema.js";
+
 function Signin_form() {
   const router = useRouter();
   const { loginUser, loading, error } = useLoginAuthStore((state) => ({
@@ -15,9 +15,7 @@ function Signin_form() {
     loading: state.loading,
     error: state.error,
   }));
-  const onFailure = () => {
-    router.push("/account/keys");
-  };
+  
   const onSuccess = () => {
     router.push("/");
   };
@@ -27,11 +25,11 @@ function Signin_form() {
     formState: { errors },
     watch,
   } = useForm({
-    resolver: yupResolver(auth_schema),
+    resolver: yupResolver(loginSchema),
   });
   const onSubmit = async (data) => {
     try {
-      await loginUser(data, onSuccess, onFailure);
+      await loginUser(data, onSuccess);
     } catch (error) {
       console.error("Error during login:", error);
     }
@@ -102,7 +100,7 @@ function Signin_form() {
               Forgot password?{" "}
             </span>
             <span className="text-sky-700 text-sm font-bold font-manrope leading-tight tracking-tight">
-              <Link href="/forgot_password">Reset</Link>
+              <Link href="/forget">Reset</Link>
             </span>
           </div>
         </div>
@@ -122,23 +120,12 @@ function Signin_form() {
       </form>
       <div className="w-[90%] md:w-[481px] text-center mt-[20px]">
         <span className="text-zinc-800 text-sm font-normal font-manrope leading-snug">
-          Don’t have an account?
+          Don’t have an account?{" "}
         </span>
         <span className="text-blue-500 my-[20px] text-sm font-bold font-manrope leading-tight tracking-tight">
           <Link href="/signup">Create Account</Link>
         </span>
       </div>
-      {/* <div className="mt-[20px] w-full md:w-[481px] h-5 justify-center items-center gap-4 inline-flex">
-        <hr className="text-center w-[40%] mt-[2px] h-[3px] text-zinc-500 text-sm font-medium font-manrope leading-tight tracking-tight" />
-        Or
-        <hr className="text-center w-[40%] h-[3px] mt-[2px] text-zinc-500 text-sm font-medium font-manrope leading-tight tracking-tight" />
-      </div>
-      <div className="md:w-[430px] w-[90%] my-[20px] h-11 md:px-[126px] px-[25%] py-2.5 rounded-[36px] border border-indigo-400 justify-center items-center gap-4 flex-row flex">
-        <img src="/images/auth/google_logo.svg" alt="" className="w-6 h-6 " />
-        <div className="text-center w-full text-zinc-800 text-xs md:text-sm font-medium font-manrope leading-none md:leading-tight tracking-tight">
-          Sign in with Google
-        </div>
-      </div> */}
     </div>
   );
 }

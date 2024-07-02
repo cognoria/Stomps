@@ -1,14 +1,16 @@
-import Auth_header from "../../../../components/authComponents/header";
+import { redirect } from "next/navigation";
+import Auth_header from "../../../../components/authComponents/header.js";
 import Signin_form from "../../../../components/authComponents/signin/signin";
-import MainNav from "../../../../components/navigation/mainNav";
+import { usersRepo } from "../../../../helpers/server";
 
-function page() {
+async function Page() {
+  
   return (
     <div className=" overflow-x-hidden">
-      <Auth_header desc={"Sign in your account"} />
-      <Signin_form />
+          <Auth_header desc={"Sign in your account"} />
+          <Signin_form />
     </div>
   );
 }
 
-export default page;
+export default Page;

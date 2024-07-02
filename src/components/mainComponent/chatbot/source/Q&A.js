@@ -108,7 +108,7 @@ export default function QandA() {
                           <Image width={15} height={15}
                             src="/images/chatbox/trash.svg"
                             alt=""
-                            classNAme="w-full h-auto"
+                            className="w-full h-auto"
                           />
                         </button>
                       </div>

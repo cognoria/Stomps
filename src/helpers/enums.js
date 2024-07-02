@@ -27,6 +27,7 @@ export const EmbeddingModels = {
 
 export const chatModelEnum = {
     GPT_4: 'gpt-4',
+    GPT_4o: 'gpt-4o',
     GPT_4_turbo: 'gpt-4-turbo-preview',
     GPT_3_5: 'gpt-3.5-turbo'
 }
@@ -65,6 +66,82 @@ export const rateLimits = {
     msg_count: 0,
     timeframe: 0
 }
+
+export const securityQuestions = [
+    {
+        "question": "What was the name of your first pet?"
+    },
+    {
+        "question": "What is the name of the street you grew up on?"
+    },
+    {
+        "question": "What was the make and model of your first car?"
+    },
+    {
+        "question": "What was the name of your first school?"
+    },
+    {
+        "question": "What is your mother’s maiden name?"
+    },
+    {
+        "question": "What is your favorite book?"
+    },
+    {
+        "question": "What is the name of your favorite childhood friend?"
+    },
+    {
+        "question": "What city were you born in?"
+    },
+    {
+        "question": "What was the name of your first employer?"
+    },
+    {
+        "question": "What is your father’s middle name?"
+    },
+    {
+        "question": "What was the name of your first grade teacher?"
+    },
+    {
+        "question": "What is your favorite movie?"
+    },
+    {
+        "question": "What is the name of your favorite restaurant?"
+    },
+    {
+        "question": "What is your favorite food?"
+    },
+    {
+        "question": "What was the name of the hospital where you were born?"
+    },
+    {
+        "question": "What was your childhood nickname?"
+    },
+    {
+        "question": "What was the name of your first crush?"
+    },
+    {
+        "question": "What was the name of your first company you worked for?"
+    },
+    {
+        "question": "What is your favorite sports team?"
+    },
+    {
+        "question": "What is your favorite color?"
+    },
+    {
+        "question": "What is the middle name of your oldest sibling?"
+    },
+    {
+        "question": "What is your favorite vacation spot?"
+    },
+    {
+        "question": "What is the name of your first child?"
+    },
+    {
+        "question": "What was the first concert you attended?"
+    }
+]
+
 
 export const chatBotCustomizeDataDefault = {
     backgroundColor: "#000",

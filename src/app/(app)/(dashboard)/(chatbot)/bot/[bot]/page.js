@@ -1,6 +1,6 @@
 import ChatPage from "../../../../../../components/mainComponent/chatbot/Chats/Chat";
 
-function page({ params: { bot } }) {
+function Page({ params: { bot } }) {
 
   return (
     <div className="flex flex-col w-full items-center justify-center mt-[100px] ">
@@ -9,4 +9,4 @@ function page({ params: { bot } }) {
   );
 }
 
-export default page;
+export default Page;

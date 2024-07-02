@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useUserStore } from "../../../store/auth/userState";
 import useModalStore from "../../../store/modal/modalState";
-import { PlanCards } from "../../customComponents/cards/planCards";
+// import { PlanCards } from "../../customComponents/cards/planCards";
 import { AccountModal } from "../../customComponents/modals/dashboardModal/accountModal";
 
 function Account() {
@@ -36,12 +36,12 @@ function Account() {
 
       <div className="w-[95%] lg:w-[570px] flex flex-col items-center rounded-lg border border-gray-200">
         <div className="text-sky-700  p-4 lg:text-base  text-sm font-bold font-manrope leading-snug">
-          Your Stomps API Key
+          Your API Key
         </div>
         <div className="w-full h-[0px] lg:w-[570px]  my-2  border border-gray-200" />
         <div className="flex gap-y-4 flex-col lg:flex-row items-start justify-between w-full p-4">
           <div className="w-[260px] text-gray-900 text-sm font-medium font-manrope leading-tight tracking-tight">
-            Make sure to keep your keys secret and never expose them.
+            For security reasons your keys would not be exposed.
           </div>
           <div className="flex items-end flex-col justify-end w-full lg:w-auto bg:block">
             <div className="w-[210px] flex-end px-2.5 py-2 rounded-lg shadow border border-sky-700 justify-center items-center gap-2 flex">
@@ -49,7 +49,7 @@ function Account() {
                 href="/account/keys"
                 className="text-sky-700 text-sm font-bold font-manrope leading-snug"
               >
-                Create New Secret key
+                Update your API key
               </Link>
               <Image
                 width={15}
@@ -61,7 +61,7 @@ function Account() {
             </div>
           </div>
         </div>
-        <div className="flex w-full flex-col items-start justify-between p-4 ">
+        {/* <div className="flex w-full flex-col items-start justify-between p-4 ">
           <div className="rounded-lg flex flex-col gap-y-4 lg:flex-row items-start justify-between  border w-full border-gray-200 p-4">
             <div className="flex flex-row gap-4 mt-2">
               <div className="w-[287px] text-zinc-800 text-sm font-medium font-manrope leading-tight tracking-tight">
@@ -94,9 +94,10 @@ function Account() {
               </div>
             </div>
           </div>
-        </div>
+        </div> */}
       </div>
-      <div className="flex flex-col items-center w-[95%] lg:w-[570px]">
+      {/* <div className="flex flex-col items-center w-[95%] lg:w-[570px]">
+      {/* <div className="flex flex-col items-center w-[95%] lg:w-[570px]">
         <PlanCards />
         <div className="px-[4%] py-[12px] flex flex-row  justify-start lg:justify-center items-start">
           <img alt="" src="/images/landing/warning.svg" />
@@ -105,10 +106,10 @@ function Account() {
             usage separately
           </div>
         </div>
-      </div>
+      </div> */}
 
       <div className="lg:w-[570px] w-[95%] rounded-lg flex-row flex gap-4  justify-end items-end ">
-        <button
+        {/* <button
           className="w-[146px] p-2 rounded-lg shadow border border-red-500 justify-center items-center gap-2 flex"
           onClick={() =>
             useModalStore
@@ -130,7 +131,7 @@ function Account() {
           <p className="text-red-500 text-xs font-bold font-manrope leading-snug">
             Delete Account
           </p>
-        </button>
+        </button> */}
         <Link
           onClick={() => logout()}
           className="w-[146px]   p-2 rounded-lg shadow bg-[#1261AC] justify-center items-center gap-2 flex"

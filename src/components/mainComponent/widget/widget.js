@@ -304,7 +304,7 @@ const ChatMessage = memo(({ message, isUser, theme }) => (
       {isUser ? (
         message.content
       ) : (
-        <div
+        <div className="custom_chat_style"
           dangerouslySetInnerHTML={{ __html: markdownToHtml(message.content) }}
         />
       )}

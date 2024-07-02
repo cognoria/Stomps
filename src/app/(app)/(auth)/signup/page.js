@@ -1,9 +1,13 @@
 
+import { redirect } from "next/navigation";
 import Auth_header from "../../../../components/authComponents/header";
 import Signup_form from "../../../../components/authComponents/signup/signup";
-import MainNav from "../../../../components/navigation/mainNav";
+import { usersRepo } from "../../../../helpers/server";
 
-function page() {
+async function Page() {
+  // const allUsers = await usersRepo.allUserCount()
+  // if(allUsers >= 1) redirect('/signin')
+    
   return (
     <div className=" overflow-x-hidden">
       <Auth_header desc={"Create your account"} />
@@ -12,4 +16,4 @@ function page() {
   );
 }
 
-export default page;
+export default Page;

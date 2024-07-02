@@ -1,7 +1,7 @@
 import { Pinecone } from "@pinecone-database/pinecone";
 import { globalRepo } from "../server/repos/global-repo";
 import { AppServiceProviders } from "../enums";
-
+import { AwsRegions, GcpRegions } from "@pinecone-database/pinecone/"
 // let pinecone = null;
 
 export const getPineconeClient = async (apikey) => {
@@ -46,30 +46,28 @@ export async function getMatchesFromEmbeddings(embeddings, topK, pinconeIndex, o
     }
 }
 
-export async function createPinconeIndex(name, type = 'starter', owner) {
+export async function createPinconeIndex(name, type = 'serverless', owner) {
     try {
         // ///TODO: pass apikey
         const apiKey = await globalRepo.getServiceKey(AppServiceProviders.PINECONE, owner)
         const pinecone = await getPineconeClient(apiKey);
 
-        let index;
-
         switch (type.toLowerCase()) {
             case 'serverless':
-                return index = await pinecone.createIndex({
+                return await pinecone.createIndex({
                     name,
                     dimension: 1536,
                     metric: 'cosine',
                     spec: {
                         serverless: {
                             cloud: 'aws',
-                            region: 'us-west-2'
+                            region: 'us-east-1'
                         }
                     }
                 });
 
             case 'pod':
-                return index = await pinecone.createIndex({
+                return await pinecone.createIndex({
                     name,
                     dimension: 1536,
                     metric: 'cosine',
@@ -83,34 +81,31 @@ export async function createPinconeIndex(name, type = 'starter', owner) {
                 });
 
             case 'starter':
-                return index = await pinecone.createIndex({
+                return await pinecone.createIndex({
                     name,
                     dimension: 1536,
                     metric: 'cosine',
                     spec: {
-                        pod: {
-                            environment: 'gcp-starter',
-                            podType: 'p1.x1',
-                            pods: 1
+                        serverless: {
+                            cloud: 'aws',
+                            region: 'us-east-1'
                         }
                     }
                 });
 
             default:
-                return index = await pinecone.createIndex({
+                return await pinecone.createIndex({
                     name,
                     dimension: 1536,
                     metric: 'cosine',
                     spec: {
-                        pod: {
-                            environment: 'gcp-starter',
-                            podType: 'p1.x1',
-                            pods: 1
+                        serverless: {
+                            cloud: 'aws',
+                            region: 'us-east-1'
                         }
                     }
                 });
         }
-        // return index;
     } catch (e) {
         console.log("Error creating pinecone index: ", e)
         if (e.message.includes("FORBIDDEN")) {

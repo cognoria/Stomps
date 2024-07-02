@@ -6,7 +6,6 @@ import { toast } from "react-toastify";
 import useKnowledgebase from "../../../../store/chatbot/useKnowledgebase";
 import {
   extractTextFromDoc,
-  extractTextFromPDF,
   extractTextFromTXT,
   isDOCFile,
   isPDFFile,
@@ -40,12 +39,10 @@ export default function DataSource() {
     event.preventDefault();
     const file = event.dataTransfer.files[0];
     if (file) {
-      // console.log("Dropped file:", file);
-      if (!isTXTFile(file) && !isPDFFile(file) && !isDOCFile(file)) {
-        return; //toaste file not supported
+      if (!isTXTFile(file) && !isDOCFile(file) && isPDFFile(selectedFile)) {
+        return toast.error("unspported file selected");
       } else {
         setSelectedFile(file);
-        //add file to content;
       }
     }
   };
@@ -58,10 +55,12 @@ export default function DataSource() {
         file = await extractTextFromTXT(selectedFile);
       } else if (isDOCFile(selectedFile)) {
         file = await extractTextFromDoc(selectedFile);
-      } else if (isPDFFile(selectedFile)) {
-        file = await extractTextFromPDF(selectedFile);
-      } else {
-        return toast.error("unspported file selected"); //toast file not supported
+      }
+      else if (isPDFFile(selectedFile)) {
+        file = await handleExtractPDF();
+      }
+      else {
+        return toast.error("unspported file selected");
       }
       await addFiles(file);
       setSelectedFile(null);
@@ -69,6 +68,40 @@ export default function DataSource() {
       console.error("error adding file: ", e);
       toast.error("Failed to add file");
     }
+  }
+
+  const handleExtractPDF = async () => {
+    return new Promise((resolve, reject) => {
+      const xhr = new XMLHttpRequest();
+      const formData = new FormData();
+      formData.append("pdf", selectedFile);
+
+      xhr.open("POST", "/api/v1/data/pdf", true);
+
+      xhr.upload.onprogress = (event) => {
+        if (event.lengthComputable) {
+          const percentComplete = Math.round((event.loaded / event.total) * 100);
+          setUploadProgress(percentComplete);
+        }
+      };
+
+      xhr.onload = () => {
+        if (xhr.status === 200) {
+          const response = JSON.parse(xhr.responseText);
+          resolve({ name: selectedFile.name, content: response.content });
+        } else {
+          reject(new Error("Failed to upload PDF file"));
+          toast.error("Failed to add PDF file");
+        }
+      };
+
+      xhr.onerror = () => {
+        reject(new Error("Failed to upload PDF file"));
+        toast.error("Failed to add PDF file");
+      };
+
+      xhr.send(formData);
+    });
   }
 
   return (
@@ -103,7 +136,7 @@ export default function DataSource() {
                     Select a File Upload, or Drag and Drop it here
                   </div>
                   <div className="sub-text mb-2">
-                    Supported file type: .doc, .txt, .docx
+                    Supported file type: .doc, .txt, .docx, .pdf
                   </div>
                 </label>
                 {selectedFile && (
@@ -114,7 +147,7 @@ export default function DataSource() {
               </div>
             </div>
 
-            <div className="items-center flex flex-row justify-center gap-x-2 text-neutral-400 py-4 lg:p-0 p-2 text-xs w-full tracking-tigh leading-none  font-normal font-manrope">
+            {/* <div className="items-center flex flex-row justify-center gap-x-2 text-neutral-400 py-4 lg:p-0 p-2 text-xs w-full tracking-tigh leading-none  font-normal font-manrope">
               <Image
                 width={15}
                 height={15}
@@ -125,7 +158,7 @@ export default function DataSource() {
                 If you’re uploading a PDF, be sure that the texts can be
                 highlighted
               </p>
-            </div>
+            </div> */}
 
             <div className="h-auto  mt-[20px] lg:mt-0 p-3  w-full  flex flex-col">
               <div className="flex gap-3 mt-[50px] flex-row w-full items-center ">
@@ -178,7 +211,7 @@ export default function DataSource() {
                             height={15}
                             src="/images/chatbox/trash.svg"
                             alt=""
-                            classNAme="w-full h-auto"
+                            className="w-full h-auto"
                           />
                         </button>
                       </li>

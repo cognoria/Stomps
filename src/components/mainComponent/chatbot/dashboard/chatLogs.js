@@ -12,7 +12,7 @@ import {
 import { truncateMessage } from "../../../../utils/truncateMsg";
 import EmptyDashboard from "./emptyDashboard";
 import BarHeader from "./header";
-function Chat_logs({ botId }) {
+function ChatLogs({ botId }) {
   const { getChatbotChats, loading, chats, error } = useChatbotStore(
     (state) => ({
       getChatbotChats: state.getChatbotChats,
@@ -42,22 +42,21 @@ function Chat_logs({ botId }) {
     setSelectedDate(date);
   };
 
-  console.log(FilteredChats);
   return (
     <div className="w-full flex flex-col items-center ">
-      {FilteredChats && chats.length > 0 ? (
+      {FilteredChats?.length > 0 ? (
         <Filled_bot_state
           chatData={FilteredChats}
           handleDateSelect={handleDateSelect}
         />
       ) : (
-        <EmptyDashboard />
+        <EmptyDashboard header={'Chat Log'} msg={'No Converstions yet'} />
       )}
     </div>
   );
 }
 
-export default Chat_logs;
+export default ChatLogs;
 
 const markdownToHtml = (markdown) =>
   remark().use(remarkHtml).processSync(markdown).toString();
@@ -76,7 +75,7 @@ const Filled_bot_state = ({ chatData, handleDateSelect }) => {
     <div className="w-full px-3 lg:p-[6%]   flex flex-col items-center justify-center ">
       <div className="flex w-full flex-col items-center  justify-center border-gray-200 border-[1px] gap-4 rounded-md ">
         <div className="text-gray-900 w-full text-base font-bold p-3 border-gray-200 border-b-[2px] font-manrope leading-snug">
-          Chat logs
+          Chat Logs
         </div>
         <BarHeader
           exportDataFile={chatData}
@@ -88,13 +87,10 @@ const Filled_bot_state = ({ chatData, handleDateSelect }) => {
 
         <div className="flex gap-3 p-3 w-full flex-col lg:flex-row items-start justify-start">
           <div className="flex border-none h-auto max-h-[400px] lg:h-[400px] items-start overflow-y-scroll gap-2  flex-col w-full lg:w-[40%]">
-            {arrangedData?.map((item, i) => {
+            {arrangedData.length > 0 && arrangedData?.map((item, i) => {
               const lastUserMessage = item.messages.find(
                 (message) => message.role === "user"
               );
-
-              // Find the last message from the assistant
-
               return (
                 <button
                   onClick={() => updateChatIndex(i)}
@@ -105,7 +101,7 @@ const Filled_bot_state = ({ chatData, handleDateSelect }) => {
                     <div className="w-auto text-right text-zinc-500 text-xs font-normal font-manrope leading-none tracking-tight">
                       User:{" "}
                       {lastUserMessage
-                        ? truncateMessage(lastUserMessage.content, 5)
+                        ? truncateMessage(lastUserMessage?.content, 5)
                         : ""}
                     </div>
                     <div className="w-auto text-right text-zinc-500 text-xs font-normal font-manrope leading-none tracking-tight">
@@ -115,7 +111,7 @@ const Filled_bot_state = ({ chatData, handleDateSelect }) => {
                   <div className="w-full text-start text-stone-900 text-xs font-normal font-manrope leading-[20px] tracking-tight">
                     Bot:
                     {truncateMessage(
-                      item.messages[item.messages.length - 1]?.content,
+                      item?.messages[item?.messages?.length - 1]?.content,
                       12
                     )}
                   </div>
@@ -155,6 +151,7 @@ const Filled_bot_state = ({ chatData, handleDateSelect }) => {
                             Confidence score {message?.confidence_score}
                           </div> */}
                           <div
+                          className="custom_chat_style"
                             dangerouslySetInnerHTML={{
                               __html: markdownToHtml(message.content),
                             }}

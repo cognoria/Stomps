@@ -49,7 +49,6 @@ const ChoroplethMap = ({ data }) => {
           .style("fill", (d) => {
             const country = data.find((item) => {
               function convertCountryToIsoNumeric(country) {
-                // console.log({ country });
                 // Handle case-insensitivity
                 // country = country.toLowerCase();
 
@@ -60,20 +59,20 @@ const ChoroplethMap = ({ data }) => {
 
                 if (country.length > 2)
                   country = countryData.getAlpha2Code(country, "en");
-
+                console.log(country);
                 // Try converting by country name (ISO 3166-1 alpha-2)
                 const isoNumericCode = countryData.alpha2ToNumeric(country);
 
                 if (isoNumericCode) {
-                  // console.log({ isoNumericCode });
+                  console.log({ isoNumericCode });
                   return isoNumericCode;
                 }
 
                 // If no match found, throw an error
                 throw new Error(`Invalid country name/code: ${country}`);
               }
-              const cId = convertCountryToIsoNumeric(item.country);
 
+              const cId = convertCountryToIsoNumeric(item.country);
               return cId === d.id;
             });
             return country ? getColor(country.count) : "#ccc";
@@ -90,39 +89,45 @@ const ChoroplethMap = ({ data }) => {
     };
   }, [data]);
 
-  function convertCountryToIsoNumeric(country) {
-    // Handle case-insensitivity
-    country = country.toUpperCase();
+  // function convertCountryToIsoNumeric(country) {
+  //   // Handle case-insensitivity
+  //   country = country.toUpperCase();
 
-    // Check for numeric code (ISO 3166-1 numeric)
-    if (!isNaN(country) && country.length === 3) {
-      return country;
-    }
+  //   // Check for numeric code (ISO 3166-1 numeric)
+  //   if (!isNaN(country) && country.length === 3) {
+  //     return country;
+  //   }
 
-    // Try converting by country name (ISO 3166-1 alpha-2)
-    const isoNumericCode = countryData.alpha2ToNumeric(country);
-    if (isoNumericCode) {
-      return isoNumericCode;
-    }
+  //   // Try converting by country name (ISO 3166-1 alpha-2)
+  //   const isoNumericCode = countryData.alpha2ToNumeric(country);
+  //   if (isoNumericCode) {
+  //     return isoNumericCode;
+  //   }
 
-    // If no match found, throw an error
-    throw new Error(`Invalid country name/code: ${country}`);
-  }
+  //   // If no match found, throw an error
+  //   throw new Error(`Invalid country name/code: ${country}`);
+  // }
 
   const getColor = (count) => {
-    if (count >= 0 && count <= 50) {
-      // Light blue to dark blue
-      return d3.interpolateBlues(count / 50);
-    } else if (count >= 51 && count <= 100) {
-      // Light blue to dark blue
-      return d3.interpolateBlues(count / 100);
-    } else if (count >= 101 && count <= 200) {
-      // Light blue to dark blue
-      return d3.interpolateBlues(count / 200);
-    } else {
-      // Dark blue for counts above 200
-      return d3.interpolateBlues(1);
-    }
+    if (count === undefined || count === null) {
+      // Return default color when count is not provided
+      return "#ccc";
+    } 
+    
+    return d3.interpolateBlues(count / 200);
+    // else if (count >= 0 && count <= 50) {
+    //   // Light blue to dark blue
+    //   return d3.interpolateBlues(count / 50);
+    // } else if (count >= 51 && count <= 100) {
+    //   // Light blue to dark blue
+    //   return d3.interpolateBlues(count / 100);
+    // } else if (count >= 101 && count <= 200) {
+    //   // Light blue to dark blue
+    //   return d3.interpolateBlues(count / 200);
+    // } else {
+    //   // Dark blue for counts above 200
+    //   return d3.interpolateBlues(1);
+    // }
   };
 
   return <svg ref={svgRef} />;
