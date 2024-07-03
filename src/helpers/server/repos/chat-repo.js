@@ -130,7 +130,7 @@ async function getChatResponse(messages, chatbotId) {
     logger.context(`context for query: ${lastMessage.content} ==>: \n ${context}`)
     const prompt = generatePrompt(chatbot.chatBotCustomizeData.prompt, context, chatbot.chatBotCustomizeData.defaultAnswer);
 
-    const message = [...prompt, ...messages.filter((msg) => msg.role === 'user')]
+    const message = [...prompt, lastMessage]
     return await getChatCompletion(message, chatbot.chatBotCustomizeData.model, chatbot.owner, chatbot.chatBotCustomizeData.temparature)
 }
 
