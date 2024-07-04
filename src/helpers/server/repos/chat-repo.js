@@ -97,7 +97,7 @@ async function widgetChatResponse(chatbotId, params) {
     userChatSession.messages.push(lastMessage);
 
     const context = await getContext(lastMessage.content, chatbot.pIndex, chatbot.owner, '');
-    logger.context(`context for query: ${lastMessage.content} ==>: \n ${context}`)
+    // logger.context(`context for query: ${lastMessage.content} ==>: \n ${context}`)
     const prompt = generatePrompt(chatbot.chatBotCustomizeData.prompt, context, chatbot.chatBotCustomizeData.defaultAnswer);
     const message = [...prompt, lastMessage];
     const response = await getChatCompletion(message, chatbot.chatBotCustomizeData.model, chatbot.owner, chatbot.chatBotCustomizeData.temparature);
@@ -127,7 +127,7 @@ async function getChatResponse(messages, chatbotId) {
 
     // Get the context from the last message
     const context = await getContext(lastMessage.content, chatbot.pIndex, chatbot.owner, '')
-    logger.context(`context for query: ${lastMessage.content} ==>: \n ${context}`)
+    // logger.context(`context for query: ${lastMessage.content} ==>: \n ${context}`)
     const prompt = generatePrompt(chatbot.chatBotCustomizeData.prompt, context, chatbot.chatBotCustomizeData.defaultAnswer);
 
     const message = [...prompt, lastMessage]
