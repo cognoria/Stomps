@@ -23,11 +23,7 @@ async function getService(provider, owner) {
         return user.services.find(service => service.name === provider);
     } else {
         let globalSettings = await Global.findOne().lean();
-        if (!globalSettings) {
-            await seedGlobalKeys();
-            globalSettings = await Global.findOne().lean();
-            // throw 'Global variables not set yet';
-        }
+        
         return globalSettings.services.find(service => service.name === provider);
     }
 }
@@ -117,15 +113,17 @@ async function getEmbedModel() {
     let globalSettings = await Global.findOne().lean();
 
     if (!globalSettings) {
-        await seedGlobalKeys();
-        globalSettings = await Global.findOne().lean();
+        return EmbeddingModels.TEXT_ADA
+        // await seedGlobalKeys();
+        // globalSettings = await Global.findOne().lean();
     }
 
     // Find the model
     const service = globalSettings.embedModel;
 
     if (!service) {
-        throw 'embed model not set yet.';
+        return EmbeddingModels.TEXT_ADA
+        // throw 'embed model not set yet.';
     }
     return service;
 }
@@ -137,82 +135,48 @@ async function setGlobalKeys(params) {
     const openaiKeyHash = openaiKey ? encrypt(openaiKey) : undefined;
     const pineconeKeyHash = pineconeKey ? encrypt(pineconeKey) : undefined;
 
+    const updateService = async (entity, serviceName, apiKeyHash) => {
+        const service = entity.services.find(service => service.name === serviceName);
+        if (apiKeyHash) {
+            if (service) {
+                if (serviceName === AppServiceProviders.PINECONE) {
+                    const chatbotsCount = await Chatbots.countDocuments({ pineconeKeyId: service._id });
+                    if (chatbotsCount > 0) {
+                        throw 'Cannot update or remove the Pinecone key as there are chatbots associated with it';
+                    }
+                }
+                service.apiKey = apiKeyHash;
+            } else {
+                entity.services.push({
+                    name: serviceName,
+                    apiKey: apiKeyHash,
+                    meta: { desc: `${serviceName.toLowerCase()} api key` }
+                });
+            }
+        }
+    };
+
     if (process.env.ALLOW_INDIVIDUAL_KEYS) {
         const userId = headers().get('userId');
-        const user = await Users.findById(userId).select("+services")
+        const user = await Users.findById(userId).select("+services");
+        if (!user) throw "User not found";
 
-        // Check if the service already exists, and update it if it does
-        if (!user) throw "User not found"
-
-        const openaiService = user.services?.find(
-            (service) => service.name === AppServiceProviders.OPENAI
-        );
-        if (openaiKeyHash) {
-            if (openaiService) {
-                openaiService.apiKey = openaiKeyHash;
-            } else {
-                user.services.push({
-                    name: AppServiceProviders.OPENAI,
-                    apiKey: openaiKeyHash,
-                    meta: { desc: 'open ai api key' },
-                });
-            }
-            await user.save();
-        }
-
-        const pineconeService = user.services?.find(
-            (service) => service.name === AppServiceProviders.PINECONE
-        );
-        if (pineconeKeyHash) {
-            if (pineconeService) {
-                // Check if there are any chatbots associated with this Pinecone key
-                const chatbotsCount = await Chatbots.countDocuments({
-                    pineconeKeyId: pineconeService._id,
-                });
-
-                if (chatbotsCount > 0) {
-                    throw new Error(
-                        'Cannot update or remove the Pinecone key as there are chatbots associated with it'
-                    );
-                }
-
-                pineconeService.apiKey = pineconeKeyHash;
-            } else {
-                user.services.push({
-                    name: AppServiceProviders.PINECONE,
-                    apiKey: pineconeKeyHash,
-                    meta: { desc: 'pinecone api key' },
-                });
-            }
-        }
+        await updateService(user, AppServiceProviders.OPENAI, openaiKeyHash);
+        await updateService(user, AppServiceProviders.PINECONE, pineconeKeyHash);
 
         await user.save();
-        return { message: "Api keys set successfully" };
+    } else {
+        let global = await Global.findOne();
+        if (!global) {
+            global = await Global.create({});
+        }
+
+        await updateService(global, AppServiceProviders.OPENAI, openaiKeyHash);
+        await updateService(global, AppServiceProviders.PINECONE, pineconeKeyHash);
+
+        await global.save();
     }
 
-    // there'd be only one Global document
-    // and it should and be initalized before now.
-    let global = await Global.findOne()
-    if (!global) {
-        global = await Global.create({})
-    }
-    if (openaiKeyHash) {
-        global.services.push({
-            name: AppServiceProviders.OPENAI,
-            apiKey: openaiKeyHash,
-            meta: { desc: "open ai api key" }
-        });
-    }
-
-    if (pineconeKeyHash) {
-        global.services.push({
-            name: AppServiceProviders.PINECONE,
-            apiKey: pineconeKeyHash,
-            meta: { desc: "pinecone api key" }
-        });
-    }
-    
-    await global.save()
     return { message: "Api keys set successfully" };
 }
 

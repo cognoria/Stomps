@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken';
-import { cookies } from 'next/headers';
+import { cookies, headers } from 'next/headers';
 import { globalRepo } from './repos';
 
 export const auth = {
@@ -17,7 +17,7 @@ async function isAuthenticated() {
 }
 
 async function verifyToken() {
-    const token = cookies().get('authorization')?.value ?? '';
+    const token = cookies().get('authorization')?.value ?? headers().get('authorization').split(" ")[1];
     //TODO: JWT_Secret will be created randomly and saved for the user
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     // const decoded = jwt.verify(token, await globalRepo.getJwtSecret());

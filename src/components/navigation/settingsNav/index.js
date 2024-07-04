@@ -24,8 +24,6 @@ function ChatbotNav() {
   ];
 
   const handleEmbedButtonClick = () => {
-    // Show the modal when the "embed on site" button is clicked
-    // console.log(chatbot);
     if (chatbot?.visibility == "PRIVATE") {
       useModalStore
         .getState()
@@ -45,9 +43,7 @@ function ChatbotNav() {
     if (chatbot?.visibility == "PUBLIC") return;
     const res = await fetch(`/api/v1/chatbot/${id}/setting/set-public`);
     const data = await res.json();
-    // console.log(res);
     if (!res.ok) {
-      // console.log(data);
       return toast.error(data.message);
     }
 
