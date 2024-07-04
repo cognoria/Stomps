@@ -102,7 +102,6 @@ const Widget = ({ botId }) => {
 
   useEffect(() => {
     setUserData();
-    console.log({ userData, setUserData });
   }, []);
 
   useEffect(() => {
