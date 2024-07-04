@@ -18,15 +18,15 @@ export default async function Layout({ children }) {
 }
 
 async function getUserGlobal(token) {
-  // const headersList = headers();
-  // const host = headersList.get('host');
-  // const protocol = headersList.get('x-forwarded-proto') || 'http';
-  // const baseURL = `${protocol}://${host}`;
-  // const response = await fetch(`${baseURL}/api/v1/user/global`, {
-  //   headers: {
-  //     Authorization: `Bearer ${token}`,
-  //   },
-  // });
-  // const data = await response.json();
-  return await globalRepo.isKeys();
+  const headersList = headers();
+  const host = headersList.get('host');
+  const protocol = headersList.get('x-forwarded-proto') || 'http';
+  const baseURL = `${protocol}://${host}`;
+  const response = await fetch(`${baseURL}/api/v1/user/global`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  const data = await response.json();
+  return data //await globalRepo.isKeys();
 }
