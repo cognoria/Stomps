@@ -18,7 +18,7 @@ function isPublicPath(req) {
     const publicPaths = [
         'GET:/api/ping',
         `POST:/api/v1/data/ip`,
-        'GET:/api/v1/user/global',
+        // 'GET:/api/v1/user/global',
         'POST:/api/v1/auth/login',
         'POST:/api/v1/auth/logout',
         'POST:/api/v1/auth/google',

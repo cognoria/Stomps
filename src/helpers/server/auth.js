@@ -22,6 +22,7 @@ async function verifyToken() {
     //TODO: JWT_Secret will be created randomly and saved for the user
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     // const decoded = jwt.verify(token, await globalRepo.getJwtSecret());
+    console.log({token, decoded})
     const id = decoded.sub;
     return id;
 }

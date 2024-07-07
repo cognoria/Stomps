@@ -235,6 +235,8 @@ async function updateChatInterface(chatbotId, interfaceData) {
     chatbot.chatBotCustomizeData.placement = interfaceData.alignChatButton.toUpperCase()
     chatbot.chatBotCustomizeData.popupDelay = interfaceData.autoShowMsg
     chatbot.chatBotCustomizeData.profileImage = interfaceData.profileImage
+    chatbot.chatBotCustomizeData.fontColor = interfaceData.fontColor
+    chatbot.chatBotCustomizeData.userChatColor = interfaceData.userChatColor
     await chatbot.save()
 
     return { message: "Successfully updated chatbot widget interface" };
