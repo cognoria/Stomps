@@ -1,6 +1,7 @@
 import { Inter } from "next/font/google";
 import { cookies, headers } from "next/headers";
 import { redirect } from "next/navigation";
+import { globalRepo } from "../../../../helpers/server";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -10,7 +11,6 @@ export default async function Layout({ children }) {
   if (!token) redirect('/signin')
 
   const data = await getUserGlobal(token);
-  console.log({token, data})
   if (!data) redirect('/account/keys')
 
   return <div className={inter.className}>{children}</div>;
@@ -21,11 +21,13 @@ async function getUserGlobal(token) {
   const host = headersList.get('host');
   const protocol = headersList.get('x-forwarded-proto') || 'http';
   const baseURL = `${protocol}://${host}`;
+  console.log(baseURL)
   const response = await fetch(`${baseURL}/api/v1/user/global`, {
     headers: {
-      Authorization: `Bearer ${token}`,
+      Authorization: `${token}`,
     },
   });
   const data = await response.json();
-  return data;
+  
+  return data //await globalRepo.isKeys();
 }

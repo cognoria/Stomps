@@ -10,7 +10,7 @@ const useForgetPasswordAuthStore = create(
       set({ loading: true, error: null });
       try {
         const response = await fetch(`api/v1/auth/password/forget/${email}`, {
-          method: "GET",
+          method: "POST",
           body: JSON.stringify({ questions }),
           headers: { "Content-Type": "application/json" },
         });

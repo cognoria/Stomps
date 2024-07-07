@@ -246,6 +246,7 @@ function generatePrompt(prompt, context, defaultAnswer) {
             If the given data does not contain sufficient information to form a response, reply with the predefined message "${defaultAnswer}."
             * Adhere strictly to the context and avoid any form of speculation or fabrication.
             * Ensure there is a blank line between multiple paragraphs to improve readability, clearly separating distinct points or sections.
+            * responsed only to the lase user message, with a direct and friendly answer
             * For common greetings like 'Hello' or 'Hi', respond warmly. For expressions of gratitude like 'Thank you', respond with 'You're welcome!' or a similarly polite acknowledgement.     
             `
         }

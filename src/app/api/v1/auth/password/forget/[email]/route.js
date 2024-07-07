@@ -3,7 +3,7 @@ import { apiHandler } from "../../../../../../../helpers/server/api";
 import joi from "joi";
 
 module.exports = apiHandler({
-    GET: forgetPass,
+    POST: forgetPass,
 });
 
 async function forgetPass(req) {

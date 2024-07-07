@@ -25,7 +25,7 @@ const useRegisterAuthStore = create(
 
         set({ user: data, loading: false });
         toast.success(
-          "Registration successful! Verify your email and proceed to login",
+          "Registration successful! please login",
           {
             position: "top-right",
             autoClose: 5000,

@@ -18,6 +18,7 @@ function isPublicPath(req) {
     const publicPaths = [
         'GET:/api/ping',
         `POST:/api/v1/data/ip`,
+        // 'GET:/api/v1/user/global',
         'POST:/api/v1/auth/login',
         'POST:/api/v1/auth/logout',
         'POST:/api/v1/auth/google',
@@ -27,7 +28,7 @@ function isPublicPath(req) {
         `POST:/api/v1/embed/:botId/:action`,
         'GET:/api/v1/auth/verify/resend/:email',
         'POST:/api/v1/auth/password/reset/:token',
-        'GET:/api/v1/auth/password/forget/:email',
+        'POST:/api/v1/auth/password/forget/:email',
     ];
     
     const isPublic = publicPaths.some(path => matchPath(normalizedPath, path));
