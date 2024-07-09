@@ -21,6 +21,8 @@ updateChatInterface.schema = joi.object({
     })).required(),
     msgPlaceholder: joi.string().required(),
     theme: joi.string().required(),
+    fontColor: joi.string().required(),
+    userChatColor: joi.string().required(),
     displayName: joi.string().required(),
     chatIcon: joi.string().required(),
     alignChatButton: joi.string().required(),

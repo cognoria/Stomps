@@ -299,13 +299,6 @@ const ChatMessage = memo(({ message, isUser, isUserColor, isUserFontColors, them
     className={`w-full h-auto font-manrope text-sm items-start justify-center flex-col flex  ${isUser ? "justify-end items-end " : "justify-start"
       }`}
   >
-    {/* <div
-      className={`max-w-[85%] p-[10px] font-manrope text-sm ${theme === "DARK"
-        ? "bg-gray-800 text-zinc-100"
-        : "bg-zinc-100 text-stone-900"
-        } ${isUser ? "bg-[#0C4173] rounded-l rounded-tr" : "rounded-tl rounded-r"
-        } text-start text-smleading-snug `}
-    > */}
     <div
       style={{
         background: isUser && (isUserColor ? isUserColor : "#0C4173"),
