@@ -24,7 +24,7 @@ async function getUserGlobal(token) {
   console.log({ baseURL, token })
   const response = await fetch(`${baseURL}/api/v1/user/global`, {
     headers: {
-      Authorization: `Bearer ${token}`,
+      'Authorization': `Bearer ${token}`,
       'Auth-Token': `${token}`,
       'Content-Type': 'application/json',
     },
