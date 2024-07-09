@@ -28,6 +28,6 @@ async function getUserGlobal(token) {
     },
   });
   const data = await response.json();
-  
-  return data //await globalRepo.isKeys();
+  {console.log(data)}
+  return data
 }
