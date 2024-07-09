@@ -1,6 +1,7 @@
 import jwt from 'jsonwebtoken';
 import { cookies, headers } from 'next/headers';
 import { globalRepo } from './repos';
+import { cp } from 'fs';
 
 export const auth = {
     isAuthenticated,
@@ -17,10 +18,10 @@ async function isAuthenticated() {
 }
 
 async function verifyToken() {
-    const token = cookies().get('authorization')?.value || headers().get('authorization');
-    console.log({token})
+    const token = cookies().get('authorization')?.value || headers().get('Authorization');
+    console.log(cookies().get('authorization')?.value)
+    console.log(headers().get('Authorization'))
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    console.log({decoded})
     const id = decoded.sub;
     return id;
 }
