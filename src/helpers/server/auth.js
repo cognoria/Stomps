@@ -17,7 +17,6 @@ async function isAuthenticated() {
 
 async function verifyToken() {
     const token = cookies().get('authorization')?.value || headers().get('Authorization');
-    // console.log(cookies().get('authorization')?.value)
     console.log(headers())
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     const id = decoded.sub;
