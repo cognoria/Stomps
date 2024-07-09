@@ -21,13 +21,13 @@ async function getUserGlobal(token) {
   const host = headersList.get('host');
   const protocol = headersList.get('x-forwarded-proto') || 'http';
   const baseURL = `${protocol}://${host}`;
-  console.log(baseURL)
+  console.log({ baseURL, token })
   const response = await fetch(`${baseURL}/api/v1/user/global`, {
     headers: {
       Authorization: `${token}`,
     },
   });
   const data = await response.json();
-  {console.log(data)}
+  { console.log(data) }
   return data
 }
