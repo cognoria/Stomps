@@ -99,7 +99,7 @@ async function widgetChatResponse(chatbotId, params) {
     const context = await getContext(lastMessage.content, chatbot.pIndex, chatbot.owner, '');
     logger.context(`context for query: ${lastMessage.content} ==>: \n ${context}`)
     const prompt = generatePrompt(chatbot.chatBotCustomizeData.prompt, context, chatbot.chatBotCustomizeData.defaultAnswer);
-    const message = [...prompt, ...params.messages.filter((msg) => msg.role === 'user')];
+    const message = [...prompt, lastMessage];
     const response = await getChatCompletion(message, chatbot.chatBotCustomizeData.model, chatbot.owner, chatbot.chatBotCustomizeData.temparature);
     userChatSession.messages.push(response);
     await userChatSession.save();
@@ -130,7 +130,7 @@ async function getChatResponse(messages, chatbotId) {
     logger.context(`context for query: ${lastMessage.content} ==>: \n ${context}`)
     const prompt = generatePrompt(chatbot.chatBotCustomizeData.prompt, context, chatbot.chatBotCustomizeData.defaultAnswer);
 
-    const message = [...prompt, ...messages.filter((msg) => msg.role === 'user')]
+    const message = [...prompt, lastMessage]
     return await getChatCompletion(message, chatbot.chatBotCustomizeData.model, chatbot.owner, chatbot.chatBotCustomizeData.temparature)
 }
 
