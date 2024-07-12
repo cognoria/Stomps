@@ -30,6 +30,8 @@ const questionExample = new Schema({
 
 const chatBotCustomizeData = new Schema({
     backgroundColor: { type: String, required: true, default: "#000" },
+    fontColor: { type: String, required: true, default: "#FFF" },
+    userChatColor: { type: String, required: true, default: "#1261AC" },
     borderRadius: { type: String, required: true, default: "12px" },
     description: { type: String, required: true, default: "Ask me anything. I'll try to answer based on the data from this website." },
     heading: { type: String, required: true, default: "I am your AI assistant" },

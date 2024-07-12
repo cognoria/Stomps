@@ -10,7 +10,6 @@ export default async function Layout({ children }) {
   if (!token) redirect('/signin')
 
   const data = await getUserGlobal(token);
-  console.log({token, data})
   if (!data) redirect('/account/keys')
 
   return <div className={inter.className}>{children}</div>;
@@ -23,9 +22,11 @@ async function getUserGlobal(token) {
   const baseURL = `${protocol}://${host}`;
   const response = await fetch(`${baseURL}/api/v1/user/global`, {
     headers: {
-      Authorization: `Bearer ${token}`,
+      'Authorization': `Bearer ${token}`,
+      'Auth-Token': `${token}`,
+      'Content-Type': 'application/json',
     },
   });
   const data = await response.json();
-  return data;
+  return data
 }

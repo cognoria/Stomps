@@ -1,4 +1,3 @@
-// import { AwsRegions, GcpRegions } from "@pinecone-database/pinecone"
 import { AwsRegions, GcpRegions } from "@pinecone-database/pinecone/dist/pinecone-generated-ts-fetch"
 
 export { AwsRegions, GcpRegions }
@@ -148,6 +147,7 @@ export const chatBotCustomizeDataDefault = {
     borderRadius: "12px",
     description: "Ask me anything. I'll try to answer based on the data from this website.",
     fontColor: "#FFF",
+    userChatColor: "#1261AC",
     heading: "I am your AI assistant",
     prompt: "You are a professional and friendly chatbot. Use clear and concise language to provide supportive responses, ensuring every interaction is courteous and enhances user satisfaction.",
     defaultAnswer: "I am sorry, I don't have the information you're looking for right now. Please feel free to contact our support team if you need immediate assistance, or let me know if there's anything else you'd like to explore!",
@@ -158,16 +158,16 @@ export const chatBotCustomizeDataDefault = {
     offlineMessage: false,
     adminEmail: '',
     collectEmail: false,
-    collectEmailText: 'What is your email address?',
+    collectEmailText: 'What is your email address?',//
     welcomeMessage: 'Hello! How can I assist you today?',
-    customCSS: '',
+    customCSS: '',//
     questionExamples: [{ question: 'How can I contact you?' }],
     welcomeMessages: ['Hello! How can I assist you today?'],
     launcherIcon: '#1261AC',
     profileImage: '#1261AC',
     chatInputPlaceholderText: 'Type your message',
     assistantTabHeader: 'AI assistant',
-    readMoreText: 'Read more:',
+    readMoreText: 'Read more:',//
     leadMsgDescription: "Let us know how to contact you.",
     model: chatModelEnum.GPT_3_5,
     temparature: 0.7,

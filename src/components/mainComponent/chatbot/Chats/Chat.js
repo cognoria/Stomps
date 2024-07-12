@@ -90,13 +90,12 @@ function ChatPage({ botId }) {
                 </div>
                 <div className="flex flex-row w-full gap-1 items-center">
                   <div
-                    className={`w-3 h-3 ${
-                      getStatusColor(chatbot?.status) === "green"
-                        ? "bg-emerald-500"
-                        : getStatusColor(chatbot?.status) === "red"
+                    className={`w-3 h-3 ${getStatusColor(chatbot?.status) === "green"
+                      ? "bg-emerald-500"
+                      : getStatusColor(chatbot?.status) === "red"
                         ? "bg-red-500"
                         : "bg-yellow-500"
-                    } rounded-full`}
+                      } rounded-full`}
                   />
                   <div className="text-gray-900 text-sm font-bold font-manrope leading-snug">
                     {chatbot?._id != botId || !chatbot ? (
@@ -190,7 +189,7 @@ function ChatPage({ botId }) {
             </div>
           </div>
         </div>
-        <Chat className="h-full" id={botId} status={chatbot?.status} />
+        <Chat className="h-full" id={botId} status={chatbot?.status} userFontColor={chatbot?.chatBotCustomizeData?.fontColor} userChatColour={chatbot?.chatBotCustomizeData?.userChatColor} />
       </div>
     </div>
   );
@@ -198,7 +197,7 @@ function ChatPage({ botId }) {
 
 export default ChatPage;
 
-function Chat({ id, status }) {
+function Chat({ id, status, userChatColour, userFontColor }) {
   const [messageInput, setMessageInput] = useState("");
   const chatContainerRef = useRef(null);
   const chatMessages = useBotMessagingStore(
@@ -225,7 +224,7 @@ function Chat({ id, status }) {
 
   async function sendMessage(e) {
     e.preventDefault();
-    if (!messageInput.trim()) return; 
+    if (!messageInput.trim()) return;
     try {
       const data = {
         role: "user",
@@ -277,19 +276,34 @@ function Chat({ id, status }) {
         {chatMessages.map((message, index) => (
           <div
             key={index}
-            className={`w-full h-auto flex flex-col ${
-              message?.role === "user"
-                ? "justify-end items-end "
-                : " justify-start"
-            } `}
+            className={`w-full h-auto flex flex-col ${message?.role === "user"
+              ? "justify-end items-end "
+              : " justify-start"
+              } `}
           >
-            <div className="max-w-[80%] h-auto px-[15px] items-start py-[11px] bg-zinc-100 rounded-tl rounded-tr rounded-br border justify-center  flex-col flex">
-              <div className="text-stone-900 text-start text-sm font-normal font-manrope leading-snug">
+            <div style={{
+              background:
+                message?.role === "user"
+                  ? userChatColour
+                    ? userChatColour
+                    : "#1261AC"
+                  : "#F1F1F0",
+            }}
+              className="max-w-[80%] h-auto px-[15px] items-start py-[11px] bg-zinc-100 rounded-tl rounded-tr rounded-br border justify-center  flex-col flex">
+              <div style={{
+                color:
+                  message?.role === "user"
+                    ? userFontColor
+                      ? userFontColor
+                      : "#fff"
+                    : "#1E1E1E",
+              }}
+                className="text-stone-900 text-start text-sm font-normal font-manrope leading-snug">
                 {message?.role === "user" ? (
                   message?.content
                 ) : (
                   <div
-                  className="custom_chat_style"
+                    className="custom_chat_style"
                     dangerouslySetInnerHTML={{
                       __html: markdownToHtml(message?.content),
                     }}

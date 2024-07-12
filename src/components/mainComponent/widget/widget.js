@@ -14,6 +14,8 @@ const Widget = ({ botId }) => {
   const [messageInput, setMessageInput] = useState("");
   const [isWidget, setIsWidget] = useState(false);
   const [widgetTheme, setWidgetTheme] = useState("LIGHT");
+  const [userWidgetColor, setUserWidgetColor] = useState("#1261AC");
+  const [userWidgetFontColor, setUserWidgetFontColor] = useState("#fff");
   const [showLeadForm, setShowLeadForm] = useState(false);
 
   const searchParams = useSearchParams();
@@ -46,6 +48,8 @@ const Widget = ({ botId }) => {
     if (!chatbotStyle) getChatStyle(botId);
     if (chatbotStyle) {
       setWidgetTheme(chatbotStyle?.widgetTheme);
+      setUserWidgetColor(chatbotStyle?.userChatColor);
+      setUserWidgetFontColor(chatbotStyle?.fontColor);
     }
   }, [getChatStyle, chatbotStyle, botId]);
 
@@ -211,6 +215,8 @@ const Widget = ({ botId }) => {
               key={index}
               message={message}
               isUser={message.role === "user"}
+              isUserFontColors={userWidgetFontColor}
+              isUserColor={userWidgetColor}
               theme={widgetTheme}
             />
           ))}
@@ -288,16 +294,20 @@ const Widget = ({ botId }) => {
 const markdownToHtml = (markdown) =>
   remark().use(remarkHTML).processSync(markdown).toString();
 
-const ChatMessage = memo(({ message, isUser, theme }) => (
+const ChatMessage = memo(({ message, isUser, isUserColor, isUserFontColors, theme }) => (
   <div
     className={`w-full h-auto font-manrope text-sm items-start justify-center flex-col flex  ${isUser ? "justify-end items-end " : "justify-start"
       }`}
   >
     <div
+      style={{
+        background: isUser && (isUserColor ? isUserColor : "#0C4173"),
+        color: isUser && (isUserFontColors ? isUserFontColors : ""),
+      }}
       className={`max-w-[85%] p-[10px] font-manrope text-sm ${theme === "DARK"
-        ? "bg-gray-800 text-zinc-100"
-        : "bg-zinc-100 text-stone-900"
-        } ${isUser ? "bg-[#0C4173] rounded-l rounded-tr" : "rounded-tl rounded-r"
+          ? "bg-gray-800 text-zinc-100"
+          : "bg-zinc-100 text-stone-900"
+        } ${isUser ? " rounded-l rounded-tr" : "rounded-tl rounded-r"
         } text-start text-smleading-snug `}
     >
       {isUser ? (

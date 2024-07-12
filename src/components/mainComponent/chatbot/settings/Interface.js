@@ -38,7 +38,14 @@ function InterfaceSettings({ botId }) {
     chatbot?.chatBotCustomizeData.chatInputPlaceholderText
   );
 
-  const [chatColour, setChatColour] = useState("");
+   //User chat Colour
+   const [chatColour, setChatColour] = useState(
+    chatbot?.chatBotCustomizeData.userChatColor
+  );
+  const [textColor, setTextColor] = useState(
+    chatbot?.chatBotCustomizeData.fontColor
+  );
+
   // theme selection
   const [selectedTheme, setSelectedTheme] = useState(
     chatbot?.chatBotCustomizeData.widgetTheme
@@ -98,6 +105,19 @@ function InterfaceSettings({ botId }) {
     }
   };
 
+  function getLuminance(color) {
+    const hex = color?.replace("#", "");
+    const r = parseInt(hex?.substr(0, 2), 16);
+    const g = parseInt(hex?.substr(2, 2), 16);
+    const b = parseInt(hex?.substr(4, 2), 16);
+    return (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+  }
+  
+  useEffect(() => {
+    const luminance = getLuminance(chatColour);
+    setTextColor(luminance > 0.5 ? "#000000" : "#ffffff");
+  }, [chatColour]);
+
   useEffect(() => {
     if (usePlainColor) {
       setChatIcon(imageColour);
@@ -114,6 +134,8 @@ function InterfaceSettings({ botId }) {
 
   useEffect(() => {
     if (chatbot) {
+      setTextColor(chatbot.chatBotCustomizeData.fontColor);
+      setChatColour(chatbot.chatBotCustomizeData.userChatColor);
       setAlignChat(chatbot.chatBotCustomizeData.placement);
       setAutoShowMsg(chatbot.chatBotCustomizeData.popupDelay);
       setChatIcon(chatbot.chatBotCustomizeData.launcherIcon);
@@ -159,6 +181,8 @@ function InterfaceSettings({ botId }) {
       alignChatButton: alignChat,
       autoShowMsg: autoShowMsg,
       profileImage: profileImg,
+      userChatColor: chatColour,
+      fontColor: textColor
     };
 
     updateInterface({ botData, botId }, async () => {
@@ -187,6 +211,8 @@ function InterfaceSettings({ botId }) {
       alignChatButton: chatBotCustomizeDataDefault.placement,
       autoShowMsg: chatBotCustomizeDataDefault.popupDelay,
       profileImage: chatBotCustomizeDataDefault.profileImage,
+      fontColor: chatBotCustomizeDataDefault.fontColor,
+      userChatColor: chatBotCustomizeDataDefault.userChatColor,
     };
 
     setAlignChat(chatBotCustomizeDataDefault.placement);
@@ -206,6 +232,8 @@ function InterfaceSettings({ botId }) {
       await getChatbot(botId);
     });
   };
+
+
 
   return (
     <div className="w-full px-3 lg:p-[6%]  flex flex-col overflow-x-hidden items-center justify-center ">
@@ -230,13 +258,6 @@ function InterfaceSettings({ botId }) {
               <div className="text-zinc-800 text-[10px]  font-bold font-manrope leading-[14px] tracking-tight">
                 Initial Messages
               </div>
-
-              {/* <input
-                value={initialMsg}
-                onChange={(e) => setInitialMsg(e.target.value)}
-                placeholder="👋 Hi!  How can I help"
-                className="h-[50px] p-2 w-full -mt-2 border-[1px] text-xs font-manrope border-gray-200 rounded-md"
-              /> */}
 
               <textarea
                 value={initialMsg}
@@ -371,11 +392,11 @@ function InterfaceSettings({ botId }) {
                 className="h-[50px] p-2 w-full -mt-2 border-[1px] text-xs font-manrope border-gray-200 rounded-md"
               />
             </div>
-            {/* <div className="flex gap-y-4 w-full flex-col items-start p-3">
+            <div className="flex gap-y-4 w-full flex-col items-start p-3">
               <div className="text-zinc-800 flex flex-row  items-center gap-4 text-[10px]  font-bold font-manrope leading-[14px] tracking-tight">
                 <p>User Chat color</p>
 
-                <button className="h-[31px] text-sky-700 text-xs font-bold font-manrope leading-snug rounded-lg  px-3.5 py-1 bg-sky-50 shadow border border-sky-50 justify-center items-center flex flex-row ">
+                <button onClick={() => setChatColour(chatBotCustomizeDataDefault.userChatColor)} className="h-[31px] text-sky-700 text-xs font-bold font-manrope leading-snug rounded-lg  px-3.5 py-1 bg-sky-50 shadow border border-sky-50 justify-center items-center flex flex-row ">
                   Reset
                 </button>
               </div>
@@ -383,7 +404,7 @@ function InterfaceSettings({ botId }) {
                 selectedColor={chatColour}
                 onColorChange={(e) => setChatColour(e.target.value)}
               />
-            </div> */}
+            </div>
             <div className="flex gap-y-4 w-full flex-col items-start p-3">
               <div className="text-zinc-800 text-[10px]  font-bold font-manrope leading-[14px] tracking-tight">
                 Upload Chat icon
@@ -544,8 +565,8 @@ function InterfaceSettings({ botId }) {
                 )}
 
                 <div className=" bg-transparent justify-end  w-full items-end flex-col flex">
-                  <div className="max-w-[70%] h-auto px-[15px] py-[11px] items-start  bg-[#0C4173]  text-zinc-100    rounded-tl rounded-tr rounded-br border justify-center  flex-col flex">
-                    <div className=" text-start text-sm font-normal font-manrope leading-snug">
+                  <div style={{ background: chatColour ? chatColour : "#1261AC" }} className="max-w-[70%] h-auto px-[15px] py-[11px] items-start text-zinc-100 rounded-tl rounded-tr rounded-br border justify-center flex-col flex">
+                    <div  style={{ color: textColor ? textColor : "#fff" }} className="text-start text-sm font-normal font-manrope leading-snug">
                       hi
                     </div>
                   </div>
