@@ -1,7 +1,6 @@
 import { Inter } from "next/font/google";
 import { cookies, headers } from "next/headers";
 import { redirect } from "next/navigation";
-import { globalRepo } from "../../../../helpers/server";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -21,13 +20,13 @@ async function getUserGlobal(token) {
   const host = headersList.get('host');
   const protocol = headersList.get('x-forwarded-proto') || 'http';
   const baseURL = `${protocol}://${host}`;
-  console.log(baseURL)
   const response = await fetch(`${baseURL}/api/v1/user/global`, {
     headers: {
-      Authorization: `${token}`,
+      'Authorization': `Bearer ${token}`,
+      'Auth-Token': `${token}`,
+      'Content-Type': 'application/json',
     },
   });
   const data = await response.json();
-  
-  return data //await globalRepo.isKeys();
+  return data
 }

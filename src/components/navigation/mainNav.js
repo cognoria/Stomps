@@ -70,7 +70,7 @@ function MainNav({dashboard}) {
           <div className="md:flex hidden flex-row gap-4">
             <Link href="/signin">
               <RoundedSubmitButton
-                button_content={"login"}
+                button_content={"Login"}
                 color={"bg-transparent"}
                 radius={"rounded-[8px]"}
                 width={"w-[107px]"}

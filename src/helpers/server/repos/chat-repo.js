@@ -99,7 +99,7 @@ async function widgetChatResponse(chatbotId, params) {
     const context = await getContext(lastMessage.content, chatbot.pIndex, chatbot.owner, '');
     logger.context(`context for query: ${lastMessage.content} ==>: \n ${context}`)
     const prompt = generatePrompt(chatbot.chatBotCustomizeData.prompt, context, chatbot.chatBotCustomizeData.defaultAnswer);
-    const message = [...prompt, ...params.messages.filter((msg) => msg.role === 'user')];
+    const message = [...prompt, lastMessage];
     const response = await getChatCompletion(message, chatbot.chatBotCustomizeData.model, chatbot.owner, chatbot.chatBotCustomizeData.temparature);
     userChatSession.messages.push(response);
     await userChatSession.save();
@@ -130,7 +130,7 @@ async function getChatResponse(messages, chatbotId) {
     logger.context(`context for query: ${lastMessage.content} ==>: \n ${context}`)
     const prompt = generatePrompt(chatbot.chatBotCustomizeData.prompt, context, chatbot.chatBotCustomizeData.defaultAnswer);
 
-    const message = [...prompt, ...messages.filter((msg) => msg.role === 'user')]
+    const message = [...prompt, lastMessage]
     return await getChatCompletion(message, chatbot.chatBotCustomizeData.model, chatbot.owner, chatbot.chatBotCustomizeData.temparature)
 }
 
@@ -242,8 +242,8 @@ function generatePrompt(prompt, context, defaultAnswer) {
             ${context}
             END OF CONTEXT BLOCK
             When generating answers, adhere to the following guidelines:
+            * Use the default response text, specified as '${defaultAnswer}', ONLY when the provided data does not contain sufficient information to form a response.
             * Remember not to provide additional information or answers from outside the given data. 
-            If the given data does not contain sufficient information to form a response, reply with the predefined message "${defaultAnswer}."
             * Adhere strictly to the context and avoid any form of speculation or fabrication.
             * Ensure there is a blank line between multiple paragraphs to improve readability, clearly separating distinct points or sections.
             * responsed only to the lase user message, with a direct and friendly answer
@@ -253,3 +253,4 @@ function generatePrompt(prompt, context, defaultAnswer) {
     ];
 }
 
+// If the given data does not contain sufficient information to form a response, reply with the predefined message "${defaultAnswer}."
