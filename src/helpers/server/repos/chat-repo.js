@@ -137,7 +137,7 @@ async function getChatResponse(messages, chatbotId) {
 async function getChatsPerDay(chatbotId) {
     const chatsPerDay = await Chats.aggregate([
         {
-            $match: { chatbot: new Schema.Types.ObjectId(chatbotId) }
+            $match: { chatbot: new mongoose.Types.ObjectId(chatbotId) }
         },
         {
             $group: {
@@ -164,7 +164,7 @@ async function getChatsPerCountry(chatbotId) {
     const chatsPerCountry = await Chats.aggregate([
         {
             $match: { 
-                chatbot: new Schema.Types.ObjectId(chatbotId),
+                chatbot: new mongoose.Types.ObjectId(chatbotId),
                 'userData.countryCode': { $exists: true, $ne: null }
             }
         },
