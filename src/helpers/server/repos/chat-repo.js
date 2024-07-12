@@ -3,7 +3,7 @@ import { getContext } from "../../AI/context";
 import { getChatCompletion } from "../../AI/openai";
 import { KnowledgebaseStatus } from "../../enums";
 import { headers, cookies } from "next/headers";
-import mongoose from "mongoose";
+import mongoose, { Schema } from "mongoose";
 import logger from "../../logger";
 
 const Chatbot = db.Chatbot;
@@ -137,7 +137,7 @@ async function getChatResponse(messages, chatbotId) {
 async function getChatsPerDay(chatbotId) {
     const chatsPerDay = await Chats.aggregate([
         {
-            $match: { chatbot: new mongoose.Types.ObjectId(chatbotId) }
+            $match: { chatbot: new Schema.Types.ObjectId(chatbotId) }
         },
         {
             $group: {
@@ -163,8 +163,10 @@ async function getChatbotChats(chatbotId) {
 async function getChatsPerCountry(chatbotId) {
     const chatsPerCountry = await Chats.aggregate([
         {
-            $match: { chatbot: new mongoose.Types.ObjectId(chatbotId) },
-            $match: { 'userData.countryCode': { $exists: true, $ne: null } }
+            $match: { 
+                chatbot: new Schema.Types.ObjectId(chatbotId),
+                'userData.countryCode': { $exists: true, $ne: null }
+            }
         },
         {
             $group: {
