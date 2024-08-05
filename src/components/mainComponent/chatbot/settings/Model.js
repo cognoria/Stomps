@@ -144,7 +144,7 @@ function ModelSettings({ botId }) {
               <div className="text-zinc-800 text-[10px]  font-bold font-manrope leading-[14px] tracking-tight">
                 Model
               </div>
-              <select
+              {/* <select
                 value={selectedModel}
                 onChange={handleModelChange}
                 className="h-[50px] w-full -mt-2 border-[1px] font-manrope border-gray-200 rounded-md"
@@ -173,6 +173,21 @@ function ModelSettings({ botId }) {
                 >
                   {chatModelEnum.GPT_4o}
                 </option>
+              </select> */}
+              <select
+                value={selectedModel}
+                onChange={handleModelChange}
+                className="h-12 w-full -mt-2 border border-gray-200 rounded-md font-manrope"
+              >
+                {Object.values(chatModelEnum).map((model) => (
+                  <option
+                    key={model}
+                    value={model}
+                    className="text-gray-900 text-xs font-medium leading-none tracking-tight"
+                  >
+                    {model}
+                  </option>
+                ))}
               </select>
               <div className="w-full p-3 text-zinc-500 text-xs font-medium font-manrope tracking-tight">
                 gpt-4 is much better at following the instructions and not
