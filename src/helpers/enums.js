@@ -27,6 +27,7 @@ export const EmbeddingModels = {
 export const chatModelEnum = {
     GPT_4: 'gpt-4',
     GPT_4o: 'gpt-4o',
+    GPT_40_mini: 'gpt-4o-mini',
     GPT_4_turbo: 'gpt-4-turbo-preview',
     GPT_3_5: 'gpt-3.5-turbo'
 }
@@ -141,7 +142,6 @@ export const securityQuestions = [
     }
 ]
 
-
 export const chatBotCustomizeDataDefault = {
     backgroundColor: "#000",
     borderRadius: "12px",
@@ -169,7 +169,7 @@ export const chatBotCustomizeDataDefault = {
     assistantTabHeader: 'AI assistant',
     readMoreText: 'Read more:',//
     leadMsgDescription: "Let us know how to contact you.",
-    model: chatModelEnum.GPT_3_5,
+    model: chatModelEnum.GPT_4o,
     temparature: 0.7,
     widgetTheme: widgetThemes.LIGHT,
     collectName: false,
