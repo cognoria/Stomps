@@ -1,5 +1,5 @@
 
-import { apiHandler } from "../../../../../helpers/server/api";
+import { apiHandler } from "../../../../helpers/server/api";
 
 module.exports = apiHandler({
     GET: validate,
