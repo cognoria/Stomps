@@ -20,6 +20,12 @@ services:
       - app-network
     volumes:
       - mongo-data:/data/stompsdb
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 10s
+      retries: 5
+      start_period: 40s
 
   app:
     build:
@@ -33,8 +39,11 @@ services:
     env_file:
       - .env
     depends_on:
-      - mongo
-      - redis
+      mongo:
+        condition: service_healthy
+      redis:
+        condition: service_started
+
 
 networks:
   app-network:
