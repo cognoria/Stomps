@@ -2,10 +2,9 @@ import { Queue, Worker } from 'bullmq';
 import Redis from 'ioredis';
 import { chatbotRepo } from './repos';
 
-const REDIS_URI = process.env.REDIS_URI;
+const REDIS_URI = process.env.REDIS_URI || 'redis://redis:6379';
 
-const connection = new Redis({
-  url: REDIS_URI,
+const connection = new Redis(REDIS_URI, {
   maxRetriesPerRequest: null
 });
 
