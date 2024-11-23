@@ -14,27 +14,31 @@ services:
   mongo:
     image: mongo
     restart: always
-    ports:
-      - '27017:27017'
     networks:
       - app-network
     volumes:
       - mongo-data:/data/stompsdb
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 10s
+      retries: 5
+      start_period: 40s
 
   app:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    stdin_open: true
+    image: docker.io/ikemhood/stomps-fullstack
+    restart: always
     ports:
       - '3000:3000'
-    networks:
-      - app-network
     env_file:
       - .env
+    networks:
+      - app-network
     depends_on:
-      - mongo
-      - redis
+      mongo:
+        condition: service_healthy
+      redis:
+        condition: service_started
 
 networks:
   app-network:
@@ -42,4 +46,4 @@ networks:
 
 volumes:
   mongo-data:
-  redis:
+  redis: 
