@@ -1,7 +1,7 @@
 "use client"
 import { Inter } from "next/font/google";
 import MainNav from "../../../components/navigation/mainNav";
-import React from "react";
+import React, { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useUserStore } from "../../../store/auth/userState";
 
@@ -12,7 +12,7 @@ export default function RootLayout({ children }) {
 
   const router = useRouter();
   
-  React.useEffect(() => {
+  useEffect(() => {
     getMe(() => router.push("/signin"))
   }, [router, getMe]);
 

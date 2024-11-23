@@ -5,7 +5,7 @@ import { apiHandler } from "../../../../helpers/server/api";
 //     POST: getPdfContents,
 // });
 module.exports = apiHandler({
-  GET: getPdfContents,
+    GET: getPdfContents,
 });
 
 //route GET api/v1/data/pdf
@@ -13,7 +13,7 @@ async function getPdfContents(req) {
     if (!req.file) {
         throw 'No PDF file uploaded';
     }
-const pdf = import.meta("pdf-parse")
+    const pdf = import.meta("pdf-parse")
     const pdfBuffer = req.file.buffer;
     const pdfData = await pdf(pdfBuffer);
 
