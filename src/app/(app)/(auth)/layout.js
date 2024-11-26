@@ -21,7 +21,7 @@ export default async function RootLayout({ children }) {
             redirect('/licence-invalid');
         }
 
-        const res = await fetch(`https://api.stomps.io/${INSTALLATION_KEY}/validate/${PURCHASE_EMAIL}`);
+        const res = await fetch(`https://api.stomps.io/${INSTALLATION_KEY}/validate/${PURCHASE_EMAIL}?website=${instanceUrl}`);
 
         if (!res.ok) {
             redirect('/licence-invalid');
