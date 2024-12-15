@@ -1,3 +1,4 @@
+'use client';
 // import { cookies } from "next/headers";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
