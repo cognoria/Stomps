@@ -1,36 +1,64 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Stomps - AI-Powered Customer Support Assistant
 
-## Getting Started
+Stomps is a self-hosted AI chat assistant that learns your website content and provides 24/7 customer support. It's designed to be a one-time purchase solution with lifetime ownership, offering unlimited interactions and comprehensive features out of the box.
 
-First, run the development server:
+## Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- **Intelligent Conversations**: Powered by GPT-3.5/GPT-4 for context-aware responses
+- **Custom Knowledge Base**: Train your bot with multiple data sources
+- **24/7 Real-Time Support**: Handle multiple customer inquiries simultaneously
+- **Lead Generation**: Capture visitor details for potential customer lists
+- **Analytics Dashboard**: Track customer interactions and conversation histories
+- **Brand Customization**: Fully customizable chat interface to match your website design
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Requirements
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+- Virtual Private Server (VPS) for hosting
+- Domain or subdomain pointing to your VPS
+- Pinecone account with API key
+- OpenAI platform account with API access
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+## Installation
 
-## Learn More
+1. ~~Purchase the software to receive your unique installation script~~
+2. Set up a Virtual Private Server (VPS)
+3. Configure your domain/subdomain DNS settings
+4. Run the provided installation command on your server
+5. Access the admin panel and configure API keys
+6. Import your knowledge base data
+7. Customize chat interface settings
+8. Embed the chatbot on your website(s)
 
-To learn more about Next.js, take a look at the following resources:
+## Costs
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- ~~One-time software purchase: $199~~
+- Additional costs (not included):
+  - OpenAI API usage
+  - Pinecone API usage
+  - VPS hosting fees
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+## Features Included
 
-## Deploy on Vercel
+- Custom API key integration (GPT-3.5 or GPT-4)
+- Unlimited message credits
+- Unlimited character embeddings
+- Complete conversation history access
+- Multiple file upload support
+- Unlimited website training links
+- White-label solution (no "Powered by" branding)
+- Multi-website embedding
+- Free updates for your software version
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## License
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+- Single instance license
+- Lifetime ownership
+- No recurring subscription fees
+
+## Support
+
+For installation guidance and support, please refer to the provided installation guide or contact our support team.
+
+## Note
+
+This is a self-hosted solution. You are responsible for managing your own server and API costs from third-party providers (OpenAI, Pinecone, hosting).
