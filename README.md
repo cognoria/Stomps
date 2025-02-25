@@ -55,7 +55,7 @@ Stomps is a self-hosted AI chat assistant that learns your website content and p
 
 ## Support
 
-For installation guidance and support, please refer to the provided installation guide or contact our support team.
+For installation guidance and support, please refer to the provided installation guide or contact our team at stomps@stomps.io.
 
 ## Note
 
