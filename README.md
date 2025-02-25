@@ -20,19 +20,17 @@ Stomps is a self-hosted AI chat assistant that learns your website content and p
 
 ## Installation
 
-1. ~~Purchase the software to receive your unique installation script~~
-2. Set up a Virtual Private Server (VPS)
-3. Configure your domain/subdomain DNS settings
-4. Run the provided installation command on your server
-5. Access the admin panel and configure API keys
-6. Import your knowledge base data
-7. Customize chat interface settings
-8. Embed the chatbot on your website(s)
+1. Set up a Virtual Private Server (VPS)
+2. Configure your domain/subdomain DNS settings
+3. Run the provided installation command on your server
+4. Access the admin panel and configure API keys
+5. Import your knowledge base data
+6. Customize chat interface settings
+7. Embed the chatbot on your website(s)
 
 ## Costs
 
-- ~~One-time software purchase: $199~~
-- Additional costs (not included):
+- Cost associated with using StompsAI:
   - OpenAI API usage
   - Pinecone API usage
   - VPS hosting fees
